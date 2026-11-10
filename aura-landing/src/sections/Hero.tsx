@@ -12,7 +12,7 @@ import { Particles } from "@/components/magicui/particles"
 import { ScrollProgress } from "@/components/magicui/scroll-progress"
 import { ScrollVelocityContainer, ScrollVelocityRow } from "@/components/magicui/scroll-based-velocity"
 import { TextAnimate } from "@/components/magicui/text-animate"
-import { Btn, Container, Logo, Mock } from "@/components/ui"
+import { Btn, Container, Logo, Mock, Phone } from "@/components/ui"
 import { cn } from "@/lib/utils"
 
 const links = [
@@ -197,28 +197,32 @@ export function Hero() {
 
         {/* celular flutuante + notificações */}
         <div className="relative hidden h-full min-h-[560px] md:block">
-          <motion.div style={{ y: phoneY }} className="absolute bottom-0 right-0 w-[min(100%,440px)]">
-            <motion.img
+          <motion.div style={{ y: phoneY }} className="absolute bottom-6 right-0 w-[min(100%,400px)]">
+            <motion.div
               initial={{ opacity: 0, y: 60, rotate: 4 }}
               animate={{ opacity: 1, y: 0, rotate: 0 }}
               transition={{ duration: 1.1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              src="./img/app-treino.png"
-              width={520}
-              height={644}
-              alt="Tela ilustrativa do aplicativo do aluno: treino de segunda com cronômetro, lista de exercícios e vídeos de execução."
-              className="relative z-10 w-full animate-float drop-shadow-[0_40px_70px_rgb(0_0_0/.75)]"
-            />
+              className="relative z-10 [perspective:1400px]"
+            >
+              <div className="animate-float">
+                <Phone
+                  src="./img/tela-aluno-inicio.png"
+                  alt="Tela do aplicativo do aluno: saudação, treino de hoje (Treino A: Superior, 45 minutos, 5 exercícios) e sequência de 3 semanas ativas."
+                  className="w-[300px] [transform:rotateY(-16deg)_rotateX(8deg)_rotateZ(5deg)]"
+                />
+              </div>
+            </motion.div>
             <div aria-hidden="true" className="absolute left-1/2 top-1/2 -z-0 size-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/30 blur-[110px]" />
           </motion.div>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.6 }}
-            className="absolute -left-6 top-10 z-20 h-[230px] overflow-hidden [mask-image:linear-gradient(to_bottom,#000_70%,transparent)]"
+            className="absolute -left-28 top-6 z-20 h-[230px] overflow-hidden [mask-image:linear-gradient(to_bottom,#000_70%,transparent)]"
             aria-hidden="true"
           >
             <AnimatedList delay={2200} className="items-start gap-2.5">
-              <Notif key="a" tone="bg-ok/15 text-ok" icon={<CheckCircle2 size={18} />} title="Aluno A concluiu o treino" sub="Segunda · Quadríceps [MOCK]" />
+              <Notif key="a" tone="bg-ok/15 text-ok" icon={<CheckCircle2 size={18} />} title="Aluno A concluiu o treino" sub="Treino A: Superior [MOCK]" />
               <Notif key="b" tone="bg-primary/20 text-accent" icon={<Sparkles size={18} />} title="Proposta da IA pronta" sub="Revise e aprove antes de enviar" />
               <Notif key="c" tone="bg-warn/15 text-warn" icon={<BellRing size={18} />} title="Aluno B faltou 2 treinos" sub="Sinal de queda de frequência [MOCK]" />
               <Notif key="d" tone="bg-ok/15 text-ok" icon={<CreditCard size={18} />} title="Pagamento recebido" sub="Mensalidade de novembro [MOCK]" />

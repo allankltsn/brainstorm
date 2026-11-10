@@ -92,3 +92,17 @@ export function Btn({ href, children, variant = "primary", className, title }: B
     </motion.a>
   )
 }
+
+/** Moldura de celular para as capturas reais do app (390×844, vindas de _evidence/). */
+export function Phone({ src, alt, dark = false, className }: { src: string; alt: string; dark?: boolean; className?: string }) {
+  return (
+    <div className={cn("relative mx-auto w-[min(100%,300px)] rounded-[46px] border border-white/15 bg-[#0b0b0d] p-[9px] shadow-[0_40px_80px_-20px_rgb(0_0_0/.85),inset_0_0_0_2px_#3a3a42]", className)}>
+      <div className={cn("overflow-hidden rounded-[37px]", dark ? "bg-[#141414]" : "bg-white")}>
+        <div aria-hidden="true" className="flex h-8 items-center justify-center">
+          <span className="h-[18px] w-[84px] rounded-full bg-black" />
+        </div>
+        <img src={src} alt={alt} width={390} height={844} loading="lazy" className="block h-auto w-full" />
+      </div>
+    </div>
+  )
+}
