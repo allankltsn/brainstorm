@@ -58,7 +58,7 @@ export function TopBar() {
               ))}
             </ul>
           </nav>
-          <Btn href="#cta-final" title="Cadastro em breve [a definir]" className="hidden h-10 px-5 text-sm sm:inline-flex">
+          <Btn href="#/login" className="hidden h-10 px-5 text-sm sm:inline-flex">
             Começar grátis
           </Btn>
           <button
@@ -92,7 +92,7 @@ export function TopBar() {
                   </li>
                 ))}
               </ul>
-              <Btn href="#cta-final" className="mt-2 w-full" title="Cadastro em breve [a definir]">
+              <Btn href="#/login" className="mt-2 w-full">
                 Começar grátis
               </Btn>
             </motion.nav>
@@ -179,7 +179,7 @@ export function Hero() {
 
           <BlurFade delay={1.15}>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Btn href="#cta-final" title="Cadastro em breve [a definir]" className="h-14 px-8 text-base">
+              <Btn href="#/login" className="h-14 px-8 text-base">
                 Começar grátis <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
               </Btn>
               <Btn href="#como-funciona" variant="ghost" className="h-14 px-8 text-base">

@@ -1,16 +1,33 @@
 import Lenis from "lenis"
 import { MotionConfig } from "motion/react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import { Comparativo, CtaFinal, Depoimentos, Faq, Footer, Planos } from "@/sections/Closing"
 import { Hero, Stats, Ticker, TopBar } from "@/sections/Hero"
-import { ComoFunciona, Manifesto, Problema, Recursos, Telas } from "@/sections/Product"
+import { AiUses } from "@/sections/AiUses"
+import { Demo } from "@/sections/Demo"
+import { Login } from "@/sections/Login"
+import { ComoFunciona, Manifesto, Problema, Recursos } from "@/sections/Product"
 import { Roi } from "@/sections/Roi"
 
+const isLogin = () => location.hash === "#/login"
+
 export default function App() {
+  // Rota simples por hash: "#/login" mostra a tela Entrar.
+  const [login, setLogin] = useState(isLogin)
+  useEffect(() => {
+    const on = () => {
+      const l = isLogin()
+      setLogin(l)
+      if (l) scrollTo(0, 0)
+    }
+    addEventListener("hashchange", on)
+    return () => removeEventListener("hashchange", on)
+  }, [])
+
   // Rolagem suave (Lenis), desligada para quem prefere menos movimento.
   useEffect(() => {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    if (login || matchMedia("(prefers-reduced-motion: reduce)").matches) return
     const lenis = new Lenis({ lerp: 0.1, anchors: { offset: -110 } })
     let id = requestAnimationFrame(function raf(t) {
       lenis.raf(t)
@@ -20,7 +37,14 @@ export default function App() {
       cancelAnimationFrame(id)
       lenis.destroy()
     }
-  }, [])
+  }, [login])
+
+  if (login)
+    return (
+      <MotionConfig reducedMotion="user">
+        <Login />
+      </MotionConfig>
+    )
 
   return (
     <MotionConfig reducedMotion="user">
@@ -35,7 +59,8 @@ export default function App() {
         <Problema />
         <Manifesto />
         <Recursos />
-        <Telas />
+        <AiUses />
+        <Demo />
         <ComoFunciona />
         <Roi />
         <Depoimentos />

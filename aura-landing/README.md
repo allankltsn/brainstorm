@@ -41,21 +41,30 @@ Os componentes dos kits são código-fonte copiado para o projeto (modelo shadcn
 ## Estrutura
 
 - `src/sections/Hero.tsx`: barra superior, hero, faixa de números, letreiro.
-- `src/sections/Product.tsx`: problema, manifesto, recursos (bento), telas do app, como funciona.
+- `src/sections/Product.tsx`: problema, manifesto, recursos (bento), como funciona.
 - `src/sections/Roi.tsx`: calculadora (mesmas premissas do protótipo).
 - `src/sections/Closing.tsx`: depoimentos, planos, comparativo, FAQ, CTA final, rodapé.
 - `src/components/ui.tsx`: logo, botões e blocos comuns.
 
-## Telas do app
+## Telas do app e fluxo interativo
 
-As capturas em `public/img/tela-*.png` vêm de `../_evidence/` (testes Cypress, 390×844) e são exibidas na moldura `Phone` (`src/components/ui.tsx`):
+As capturas em `public/img/` vêm de `../_evidence/` (testes Cypress, 390×844):
 
 | Arquivo | Origem | Onde aparece |
 |---|---|---|
-| `tela-aluno-inicio.png` | `g4/home-03-aluno-light-390x844.png` | hero |
-| `tela-aluno-treino.png` | `g4/home-04-aluno-light-390x844.png` | telas, 01 |
-| `tela-prescricao-ia.png` | `training-d/painel-abas-390-light.png` | telas, 02 |
-| `tela-personal-painel.png` | `g4/home-02-personal-dark-390x844.png` | telas, 03 |
+| `tela-aluno-inicio.png` | `g4/home-03-aluno-light-390x844.png` | hero; fluxo do aluno, tela 1 |
+| `tela-aluno-treino.png` | `g4/home-04-aluno-light-390x844.png` | fluxo do aluno, tela 2 |
+| `fluxo-p1-treinos.png` | `training-bc/biblioteca-padrao-light-390.png` (topo) | fluxo do personal, tela 1 |
+| `fluxo-p2-modelo.png` | `training-bc/modelo-editor-padrao-light-390.png` | fluxo do personal, tela 2 |
+| `fluxo-p3-aluno.png` | `training-a/trn02-resumo-light-390.png` | fluxo do personal, tela 3 |
+| `fluxo-p4-editor.png` | `training-bc/treino-aluno-editor-com-sessoes-feitas-light-390.png` (topo) | fluxo do personal, tela 4 |
+
+`src/sections/Demo.tsx` define os fluxos: cada tela tem pontos (`spots`) em px da captura. Ponto com `to` é clicável e leva a outra tela; sem `to`, só mostra a dica ao passar o mouse. O aparelho inclina com o cursor e as áreas acendem conforme ele se aproxima.
+
+## IA ilustrada e login
+
+- `src/sections/AiUses.tsx`: quatro SVGs animados (SMIL) dos usos da IA: dúvidas de treino, análise de vídeo do movimento, relatos de dor e exames, treino preenchido a partir de um documento.
+- `src/sections/Login.tsx`: tela "Entrar" em `#/login`, para onde vão os botões "Começar grátis" do topo e do hero. É demonstração: o formulário não envia nada. Quando o app estiver no ar, aponte esses botões para a URL real.
 
 ## Acessibilidade e movimento
 

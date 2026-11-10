@@ -7,7 +7,7 @@ import { BlurFade } from "@/components/magicui/blur-fade"
 import { BorderBeam } from "@/components/magicui/border-beam"
 import { DotPattern } from "@/components/magicui/dot-pattern"
 import { MagicCard } from "@/components/magicui/magic-card"
-import { Btn, Container, Eyebrow, Mock, Phone, SectionHead } from "@/components/ui"
+import { Btn, Container, Eyebrow, Mock, SectionHead } from "@/components/ui"
 import { cn } from "@/lib/utils"
 
 /* ---------- Problema ---------- */
@@ -328,105 +328,6 @@ export function Recursos() {
             <Btn href="#cta-final" title="Cadastro em breve [a definir]">Testar com meus alunos <ArrowRight size={18} /></Btn>
           </div>
         </BlurFade>
-      </Container>
-    </section>
-  )
-}
-
-/* ---------- Telas do app (celular fixo, textos rolando) ---------- */
-const telas = [
-  {
-    k: "treino",
-    t: "Treino do dia, exercício por exercício.",
-    d: "O aluno abre o app e vê o treino de hoje: séries, repetições e descanso de cada movimento, sem planilha no WhatsApp.",
-    a: "Captura do app em desenvolvimento, com dados de exemplo [MOCK].",
-    img: "./img/tela-aluno-treino.png",
-    alt: "Tela do aplicativo do aluno, Treino de hoje: Treino A Superior, cerca de 45 minutos, 5 exercícios, com séries, repetições e descanso de supino reto, remada curvada e desenvolvimento com halteres.",
-    dark: false,
-  },
-  {
-    k: "ia",
-    t: "A IA sugere. Você revisa, escolhe e salva.",
-    d: "Na prescrição com IA, você passa o contexto e o pedido, recebe as sugestões com os pontos de atenção e decide o que entra no treino.",
-    a: "Captura do app em desenvolvimento. A IA pode errar: nada vai ao aluno sem a sua aprovação. Limite de sugestões por mês [MOCK].",
-    img: "./img/tela-prescricao-ia.png",
-    alt: "Tela Prescrição com IA do personal: aviso de que a IA só sugere e o personal decide, 18 de 30 sugestões no mês, etapas de contexto, pedido, dados, resumo e resultado, com 6 sugestões e 3 pontos de atenção.",
-    dark: false,
-  },
-  {
-    k: "painel",
-    t: "Alunos, receita e alertas em um só painel.",
-    d: "Veja quantos alunos ativos cabem no seu plano, a receita do mês, quem está sem treinar há 7 dias ou mais e a agenda de hoje.",
-    a: "Captura do app em desenvolvimento, valores de exemplo [MOCK]. Meios de pagamento [a confirmar].",
-    img: "./img/tela-personal-painel.png",
-    alt: "Tela inicial do personal em tema escuro: 18 de 30 alunos ativos do plano, receita do mês de R$ 4.250,00, 4 alunos sem treinar há 7 dias ou mais e 4 compromissos na agenda de hoje.",
-    dark: true,
-  },
-] as const
-
-function TelaVisual({ i }: { i: number }) {
-  const t = telas[i]
-  return <Phone src={t.img} alt={t.alt} dark={t.dark} className="w-[min(100%,290px,34svh)]" />
-}
-
-function TelaTexto({ i, onActive }: { i: number; onActive: (i: number) => void }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { margin: "-45% 0px -45% 0px" })
-  useEffect(() => { if (inView) onActive(i) }, [inView, i, onActive])
-  const t = telas[i]
-  return (
-    <div ref={ref} className="flex flex-col justify-center py-10 lg:min-h-[72vh] lg:py-0">
-      <motion.div animate={{ opacity: inView ? 1 : 0.28 }} transition={{ duration: 0.5 }} className="max-lg:!opacity-100">
-        <span className="display text-6xl text-white/10 tabular-nums">0{i + 1}</span>
-        <h3 className="mt-4 text-3xl font-bold tracking-tight md:text-[40px] md:leading-[1.08]">{t.t}</h3>
-        <p className="mt-4 max-w-md text-lg leading-relaxed text-muted">{t.d}</p>
-        <p className="mt-4 max-w-md text-[13px] text-faint">{t.a}</p>
-      </motion.div>
-      <div className="mt-8 lg:hidden"><TelaVisual i={i} /></div>
-    </div>
-  )
-}
-
-export function Telas() {
-  const [active, setActive] = useState(0)
-  return (
-    <section id="telas" aria-labelledby="h-telas" className="relative border-y border-line bg-surface/40 py-20 md:py-28">
-      <Container>
-        <SectionHead
-          id="h-telas"
-          eyebrow="O app por dentro"
-          title="O treino, a prescrição e o painel no bolso."
-          lead="Capturas do app em desenvolvimento, com dados de exemplo [MOCK]. Nomes, valores e recursos podem mudar [a confirmar]."
-        />
-        <div className="grid gap-10 lg:grid-cols-2">
-          <div>
-            {telas.map((t, i) => <TelaTexto key={t.k} i={i} onActive={setActive} />)}
-          </div>
-          <div className="hidden lg:block">
-            <div className="sticky top-[18vh] flex h-[72vh] items-center justify-center">
-              <div aria-hidden="true" className="absolute size-[460px] rounded-full bg-primary/25 blur-[120px]" />
-              <motion.div aria-hidden="true" animate={{ rotate: 360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} className="absolute size-[520px] rounded-full border border-dashed border-white/10" />
-              <div aria-hidden="true" className="absolute size-[380px] rounded-full border border-white/[0.07]" />
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={active}
-                  initial={{ opacity: 0, y: 40, rotate: 5, scale: 0.94, filter: "blur(10px)" }}
-                  animate={{ opacity: 1, y: 0, rotate: 0, scale: 1, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -40, rotate: -5, scale: 0.94, filter: "blur(10px)" }}
-                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative w-full"
-                >
-                  <TelaVisual i={active} />
-                </motion.div>
-              </AnimatePresence>
-              <div className="absolute right-0 top-1/2 flex -translate-y-1/2 flex-col gap-2" aria-hidden="true">
-                {telas.map((t, i) => (
-                  <motion.span key={t.k} animate={{ height: active === i ? 36 : 10, backgroundColor: active === i ? "#d0202b" : "#4a4a4a" }} className="w-1.5 rounded-full" />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
       </Container>
     </section>
   )
