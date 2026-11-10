@@ -1,0 +1,56 @@
+ok       home-01-admin-light-390x844 scrollWidth=390 viewport=390
+ok       home-01-admin-light-1440x900 scrollWidth=1440 viewport=1440
+ok       home-01-admin-dark-390x844 scrollWidth=390 viewport=390
+ok       home-01-admin-dark-1440x900 scrollWidth=1440 viewport=1440
+OVERFLOW home-02-personal-light-390x844 scrollWidth=433 viewport=390 fora: SPAN.tooltip
+OVERFLOW home-02-personal-light-1440x900 scrollWidth=1467 viewport=1440 fora: SPAN.tooltip
+OVERFLOW home-02-personal-dark-390x844 scrollWidth=433 viewport=390 fora: SPAN.tooltip
+OVERFLOW home-02-personal-dark-1440x900 scrollWidth=1467 viewport=1440 fora: SPAN.tooltip
+OVERFLOW home-02-inadimplente-personal-light-390x844 scrollWidth=433 viewport=390 fora: SPAN.tooltip
+OVERFLOW home-02-inadimplente-personal-light-1440x900 scrollWidth=1467 viewport=1440 fora: SPAN.tooltip
+OVERFLOW home-02-inadimplente-personal-dark-390x844 scrollWidth=433 viewport=390 fora: SPAN.tooltip
+OVERFLOW home-02-inadimplente-personal-dark-1440x900 scrollWidth=1467 viewport=1440 fora: SPAN.tooltip
+ok       home-03-aluno-light-390x844 scrollWidth=390 viewport=390
+ok       home-03-aluno-light-1440x900 scrollWidth=1440 viewport=1440
+ok       home-03-aluno-dark-390x844 scrollWidth=390 viewport=390
+ok       home-03-aluno-dark-1440x900 scrollWidth=1440 viewport=1440
+ok       home-04-aluno-light-390x844 scrollWidth=390 viewport=390
+ok       home-04-aluno-dark-390x844 scrollWidth=390 viewport=390
+ok       per-01-personal-light-390x844 scrollWidth=390 viewport=390
+ok       per-01-personal-light-1440x900 scrollWidth=1440 viewport=1440
+ok       per-01-personal-dark-390x844 scrollWidth=390 viewport=390
+ok       per-01-personal-dark-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-00-aluno-light-390x844 scrollWidth=390 viewport=390
+ok       cfg-00-aluno-light-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-00-aluno-dark-390x844 scrollWidth=390 viewport=390
+ok       cfg-00-aluno-dark-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-01-aluno-light-390x844 scrollWidth=390 viewport=390
+ok       cfg-01-aluno-light-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-01-aluno-dark-390x844 scrollWidth=390 viewport=390
+ok       cfg-01-aluno-dark-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-01-personal-light-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-01-personal-dark-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-02-aluno-light-390x844 scrollWidth=390 viewport=390
+ok       cfg-02-aluno-light-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-02-aluno-dark-390x844 scrollWidth=390 viewport=390
+ok       cfg-02-aluno-dark-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-02-sessao-expirou-ao-salvar-aluno-light-390x844 scrollWidth=390 viewport=390
+ok       cfg-02-sessao-expirou-ao-salvar-aluno-dark-390x844 scrollWidth=390 viewport=390
+ok       cfg-03-aluno-light-390x844 scrollWidth=390 viewport=390
+ok       cfg-03-aluno-light-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-03-aluno-dark-390x844 scrollWidth=390 viewport=390
+ok       cfg-03-aluno-dark-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-05-aluno-light-390x844 scrollWidth=390 viewport=390
+ok       cfg-05-aluno-light-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-05-aluno-dark-390x844 scrollWidth=390 viewport=390
+ok       cfg-05-aluno-dark-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-05-personal-light-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-05-personal-dark-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-06-aluno-light-390x844 scrollWidth=390 viewport=390
+ok       cfg-06-aluno-light-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-06-aluno-dark-390x844 scrollWidth=390 viewport=390
+ok       cfg-06-aluno-dark-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-06-personal-com-alunos-personal-light-390x844 scrollWidth=390 viewport=390
+ok       cfg-06-personal-com-alunos-personal-light-1440x900 scrollWidth=1440 viewport=1440
+ok       cfg-06-personal-com-alunos-personal-dark-390x844 scrollWidth=390 viewport=390
+ok       cfg-06-personal-com-alunos-personal-dark-1440x900 scrollWidth=1440 viewport=1440

@@ -1,0 +1,9 @@
+Titulo: Pagamento confirmado
+Endereco: screens/planos/pagamento-confirmado.html?role=personal&plan=pro&cycle=mensal
+Tela: 390x844, tema escuro (sem --theme: segue o aparelho), cabe sem rolar na vertical
+Mensagens visiveis: nenhuma
+Botoes: Abrir menu; Abrir busca; Aparência: Sistema. Alterar tema; Notificações, 1 não lidas; Menu da conta de Rafael Moreira
+Links: Ir para o início; Ver minha assinatura
+Campos: (nenhum)
+rolagem horizontal: nao
+Captura: E:\allan\aura\internal\aura-projects\prototype\_evidence\lay-browser\fix1-modal-oculto.png

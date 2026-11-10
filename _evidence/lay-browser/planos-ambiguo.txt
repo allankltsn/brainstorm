@@ -1,0 +1,11 @@
+FALHOU no passo 1 de 1 ("clicar:Escolher"): ha 2 opcoes para "Escolher": "Escolher Pro" (visivel na tela); "Escolher Premium" (visivel na tela)
+O que havia na tela nesse momento:
+Titulo: Escolha seu plano
+Endereco: screens/planos/planos.html?role=personal&theme=light
+Tela: 1440x900, tema light, rolada 0 de 210px
+Mensagens visiveis: nenhuma
+Botoes: Aparência: Claro. Alterar tema; Notificações, 1 não lidas; Menu da conta de Rafael Moreira; Seu plano atual (desativado); Comparar todos os recursos; Posso cancelar quando quiser?; A cobrança renova sozinha?; O que acontece se eu voltar para o Starter? (mais abaixo); Posso trocar de plano depois? (mais abaixo); Onde fica o número do meu cartão? (mais abaixo)
+Links: aura-fit, ir para o início; Início; Minha assinatura; Configurações; Escolher Pro; Escolher Premium
+Campos: Buscar (vazio); Mensal (marcado); Anual (desmarcado)
+rolagem horizontal: nao
+Captura: E:\allan\aura\internal\aura-projects\prototype\_evidence\lay-browser\planos-ambiguo.png
