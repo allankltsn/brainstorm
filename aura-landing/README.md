@@ -46,6 +46,17 @@ Os componentes dos kits são código-fonte copiado para o projeto (modelo shadcn
 - `src/sections/Closing.tsx`: depoimentos, planos, comparativo, FAQ, CTA final, rodapé.
 - `src/components/ui.tsx`: logo, botões e blocos comuns.
 
+## Telas do app
+
+As capturas em `public/img/tela-*.png` vêm de `../_evidence/` (testes Cypress, 390×844) e são exibidas na moldura `Phone` (`src/components/ui.tsx`):
+
+| Arquivo | Origem | Onde aparece |
+|---|---|---|
+| `tela-aluno-inicio.png` | `g4/home-03-aluno-light-390x844.png` | hero |
+| `tela-aluno-treino.png` | `g4/home-04-aluno-light-390x844.png` | telas, 01 |
+| `tela-prescricao-ia.png` | `training-d/painel-abas-390-light.png` | telas, 02 |
+| `tela-personal-painel.png` | `g4/home-02-personal-dark-390x844.png` | telas, 03 |
+
 ## Acessibilidade e movimento
 
 `prefers-reduced-motion` desliga a rolagem suave e reduz as animações (`MotionConfig reducedMotion="user"`).

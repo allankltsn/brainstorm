@@ -7,7 +7,7 @@ import { BlurFade } from "@/components/magicui/blur-fade"
 import { BorderBeam } from "@/components/magicui/border-beam"
 import { DotPattern } from "@/components/magicui/dot-pattern"
 import { MagicCard } from "@/components/magicui/magic-card"
-import { Btn, Container, Eyebrow, Mock, SectionHead } from "@/components/ui"
+import { Btn, Container, Eyebrow, Mock, Phone, SectionHead } from "@/components/ui"
 import { cn } from "@/lib/utils"
 
 /* ---------- Problema ---------- */
@@ -334,76 +334,39 @@ export function Recursos() {
 }
 
 /* ---------- Telas do app (celular fixo, textos rolando) ---------- */
-function Financeiro() {
-  const rows = [
-    { n: "Aluno A · Mensalidade", v: "R$ 250", s: "Pago", c: "text-ok" },
-    { n: "Aluno B · Mensalidade", v: "R$ 250", s: "Pendente", c: "text-warn" },
-    { n: "Aluno C · Mensalidade", v: "R$ 250", s: "Atrasado", c: "text-bad" },
-    { n: "Aluguel do espaço", v: "− R$ 800", s: "Pago", c: "text-ok" },
-  ]
-  return (
-    <div
-      role="img"
-      aria-label="Tela ilustrativa do financeiro do mês, com dados inventados [MOCK]: receitas R$ 5.000, despesas R$ 1.200, saldo R$ 3.800 e quatro lançamentos de exemplo com situação paga, pendente ou atrasada."
-      className="mx-auto w-[min(100%,330px)] rounded-[44px] border-[6px] border-[#3b3b45] bg-[#f6f6f7] p-4 pb-6 text-[#1f1f1f] shadow-[0_40px_80px_-20px_rgb(0_0_0/.8)]"
-    >
-      <div className="mx-auto mb-4 h-6 w-24 rounded-full bg-black" />
-      <p className="text-center text-base font-bold">aura-fit</p>
-      <p className="mb-3 text-center text-lg font-bold text-[#e11d35]">Financeiro</p>
-      <div className="grid grid-cols-3 gap-2 text-center">
-        {[["Receitas", "R$ 5.000"], ["Despesas", "R$ 1.200"], ["Saldo", "R$ 3.800"]].map(([l, v]) => (
-          <div key={l} className="rounded-2xl bg-white p-2 shadow-sm">
-            <p className="text-[10px] text-[#5c5c5c]">{l}</p>
-            <p className="text-[13px] font-bold tabular-nums">{v}</p>
-          </div>
-        ))}
-      </div>
-      <ul className="mt-3 space-y-2">
-        {rows.map((r) => (
-          <li key={r.n} className="flex items-center justify-between rounded-2xl bg-white px-3 py-2.5 shadow-sm">
-            <span>
-              <span className="block text-[12px] font-semibold">{r.n}</span>
-              <span className={cn("text-[11px] font-semibold", r.c === "text-ok" ? "text-[#137a3d]" : r.c === "text-warn" ? "text-[#855800]" : "text-[#b42318]")}>{r.s}</span>
-            </span>
-            <span className="text-[12px] font-bold tabular-nums">{r.v}</span>
-          </li>
-        ))}
-      </ul>
-      <p className="mt-3 text-center text-[10px] text-[#666]">Dados de exemplo [MOCK]</p>
-    </div>
-  )
-}
-
 const telas = [
   {
     k: "treino",
-    t: "Treino do dia com vídeo de cada exercício.",
-    d: "O aluno vê a ficha, o cronômetro de descanso e a execução de cada movimento, sem planilha no WhatsApp.",
-    a: "Tela ilustrativa. Modo treino em avaliação [a confirmar].",
-    img: "./img/app-treino.png",
-    alt: "Tela ilustrativa do aplicativo do aluno: treino de segunda com cronômetro, lista de exercícios e vídeos de execução.",
+    t: "Treino do dia, exercício por exercício.",
+    d: "O aluno abre o app e vê o treino de hoje: séries, repetições e descanso de cada movimento, sem planilha no WhatsApp.",
+    a: "Captura do app em desenvolvimento, com dados de exemplo [MOCK].",
+    img: "./img/tela-aluno-treino.png",
+    alt: "Tela do aplicativo do aluno, Treino de hoje: Treino A Superior, cerca de 45 minutos, 5 exercícios, com séries, repetições e descanso de supino reto, remada curvada e desenvolvimento com halteres.",
+    dark: false,
   },
   {
     k: "ia",
-    t: "Dúvida na execução? Pergunte ao assistente.",
-    d: "Um assistente de IA pode explicar um exercício em linguagem simples, enquanto o personal segue no comando da ficha.",
-    a: "Tela ilustrativa. Não substitui o acompanhamento profissional [a confirmar].",
-    img: "./img/app-ia-chat.png",
-    alt: "Tela ilustrativa do assistente de IA respondendo como executar o exercício stiff com barra.",
+    t: "A IA sugere. Você revisa, escolhe e salva.",
+    d: "Na prescrição com IA, você passa o contexto e o pedido, recebe as sugestões com os pontos de atenção e decide o que entra no treino.",
+    a: "Captura do app em desenvolvimento. A IA pode errar: nada vai ao aluno sem a sua aprovação. Limite de sugestões por mês [MOCK].",
+    img: "./img/tela-prescricao-ia.png",
+    alt: "Tela Prescrição com IA do personal: aviso de que a IA só sugere e o personal decide, 18 de 30 sugestões no mês, etapas de contexto, pedido, dados, resumo e resultado, com 6 sugestões e 3 pontos de atenção.",
+    dark: false,
   },
   {
-    k: "fin",
-    t: "Receitas, despesas e saldo em um só lugar.",
-    d: "Veja o mês, acompanhe pagamentos e mantenha a cobrança organizada, com menos mensagens desconfortáveis.",
-    a: "Tela ilustrativa, lançamentos e valores de exemplo [MOCK]. Meios de pagamento [a confirmar].",
-    img: null,
-    alt: "",
+    k: "painel",
+    t: "Alunos, receita e alertas em um só painel.",
+    d: "Veja quantos alunos ativos cabem no seu plano, a receita do mês, quem está sem treinar há 7 dias ou mais e a agenda de hoje.",
+    a: "Captura do app em desenvolvimento, valores de exemplo [MOCK]. Meios de pagamento [a confirmar].",
+    img: "./img/tela-personal-painel.png",
+    alt: "Tela inicial do personal em tema escuro: 18 de 30 alunos ativos do plano, receita do mês de R$ 4.250,00, 4 alunos sem treinar há 7 dias ou mais e 4 compromissos na agenda de hoje.",
+    dark: true,
   },
 ] as const
 
 function TelaVisual({ i }: { i: number }) {
   const t = telas[i]
-  return t.img ? <img src={t.img} alt={t.alt} width={520} height={644} className="mx-auto w-[min(100%,440px)] drop-shadow-[0_40px_70px_rgb(0_0_0/.7)]" /> : <Financeiro />
+  return <Phone src={t.img} alt={t.alt} dark={t.dark} className="w-[min(100%,290px,34svh)]" />
 }
 
 function TelaTexto({ i, onActive }: { i: number; onActive: (i: number) => void }) {
@@ -431,9 +394,9 @@ export function Telas() {
       <Container>
         <SectionHead
           id="h-telas"
-          eyebrow="App do aluno"
-          title="O treino, a dúvida e o financeiro no bolso."
-          lead="Telas ilustrativas de como a experiência pode funcionar. Recursos em avaliação [a confirmar]; valores e nomes das telas são exemplos [MOCK]."
+          eyebrow="O app por dentro"
+          title="O treino, a prescrição e o painel no bolso."
+          lead="Capturas do app em desenvolvimento, com dados de exemplo [MOCK]. Nomes, valores e recursos podem mudar [a confirmar]."
         />
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
