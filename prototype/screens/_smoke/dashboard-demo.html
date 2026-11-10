@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demonstração de componentes</title>
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Alterações salvas com sucesso.">
+  <nav aria-label="Você está em" class="mb-2">
+    <ol class="breadcrumb">
+      <li><a href="#conteudo">Início</a></li>
+      <li><a href="#conteudo">Fundação</a></li>
+      <li><span aria-current="page">Componentes</span></li>
+    </ol>
+  </nav>
+
+  <div class="page-header">
+    <div>
+      <h1>Demonstração de componentes</h1>
+      <p>Tela de prova da fundação. Troque o perfil, o tema e o estado pela URL.</p>
+    </div>
+    <div class="page-actions">
+      <button type="button" class="btn btn-secondary" data-toast="Relatório baixado." data-tone="success"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Exportar</button>
+      <button type="button" class="btn btn-primary" data-modal-open="modal-demo"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Novo item</button>
+    </div>
+  </div>
+
+  <div class="alert alert-success mb-4" role="status" data-when="success">
+    <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+    <div class="alert-body"><div class="alert-title">Tudo certo</div>Suas alterações foram salvas.</div>
+  </div>
+
+  <div class="stack-lg">
+    <section aria-labelledby="t-metricas" data-when="default success">
+      <h2 class="h3 mb-4" id="t-metricas">Métricas</h2>
+      <div class="grid-4">
+        <div class="card stat"><span class="stat-label">Total de usuários</span><span class="stat-value" id="m-total">24</span><span class="stat-delta"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-up"/></svg>+4 no mês</span></div>
+        <div class="card stat"><span class="stat-label">Receita recorrente</span><span class="stat-value" id="m-mrr">R$ 0,00</span><span class="stat-delta"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-up"/></svg>+8,2% no mês</span></div>
+        <div class="card stat"><span class="stat-label">Convites pendentes</span><span class="stat-value" id="m-inv">3</span><span class="stat-delta is-down"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-clock"/></svg>Aguardando aceite</span></div>
+        <div class="card stat"><span class="stat-label">Em atraso</span><span class="stat-value">1</span><span class="stat-delta is-down"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-alert"/></svg>Ação necessária</span></div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="t-tabela">
+      <div class="card-header">
+        <h2 class="card-title" id="t-tabela">Usuários recentes</h2>
+        <div class="tabs" role="tablist" aria-label="Filtrar por papel" style="border:0">
+          <button class="tab" role="tab" id="tab-todos" aria-controls="p-todos" aria-selected="true">Todos</button>
+          <button class="tab" role="tab" id="tab-pers" aria-controls="p-pers" aria-selected="false">Personais</button>
+          <button class="tab" role="tab" id="tab-alu" aria-controls="p-alu" aria-selected="false">Alunos</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div role="tabpanel" id="p-todos" aria-labelledby="tab-todos"><div id="area-todos"></div></div>
+        <div role="tabpanel" id="p-pers" aria-labelledby="tab-pers" hidden><div id="area-pers"></div></div>
+        <div role="tabpanel" id="p-alu" aria-labelledby="tab-alu" hidden><div id="area-alu"></div></div>
+      </div>
+      <div class="card-footer" style="justify-content:space-between;align-items:center" data-when="default success">
+        <span class="page-info" aria-live="polite">Mostrando 1 a 6 de 24</span>
+        <nav aria-label="Paginação"><ul class="pagination">
+          <li><a class="page-link" href="#conteudo" aria-disabled="true"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-left"/></svg><span class="sr-only">Página anterior</span></a></li>
+          <li><a class="page-link" href="#conteudo" aria-current="page"><span class="sr-only">Página </span>1</a></li>
+          <li><a class="page-link" href="#conteudo"><span class="sr-only">Página </span>2</a></li>
+          <li><a class="page-link" href="#conteudo"><span class="sr-only">Página </span>3</a></li>
+          <li><a class="page-link" href="#conteudo"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-right"/></svg><span class="sr-only">Próxima página</span></a></li>
+        </ul></nav>
+      </div>
+    </section>
+
+    <div data-when="default success" class="stack-lg">
+    <section class="grid-2">
+      <div class="card">
+        <div class="card-header"><h2 class="card-title">Botões</h2></div>
+        <div class="card-body stack">
+          <div class="row">
+            <button class="btn btn-primary" type="button">Primário</button>
+            <button class="btn btn-secondary" type="button">Secundário</button>
+            <button class="btn btn-text" type="button">Texto</button>
+            <button class="btn btn-danger" type="button">Perigo</button>
+          </div>
+          <div class="row">
+            <button class="btn btn-primary is-loading" type="button" aria-busy="true">Salvando…</button>
+            <button class="btn btn-primary" type="button" disabled>Desabilitado</button>
+            <button class="btn btn-neutral btn-icon" type="button" aria-label="Editar"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></button>
+            <button class="btn btn-neutral btn-icon" type="button" aria-label="Excluir"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg></button>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" type="button">Botão largo, grande</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h2 class="card-title">Status</h2></div>
+        <div class="card-body stack">
+          <div class="row" id="badges"></div>
+          <div class="row">
+            <span class="badge badge-primary"><svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>Mais popular</span>
+            <span class="badge"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>Neutro</span>
+            <span class="avatar" aria-hidden="true">RM</span>
+            <span class="avatar avatar-neutral avatar-sm" aria-hidden="true">CP</span>
+            <span class="avatar avatar-info avatar-lg" aria-hidden="true">TV</span>
+          </div>
+          <div>
+            <div class="row-between mb-2"><span class="label" id="pg-l">Alunos no plano Pro</span><span class="caption muted">18 de 30</span></div>
+            <div class="progress" role="progressbar" aria-labelledby="pg-l" aria-valuemin="0" aria-valuemax="30" aria-valuenow="18"><div class="progress-bar" style="--value:60%"></div></div>
+          </div>
+          <div class="row">
+            <span class="tooltip-host">
+              <button type="button" class="btn btn-neutral btn-icon" aria-label="Ajuda sobre cupons" aria-describedby="tip-1"><svg class="icon" aria-hidden="true"><use href="#i-help"/></svg></button>
+              <span class="tooltip" role="tooltip" id="tip-1">Um cupom por compra. Não acumula com outro.</span>
+            </span>
+            <span class="muted">Passe o mouse ou foque no botão. Esc fecha.</span>
+          </div>
+          <ol class="stepper" aria-label="Etapas da compra">
+            <li class="is-done"><span class="stepper-label">Plano</span></li>
+            <li aria-current="step"><span class="stepper-label">Cupom</span></li>
+            <li><span class="stepper-label">Pagamento</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="t-form">
+      <div class="card-header"><h2 class="card-title" id="t-form">Formulário</h2></div>
+      <div class="card-body">
+        <form id="form-demo" novalidate class="stack">
+          <div class="grid-2">
+            <div class="field">
+              <label for="f-nome">Nome completo</label>
+              <input class="input" id="f-nome" name="nome" autocomplete="name" aria-describedby="f-nome-h" value="Marina Duarte">
+              <span class="field-help" id="f-nome-h">Como você quer ser chamado.</span>
+            </div>
+            <div class="field">
+              <label for="f-email">E-mail <span class="field-required" aria-hidden="true">*</span></label>
+              <input class="input" id="f-email" name="email" type="email" autocomplete="email" aria-describedby="f-email-h" required value="marina.duarte">
+              <span class="field-help" id="f-email-h">Usamos para enviar o acesso.</span>
+            </div>
+            <div class="field">
+              <label for="f-senha">Senha</label>
+              <div class="input-group">
+                <input class="input" id="f-senha" name="senha" type="password" autocomplete="new-password" aria-describedby="f-senha-h" value="senhafalsa">
+                <button type="button" class="input-affix" data-toggle-password aria-controls="f-senha" aria-pressed="false" aria-label="Mostrar senha"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg></button>
+              </div>
+              <span class="field-help" id="f-senha-h">Mínimo de 8 caracteres.</span>
+            </div>
+            <div class="field">
+              <label for="f-plano">Plano</label>
+              <div class="select-wrap">
+                <select class="select" id="f-plano" name="plano"><option>Starter (grátis)</option><option selected>Pro</option><option>Premium</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-obs">Observação</label>
+            <textarea class="textarea" id="f-obs" name="obs" aria-describedby="f-obs-h"></textarea>
+            <span class="field-help" id="f-obs-h">Opcional. Não escreva dados de saúde aqui.</span>
+          </div>
+          <div class="field">
+            <label for="f-off">Campo desabilitado</label>
+            <input class="input" id="f-off" disabled value="Somente leitura">
+          </div>
+          <div class="grid-2">
+            <fieldset class="field">
+              <legend class="field-label">Consentimentos</legend>
+              <label class="check"><input type="checkbox" name="termos"><span class="check-text">Li e aceito os Termos de uso<small>Obrigatório para criar a conta.</small></span></label>
+              <label class="check"><input type="checkbox" name="novidades"><span class="check-text">Quero receber novidades por e-mail<small>Opcional. Você pode mudar quando quiser.</small></span></label>
+            </fieldset>
+            <fieldset class="field">
+              <legend class="field-label">Cobrança</legend>
+              <label class="check"><input type="radio" name="ciclo" checked><span class="check-text">Mensal, R$ 49,90</span></label>
+              <label class="check"><input type="radio" name="ciclo"><span class="check-text">Anual, R$ 499,00</span></label>
+            </fieldset>
+          </div>
+          <div class="row">
+            <label class="switch"><input type="checkbox" role="switch" checked><span class="switch-text">Ativo</span></label>
+            <label class="switch"><input type="checkbox" role="switch"><span class="switch-text">Inativo</span></label>
+            <div class="segmented" role="radiogroup" aria-label="Período">
+              <label><input type="radio" name="per" checked><span>Mensal</span></label>
+              <label><input type="radio" name="per"><span>Anual</span></label>
+            </div>
+          </div>
+          <div class="row">
+            <button type="submit" class="btn btn-primary">Validar formulário</button>
+            <button type="reset" class="btn btn-text">Limpar</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="grid-2" aria-label="Alertas e avisos">
+      <div class="stack">
+        <div class="alert alert-info"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert-body"><div class="alert-title">Informação</div>Seu plano renova em 03/11. Cancele quando quiser.</div></div>
+        <div class="alert alert-warning"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div class="alert-body"><div class="alert-title">Atenção</div>O pagamento não foi confirmado.</div></div>
+        <div class="alert alert-danger" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-x-circle"/></svg><div class="alert-body"><div class="alert-title">Erro</div>Não foi possível salvar. Tente de novo.</div></div>
+      </div>
+      <div class="card"><div class="card-body stack">
+        <h2 class="card-title">Janelas e avisos</h2>
+        <div class="row">
+          <button class="btn btn-secondary" type="button" data-modal-open="modal-demo">Abrir janela</button>
+          <button class="btn btn-secondary" type="button" id="b-confirm">Confirmar bloqueio</button>
+          <button class="btn btn-neutral" type="button" data-toast="Convite enviado." data-tone="success">Aviso de sucesso</button>
+          <button class="btn btn-neutral" type="button" data-toast="Verifique a conexão." data-tone="danger" data-toast-title="Sem conexão">Aviso de erro</button>
+        </div>
+        <div class="stack-sm" aria-hidden="true">
+          <span class="skeleton skeleton-title"></span><span class="skeleton skeleton-text"></span><span class="skeleton skeleton-text" style="width:70%"></span>
+        </div>
+        <div class="chart" role="img" aria-label="Receita dos últimos 6 meses, de R$ 149,70 a R$ 399,40">
+          <span class="chart-bar" style="height:35%"></span><span class="chart-bar" style="height:50%"></span><span class="chart-bar" style="height:62%"></span>
+          <span class="chart-bar" style="height:75%"></span><span class="chart-bar" style="height:88%"></span><span class="chart-bar" style="height:100%"></span>
+        </div>
+        <div class="chart-labels caption muted" aria-hidden="true"><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span></div>
+      </div></div>
+    </section>
+    </div>
+  </div>
+</main>
+
+<div class="modal-backdrop" id="modal-demo" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-demo-t">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-demo-t">Novo item</h2>
+      <button type="button" class="btn btn-text btn-icon" data-modal-close aria-label="Fechar"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="field"><label for="m-nome">Nome</label><input class="input" id="m-nome"><span class="field-help">O foco volta ao botão que abriu esta janela.</span></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-neutral" data-modal-close>Cancelar</button>
+      <button type="button" class="btn btn-primary" data-modal-close data-toast="Item criado." data-tone="success">Criar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var r = {};
+  Object.keys(AuraShell.menus).forEach(function (k) { AuraShell.menus[k].forEach(function (it) { r[it.key] = '#conteudo'; }); });
+  r.login = '#conteudo';
+  AuraShell.mount({ role: 'admin', active: 'inicio', title: 'Demonstração de componentes', routes: r });
+
+  var A = window.AURA;
+  document.getElementById('m-mrr').textContent = A.fmtBRL(A.metrics.admin.mrr);
+  document.getElementById('m-total').textContent = A.metrics.admin.totalUsers;
+  document.getElementById('m-inv').textContent = A.metrics.admin.pendingInvites;
+  document.getElementById('badges').innerHTML = ['ativo', 'bloqueado', 'convite pendente', 'vencendo', 'inadimplente', 'cancelada', 'agendado'].map(A.badge).join('');
+
+  function table(list) {
+    return '<div class="table-wrap"><table class="table"><thead><tr><th scope="col">Nome</th><th scope="col">Papel</th><th scope="col">Status</th><th scope="col">Último acesso</th><th scope="col" class="col-actions"><span class="sr-only">Ações</span></th></tr></thead><tbody>' +
+      list.map(function (u) {
+        return '<tr><td class="cell-main"><div class="cell-user"><span class="avatar avatar-sm" aria-hidden="true">' + A.initials(u.name) + '</span><div><div class="body-medium">' + u.name + '</div><small>' + A.maskEmail(u.email) + '</small></div></div></td>' +
+          '<td data-label="Papel">' + A.roleLabel[u.role] + '</td><td data-label="Status">' + A.badge(u.status) + '</td><td data-label="Último acesso">' + A.relDate(u.lastAccess) + '</td>' +
+          '<td class="col-actions" data-label="Ações"><button type="button" class="btn btn-text btn-icon" aria-label="Mais ações para ' + u.name + '"><svg class="icon" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+  function fill(id, filter) {
+    var list = A.users.filter(filter).slice(0, 6);
+    AuraState.render('#' + id, {
+      rows: 4, icon: 'users', title: 'Nenhum usuário encontrado', text: 'Convide alguém para começar.', action: { label: 'Convidar', icon: 'plus' },
+      renderDefault: function (el) { el.innerHTML = table(list); }
+    });
+  }
+  fill('area-todos', function () { return true; });
+  fill('area-pers', function (u) { return u.role === 'personal'; });
+  fill('area-alu', function (u) { return u.role === 'aluno'; });
+
+  document.getElementById('b-confirm').addEventListener('click', function () {
+    AuraUI.confirm({ title: 'Bloquear Matheus Cardoso?', text: 'O acesso fica suspenso e você pode desbloquear depois. A ação fica registrada na auditoria.', confirmLabel: 'Bloquear', danger: true })
+      .then(function (ok) { if (ok) AuraUI.toast('Acesso bloqueado. Você pode desfazer em Usuários.', { tone: 'warning' }); });
+  });
+  document.getElementById('form-demo').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.target, email = f.elements.email, termos = f.elements.termos;
+    [email, termos].forEach(AuraUI.clearError);
+    if (email.value.indexOf('@') < 1) AuraUI.setError(email, 'Digite um e-mail completo, como nome@exemplo.com.');
+    if (!termos.checked) AuraUI.setError(termos, 'Aceite os Termos para continuar.');
+    if (!AuraUI.focusFirstError(f)) AuraUI.toast('Formulário válido.', { tone: 'success' });
+  });
+</script>
+</body>
+</html>

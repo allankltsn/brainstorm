@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIS-03 · Página não encontrada · aura-fit</title>
+  <meta name="aura-screen" content="SIS-03">
+  <meta name="aura-variants" content="">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g1.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g1.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body class="g1">
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<div class="g1-page">
+  <header class="g1-pubbar">
+    <a class="g1-wordmark" href="../auth/login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+    <div class="g1-pubbar-actions">
+      
+      <button type="button" class="g1-iconbtn" data-g1-theme aria-label="Mudar tema"></button>
+    </div>
+  </header>
+  <main id="conteudo" tabindex="-1" class="g1-center" data-state="default">
+    <div class="g1-card g1-card-wide">
+        <div id="g1-state" data-when="loading error"></div>
+      <div data-when="default empty success">
+        <div class="g1-statecard">
+          <span class="g1-bigicon "><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg></span>
+          <h1>Página não encontrada</h1>
+          <p>O endereço pode estar errado, ou a página mudou de lugar. Nada foi perdido.</p>
+<div class="g1-actions"><a class="btn btn-primary btn-lg btn-block" id="voltar" href="../auth/login.html">Voltar para o início</a></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/grupo-g1.js"></script>
+<script>
+(function () {
+  var r = G1.q.role, H = window.AURA_G1.home;
+  if (r && H[r]) document.getElementById('voltar').href = G1.withTheme(H[r]);
+})();
+</script>
+</body>
+</html>

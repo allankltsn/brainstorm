@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CFG-06 · Excluir conta · aura-fit</title>
+  <meta name="aura-screen" content="CFG-06">
+  <meta name="aura-variants" content="personal-com-assinatura,personal-com-alunos,agendada,ultimo-admin">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g4.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Exclusão agendada. Você pode desistir até o prazo.">
+  <div class="g4-settings-wrap">
+    <div id="col" class="stack-lg g4-measure">
+      <div class="page-header" style="margin-bottom:0">
+        <div>
+          <h1 id="h1">Excluir minha conta</h1>
+          <p id="sub">Por padrão, nada é apagado na hora: você tem tempo para pensar.</p>
+        </div>
+      </div>
+      <div id="area"></div>
+    </div>
+  </div>
+</main>
+<script>
+  G4.setDefaultRole('aluno');
+  G4.mount({ id: 'CFG-06', title: 'Excluir conta', activeByRole: { aluno: 'perfil', admin: 'configuracoes', personal: 'configuracoes' } });
+  G4.settingsLayout('excluir', 'col');
+  var A = window.AURA, V = G4.variant(), r = G4.role(), me = A.me[r];
+  var isPersonal = r === 'personal' || V.indexOf('personal-') === 0;
+  var withSub = V === 'personal-com-assinatura' || (isPersonal && V === '');
+  var withStudents = V === 'personal-com-alunos';
+  var lastAdmin = V === 'ultimo-admin';
+  var step = V === 'agendada' ? 3 : 1;
+  var DAYS = 30, until = A.addDays(A.today, DAYS), when = 'later';
+  var subn = A.subscription;
+
+  function steps(n) {
+    var l = ['O que acontece', 'Confirmar', 'Pedido feito'];
+    return '<ol class="stepper" aria-label="Etapas">' + l.map(function (t, i) { return '<li' + (i + 1 < n ? ' class="is-done"' : '') + (i + 1 === n ? ' aria-current="step"' : '') + '><span class="stepper-label">' + t + '</span></li>'; }).join('') + '</ol>';
+  }
+  function step1() {
+    var extra = '';
+    if (lastAdmin) extra = '<div class="alert alert-warning" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><div class="alert-body"><div class="alert-title">Você é a única pessoa administradora</div>Por segurança, não dá para excluir esta conta agora. Passe o acesso de administrador para outra pessoa e volte aqui.</div><a class="btn btn-secondary" href="' + G4.esc(G4.url('../admin/atribuir-papel.html', 'variant=ultimo-admin')) + '">Atribuir perfil</a></div>';
+    if (withSub) extra += '<div class="alert alert-info"><svg class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg><div class="alert-body"><div class="alert-title">Sua assinatura será cancelada junto</div>Você não será cobrado de novo. A próxima cobrança, de ' + G4.money(subn.amount) + ' em ' + A.fmtDate(A.nextChargeAt) + ', deixa de acontecer. Se você assinou há menos de 7 dias, pode pedir o reembolso total. Fora disso, não há reembolso proporcional do período já pago.</div></div>';
+    if (withStudents) extra += '<div class="alert alert-info"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><div class="alert-body"><div class="alert-title">E os seus 18 alunos?</div>Eles recebem o aviso abaixo e podem baixar os próprios dados durante os ' + DAYS + ' dias. Depois disso, apagamos os dados de treino e de saúde deles neste aplicativo.</div></div>' + '<section class="card" aria-labelledby="t-msg"><div class="card-body stack-sm"><h2 class="h3" id="t-msg">Mensagem pronta que seus alunos recebem</h2><div class="g4-msg"><p>Seu personal, ' + G4.esc(me.name) + ', pediu para encerrar a conta dele no aura-fit.</p><p>Você pode continuar entrando até ' + A.fmtDate(until) + '. Antes disso, baixe seus treinos e registros em Meu perfil, Privacidade, Baixar meus dados.</p><p>Em ' + A.fmtDate(until) + ' apagamos seus dados de treino e de saúde deste aplicativo (guardamos só o que a lei exige). Prefere apagar antes? Peça em Privacidade.</p><p>Se ' + G4.esc(G4.firstName(me.name)) + ' desistir, avisamos e nada muda.</p></div><p class="muted">O aviso só sai depois do primeiro dia útil, para não assustar à toa se você desistir.</p></div></section>';
+    return '<div class="stack-lg">' + steps(1) + extra +
+      '<div class="g4-two"><section class="card"><div class="card-body"><h2 class="h3">' + G4.ico('trash') + 'O que será apagado</h2><ul class="g4-list-plain"><li>Seu cadastro: nome, e-mail, telefone e data de nascimento.</li><li>Suas preferências e consentimentos.</li>' + (!isPersonal && r === 'aluno' ? '<li>Seus dados de saúde e registros de treino: apagados.</li>' : '') + '<li>Seu acesso ao aura-fit.</li></ul></div></section>' +
+      '<section class="card"><div class="card-body"><h2 class="h3">' + G4.ico('lock') + 'O que fica guardado por lei</h2><ul class="g4-list-plain"><li>Notas fiscais e dados de cobrança: por 5 anos, só para obrigação fiscal.</li><li>Registros de acesso e uma linha no histórico dizendo que a conta foi excluída: por 6 meses.</li></ul><p class="muted mt-2">Esses dados não são usados para mais nada.</p></div></section></div>' +
+      '<section class="card"><div class="card-body stack-sm"><h2 class="h3">' + G4.ico('calendar') + 'Você pode desistir por ' + DAYS + ' dias</h2><p>Durante esse prazo sua conta fica parada: sem acesso e sem e-mails. A exclusão fica agendada para ' + A.fmtDate(until) + '. Até lá, é só entrar e tocar em Desistir da exclusão.</p></div></section>' +
+      '<section class="alert alert-info"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg><div class="alert-body"><div class="alert-title">Quer uma cópia antes?</div>Baixe seus dados em Privacidade. Depois da exclusão não dá para recuperar.</div><a class="btn btn-secondary" href="' + G4.esc(G4.url('privacidade.html') + '#baixar') + '">Baixar meus dados</a></section>' +
+      '<div class="row"><a class="btn btn-neutral" href="' + G4.esc(G4.url('privacidade.html')) + '">Voltar sem excluir</a>' +
+      (lastAdmin ? '<button type="button" class="btn btn-danger" disabled aria-describedby="why">Continuar</button><span class="muted" id="why">Indisponível: você é a única pessoa administradora.</span>' : '<button type="button" class="btn btn-danger" id="b-next">Continuar</button>') + '</div></div>';
+  }
+  function step2() {
+    return '<form id="f" novalidate class="stack-lg">' + steps(2) +
+      '<div class="alert alert-warning"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div class="alert-body"><div class="alert-title">Passo 2 de 3: confirmar</div>Se você confirmar, agendamos a exclusão. Você poderá desistir até ' + A.fmtDate(until) + '.</div></div>' +
+      '<fieldset class="field"><legend class="field-label">Quando excluir</legend><label class="check"><input type="radio" name="quando" value="later" checked><span class="check-text">Em ' + DAYS + ' dias, e eu posso desistir antes<small>Recomendado.</small></span></label><label class="check"><input type="radio" name="quando" value="now"><span class="check-text">Agora, sem prazo para desistir<small>Não dá para voltar atrás.</small></span></label></fieldset>' +
+      '<div class="field"><label for="senha">Digite sua senha para confirmar</label><div class="input-group"><input class="input" id="senha" type="password" autocomplete="current-password" aria-describedby="senha-h"><button type="button" class="input-affix" data-toggle-password aria-controls="senha" aria-pressed="false" aria-label="Mostrar senha"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg></button></div><span class="field-help" id="senha-h">Só para confirmar que é você. Não guardamos o que você digita aqui.</span></div>' +
+      '<div class="field"><label class="check"><input type="checkbox" id="ok"><span class="check-text">Entendi o que será apagado e o que fica guardado por lei.</span></label></div>' +
+      '<div class="row"><button type="button" class="btn btn-neutral" id="b-back">Voltar</button><button type="submit" class="btn btn-danger">Agendar exclusão</button></div></form>';
+  }
+  function step3() {
+    return '<div class="stack-lg">' + steps(3) +
+      '<div class="alert alert-success" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><div class="alert-body"><div class="alert-title">Exclusão agendada para ' + A.fmtDate(until) + '</div>Até lá você pode desistir. Enviamos um e-mail de confirmação para <strong>' + G4.esc(me.emailMasked) + '</strong>. Neste celular ou computador, você vai sair da conta.</div></div>' +
+      (when === 'now' ? '' : '<section class="card"><div class="card-body stack"><h2 class="h3">Mudou de ideia?</h2><p>Entre de novo na sua conta e toque em <strong>Desistir da exclusão</strong>. Tudo continua como estava.</p><div class="row"><button type="button" class="btn btn-primary" id="b-undo">Desistir da exclusão</button><a class="btn btn-neutral" href="../auth/login.html">Sair agora</a></div></div></section>') + '</div>';
+  }
+  function undone() {
+    return '<div class="stack-lg"><div class="alert alert-success" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><div class="alert-body"><div class="alert-title">Exclusão cancelada</div>Sua conta continua como estava. Nenhum dado foi apagado.</div></div><div><a class="btn btn-primary" href="' + G4.esc(G4.url('privacidade.html')) + '">Voltar para Privacidade</a></div></div>';
+  }
+  function show(n) {
+    step = n; var el = document.getElementById('area');
+    el.innerHTML = n === 1 ? step1() : n === 2 ? step2() : n === 'undone' ? undone() : step3();
+    var sub = document.getElementById('sub');
+    sub.textContent = n === 3 ? 'Seu pedido foi registrado.' : n === 'undone' ? 'Está tudo certo.' : 'Por padrão, nada é apagado na hora: você tem tempo para pensar.';
+    wire(); var h = document.getElementById('h1'); h.setAttribute('tabindex', '-1'); if (n !== 1 || window.__started) h.focus(); window.__started = true;
+  }
+  function wire() {
+    var nx = document.getElementById('b-next'); if (nx) nx.addEventListener('click', function () { show(2); });
+    var bk = document.getElementById('b-back'); if (bk) bk.addEventListener('click', function () { show(1); });
+    var u = document.getElementById('b-undo'); if (u) u.addEventListener('click', function () { show('undone'); AuraUI.toast('Exclusão cancelada. Sua conta continua como estava.', { tone: 'success' }); });
+    var f = document.getElementById('f');
+    if (f) f.addEventListener('submit', function (e) {
+      e.preventDefault(); var s = document.getElementById('senha'), ok = document.getElementById('ok');
+      AuraUI.clearError(s); AuraUI.clearError(ok);
+      if (!s.value) AuraUI.setError(s, 'Digite sua senha para confirmar.');
+      if (!ok.checked) AuraUI.setError(ok, 'Marque a caixa para confirmar que você entendeu.');
+      if (!AuraUI.focusFirstError(f)) { when = f.elements.quando.value; show(3); AuraUI.toast(when === 'now' ? 'Conta excluída.' : 'Exclusão agendada para ' + A.fmtDate(until) + '.', { tone: 'success' }); }
+    });
+  }
+  G4.ready(function () {
+    var s = AuraState.get();
+    // vazio nao se aplica; sucesso mostra o resultado (exclusao agendada)
+    if (s === 'success') step = 3;
+    AuraState.render('#area', s === 'empty' ? 'default' : s === 'success' ? 'default' : s, { rows: 4, title: 'Não conseguimos agendar a exclusão', renderDefault: function () { show(step); } });
+  });
+</script>
+</body>
+</html>

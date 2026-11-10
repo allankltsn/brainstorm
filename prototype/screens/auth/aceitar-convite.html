@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUTH-03 · Aceitar convite · aura-fit</title>
+  <meta name="aura-screen" content="AUTH-03">
+  <meta name="aura-variants" content="expirado,ja-usado,revogado,ja-tem-conta,menor-de-idade,sem-link">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g1.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g1.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body class="g1">
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<div class="g1-split">
+  <aside class="g1-brand" aria-label="Sobre o aura-fit">
+    <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+    <div>
+      <p class="g1-claim">Mais que treinos. Resultados reais.</p>
+      <p class="g1-claim-sub">O espaço do personal para cuidar dos alunos, dos treinos e das cobranças.</p>
+      <ul class="g1-points">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg>Convite seguro para cada aluno</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Seus dados protegidos, como manda a LGPD</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-refresh"/></svg>Cancele a assinatura quando quiser</li>
+      </ul>
+    </div>
+    <p class="caption">Só para teste. Os dados são fictícios.</p>
+  </aside>
+  <div class="g1-pane">
+    <header class="g1-top">
+      <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+      <button type="button" class="g1-iconbtn" data-g1-theme aria-label="Mudar tema"></button>
+    </header>
+    <main id="conteudo" tabindex="-1" class="g1-main" data-state="default">
+      <div class="g1-card g1-card-wide">
+        <div id="g1-state" data-when="loading error"></div>
+        <div class="stack-lg" data-when="default empty">
+
+          <!-- convite sem link: pede o codigo -->
+          <div class="stack-lg" data-v="sem-link" hidden>
+            <div class="g1-head"><h1>Tenho um convite</h1><p class="muted">Digite o código que seu personal enviou por e-mail ou mensagem.</p></div>
+            <form id="form-codigo" class="stack" novalidate>
+              <div class="field"><label for="codigo">Código do convite</label><input class="input" type="text" id="codigo" name="codigo" autocomplete="off" aria-required="true" aria-describedby="codigo-ajuda"><p class="field-help" id="codigo-ajuda">Está no e-mail ou na mensagem do seu personal. Exemplo: AURA-7K2M.</p></div>
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Continuar</button>
+            </form>
+            <div class="g1-foot-links is-flat"><a class="g1-link" href="login.html">Voltar para o login</a></div>
+          </div>
+
+          <!-- convite que nao vale mais -->
+          <div class="g1-statecard" data-v="expirado" hidden>
+            <span class="g1-bigicon is-warning"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg></span>
+            <h1>Este convite expirou</h1>
+            <p>Os convites valem por 7 dias.</p>
+            <p><strong>Peça um novo convite ao seu personal.</strong></p>
+            <a class="btn btn-secondary btn-block" href="login.html">Já tenho conta: entrar</a>
+          </div>
+          <div class="g1-statecard" data-v="ja-usado" hidden>
+            <span class="g1-bigicon is-info"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg></span>
+            <h1>Este convite já foi usado</h1>
+            <p>Cada convite cria uma conta só. Se foi você, é só entrar.</p>
+            <p><strong>Peça um novo convite ao seu personal</strong> se não foi você.</p>
+            <a class="btn btn-primary btn-block" href="login.html">Entrar</a>
+          </div>
+          <div class="g1-statecard" data-v="revogado" hidden>
+            <span class="g1-bigicon is-warning"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ban"/></svg></span>
+            <h1>Este convite foi cancelado</h1>
+            <p>Quem convidou você cancelou este convite.</p>
+            <p><strong>Peça um novo convite ao seu personal.</strong></p>
+            <a class="btn btn-secondary btn-block" href="login.html">Já tenho conta: entrar</a>
+          </div>
+          <div class="g1-statecard" data-v="ja-tem-conta" hidden>
+            <span class="g1-bigicon is-info"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-user"/></svg></span>
+            <h1>Você já tem conta</h1>
+            <p>Entre para aceitar o convite. Você não precisa criar outra senha.</p>
+            <a class="btn btn-primary btn-block" id="entrar-convite" href="login.html">Entrar para aceitar o convite</a>
+          </div>
+
+          <!-- cadastro -->
+          <div class="stack-lg" id="bloco-cadastro" data-vnot="expirado ja-usado revogado ja-tem-conta sem-link">
+            <div class="g1-head"><h1>Crie sua conta</h1></div>
+            <div class="g1-invite">
+              <span class="avatar avatar-lg" id="conv-ini" aria-hidden="true">RM</span>
+              <div>
+                <p class="invite-title"><span id="conv-nome">Rafael Moreira</span> convidou você para treinar no aura-fit</p>
+                <p class="caption muted">Convite válido até <span id="conv-validade">20/10/2026</span></p>
+              </div>
+            </div>
+            <form id="form-conv" class="stack" novalidate>
+              <div class="field"><label for="email">E-mail do convite</label><input class="input" type="text" id="email" name="email" autocomplete="email" readonly aria-required="true" aria-describedby="email-ajuda"><p class="field-help" id="email-ajuda">Este é o e-mail em que você recebeu o convite. Não dá para trocar aqui.</p></div>
+              <div class="field"><label for="nome">Seu nome</label><input class="input" type="text" id="nome" name="nome" autocomplete="name" aria-required="true" aria-describedby="nome-ajuda"><p class="field-help" id="nome-ajuda">Veio do convite. Se estiver errado, corrija.</p></div>
+              <div class="stack-sm" id="nao-sou-eu"><button type="button" class="btn btn-text" id="btn-nao-sou-eu">Não sou eu</button><div class="alert alert-info" id="aviso-nao-sou-eu" role="status" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-info"/></svg><div class="alert-body">Tudo bem. Escreva o seu nome no campo acima. Depois, avise o seu personal que o convite veio com outro nome.</div></div></div>
+              <div class="field"><label for="nasc">Data de nascimento</label><input class="input" type="text" id="nasc" name="nasc" autocomplete="bday" inputmode="numeric" placeholder="dd/mm/aaaa" aria-required="true" aria-describedby="nasc-ajuda"><p class="field-help" id="nasc-ajuda">dd/mm/aaaa, ex.: 14/03/1962. Usamos só para saber se precisa de responsável. Não pedimos peso nem dados de saúde agora.</p></div>
+
+              <fieldset class="field stack g1-fieldset" id="bloco-resp" hidden>
+                <legend class="field-label">Autorização do responsável</legend>
+                <div class="alert alert-info" role="status"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-info"/></svg><div class="alert-body">Você tem menos de 18 anos. Sua conta fica em espera até o responsável autorizar. Vamos enviar um pedido para o e-mail dele ou dela. Usamos esses dados só para isso e apagamos quando ele responder ou o pedido expirar.</div></div>
+                <div class="field"><label for="resp-nome">Nome do responsável</label><input class="input" type="text" id="resp-nome" name="resp-nome" autocomplete="off" aria-required="true"></div>
+                <div class="field"><label for="resp-email">E-mail do responsável</label><input class="input" type="email" id="resp-email" name="resp-email" autocomplete="off" inputmode="email" aria-required="true"></div>
+              </fieldset>
+
+              <div class="field"><label for="senha">Crie uma senha</label><div class="input-group"><input class="input" type="password" id="senha" name="senha" autocomplete="new-password" aria-required="true" aria-describedby="senha-ajuda"><button type="button" class="input-affix" data-toggle-password aria-controls="senha" aria-label="Mostrar senha" aria-pressed="false"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-eye"/></svg></button></div><p class="field-help" id="senha-ajuda">Mínimo de 8 caracteres. Misture letras e números.</p></div>
+              <div class="field"><label for="confirma">Repita a senha</label><div class="input-group"><input class="input" type="password" id="confirma" name="confirma" autocomplete="new-password" aria-required="true"><button type="button" class="input-affix" data-toggle-password aria-controls="confirma" aria-label="Mostrar senha" aria-pressed="false"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-eye"/></svg></button></div></div>
+              <div class="field">
+        <label class="check"><input type="checkbox" id="aceite" name="aceite" aria-required="true" aria-describedby="aceite-ajuda"><span class="check-text">Li e aceito os Termos de uso e a Política de privacidade.</span></label>
+        <div class="field-help" id="aceite-ajuda">Atualizados em <span data-g1="updatedAt">30/09/2026</span>. Leia antes de aceitar. Cada link abre em uma nova aba:<div class="g1-doclinks">
+          <a href="../legal/termos.html" target="_blank" rel="noopener">Termos de uso<svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (abre em nova aba)</span></a>
+          <a href="../legal/privacidade.html" target="_blank" rel="noopener">Política de privacidade<svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (abre em nova aba)</span></a></div></div>
+      </div>
+              <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-criar">Criar minha conta</button>
+            </form>
+            <div class="g1-foot-links is-flat"><p class="muted">Já tem conta?</p><a class="g1-link" href="login.html">Entrar</a></div>
+          </div>
+        </div>
+        <div data-when="success" class="stack-lg">
+          <div class="alert alert-success" role="status"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg><div class="alert-body"><div class="alert-title">Conta criada</div>Falta só confirmar seu e-mail para liberar o acesso.</div></div>
+          <a class="btn btn-primary btn-lg btn-block" href="verificar-email.html?perfil=aluno">Confirmar meu e-mail</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="../../assets/grupo-g1.js"></script>
+<script>
+(function () {
+  var A = window.AURA, G = window.AURA_G1, inv = A.invites[0], pers = A.me.personal;
+  var f = document.getElementById('form-conv'), nasc = f.elements.nasc, bloco = document.getElementById('bloco-resp');
+  document.getElementById('conv-nome').textContent = A.me.personal.name;
+  document.getElementById('conv-ini').textContent = A.initials(A.me.personal.name);
+  document.getElementById('conv-validade').textContent = A.fmtDate(inv.expiresAt);
+  f.elements.email.value = A.maskEmail(G.convidado.email);
+  f.elements.nome.value = G.convidado.nome;
+  document.getElementById('btn-nao-sou-eu').addEventListener('click', function () { f.elements.nome.value = ''; AuraUI.clearError(f.elements.nome); document.getElementById('aviso-nao-sou-eu').hidden = false; document.getElementById('btn-nao-sou-eu').hidden = true; f.elements.nome.focus(); });
+  document.getElementById('entrar-convite').href = G1.withTheme('login.html?from=' + encodeURIComponent('home/aluno.html?role=aluno'));
+  G1.maskDate(nasc); G1.autoClear(f);
+
+  function minor() { var d = G1.parseDate(nasc.value); return !!d && G1.age(d) < 18; }
+  function syncMinor() { bloco.hidden = !minor(); }
+  nasc.addEventListener('input', syncMinor);
+  if (G1.v() === 'menor-de-idade') { nasc.value = G.convidado.nascimentoMenor; syncMinor(); }
+
+  var fc = document.getElementById('form-codigo');
+  if (fc) {
+    G1.autoClear(fc);
+    fc.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var c = fc.elements.codigo; AuraUI.clearError(c);
+      var v = c.value.trim().toLowerCase();
+      if (!v) { AuraUI.setError(c, 'Digite o código do convite.'); c.focus(); return; }
+      if (v === 'expirado' || v === 'ja-usado' || v === 'revogado') { G1.setVariant(v); return; }
+      G1.setVariant(''); document.getElementById('conteudo').focus();
+    });
+  }
+
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var E = AuraUI.setError, C = AuraUI.clearError;
+    ['nome', 'nasc', 'senha', 'confirma', 'resp-nome', 'resp-email', 'aceite'].forEach(function (n) { var el = document.getElementById(n); if (el) C(el); });
+    if (!f.elements.nome.value.trim()) E(f.elements.nome, 'Digite seu nome.');
+    var d = G1.parseDate(nasc.value);
+    if (!nasc.value.trim()) E(nasc, 'Digite sua data de nascimento.');
+    else if (!d) E(nasc, 'Digite a data assim: dia, mês e ano. Exemplo: 25/03/1962.');
+    syncMinor();
+    if (minor()) {
+      if (!f.elements['resp-nome'].value.trim()) E(f.elements['resp-nome'], 'Digite o nome do responsável.');
+      var re = f.elements['resp-email'].value.trim();
+      if (!re) E(f.elements['resp-email'], 'Digite o e-mail do responsável.');
+      else if (!G1.emailOk(re)) E(f.elements['resp-email'], 'Digite o e-mail completo, como nome@exemplo.com.br.');
+    }
+    var pe = G1.pwError(f.elements.senha.value); if (pe) E(f.elements.senha, pe);
+    if (f.elements.confirma.value !== f.elements.senha.value || !f.elements.confirma.value) E(f.elements.confirma, 'As senhas não são iguais. Digite a mesma senha nos dois campos.');
+    if (!f.elements.aceite.checked) E(f.elements.aceite, 'Para criar a conta, marque que leu e aceita os Termos e a Política de privacidade.');
+    if (G1.firstErrorFocus(f)) return;
+    var btn = document.getElementById('btn-criar'); G1.busy(btn, true, 'Criando sua conta…');
+    var m = minor();
+    window.AuraSession.setName(f.elements.nome.value, 'aluno');
+    setTimeout(function () { G1.go('verificar-email.html?perfil=aluno&email=' + encodeURIComponent(A.maskEmail(G.convidado.email)) + (m ? '&menor=1' : '')); }, 700);
+  });
+})();
+</script>
+</body>
+</html>

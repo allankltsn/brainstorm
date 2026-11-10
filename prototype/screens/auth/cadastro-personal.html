@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUTH-02 · Cadastro de personal · aura-fit</title>
+  <meta name="aura-screen" content="AUTH-02">
+  <meta name="aura-variants" content="email-em-uso,senha-fraca,senhas-diferentes">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g1.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g1.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body class="g1">
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<div class="g1-split">
+  <aside class="g1-brand" aria-label="Sobre o aura-fit">
+    <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+    <div>
+      <p class="g1-claim">Mais que treinos. Resultados reais.</p>
+      <p class="g1-claim-sub">O espaço do personal para cuidar dos alunos, dos treinos e das cobranças.</p>
+      <ul class="g1-points">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg>Convite seguro para cada aluno</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Seus dados protegidos, como manda a LGPD</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-refresh"/></svg>Cancele a assinatura quando quiser</li>
+      </ul>
+    </div>
+    <p class="caption">Só para teste. Os dados são fictícios.</p>
+  </aside>
+  <div class="g1-pane">
+    <header class="g1-top">
+      <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+      <button type="button" class="g1-iconbtn" data-g1-theme aria-label="Mudar tema"></button>
+    </header>
+    <main id="conteudo" tabindex="-1" class="g1-main" data-state="default">
+      <div class="g1-card g1-card-wide">
+        <div id="g1-state" data-when="loading error"></div>
+        <div class="stack-lg" data-when="default empty">
+          <div class="stack-lg" data-v="email-em-uso" hidden>
+            <div class="g1-statecard">
+              <span class="g1-bigicon is-info"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg></span>
+              <h1>Pedido recebido</h1>
+              <p>Se este e-mail já tiver conta, enviamos instruções para ele.</p>
+              <p class="muted">Se ele for novo, enviamos o link para confirmar seu e-mail.</p>
+              <a class="btn btn-primary btn-lg btn-block" id="seguir" href="verificar-email.html?perfil=personal">Continuar</a>
+            </div>
+          </div>
+          <div class="stack-lg" data-vnot="email-em-uso">
+            <div class="g1-head">
+              <h1>Criar conta de personal</h1>
+              <p class="muted">Leva 2 minutos. Seus alunos entram por convite seu, depois.</p>
+            </div>
+            <form id="form-cad" class="stack" novalidate>
+              <div class="field"><label for="nome">Seu nome</label><input class="input" type="text" id="nome" name="nome" autocomplete="name" aria-required="true"></div>
+              <div class="field"><label for="email">E-mail</label><input class="input" type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="nome@exemplo.com.br" aria-required="true"></div>
+              <div class="field"><label for="tel">Telefone <span class="muted g1-opt">(opcional)</span></label><input class="input" type="tel" id="tel" name="tel" autocomplete="tel" inputmode="tel" aria-describedby="tel-ajuda"><p class="field-help" id="tel-ajuda">Para avisos da sua assinatura.</p></div>
+              <div class="field"><label for="senha">Crie uma senha</label><div class="input-group"><input class="input" type="password" id="senha" name="senha" autocomplete="new-password" aria-required="true" aria-describedby="senha-ajuda"><button type="button" class="input-affix" data-toggle-password aria-controls="senha" aria-label="Mostrar senha" aria-pressed="false"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-eye"/></svg></button></div><p class="field-help" id="senha-ajuda">Mínimo de 8 caracteres. Misture letras e números.</p></div>
+              <div class="field"><label for="confirma">Repita a senha</label><div class="input-group"><input class="input" type="password" id="confirma" name="confirma" autocomplete="new-password" aria-required="true"><button type="button" class="input-affix" data-toggle-password aria-controls="confirma" aria-label="Mostrar senha" aria-pressed="false"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-eye"/></svg></button></div></div>
+              <div class="field">
+        <label class="check"><input type="checkbox" id="aceite" name="aceite" aria-required="true" aria-describedby="aceite-ajuda"><span class="check-text">Li e aceito os Termos de uso e a Política de privacidade.</span></label>
+        <div class="field-help" id="aceite-ajuda">Atualizados em <span data-g1="updatedAt">30/09/2026</span>. Leia antes de aceitar. Cada link abre em uma nova aba:<div class="g1-doclinks">
+          <a href="../legal/termos.html" target="_blank" rel="noopener">Termos de uso<svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (abre em nova aba)</span></a>
+          <a href="../legal/privacidade.html" target="_blank" rel="noopener">Política de privacidade<svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (abre em nova aba)</span></a></div></div>
+      </div>
+              <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-criar">Criar conta</button>
+            </form>
+            <div class="g1-foot-links is-flat"><p class="muted">Já tem conta?</p><a class="g1-link" href="login.html">Entrar</a></div>
+          </div>
+        </div>
+        <div data-when="success" class="stack-lg">
+          <div class="alert alert-success" role="status"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg><div class="alert-body"><div class="alert-title">Conta criada</div>Falta só confirmar seu e-mail para liberar o acesso.</div></div>
+          <a class="btn btn-primary btn-lg btn-block" href="verificar-email.html?perfil=personal">Confirmar meu e-mail</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="../../assets/grupo-g1.js"></script>
+<script>
+(function () {
+  var f = document.getElementById('form-cad'), X = window.AURA_G1.exemplo, E = AuraUI.setError, C = AuraUI.clearError;
+  G1.autoClear(f);
+  function validate() {
+    ['nome', 'email', 'tel', 'senha', 'confirma', 'aceite'].forEach(function (n) { C(f.elements[n]); });
+    if (!f.elements.nome.value.trim()) E(f.elements.nome, 'Digite seu nome.');
+    var m = f.elements.email.value.trim();
+    if (!m) E(f.elements.email, 'Digite seu e-mail.'); else if (!G1.emailOk(m)) E(f.elements.email, 'Digite o e-mail completo, como nome@exemplo.com.br.');
+    var t = f.elements.tel.value.replace(/\D/g, '');
+    if (t && t.length < 10) E(f.elements.tel, 'Digite o telefone com DDD, ou deixe em branco.');
+    var pe = G1.pwError(f.elements.senha.value); if (pe) E(f.elements.senha, pe);
+    if (!f.elements.confirma.value || f.elements.confirma.value !== f.elements.senha.value) E(f.elements.confirma, 'As senhas não são iguais. Digite a mesma senha nos dois campos.');
+    if (!f.elements.aceite.checked) E(f.elements.aceite, 'Para criar a conta, marque que leu e aceita os Termos e a Política de privacidade.');
+    return !G1.firstErrorFocus(f);
+  }
+  function sample(a, b) { f.elements.nome.value = X.nome; f.elements.email.value = X.email; f.elements.senha.value = a; f.elements.confirma.value = b; }
+  var v = G1.v();
+  if (v === 'senha-fraca') { sample(X.senhaFraca, X.senhaFraca); f.elements.aceite.checked = false; validate(); }
+  if (v === 'senhas-diferentes') { sample(X.senhaOk, 'Treino#2025'); validate(); }
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validate()) return;
+    var btn = document.getElementById('btn-criar'), mail = f.elements.email.value.trim().toLowerCase();
+    G1.busy(btn, true, 'Criando conta…');
+    setTimeout(function () {
+      if (mail.indexOf('existente') > -1) { G1.busy(btn, false); document.getElementById('seguir').href = G1.withTheme('verificar-email.html?perfil=personal&email=' + encodeURIComponent(mail)); G1.setVariant('email-em-uso'); document.getElementById('conteudo').focus(); return; }
+      window.AuraSession.setName(f.elements.nome.value, 'personal');
+      window.AuraSession.signIn(mail, 'personal');
+      G1.go('verificar-email.html?perfil=personal&email=' + encodeURIComponent(mail));
+    }, 700);
+  });
+})();
+</script>
+</body>
+</html>

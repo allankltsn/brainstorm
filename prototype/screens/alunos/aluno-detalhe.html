@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRN-02 · Detalhe do aluno · aura-fit</title>
+  <meta name="aura-screen" content="TRN-02">
+  <meta name="aura-variants" content="padrao,sem-consentimento,revogado,pendente,menor-em-espera,menor-com-responsavel,nao-confirmado,pausado,encerrado,encerrando,presencial,vazio,offline,erro,sem-permissao">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <link rel="stylesheet" href="../../assets/grupo-g5.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g5.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g5.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div id="bc"></div>
+  <div id="area"></div>
+</main>
+<script>
+(function () {
+  G5.mount({ id: 'TRN-02', title: 'Detalhe do aluno' });
+  var A = window.AURA, D = window.G5DATA, V = G5.variant(), esc = G5.esc, ico = G5.ico;
+  var S = G5.studentFor();
+  if (!S) {
+    /* ?id inexistente: nenhum dado de aluno (QA-A-03) */
+    document.getElementById('bc').innerHTML = G5.breadcrumb([['Início', G5.url('../home/personal.html')], ['Alunos', G5.url('meus-alunos.html')], ['Aluno']]);
+    G4.ready(function () {
+      if (V === 'sem-permissao') document.getElementById('area').innerHTML = '<h1 class="sr-only">Aluno</h1>' + G5.accessDenied();
+      else G5.notFound('#area', 1);
+    });
+    return;
+  }
+  var stale = (V === 'nao-confirmado'), d = D.detail(S, { stale: stale });
+  if (V === 'vazio') { d.questionnaires = []; d.feedback = []; d.media = []; }
+  function gate() { return D.gate(S, { stale: stale }); }
+  var offline = (V === 'offline'), errAll = (V === 'erro'), fixed = {};
+  var TABS = [['resumo', 'Resumo'], ['treinos', 'Treinos'], ['execucoes', 'Execuções'], ['saude', 'Saúde'], ['questionarios', 'Questionários'], ['retorno', 'Retorno'], ['midia', 'Mídia']];
+  var cur = G5.q.aba || 'resumo';
+  var LIST = G5.url('meus-alunos.html');
+  var viewer = { isManager: false, isResponsible: true, isPrimary: true, canEnd: true };
+  document.getElementById('bc').innerHTML = G5.breadcrumb([['Início', G5.url('../home/personal.html')], ['Alunos', LIST], [V === 'sem-permissao' ? 'Aluno' : S.name]]);
+
+  function ageBlock() { return gate().reason === 'idade'; }
+  function ended() { return S.status === 'ENDED'; }
+  function planLine() { return S.hasPlan ? 'Plano de ' + G5.time(S.planStart) + ' a ' + G5.time(S.planEnd) : 'Sem plano de treino'; }
+  function readOnly() { return offline || S.status !== 'ACTIVE'; }
+  function whyReadOnly() { return offline ? 'Sem conexão. Tente quando estiver online.' : S.status === 'SUSPENDED' ? 'Vínculo pausado.' : 'Vínculo encerrado ou em encerramento.'; }
+  function healthOk() { return gate().ok; }
+  function hidden() { return G5.privCard(gate()); }
+  function tabError(key) {
+    return G5.alertBox('danger', 'Não foi possível carregar esta aba.', 'Seus dados estão seguros. Tente de novo em instantes.', '<button type="button" class="btn btn-secondary" data-retry-tab="' + key + '">' + ico('refresh') + 'Tentar de novo</button>');
+  }
+  function table(label, head, rows) {
+    return '<div class="table-wrap g5-wrap" role="region" aria-label="' + esc(label) + '" tabindex="0"><table class="table"><caption class="sr-only">' + esc(label) + '</caption><thead><tr>' + head.map(function (h) { return '<th scope="col">' + h + '</th>'; }).join('') + '</tr></thead><tbody>' + rows.join('') + '</tbody></table></div>';
+  }
+  function empty(icon, title, text) { return '<div class="empty-state"><div class="empty-state-icon">' + ico(icon) + '</div><h3 class="h3">' + esc(title) + '</h3><p>' + esc(text) + '</p></div>'; }
+
+  var KIND = { PAIN: 'Dor reportada', ABSENCE: 'Falta', CHECKIN_OVERDUE: 'Questionário atrasado' };
+  var ASTATUS = { OPEN: ['warning', 'alert', 'Aberto'], ACKNOWLEDGED: ['info', 'check', 'Visto'], RESOLVED: ['success', 'check-circle', 'Resolvido'] };
+  var SSTATUS = { COMPLETED: ['success', 'check-circle', 'Concluída'], SKIPPED: ['neutral', 'ban', 'Pulada'], ABANDONED: ['warning', 'alert', 'Abandonada'] };
+
+  function alertsHtml() {
+    var rows = d.alerts.map(function (a) {
+      var m = ASTATUS[a.status], dis = readOnly() ? ' disabled title="' + esc(whyReadOnly()) + '"' : '';
+      var gg = gate(), note = a.kind === 'PAIN' ? (gg.ok ? 'Os detalhes ficam na aba Saúde.' : (gg.reason === 'vinculo' || gg.reason === 'encerrado') ? 'Alerta de dor. Oculto enquanto o vínculo não está ativo.' : (gg.reason === 'nao-confirmado' ? 'Alerta de dor. Os detalhes ficam ocultos até confirmarmos a autorização do aluno.' : 'Alerta de dor. Os detalhes só aparecem com o consentimento de saúde do aluno.')) : '';
+      return '<div class="g5-alertrow"><div class="grow"><strong>' + KIND[a.kind] + '</strong><div class="muted">Em ' + G5.time(a.createdAt) + (note ? '. ' + esc(note) : '') + '</div></div>' + G5.badge(m[0], m[1], m[2]) +
+        (a.status === 'OPEN' ? '<button type="button" class="btn btn-secondary" data-al="ack" data-id="' + a.id + '"' + dis + '>Marcar como visto<span class="sr-only">: ' + KIND[a.kind] + '</span></button>' : '') +
+        (a.status !== 'RESOLVED' ? '<button type="button" class="btn btn-secondary" data-al="res" data-id="' + a.id + '"' + dis + '>Resolver<span class="sr-only">: ' + KIND[a.kind] + '</span></button>' : '') + '</div>';
+    });
+    return rows.length ? rows.join('') : '<p class="muted">Nenhum alerta aberto.</p>';
+  }
+  function resumo() {
+    var ok = healthOk(), r = d.responsibles;
+    var resp = r.length ? '<ul class="g4-list">' + r.map(function (x) { return '<li>' + G5.avatar(x.name) + '<span class="grow"><strong>' + esc(x.name) + '</strong><span>' + (x.isPrimary ? 'Responsável principal' : 'Responsável') + '</span></span></li>'; }).join('') + '</ul>' : '<p class="muted">Sem responsável. Os alertas vão para a fila do gestor.</p>';
+    var respCard = '<section class="card" aria-labelledby="r-r"><div class="card-header"><h3 class="card-title" id="r-r">Responsáveis</h3></div><div class="card-body">' + resp + '<a class="btn btn-text mt-2" href="' + esc(G5.url('aluno-acompanhamento.html', 'id=' + S.id)) + '">Abrir acompanhamento</a></div></section>';
+    var alertCard = '<section class="card g5-wide" aria-labelledby="r-a"><div class="card-header"><h3 class="card-title" id="r-a">Alertas abertos</h3></div><div class="card-body" id="alertas">' + alertsHtml() + '</div></section>';
+    var cards;
+    if (!ok) {
+      /* fora do portao: so metadado nao-saude (vinculo, periodo do plano) e cartao de privacidade; sem treino, sessao nem contagem */
+      var per = ended() ? '<p class="g5-bigline">' + G5.time(S.startedAt) + ' a ' + G5.time(S.endedAt) + '</p><p class="muted">Período do vínculo.</p>' : '<p class="g5-bigline">' + planLine() + '</p><p class="muted">Vínculo desde ' + G5.time(S.startedAt) + '.</p>';
+      cards = '<section class="card" aria-labelledby="r-p"><div class="card-header"><h3 class="card-title" id="r-p">' + (ended() ? 'Período do vínculo' : 'Plano') + '</h3></div><div class="card-body">' + per + '</div></section>' +
+        '<section class="card" aria-labelledby="r-o"><div class="card-header"><h3 class="card-title" id="r-o">Treino e sessões</h3></div><div class="card-body">' + hidden() + '</div></section>' + respCard + (ended() ? '' : alertCard);
+    } else {
+      var a = d.assignments[0], ls = d.sessions[0];
+      var treino = a ? '<p class="g5-bigline">' + esc(a.name) + '</p><p class="muted">De ' + G5.time(a.startDate) + ' a ' + G5.time(a.endDate) + '. ' + a.weekdays.join(', ') + '.</p>' +
+        '<div class="progress mt-4" role="progressbar" aria-label="Sessões da semana" aria-valuemin="0" aria-valuemax="' + a.weekPlanned + '" aria-valuenow="' + a.weekDone + '"><div class="progress-bar" style="--value:' + Math.round(a.weekDone / a.weekPlanned * 100) + '%"></div></div><p class="g5-hint mt-2">' + a.weekDone + ' de ' + a.weekPlanned + ' sessões da semana</p>' : '<p class="muted">Sem treino atribuído. Atribua um modelo ou monte um personalizado.</p>';
+      var ult = ls ? '<p class="g5-bigline">' + A.relDate(ls.date) + '</p><p>' + G5.badge(SSTATUS[ls.status][0], SSTATUS[ls.status][1], SSTATUS[ls.status][2]) + '</p><p class="muted">' + esc(ls.workoutName) + '</p>' : '<p class="muted">Nenhuma sessão registrada ainda.</p>';
+      cards = '<section class="card" aria-labelledby="r-t"><div class="card-header"><h3 class="card-title" id="r-t">Treino atual</h3></div><div class="card-body">' + treino + '</div></section>' +
+        '<section class="card" aria-labelledby="r-u"><div class="card-header"><h3 class="card-title" id="r-u">Última sessão</h3></div><div class="card-body">' + ult + '</div></section>' + respCard + alertCard;
+    }
+    return '<div class="stack">' + (S.followMode === 'PRESENCIAL' ? G5.alertBox('info', '', 'Registro presencial: você registra a sessão pelo aluno; ele vê que foi você.') : '') + '<div class="g5-cards">' + cards + '</div></div>';
+  }
+  function treinos() {
+    if (!healthOk()) return hidden();
+    var acts = '<div class="g5-actions-row mb-4">' + G5.soon('Atribuir treino', 'Em breve (TRN-23)') + G5.soon('Editar treino', 'Em breve (TRN-22)') + '</div>';
+    if (!d.assignments.length) return acts + empty('dumbbell', 'Sem treino atribuído.', 'Atribua um modelo ou monte um personalizado.');
+    var st = { ACTIVE: ['success', 'check-circle', 'Ativo'], PAUSED: ['warning', 'clock', 'Pausado'], ENDED: ['neutral', 'ban', 'Encerrado'] };
+    return acts + table('Treinos atribuídos', ['Treino', 'Período', 'Dias', 'Situação', 'Origem'], d.assignments.map(function (a) {
+      return '<tr><td class="cell-main">' + esc(a.name) + '</td><td data-label="Período">' + G5.time(a.startDate) + ' a ' + G5.time(a.endDate) + '</td><td data-label="Dias">' + a.weekdays.join(', ') + '</td><td data-label="Situação">' + G5.badge(st[a.status][0], st[a.status][1], st[a.status][2]) + '</td><td data-label="Origem">' + esc(a.source) + '</td></tr>';
+    }));
+  }
+  function execucoes() {
+    if (!healthOk()) return hidden();
+    if (!d.sessions.length) return empty('clock', 'Nenhuma sessão registrada ainda.', 'Quando o aluno treinar, as sessões aparecem aqui.');
+    return '<div class="stack">' + table('Sessões recentes', ['Data', 'Treino', 'Situação', 'Duração', 'Registro'], d.sessions.map(function (s) {
+      return '<tr><td class="cell-main">' + G5.time(s.date) + '</td><td data-label="Treino">' + esc(s.workoutName) + '</td><td data-label="Situação">' + G5.badge(SSTATUS[s.status][0], SSTATUS[s.status][1], SSTATUS[s.status][2]) + '</td><td data-label="Duração">' + (s.durationMin ? s.durationMin + ' min' : '<span class="muted">Sem duração</span>') + '</td><td data-label="Registro">' + (s.origin === 'PERSONAL_APP' ? 'Registrado por você' : 'Registrado pelo aluno') + '</td></tr>';
+    })) + '<div>' + G5.soon('Ver carga e esforço', 'Em breve (TRN-31)') + '</div></div>';
+  }
+  function saude() {
+    var o = { variant: errAll && !fixed.saude ? 'erro' : (stale && !fixed.saude ? 'nao-confirmado' : ''), mediaHref: G5.url('aluno-detalhe.html', 'id=' + S.id + '&aba=midia'), acompHref: G5.url('aluno-acompanhamento.html', 'id=' + S.id) };
+    return G5.healthPanel(S, o);
+  }
+  function questionarios() {
+    if (!healthOk()) return hidden();
+    var QS = { SUBMITTED: ['success', 'check-circle', 'Respondido'], PENDING: ['info', 'clock', 'Pendente'], OVERDUE: ['warning', 'alert', 'Atrasado'] };
+    if (!d.questionnaires.length) return empty('clipboard', 'Nenhum questionário enviado.', 'Os questionários enviados aparecem aqui.');
+    var ok = true;
+    return '<div class="stack"><div>' + G5.soon('Enviar questionário', 'Em breve (TRN-32)') + '</div>' + table('Questionários enviados', ['Modelo', 'Enviado em', 'Prazo', 'Situação', 'Respostas'], d.questionnaires.map(function (q) {
+      var resp = q.status !== 'SUBMITTED' ? '<span class="muted">Sem respostas</span>' : ok ? '<button type="button" class="btn btn-text" data-demo="Demonstração: as respostas abririam aqui.">Ver respostas<span class="sr-only"> de ' + esc(q.name) + '</span></button>' : '<span class="badge">' + ico('lock') + 'Respostas ocultas</span>';
+      return '<tr><td class="cell-main">' + esc(q.name) + '</td><td data-label="Enviado em">' + G5.time(q.sentAt) + '</td><td data-label="Prazo">' + G5.time(q.dueAt) + '</td><td data-label="Situação">' + G5.badge(QS[q.status][0], QS[q.status][1], QS[q.status][2]) + '</td><td data-label="Respostas">' + resp + '</td></tr>';
+    })) + '</div>';
+  }
+  function retorno() {
+    if (!healthOk()) return hidden();
+    if (!d.feedback.length) return empty('mail', 'Sem mensagens por enquanto.', 'O retorno do aluno sobre cada sessão aparece aqui.');
+    return '<div class="stack"><ul class="g5-chat">' + d.feedback.map(function (f) { return '<li><strong>' + esc(f.author) + '</strong><span>' + esc(f.text) + '</span><small>' + G5.time(f.at) + ' · ' + esc(f.reaction) + '</small></li>'; }).join('') + '</ul><div>' + G5.soon('Responder', 'Em breve (TRN-31)') + '</div></div>';
+  }
+  function midia() {
+    if (!healthOk()) return hidden();
+    var scopes = [['FOTOS', 'Fotos', 'foto'], ['VIDEO', 'Vídeos', 'video']];
+    return '<div class="stack">' + scopes.map(function (sc) {
+      var state = S.consents[sc[0]], items = d.media.filter(function (m) { return m.scope === sc[0]; });
+      var body;
+      if (state === 'REVOKED') body = G5.lock(sc[1] + ': revogado, mídia oculta', 'O aluno retirou a liberação. O que foi enviado antes fica guardado e oculto para você e para o gestor.');
+      else if (state !== 'GRANTED') body = G5.lock(sc[1] + ' não liberados', 'O aluno ainda não liberou ' + sc[1].toLowerCase() + '.');
+      else if (!items.length) body = '<p class="muted">Nenhuma mídia compartilhada.</p>';
+      else body = '<div class="g5-media-grid">' + items.map(function (m) {
+        return '<button type="button" class="g5-thumb" data-media="' + m.id + '">' + ico(m.kind === 'video' ? 'monitor' : 'user') + '<span>' + (m.kind === 'video' ? 'Vídeo' : 'Foto') + ' de ' + A.fmtDate(m.takenAt) + '</span></button>';
+      }).join('') + '</div>';
+      return '<section class="card" aria-labelledby="m-' + sc[0] + '"><div class="card-header"><h3 class="card-title" id="m-' + sc[0] + '">' + sc[1] + '</h3></div><div class="card-body">' + body + '</div></section>';
+    }).join('') + '</div>';
+  }
+  var PANELS = { resumo: resumo, treinos: treinos, execucoes: execucoes, saude: saude, questionarios: questionarios, retorno: retorno, midia: midia };
+  function panel(key) {
+    if (errAll && !fixed[key] && key !== 'saude') return tabError(key);
+    return PANELS[key]();
+  }
+
+  function head() {
+    var wd = S.status === 'ENDED' || S.status === 'ENDING' || offline;
+    var items = [];
+    if (S.status === 'SUSPENDED') items.push(['retomar', 'Retomar acompanhamento', offline]);
+    else items.push(['pausar', 'Pausar vínculo', S.status !== 'ACTIVE' || offline]);
+    items.push(['encerrar', 'Encerrar vínculo', wd]);
+    var badges = G5.linkBadge(S) + G5.modeBadge(S.followMode) + (S.awaiting === 'consent' ? G5.badge('warning', 'clock', 'Aguardando consentimento') : '') + (S.awaiting === 'age' ? G5.badge('warning', 'clock', 'Aguardando idade ou responsável') : '') + '<span class="muted">Desde ' + A.fmtDate(S.startedAt) + '</span>';
+    return '<div class="g5-head">' + G5.avatar(S.name, 'avatar-lg') + '<div class="g5-head-main"><h1>' + esc(S.name) + '</h1><div class="row">' + badges + '</div></div>' +
+      '<div class="g5-head-actions"><a class="btn btn-secondary" href="' + esc(G5.url('aluno-acompanhamento.html', 'id=' + S.id)) + '">Acompanhamento</a>' +
+      '<button type="button" class="btn btn-secondary" id="b-mais" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-mais">Mais ações' + ico('chevron-down') + '</button>' +
+      '<div class="g5-menu" id="menu-mais" role="menu" aria-label="Mais ações" hidden>' + items.map(function (it) {
+        return '<button type="button" role="menuitem" data-v="' + it[0] + '"' + (it[2] ? ' disabled' : '') + '>' + it[1] + G5.selo('V1') + '</button>';
+      }).join('') + '</div></div></div>';
+  }
+  function statusAlerts() {
+    var h = '';
+    if (offline) h += G5.offlineAlert();
+    if (ageBlock()) h += G5.alertBox('warning', '', 'Conta em espera: falta confirmar a idade ou o responsável legal. Nada de saúde é exibido.');
+    if (S.ageStatus === 'MINOR_WITH_GUARDIAN' && !ageBlock()) h += G5.alertBox('info', '', 'O consentimento deste aluno menor veio do responsável legal. [LEGAL] [MOCK] texto provisório.');
+    if (stale) h += G5.alertBox('warning', 'Não conseguimos confirmar a autorização do aluno agora.', 'Por segurança, os dados de saúde e de treino ficam ocultos até confirmar.');
+    if (S.status === 'SUSPENDED') h += G5.alertBox('info', '', 'Vínculo pausado desde ' + A.fmtDate(S.pausedAt || '2026-10-05') + '. O aluno não recebe novos treinos. Conteúdo de saúde e de treino fica oculto enquanto o vínculo não está ativo.');
+    if (S.status === 'ENDING') h += G5.alertBox('warning', 'Encerrando…', 'Encerramento em andamento. Dados de saúde e de treino já estão ocultos.', '<a class="btn btn-secondary" href="' + esc(G5.url('meus-alunos.html', 'aba=hist')) + '">Ver Histórico</a>');
+    if (S.status === 'ENDED') h += G5.alertBox('info', '', 'Vínculo encerrado em ' + A.fmtDate(S.endedAt) + '. Leitura limitada: você lê só o que disponibilizou ao aluno e os dados básicos de cadastro (LGPD). Saúde, treino e mídia do aluno ficam ocultos.');
+    return h ? '<div class="stack mb-4">' + h + '</div>' : '';
+  }
+
+  function render(el) {
+    el.innerHTML = head() + statusAlerts() + (ended() ? '' : G5.privacidade()) +
+      '<div class="g5-tabs-wrap"><div class="tabs" role="tablist" aria-label="Seções do aluno">' + TABS.map(function (t) {
+        return '<button type="button" class="tab" role="tab" id="tab-' + t[0] + '" aria-controls="pn-' + t[0] + '" aria-selected="' + (cur === t[0]) + '">' + t[1] + '</button>';
+      }).join('') + '</div>' + TABS.map(function (t) {
+        return '<div class="tab-panel" role="tabpanel" id="pn-' + t[0] + '" aria-labelledby="tab-' + t[0] + '" tabindex="0"><h2 class="sr-only">' + t[1] + '</h2><div id="body-' + t[0] + '">' + panel(t[0]) + '</div></div>';
+      }).join('') + '</div>';
+    AuraUI.initTabs(el);
+    G5.tabScroll(el);
+    el.querySelectorAll('[role="tab"]').forEach(function (tb) { tb.addEventListener('click', function () { cur = tb.id.replace('tab-', ''); try { var u = new URLSearchParams(location.search); u.set('aba', cur); history.replaceState(null, '', location.pathname + '?' + u.toString()); } catch (e) {} }); });
+    wireMenu(el);
+  }
+  function repaint(key) { var b = document.getElementById('body-' + key); if (b) b.innerHTML = panel(key); }
+  function wireMenu(el) {
+    var btn = el.querySelector('#b-mais'), menu = el.querySelector('#menu-mais');
+    function close(ret) { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); if (ret) btn.focus(); }
+    btn.addEventListener('click', function () { var open = menu.hidden; menu.hidden = !open; btn.setAttribute('aria-expanded', String(open)); if (open) { var f = menu.querySelector('button:not([disabled])'); if (f) f.focus(); } });
+    menu.addEventListener('keydown', function (e) {
+      var items = Array.prototype.slice.call(menu.querySelectorAll('button:not([disabled])')), i = items.indexOf(document.activeElement);
+      if (e.key === 'Escape') { e.stopPropagation(); close(true); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); (items[i + 1] || items[0]).focus(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); (items[i - 1] || items[items.length - 1]).focus(); }
+    });
+    document.addEventListener('click', function (e) { if (!menu.hidden && !menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)) close(false); });
+    menu.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-v]'); if (!b || b.disabled) return;
+      close(false);
+      G5.vinculoModal(b.dataset.v, { st: S, opener: btn, canEnd: viewer.canEnd, onDone: function (kind) { G5.applyVinculo(S, kind); d = D.detail(S, { stale: stale }); render(document.getElementById('area')); document.getElementById('b-mais').focus(); } });
+    });
+  }
+  function mediaViewer(m, opener) {
+    var w = document.createElement('div'); w.className = 'modal-backdrop'; w.hidden = true; w.dataset.autoremove = '1';
+    w.innerHTML = '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="mv-t"><div class="modal-header"><h2 class="modal-title" id="mv-t">' + (m.kind === 'video' ? 'Vídeo' : 'Foto') + ' de ' + A.fmtDate(m.takenAt) + '</h2></div>' +
+      '<div class="modal-body"><div class="g5-thumb" role="img" aria-label="' + esc(m.alt || (m.kind === 'video' ? 'Vídeo sem descrição' : 'Foto sem descrição')) + '">' + ico(m.kind === 'video' ? 'monitor' : 'user') + '<span>[MOCK] imagem de demonstração</span></div><p class="mt-4">' + esc(m.alt || (m.kind === 'video' ? 'Vídeo sem descrição' : 'Foto sem descrição')) + '</p></div>' +
+      '<div class="modal-footer"><button type="button" class="btn btn-secondary" data-close autofocus>Fechar</button></div></div>';
+    document.body.appendChild(w);
+    w.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) AuraUI.closeModal(w); });
+    AuraUI.openModal(w, opener);
+  }
+
+  document.getElementById('area').addEventListener('click', function (e) {
+    var t = e.target.closest('[data-al],[data-retry-tab],[data-g5-retry],[data-media],[data-demo]'); if (!t) return;
+    if (t.dataset.al) {
+      var a = d.alerts.filter(function (x) { return x.id === t.dataset.id; })[0], ack = t.dataset.al === 'ack';
+      AuraUI.confirm({ title: ack ? 'Marcar como visto?' : 'Resolver este alerta?', text: ack ? 'O alerta continua na lista, marcado como visto.' : 'O alerta sai da lista de abertos.', confirmLabel: ack ? 'Marcar como visto' : 'Resolver', cancelLabel: 'Voltar' }).then(function (ok) {
+        if (!ok) return; a.status = ack ? 'ACKNOWLEDGED' : 'RESOLVED'; document.getElementById('alertas').innerHTML = alertsHtml();
+        AuraUI.toast(ack ? 'Alerta marcado como visto.' : 'Alerta resolvido.', { tone: 'success' });
+      });
+    } else if (t.dataset.retryTab) { fixed[t.dataset.retryTab] = true; repaint(t.dataset.retryTab); }
+    else if ('g5Retry' in t.dataset) { fixed.saude = true; repaint('saude'); }
+    else if (t.dataset.media) { mediaViewer(d.media.filter(function (m) { return m.id === t.dataset.media; })[0], t); }
+    else if (t.dataset.demo) AuraUI.toast(t.dataset.demo, { tone: 'info' });
+  });
+  G4.ready(function () {
+    G5.showFlash();
+    if (V === 'sem-permissao') { document.getElementById('area').innerHTML = '<h1 class="sr-only">Aluno</h1>' + G5.accessDenied(); return; }
+    AuraState.render('#area', { rows: 5, icon: 'users', title: 'Não achamos este aluno', text: 'O endereço pode estar errado ou o vínculo não existe mais.', action: { label: 'Voltar para Meus alunos', href: LIST }, renderDefault: render });
+  });
+})();
+</script>
+</body>
+</html>

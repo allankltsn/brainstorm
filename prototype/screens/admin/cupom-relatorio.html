@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADM-10 · Relatório do cupom · aura-fit</title>
+  <meta name="aura-screen" content="ADM-10">
+  <meta name="aura-variants" content="sem-usos,periodo-customizado">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g3.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g3.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g3.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div id="bc"></div>
+  <div class="page-header">
+    <div>
+      <h1 id="titulo">Relatório do cupom</h1>
+      <p id="sub"></p>
+    </div>
+    <div class="page-actions" id="acoes"></div>
+  </div>
+  <div id="corpo"></div>
+</main>
+
+<script>
+(function () {
+  var A = window.AURA, G = window.G3, D = G.data, $ = function (i) { return document.getElementById(i); };
+  G.boot({ id: 'ADM-10', title: 'Relatório do cupom', shortTitle: 'Relatório do cupom', active: 'cupons' }, init);
+
+  function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+  function rng(seed) { var a = seed; return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function daysBetween(a, b) { var p = a.split('-'), q = b.split('-'); return Math.round((new Date(+q[0], +q[1] - 1, +q[2]) - new Date(+p[0], +p[1] - 1, +p[2])) / 86400000); }
+
+  // resgates: os reais de AURA.redemptions + fictícios até fechar o total de usos do cupom
+  function build(c) {
+    var list = A.redemptions.filter(function (r) { return r.couponId === c.id; }).map(function (r) { return { name: r.userName, planId: r.planId, cycle: r.cycle, date: r.date, discount: r.discountValue }; });
+    var need = Math.max(0, c.uses - list.length), r = rng(hash(c.id)), start = c.validFrom > G.dayShift(G.today, -89) ? c.validFrom : G.dayShift(G.today, -89), end = c.validUntil < G.today ? c.validUntil : G.today;
+    var span = Math.max(0, daysBetween(start, end));
+    if (start > end) need = 0;
+    for (var i = 0; i < need; i++) {
+      var plan = A.byId(A.plans, c.planIds[Math.floor(r() * c.planIds.length)]), cyc = r() < 0.7 ? 'mensal' : 'anual';
+      var base = cyc === 'anual' ? plan.prices.yearly : plan.prices.monthly;
+      var d = G.dayShift(start, Math.floor(Math.pow(r(), 0.7) * (span + 1)));
+      list.push({ name: D.namePool[(hash(c.id) + i) % D.namePool.length], planId: plan.id, cycle: cyc, date: d, discount: c.type === 'percentual' ? Math.round(base * c.value) / 100 : Math.min(c.value, base) });
+    }
+    return list.sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+  }
+
+  function init() {
+    var v = G.variant, id = G.q.id || (v === 'sem-usos' ? 'c7' : 'c1');
+    var c = G.coupon(id);
+    var cs = G.coupons();
+    var days = 30, from = '', to = '', custom = v === 'periodo-customizado';
+    if (custom) { from = '2026-10-01'; to = '2026-10-15'; }
+    $('bc').innerHTML = G.breadcrumb([['Início', G.href('../home/admin.html')], ['Cupons', G.href('cupons.html')], [c ? 'Relatório de ' + c.code : 'Cupom não encontrado']]);
+    if (!c) { $('titulo').textContent = 'Cupom não encontrado'; window.AuraState.render('#corpo', 'empty', { icon: 'tag', title: 'Não achamos esse cupom', text: 'O endereço pode estar errado ou o cupom não existe mais.', action: { label: 'Voltar para Cupons', href: G.href('cupons.html') } }); return; }
+    $('titulo').textContent = 'Relatório do cupom ' + c.code;
+    $('sub').innerHTML = window.AuraUI.modelBadge('Números de demonstração') + ' ' + G.discountText(c) + ' de desconto · ' + G.durationText(c).toLowerCase() + ' · planos: ' + c.planIds.map(G.planName).join(', ') + ' · vale até ' + A.fmtDate(c.validUntil) + ' ' + A.badge(G.couponStatus(c));
+    var all = build(c), shown = 10;
+    $('acoes').innerHTML = (G.can('coupons:manage') ? '<a class="btn btn-secondary" href="' + G.href('cupom-editar.html', { id: c.id }) + '">' + G.ico('edit') + 'Editar cupom</a>' : '') + '<button type="button" class="btn btn-primary" id="exportar">' + G.ico('download') + 'Exportar CSV</button>';
+
+    function range() {
+      if (days === 0) return { s: from, e: to };
+      return { s: G.dayShift(G.today, -(days - 1)), e: G.today };
+    }
+    function inRange() { var r = range(); return all.filter(function (x) { return x.date >= r.s && x.date <= r.e; }); }
+
+    function body(el) {
+      var r = range(), list = inRange(), n = list.length;
+      var periodBar = '<section class="card mb-4" aria-label="Período do relatório"><div class="card-body"><form class="row" id="per" novalidate><div class="field" style="min-width:200px"><label for="p-sel">Período</label><div class="select-wrap"><select class="select" id="p-sel"><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option><option value="0">Escolher datas</option></select></div></div>' +
+        '<div class="field" id="box-de"' + (days ? ' hidden' : '') + '><label for="p-de">De</label><input class="input" type="date" id="p-de" value="' + from + '"></div><div class="field" id="box-ate"' + (days ? ' hidden' : '') + '><label for="p-ate">Até</label><input class="input" type="date" id="p-ate" value="' + to + '"></div>' +
+        '<button type="submit" class="btn btn-secondary"' + (days ? ' hidden' : '') + ' id="p-ok" style="align-self:flex-end">Aplicar</button><div class="field" style="min-width:220px;margin-left:auto"><label for="p-cup">Ver outro cupom</label><div class="select-wrap"><select class="select" id="p-cup">' + cs.map(function (x) { return '<option value="' + x.id + '"' + (x.id === c.id ? ' selected' : '') + '>' + G.esc(x.code) + '</option>'; }).join('') + '</select></div></div></form><p class="field-error mt-2" id="per-erro" hidden></p></div></section>';
+      if (!all.length) {
+        el.innerHTML = periodBar.replace(/<section class="card mb-4"[\s\S]*<\/section>/, '') + '<div class="card"><div class="card-body"></div></div>';
+        window.AuraState.render(el.querySelector('.card-body'), 'empty', { icon: 'tag', title: 'Este cupom ainda não foi usado', text: G.couponStatus(c) === 'agendado' ? 'Ele começa a valer em ' + A.fmtDate(c.validFrom) + '. Quando alguém usar, os números aparecem aqui.' : 'Quando alguém usar o cupom, os números aparecem aqui.', action: { label: 'Voltar para Cupons', href: G.href('cupons.html') } });
+        $('exportar').setAttribute('aria-disabled', 'true'); return;
+      }
+      $('exportar').removeAttribute('aria-disabled');
+      var disc = list.reduce(function (a, x) { return a + x.discount; }, 0), conv = D.conversion[c.id] || 0;
+      var stats = '<div class="grid-4 mb-4"><div class="card stat"><span class="stat-label">Usos no período</span><span class="stat-value tabular">' + n + '</span><span class="muted caption">Total: ' + c.uses + ' de ' + c.maxUses + '</span></div>' +
+        '<div class="card stat"><span class="stat-label">Desconto concedido</span><span class="stat-value tabular">' + A.fmtBRL(disc) + '</span><span class="muted caption">Soma dos descontos do período</span></div>' +
+        '<div class="card stat"><span class="stat-label">Assinaturas geradas</span><span class="stat-value tabular">' + n + '</span><span class="muted caption">Cada uso vira uma assinatura</span></div>' +
+        '<div class="card stat"><span class="stat-label">Conversão</span><span class="stat-value tabular">' + conv + '%</span><span class="muted caption">De quem tentou usar o cupom, quantos pagaram</span></div></div>';
+      var series = [], dd = r.s, max = 0, peak = '', byDay = {};
+      list.forEach(function (x) { byDay[x.date] = (byDay[x.date] || { n: 0, d: 0 }); byDay[x.date].n++; byDay[x.date].d += x.discount; });
+      for (var i = 0, len = daysBetween(r.s, r.e) + 1; i < len; i++) { var day = G.dayShift(r.s, i), val = byDay[day] ? byDay[day].n : 0; series.push({ day: day, n: val }); if (val > max) { max = val; peak = day; } }
+      var bars = series.map(function (s) { return '<span class="' + (s.n ? '' : 'is-zero') + '" style="height:' + (s.n ? Math.max(6, Math.round(s.n / max * 100)) : 2) + '%"></span>'; }).join('');
+      var chart = '<section class="card mb-4" aria-labelledby="t-graf"><div class="card-header"><h2 class="card-title" id="t-graf">Usos por dia</h2><button type="button" class="btn btn-neutral" id="alt" aria-expanded="false" aria-controls="tab-alt">' + G.ico('clipboard') + 'Ver em tabela</button></div><div class="card-body">' +
+        '<div class="g3-bars" role="img" aria-label="Usos por dia de ' + A.fmtDate(r.s) + ' a ' + A.fmtDate(r.e) + '. Total de ' + n + ' usos. Dia com mais usos: ' + A.fmtDate(peak) + ', com ' + max + '. A tabela abaixo traz os mesmos números.">' + bars + '</div>' +
+        '<div class="g3-axis caption muted" aria-hidden="true"><span>' + A.fmtDate(r.s) + '</span><span>' + A.fmtDate(G.dayShift(r.s, Math.floor(series.length / 2))) + '</span><span>' + A.fmtDate(r.e) + '</span></div>' +
+        '<div id="tab-alt" hidden class="mt-4"><div class="table-wrap"><table class="table"><caption class="sr-only">Usos e descontos por dia (só dias com uso)</caption><thead><tr><th scope="col">Dia</th><th scope="col">Usos</th><th scope="col">Desconto</th></tr></thead><tbody>' +
+        series.filter(function (s) { return s.n; }).reverse().map(function (s) { return '<tr><td class="cell-main">' + A.fmtDate(s.day) + '</td><td data-label="Usos" class="tabular">' + s.n + '</td><td data-label="Desconto" class="tabular">' + A.fmtBRL(byDay[s.day].d) + '</td></tr>'; }).join('') + '</tbody></table></div></div></div></section>';
+      var byPlan = {}; list.forEach(function (x) { byPlan[x.planId] = (byPlan[x.planId] || 0) + 1; });
+      var plans = '<section class="card mb-4" aria-labelledby="t-plano"><div class="card-header"><h2 class="card-title" id="t-plano">Uso por plano</h2></div><div class="card-body stack">' +
+        Object.keys(byPlan).map(function (k) { var pc = Math.round(byPlan[k] / n * 100); return '<div class="g3-bar-row"><span class="body-medium">' + G.planName(k) + '</span><div class="progress" role="progressbar" aria-label="Usos do plano ' + G.planName(k) + '" aria-valuemin="0" aria-valuemax="' + n + '" aria-valuenow="' + byPlan[k] + '"><div class="progress-bar" style="--value:' + pc + '%"></div></div><span class="tabular">' + byPlan[k] + ' (' + pc + '%)</span></div>'; }).join('') + '</div></section>';
+      var redeem = '<section class="card" aria-labelledby="t-res"><div class="card-header"><h2 class="card-title" id="t-res">Quem usou</h2></div><div class="card-body"><p class="muted mb-4">Mostramos só o primeiro nome e a inicial do sobrenome, para proteger a privacidade.</p><div class="table-wrap"><table class="table"><caption class="sr-only">Resgates do cupom</caption><thead><tr><th scope="col">Pessoa</th><th scope="col">Plano</th><th scope="col">Cobrança</th><th scope="col">Data</th><th scope="col">Desconto</th></tr></thead><tbody>' +
+        list.slice(0, shown).map(function (x) { return '<tr><td class="cell-main">' + G.esc(x.name) + '</td><td data-label="Plano">' + G.planName(x.planId) + '</td><td data-label="Cobrança">' + (x.cycle === 'anual' ? 'Anual' : 'Mensal') + '</td><td data-label="Data">' + A.fmtDate(x.date) + '</td><td data-label="Desconto" class="tabular">' + A.fmtBRL(x.discount) + '</td></tr>'; }).join('') + '</tbody></table></div>' +
+        (list.length > shown ? '<p class="mt-4"><button type="button" class="btn btn-neutral" id="mais">Mostrar mais 10 (' + (list.length - shown) + ' restantes)</button></p>' : '') + '</div></section>';
+      el.innerHTML = periodBar + stats + chart + plans + redeem;
+    }
+
+    function draw() {
+      window.AuraState.render('#corpo', { rows: 5, icon: 'chart', title: 'Sem dados do cupom', text: 'Quando houver usos, os números aparecem aqui.', renderDefault: function (el) { body(el); wire(); } });
+    }
+    function wire() {
+      var sel = $('p-sel'); if (!sel) return;
+      sel.value = String(days);
+      sel.addEventListener('change', function () { days = +sel.value; if (days) { draw(); sel2(); } else { custom = true; $('box-de').hidden = false; $('box-ate').hidden = false; $('p-ok').hidden = false; $('p-de').focus(); } });
+      $('per').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var de = $('p-de'), ate = $('p-ate'), er = $('per-erro'); window.AuraUI.clearError(de); window.AuraUI.clearError(ate);
+        if (!de.value) window.AuraUI.setError(de, 'Escolha o dia inicial.');
+        if (!ate.value) window.AuraUI.setError(ate, 'Escolha o dia final.');
+        else if (de.value && ate.value < de.value) window.AuraUI.setError(ate, 'O dia final não pode ser antes do inicial.');
+        if (window.AuraUI.focusFirstError($('per'))) return;
+        from = de.value; to = ate.value; days = 0; draw(); sel2();
+      });
+      $('p-cup').addEventListener('change', function () { location.href = G.href('cupom-relatorio.html', { id: this.value }); });
+      var alt = $('alt'); if (alt) alt.addEventListener('click', function () { var o = alt.getAttribute('aria-expanded') === 'true'; alt.setAttribute('aria-expanded', String(!o)); $('tab-alt').hidden = o; alt.lastChild.textContent = o ? 'Ver em tabela' : 'Esconder tabela'; });
+      var mais = $('mais'); if (mais) mais.addEventListener('click', function () { shown += 10; var y = window.scrollY; draw(); window.scrollTo(0, y); var m = $('mais') || $('t-res'); if (m) { m.setAttribute('tabindex', m.id === 't-res' ? '-1' : '0'); m.focus(); } });
+    }
+    function sel2() { var s = $('p-sel'); if (s) s.focus(); }
+
+    $('exportar').addEventListener('click', function () {
+      if (this.getAttribute('aria-disabled') === 'true') return;
+      var list = inRange();
+      G.csvDownload('cupom-' + c.code + '.csv', [['Pessoa', 'Plano', 'Cobrança', 'Data', 'Desconto (R$)']].concat(list.map(function (x) { return [x.name, G.planName(x.planId), x.cycle, A.fmtDate(x.date), x.discount.toFixed(2).replace('.', ',')]; })));
+      G.addAudit('Exportou o relatório do cupom', c.code, 'CSV com ' + list.length + ' resgates (nomes abreviados).');
+      window.AuraUI.toast('Arquivo gerado com ' + list.length + ' resgates. A exportação ficou registrada no histórico.', { tone: 'success' });
+    });
+    document.addEventListener('aura:statechange', draw);
+    draw();
+  }
+})();
+</script>
+</body>
+</html>

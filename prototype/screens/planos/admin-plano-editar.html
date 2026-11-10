@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLN-08 · Editar plano (admin) · aura-fit</title>
+  <meta name="aura-screen" content="PLN-08">
+  <meta name="aura-variants" content="novo,com-assinantes,arquivar-com-assinantes">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g2.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g2.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g2.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Plano salvo.">
+  <div class="g2-wrap">
+    <nav aria-label="Você está em" class="mb-2"><ol class="breadcrumb">
+      <li><a id="bc-planos" href="admin-planos.html">Planos</a></li><li><span aria-current="page" id="bc-atual">Editar plano</span></li></ol></nav>
+    <div class="page-header"><div><h1 id="titulo">Editar plano</h1><p>Mude o que os personais veem e o que cada plano inclui.</p></div></div>
+    <div id="area"></div>
+  </div>
+</main>
+<script>
+(function () {
+  var A = window.AURA, G = window.G2, Q = G.Q;
+  var lastKey = null, saved = false, prevCycle = 'mensal', opened = false, lastData = null;
+  document.getElementById('bc-planos').href = G.url('admin-planos.html');
+
+  function target() {
+    var v = G.variant();
+    if (v === 'novo') return { id: null, plan: { id: '', name: '', tagline: '', status: 'rascunho', popular: false, limits: { students: 10, ai: 'nenhuma', aiMonthly: 0 }, prices: { monthly: null, yearly: null }, features: [], subscribers: 0 } };
+    var id = Q.plan || (v === 'com-assinantes' || v === 'arquivar-com-assinantes' ? 'pro' : 'equipes');
+    var p = G.planById(id);
+    if (p && v === 'arquivar-com-assinantes') { p = JSON.parse(JSON.stringify(p)); p.status = 'arquivado'; }
+    return { id: id, plan: p };
+  }
+  function num(v) { var s = String(v == null ? '' : v).trim().replace(/\./g, '').replace(',', '.'); if (s === '') return null; var n = Number(s); return isNaN(n) ? NaN : n; }
+  function fmtIn(v) { return v == null ? '' : String(v).replace('.', ','); }
+  function other(planId) { return A.plans.filter(function (p) { return p.popular && p.id !== planId; })[0] || null; }
+
+  function field(id, label, val, help, extra) {
+    return '<div class="field"><label for="' + id + '">' + label + '</label>' + (extra && extra.prefix ? '<div class="input-group"><span class="input-affix" style="pointer-events:none" aria-hidden="true">R$</span>' : '') +
+      '<input class="input" id="' + id + '" name="' + id + '" value="' + G.esc(val) + '"' + (extra && extra.mode ? ' inputmode="' + extra.mode + '"' : '') + (extra && extra.max ? ' maxlength="' + extra.max + '"' : '') + ' autocomplete="off" aria-describedby="' + id + '-h">' + (extra && extra.prefix ? '</div>' : '') +
+      '<span class="field-help" id="' + id + '-h">' + help + '</span></div>';
+  }
+
+  function build(el) {
+    var T = target(), p = T.plan;
+    if (!p) return window.AuraState.render(el, 'empty', { icon: 'credit-card', title: 'Plano não encontrado', text: 'Este plano não existe mais. Volte à lista de planos.', action: { label: 'Voltar aos planos', href: G.url('admin-planos.html'), icon: 'arrow-left' } });
+    var isNew = !T.id, subs = p.subscribers || 0, pop = other(p.id);
+    document.getElementById('titulo').textContent = isNew ? 'Novo plano' : 'Editar plano ' + p.name;
+    document.getElementById('bc-atual').textContent = isNew ? 'Novo plano' : 'Editar ' + p.name;
+    var unlimited = p.limits.students == null;
+    el.innerHTML =
+      '<div id="aviso-salvo"></div>' +
+      (subs > 0 ? '<div class="alert alert-info mb-4" role="status">' + G.ico('info') + '<div class="alert-body"><div class="alert-title">Este plano tem ' + subs + ' ' + (subs === 1 ? 'assinante' : 'assinantes') + '</div>Alterar o preço vale só para novas assinaturas. Quem já assina mantém o preço atual até trocar de plano.</div></div>' : '') +
+      '<div class="g2-admin-grid"><form id="f-plano" class="stack-lg" novalidate>' +
+      '<section class="card" aria-labelledby="c1"><div class="card-header"><h2 class="card-title" id="c1">Sobre o plano</h2></div><div class="card-body stack">' +
+      field('nome', 'Nome do plano <span class="field-required" aria-hidden="true">*</span>', p.name, 'Aparece no cartão do plano.', { max: 30 }) +
+      field('tagline', 'Descrição curta', p.tagline || '', 'Uma frase de até 60 letras. Ex.: Para quem está crescendo.', { max: 60 }) +
+      '</div></section>' +
+      '<section class="card" aria-labelledby="c2"><div class="card-header"><h2 class="card-title" id="c2">Preço</h2></div><div class="card-body stack"><div class="g2-form-grid">' +
+      field('monthly', 'Preço por mês', fmtIn(p.prices.monthly), 'Use vírgula. Grátis = 0.', { prefix: true, mode: 'decimal' }) +
+      field('yearly', 'Preço por ano', fmtIn(p.prices.yearly), 'Total cobrado uma vez por ano.', { prefix: true, mode: 'decimal' }) +
+      '</div><p class="g2-after" id="equiv" role="status" aria-live="polite"></p></div></section>' +
+      '<section class="card" aria-labelledby="c3"><div class="card-header"><h2 class="card-title" id="c3">Limites</h2></div><div class="card-body stack">' +
+      '<fieldset class="field"><legend class="field-label">Alunos ativos</legend>' +
+      '<label class="check"><input type="radio" name="alunos" value="limite"' + (unlimited ? '' : ' checked') + '><span class="check-text">Limitar a um número</span></label>' +
+      '<label class="check"><input type="radio" name="alunos" value="ilimitado"' + (unlimited ? ' checked' : '') + '><span class="check-text">Ilimitado</span></label></fieldset>' +
+      field('students', 'Máximo de alunos', unlimited ? '' : p.limits.students, 'Número inteiro, a partir de 1.', { mode: 'numeric' }) +
+      '<div class="g2-form-grid"><div class="field"><label for="ai">Inteligência artificial</label><div class="select-wrap"><select class="select" id="ai">' +
+      [['nenhuma', 'Sem IA'], ['limitada', 'IA limitada'], ['ampla', 'IA ampla']].map(function (o) { return '<option value="' + o[0] + '"' + (p.limits.ai === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div></div>' +
+      field('aiMonthly', 'Usos de IA por mês', p.limits.aiMonthly || 0, 'Cota mensal. Com "Sem IA", fica em 0.', { mode: 'numeric' }) + '</div>' +
+      '</div></section>' +
+      '<section class="card" aria-labelledby="c4"><div class="card-header"><h2 class="card-title" id="c4">Benefícios e situação</h2></div><div class="card-body stack">' +
+      '<div class="field"><label for="features">Benefícios</label><textarea class="textarea" id="features" aria-describedby="features-h">' + G.esc((p.features || []).join('\n')) + '</textarea><span class="field-help" id="features-h">Um benefício por linha. Comece com "Sem" para o que não está incluso.</span></div>' +
+      '<div class="field"><label for="status">Situação</label><div class="select-wrap"><select class="select" id="status" aria-describedby="status-h">' +
+      [['ativo', 'Ativo: aparece para os personais'], ['rascunho', 'Rascunho: só você vê'], ['arquivado', 'Arquivado: some para novas assinaturas']].map(function (o) { return '<option value="' + o[0] + '"' + (p.status === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div>' +
+      '<span class="field-help" id="status-h">Arquivar não cancela quem já assina.</span></div>' +
+      '<div class="field"><label class="switch"><input type="checkbox" role="switch" id="popular"' + (p.popular ? ' checked' : '') + ' aria-describedby="popular-h"><span class="switch-text">Mostrar o selo "Mais popular"</span></label>' +
+      '<span class="field-help" id="popular-h" aria-live="polite"></span></div>' +
+      '</div></section>' +
+      '<div class="row"><button type="submit" class="btn btn-primary btn-lg">Salvar plano</button><a class="btn btn-neutral btn-lg" href="' + G.esc(G.url('admin-planos.html')) + '">Cancelar</a></div></form>' +
+      '<aside class="g2-sticky stack" aria-labelledby="pv-t"><section class="card"><div class="card-header"><h2 class="card-title" id="pv-t">Prévia para o personal</h2></div><div class="card-body stack">' +
+      '<div class="segmented" role="radiogroup" aria-label="Prévia com cobrança"><label><input type="radio" name="pv-ciclo" value="mensal" ' + (prevCycle === 'mensal' ? 'checked' : '') + '><span>Mensal</span></label><label><input type="radio" name="pv-ciclo" value="anual" ' + (prevCycle === 'anual' ? 'checked' : '') + '><span>Anual</span></label></div>' +
+      '<p class="label">Tema claro</p><iframe class="g2-preview-frame" id="pv-light" title="Prévia do cartão no tema claro" src="_cartao-preview.html?theme=light"></iframe>' +
+      '<p class="label">Tema escuro</p><iframe class="g2-preview-frame" id="pv-dark" title="Prévia do cartão no tema escuro" src="_cartao-preview.html?theme=dark"></iframe>' +
+      '</div></section></aside></div>';
+
+    var f = document.getElementById('f-plano');
+    function g(id) { return document.getElementById(id); }
+    function data() {
+      var unl = f.elements.alunos.value === 'ilimitado';
+      return { name: g('nome').value.trim(), tagline: g('tagline').value.trim(), monthly: num(g('monthly').value), yearly: num(g('yearly').value), popular: g('popular').checked, cycle: prevCycle,
+        features: g('features').value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean), unlimited: unl, students: num(g('students').value), ai: g('ai').value, aiMonthly: num(g('aiMonthly').value), status: g('status').value };
+    }
+    function sendPreview() {
+      lastData = data();
+      var d = lastData, feats = d.features.slice();
+      var msg = { g2preview: { name: d.name || 'Novo plano', tagline: d.tagline, monthly: isNaN(d.monthly) ? null : d.monthly, yearly: isNaN(d.yearly) ? null : d.yearly, popular: d.popular, cycle: prevCycle, features: feats } };
+      ['pv-light', 'pv-dark'].forEach(function (id) { var fr = g(id); try { fr.contentWindow.postMessage(msg, '*'); } catch (e) {} });
+    }
+    function sync() {
+      var d = data(), eq = g('equiv');
+      if (d.monthly > 0 && d.yearly > 0) {
+        var meses = Math.round(d.yearly / d.monthly * 10) / 10, free = Math.round((d.monthly * 12 - d.yearly) / d.monthly * 10) / 10;
+        eq.textContent = 'Equivale a ' + String(meses).replace('.', ',') + ' meses do plano mensal e economiza ' + G.money(Math.max(0, d.monthly * 12 - d.yearly)) + ' por ano (' + G.money(d.yearly / 12) + ' por mês). O personal paga uma vez por ano.';
+      } else eq.textContent = 'Preencha os dois preços para ver o cálculo. Plano grátis: use 0.';
+      g('students').disabled = d.unlimited; g('aiMonthly').disabled = d.ai === 'nenhuma';
+      if (d.ai === 'nenhuma') g('aiMonthly').value = 0;
+      var h = g('popular-h'), po = other(p.id);
+      h.textContent = d.popular && po ? 'Ao salvar, o ' + po.name + ' deixa de ter o selo "Mais popular". Só um plano pode ter.' : 'Só um plano pode ter o selo.';
+    }
+    f.addEventListener('input', function () { sync(); sendPreview(); });
+    f.addEventListener('change', function () { sync(); sendPreview(); });
+    Array.prototype.forEach.call(el.querySelectorAll('input[name="pv-ciclo"]'), function (r) { r.addEventListener('change', function () { prevCycle = r.value; sendPreview(); }); });
+    window.addEventListener('message', function (e) { if (e.data && e.data.g2previewReady) sendPreview(); });
+    sync();
+
+    function validate() {
+      var d = data(), ok = true, ids = ['nome', 'monthly', 'yearly', 'students', 'aiMonthly'];
+      ids.forEach(function (i) { window.AuraUI.clearError(g(i)); });
+      if (!d.name) { window.AuraUI.setError(g('nome'), 'Dê um nome ao plano.'); }
+      var free = T.id === 'starter';
+      if (d.status === 'ativo' || d.monthly != null || d.yearly != null) {
+        if (isNaN(d.monthly) || d.monthly == null || (d.monthly <= 0 && !free)) window.AuraUI.setError(g('monthly'), free ? 'Digite 0 para plano grátis.' : 'Digite o preço por mês, como 49,90.');
+        if (isNaN(d.yearly) || d.yearly == null || (d.yearly <= 0 && !free)) window.AuraUI.setError(g('yearly'), free ? 'Digite 0 para plano grátis.' : 'Digite o preço por ano, como 499,00.');
+        else if (d.monthly > 0 && d.yearly > d.monthly * 12) window.AuraUI.setError(g('yearly'), 'O preço anual não pode ser maior que 12 mensalidades (' + G.money(d.monthly * 12) + ').');
+      }
+      if (!d.unlimited && (isNaN(d.students) || d.students == null || d.students < 1 || d.students % 1)) window.AuraUI.setError(g('students'), 'Digite um número inteiro de alunos, a partir de 1.');
+      if (d.ai !== 'nenhuma' && (isNaN(d.aiMonthly) || d.aiMonthly == null || d.aiMonthly < 0 || d.aiMonthly % 1)) window.AuraUI.setError(g('aiMonthly'), 'Digite a cota mensal de IA, como 50.');
+      return !window.AuraUI.focusFirstError(f);
+    }
+    function doSave() {
+      saved = true;
+      g('aviso-salvo').innerHTML = '<div class="alert alert-success mb-4" role="status">' + G.ico('check-circle') + '<div class="alert-body"><div class="alert-title">Plano salvo</div>As mudanças já valem para novas assinaturas. <a href="' + G.esc(G.url('admin-planos.html', { state: 'success' })) + '">Voltar para Planos</a></div></div>';
+      window.AuraUI.toast('Plano salvo.', { tone: 'success' });
+    }
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!validate()) return;
+      var d = data();
+      if (d.status === 'arquivado' && subs > 0) {
+        window.AuraUI.confirm({ title: 'Arquivar o plano ' + (d.name || p.name) + '?', text: 'Os ' + subs + ' assinantes atuais continuam com o plano e com a cobrança de hoje. Ele só deixa de aparecer para quem quer assinar.', confirmLabel: 'Arquivar plano' }).then(function (ok) { if (ok) doSave(); });
+        return;
+      }
+      doSave();
+    });
+    if (G.variant() === 'arquivar-com-assinantes' && !opened) { opened = true; setTimeout(function () { f.requestSubmit ? f.requestSubmit() : f.dispatchEvent(new Event('submit', { cancelable: true })); }, 50); }
+  }
+  function render() {
+    var key = G.variant() + '|' + (Q.plan || '');
+    if (key !== lastKey) { lastKey = key; opened = false; saved = false; }
+    var st = window.AuraState.get();
+    window.AuraState.render('#area', {
+      rows: 5, icon: 'credit-card', title: st === 'error' ? 'Não conseguimos carregar o plano' : 'Plano não encontrado',
+      text: st === 'error' ? 'Nada foi alterado. Tente de novo em instantes.' : 'Este plano não existe mais.',
+      action: { label: 'Voltar aos planos', href: G.url('admin-planos.html'), icon: 'arrow-left' },
+      renderDefault: build
+    });
+  }
+  G.boot({ id: 'PLN-08', name: 'Editar plano', role: 'admin', allowed: ['admin'], active: 'planos', render: render });
+})();
+</script>
+</body>
+</html>

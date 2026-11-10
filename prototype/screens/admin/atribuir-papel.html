@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADM-07 · Atribuir papel · aura-fit</title>
+  <meta name="aura-screen" content="ADM-07">
+  <meta name="aura-variants" content="ultimo-admin,adicionar-admin,usuario-bloqueado">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g3.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g3.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g3.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Papel atribuído e registrado no histórico.">
+  <div id="bc"></div>
+  <div class="page-header">
+    <div>
+      <h1 id="titulo">Pessoas com o papel</h1>
+      <p id="desc"></p>
+    </div>
+    <div class="field" style="min-width:220px">
+      <label for="troca">Ver outro papel</label>
+      <div class="select-wrap"><select class="select" id="troca"></select></div>
+    </div>
+  </div>
+
+  <div class="stack-lg">
+    <div id="alerta-ultimo"></div>
+    <section class="card" aria-labelledby="t-membros">
+      <div class="card-header"><h2 class="card-title" id="t-membros">Quem tem este papel</h2></div>
+      <div class="card-body" id="membros"></div>
+      <div class="card-footer" style="justify-content:space-between;align-items:center" data-when="default success">
+        <span class="page-info" id="pg-info" aria-live="polite"></span><div id="pg"></div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="t-add" data-when="default success">
+      <div class="card-header"><h2 class="card-title" id="t-add">Adicionar pessoa</h2></div>
+      <div class="card-body stack" id="add-corpo">
+        <div class="field">
+          <label for="busca">Buscar por nome ou e-mail completo</label>
+          <div class="input-icon-left"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input class="input" id="busca" type="search" autocomplete="off" aria-describedby="busca-h"></div>
+          <span class="field-help" id="busca-h">Mostramos até 6 resultados. Quem já tem o papel não aparece.</span>
+        </div>
+        <div id="resultados" aria-live="polite"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+(function () {
+  var A = window.AURA, G = window.G3, $ = function (i) { return document.getElementById(i); };
+  G.boot({ id: 'ADM-07', title: 'Atribuir papel', shortTitle: 'Atribuir papel', active: 'perfis-permissoes', manage: true }, init);
+  function init() {
+    var v = G.variant, role = G.q.papel || (v === 'ultimo-admin' || v === 'adicionar-admin' ? 'admin' : 'suporte'), page = 1, SIZE = 8;
+    if (!A.roleLabel[role]) role = 'suporte';
+    var rdef = A.byId(A.roles, 'role-' + role), rn = G.roleName(role);
+    $('bc').innerHTML = G.breadcrumb([['Início', G.href('../home/admin.html')], ['Papéis e permissões', G.href('perfis.html')], [rn]]);
+    $('titulo').textContent = 'Pessoas com o papel ' + rn;
+    $('desc').textContent = rdef.description;
+    $('troca').innerHTML = A.roles.map(function (r) { return '<option value="' + r.key + '"' + (r.key === role ? ' selected' : '') + '>' + G.esc(r.name) + '</option>'; }).join('');
+    $('troca').addEventListener('change', function () { location.href = G.href('atribuir-papel.html', { papel: this.value }); });
+    if (role === 'aluno') {
+      $('add-corpo').innerHTML = '<div class="alert alert-info">' + G.ico('info') + '<div class="alert-body"><div class="alert-title">Aluno só entra por convite do personal</div>Por regra da plataforma, não dá para dar o papel Aluno por aqui. O personal de cada aluno envia o convite.</div></div>';
+    }
+    if (G.q.usuario && role !== 'aluno') { var pu = G.user(G.q.usuario); if (pu) $('busca').value = pu.name; }
+    if (v === 'adicionar-admin') $('busca').value = 'Sofia Matos';
+    if (v === 'usuario-bloqueado') $('busca').value = 'Diego Rocha';
+
+    function members() {
+      var m = G.users().filter(function (u) { return u.roles.indexOf(role) !== -1; });
+      if (v === 'ultimo-admin' && role === 'admin') m = m.filter(function (u) { return u.id === 'u01'; });
+      return m;
+    }
+    function setRoles(id, list) { G.setUser(id, { roles: list }); }
+
+    function drawMembers() {
+      var all = members(), pages = Math.max(1, Math.ceil(all.length / SIZE)); if (page > pages) page = pages;
+      var slice = all.slice((page - 1) * SIZE, page * SIZE);
+      var lastNote = role === 'admin' && all.length && G.isLastAdmin(all[0]) && all.length === 1;
+      $('alerta-ultimo').innerHTML = lastNote ? '<div class="alert alert-warning" role="status">' + G.ico('lock') + '<div class="alert-body"><div class="alert-title">Só uma pessoa é administradora</div>Ela não pode ser removida do papel nem bloqueada. Antes, dê o papel Administrador a outra pessoa.</div></div>' : '';
+      G.region('#membros', {
+        rows: 4, icon: 'users', title: 'Ninguém tem este papel ainda', text: 'Use a busca abaixo para adicionar a primeira pessoa.',
+        renderDefault: function (el) {
+          if (!all.length) { window.AuraState.render(el, 'empty', { icon: 'users', title: 'Ninguém tem este papel ainda', text: 'Use a busca abaixo para adicionar a primeira pessoa.' }); return; }
+          el.innerHTML = '<div class="table-wrap"><table class="table"><caption class="sr-only">Pessoas com o papel ' + G.esc(rn) + '</caption><thead><tr><th scope="col">Nome</th><th scope="col">E-mail</th><th scope="col">Situação</th><th scope="col" class="col-actions"><span class="sr-only">Ações</span></th></tr></thead><tbody>' +
+            slice.map(function (u) {
+              var last = role === 'admin' && G.isLastAdmin(u);
+              return '<tr><td class="cell-main"><div class="cell-user"><span class="avatar avatar-sm" aria-hidden="true">' + u.initials + '</span><a class="body-medium" href="' + G.href('usuario-detalhe.html', { id: u.id }) + '">' + G.esc(u.name) + '</a></div></td><td data-label="E-mail">' + G.esc(u.emailMasked) + '</td><td data-label="Situação">' + A.badge(u.status) + '</td>' +
+                '<td class="col-actions" data-label="Ações"><div class="row" style="justify-content:flex-end;flex-wrap:wrap">' + (last ? '<span class="g3-lockline" id="ult-' + u.id + '">' + G.ico('lock', 'icon-sm') + 'Último administrador: não pode ser removido</span>' : '') +
+                '<button type="button" class="btn btn-neutral" data-rm="' + u.id + '"' + (last ? ' aria-disabled="true" aria-describedby="ult-' + u.id + '"' : '') + ' aria-label="Remover o papel ' + G.esc(rn) + ' de ' + G.esc(u.name) + '">' + G.ico('trash') + 'Remover</button></div></td></tr>';
+            }).join('') + '</tbody></table></div>';
+        }
+      });
+      $('pg-info').textContent = all.length ? 'Mostrando ' + ((page - 1) * SIZE + 1) + ' a ' + Math.min(page * SIZE, all.length) + ' de ' + all.length : '';
+      $('pg').innerHTML = G.pager(all.length, page, SIZE, 'Paginação das pessoas do papel');
+    }
+
+    function drawResults() {
+      if (role === 'aluno') return;
+      var t = $('busca').value.trim(), nt = G.norm(t), el = $('resultados');
+      if (!t) { el.innerHTML = '<p class="muted">Digite um nome para ver quem pode receber o papel.</p>'; return; }
+      var memberIds = G.users().filter(function (u) { return u.roles.indexOf(role) !== -1; }).map(function (u) { return u.id; });
+      var res = G.users().filter(function (u) {
+        if (memberIds.indexOf(u.id) !== -1) return false;
+        return t.indexOf('@') !== -1 ? u.email.toLowerCase() === t.toLowerCase() : G.norm(u.name).indexOf(nt) !== -1;
+      }).slice(0, 6);
+      if (!res.length) { el.innerHTML = '<p class="muted">Ninguém encontrado para "' + G.esc(t) + '". Quem já tem o papel não aparece aqui.</p>'; return; }
+      el.innerHTML = '<ul>' + res.map(function (u) {
+        var bl = u.status === 'bloqueado';
+        return '<li class="list-row"><span class="avatar avatar-sm" aria-hidden="true">' + u.initials + '</span><div class="grow"><div class="body-medium">' + G.esc(u.name) + '</div><small class="muted">' + G.esc(u.emailMasked) + ' · ' + u.roles.map(G.roleName).join(', ') + '</small>' +
+          (bl ? '<div class="alert alert-warning mt-2" id="bl-' + u.id + '">' + G.ico('ban') + '<div class="alert-body">Esta pessoa está bloqueada e não pode receber um papel. <a href="' + G.href('usuario-detalhe.html', { id: u.id }) + '">Reative o acesso antes</a>.</div></div>' : '') + '</div>' + A.badge(u.status) +
+          '<button type="button" class="btn btn-secondary" data-add="' + u.id + '"' + (bl ? ' aria-disabled="true" aria-describedby="bl-' + u.id + '"' : '') + ' aria-label="Adicionar ' + G.esc(u.name) + ' ao papel ' + G.esc(rn) + '">' + G.ico('plus') + 'Adicionar</button></li>';
+      }).join('') + '</ul>';
+    }
+
+    function add(id, opener) {
+      var u = G.user(id); if (!u || u.status === 'bloqueado') return;
+      function go() {
+        setRoles(id, u.roles.concat([role]));
+        G.addAudit('Deu o papel ' + rn, u.name, role === 'admin' ? 'Confirmação extra feita.' : '');
+        $('busca').value = ''; drawMembers(); drawResults();
+        window.AuraUI.toast(u.name + ' agora tem o papel ' + rn + '.', { tone: 'success' });
+        var h = $('t-membros'); h.setAttribute('tabindex', '-1'); h.focus();
+      }
+      if (role === 'admin') G.confirm({ title: 'Dar acesso total a ' + u.name + '?', text: 'O papel Administrador permite gerenciar usuários, papéis, planos e cupons. A ação fica registrada no histórico.', confirmLabel: 'Sim, adicionar como administrador' }).then(function (ok) { if (ok) go(); });
+      else go();
+    }
+    function remove(id) {
+      var u = G.user(id); if (!u) return;
+      if (role === 'admin' && G.isLastAdmin(u)) return;
+      var only = u.roles.length === 1;
+      G.confirm({ title: 'Remover o papel ' + rn + ' de ' + u.name + '?', text: only ? 'Este é o único papel da pessoa. Sem papel, ela perde o acesso até receber outro. Nada é apagado.' : 'A pessoa continua com os outros papéis. A ação fica registrada no histórico.', confirmLabel: 'Remover papel', danger: true }).then(function (ok) {
+        if (!ok) return;
+        setRoles(id, u.roles.filter(function (r) { return r !== role; }));
+        G.addAudit('Removeu o papel ' + rn, u.name, '');
+        drawMembers(); drawResults();
+        window.AuraUI.toast('Papel ' + rn + ' removido de ' + u.name + '.', { tone: 'warning' });
+        var h = $('t-membros'); h.setAttribute('tabindex', '-1'); h.focus();
+      });
+    }
+
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('[data-add]'), r = e.target.closest('[data-rm]'), p = e.target.closest('[data-page]');
+      if (a && a.getAttribute('aria-disabled') !== 'true') add(a.dataset.add, a);
+      if (r && r.getAttribute('aria-disabled') !== 'true') remove(r.dataset.rm);
+      if (p && p.getAttribute('aria-disabled') !== 'true') { page = +p.dataset.page; drawMembers(); var c = $('pg').querySelector('[aria-current="page"]'); if (c) c.focus(); }
+    });
+    $('busca').addEventListener('input', drawResults);
+    document.addEventListener('aura:statechange', function () { drawMembers(); });
+    drawMembers(); drawResults();
+    if (v === 'adicionar-admin') { var b = document.querySelector('[data-add]'); if (b) add(b.dataset.add, b); }
+  }
+})();
+</script>
+</body>
+</html>

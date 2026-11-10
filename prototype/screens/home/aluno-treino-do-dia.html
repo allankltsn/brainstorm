@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HOME-04 · Treino do dia · aura-fit</title>
+  <meta name="aura-screen" content="HOME-04">
+  <meta name="aura-variants" content="dia-de-descanso">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g4.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Treino atualizado pelo seu personal.">
+  <a class="g4-back" id="back" href="#"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Voltar ao início</a>
+  <div class="page-header" style="margin-top:var(--space-2);margin-bottom:var(--space-4)">
+    <div>
+      <h1>Treino de hoje</h1>
+      <p id="sub"></p>
+    </div>
+  </div>
+  <div class="alert alert-warning mb-4" id="saude" role="note">
+    <svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg>
+    <div class="alert-body"><div class="alert-title">Cuide de você</div><span id="saude-txt"></span></div>
+  </div>
+  <div class="alert alert-success mb-4" role="status" data-when="success">
+    <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+    <div class="alert-body"><div class="alert-title">Treino atualizado</div>Seu personal fez um ajuste. Confira os exercícios abaixo.</div>
+  </div>
+  <div id="area"></div>
+</main>
+<script>
+  G4.setDefaultRole('aluno');
+  G4.mount({ id: 'HOME-04', title: 'Treino do dia', active: 'treino' });
+  var A = window.AURA, T = A.alunoHome.todayWorkout, V = G4.variant();
+  document.getElementById('back').href = G4.url('aluno.html');
+  document.getElementById('saude-txt').textContent = A.healthNotice;
+  document.getElementById('sub').textContent = V === 'dia-de-descanso' ? 'Hoje não tem treino.' : T.name + ' · cerca de ' + T.durationMin + ' minutos';
+  function render(el) {
+    if (V === 'dia-de-descanso') {
+      el.innerHTML = '<div class="card"><div class="card-body stack"><h2>' + G4.ico('moon', 'icon-lg') + ' Hoje é dia de descanso</h2><p>Ele faz parte do treino. Seu próximo treino é o <strong>' + G4.esc(A.alunoHome.nextWorkout.name) + '</strong>, na segunda-feira.</p></div></div>';
+      return;
+    }
+    el.innerHTML = '<div class="stack">' +
+      '<div class="row-between"><p class="g4-meta"><span>' + G4.ico('clock') + T.durationMin + ' minutos</span><span>' + G4.ico('dumbbell') + T.exercises.length + ' exercícios</span></p></div>' +
+      '<ol class="stack">' + T.exercises.map(function (e, i) {
+        return '<li class="card g4-ex"><span class="g4-ex-n" aria-hidden="true">' + (i + 1) + '</span><div><h2 class="h3">' + G4.esc(e.name) + '</h2><dl><dt>Séries</dt><dd><strong>' + e.sets + '</strong> séries</dd><dt>Repetições</dt><dd><strong>' + G4.esc(e.reps) + '</strong> repetições</dd><dt>Descanso</dt><dd>descanso de <strong>' + e.restSec + ' s</strong></dd></dl></div></li>';
+      }).join('') + '</ol>' +
+      '<p class="muted">' + G4.esc(T.note) + '</p>' +
+      '<a class="btn btn-secondary btn-block" href="' + G4.esc(G4.url('aluno.html')) + '">Voltar ao início</a></div>';
+  }
+  G4.ready(function () {
+    AuraState.render('#area', { rows: 4, icon: 'dumbbell', title: 'Seu personal está preparando seu treino', text: 'Quando ele publicar, os exercícios aparecem aqui.', renderDefault: render });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIS-05 · Em breve · aura-fit</title>
+  <meta name="aura-screen" content="SIS-05">
+  <meta name="aura-variants" content="alunos,treinos,prescricao-ia,financeiro,relatorios,agenda">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g1.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g1.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-state="default">
+        <div id="g1-state" data-when="loading error"></div>
+  <div data-when="default empty success" class="g1-center">
+    <div class="card g1-card-wide"><div class="card-body">
+      <div class="g1-statecard">
+        <span class="g1-bigicon" id="mod-ico"></span>
+        <span class="badge badge-info"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>Em breve</span>
+        <h1 id="mod-titulo">Treinos</h1>
+        <p id="mod-frase">Aqui você vai montar e enviar os treinos dos seus alunos.</p>
+        <p class="muted">Este recurso ainda não está disponível. Não é um erro: ele chega nas próximas versões.</p>
+        <div class="g1-actions is-row"><a class="btn btn-primary btn-lg" id="voltar" href="../home/personal.html">Voltar para o início</a></div>
+      </div>
+    </div></div>
+  </div>
+</main>
+<script src="../../assets/grupo-g1.js"></script>
+<script>
+(function () {
+  var role = (['admin', 'personal', 'aluno'].indexOf(G1.q.role) > -1 ? G1.q.role : 'personal');
+  var H = window.AURA_G1.home, th = G1.q.theme ? '&theme=' + encodeURIComponent(G1.q.theme) : '';
+  var routes = { login: '../auth/login.html', inicio: H[role] + th, configuracoes: '../config/configuracoes.html?role=' + role + th, perfil: '../config/configuracoes.html?role=aluno' + th,
+    'minha-assinatura': '../config/assinatura.html?role=personal' + th, treino: '../home/aluno-treino-do-dia.html?role=aluno' + th, usuarios: '../admin/usuarios.html?role=admin' + th,
+    'perfis-permissoes': '../admin/perfis.html?role=admin' + th, planos: '../planos/admin-planos.html?role=admin' + th, cupons: '../admin/cupons.html?role=admin' + th };
+  AuraShell.mount({ role: role, active: '', title: 'Em breve', routes: routes });
+  document.addEventListener('DOMContentLoaded', function () { document.title = 'SIS-05 · Em breve · aura-fit'; });
+  document.addEventListener('DOMContentLoaded', function () {
+    var key = G1.q.modulo || G1.v() || 'treinos', M = window.AURA_G1.modulos[key] || window.AURA_G1.modulos.treinos;
+    document.getElementById('mod-titulo').textContent = M.titulo;
+    document.getElementById('mod-frase').textContent = M.frase;
+    document.getElementById('mod-ico').innerHTML = G1.ico(M.icone);
+    document.getElementById('voltar').href = G1.withTheme(H[role]);
+    document.title = 'SIS-05 · Em breve: ' + M.titulo + ' · aura-fit';
+  });
+})();
+</script>
+</body>
+</html>

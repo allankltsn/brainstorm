@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRN-32 · Modelo de questionário · aura-fit</title>
+  <meta name="aura-screen" content="TRN-32">
+  <meta name="aura-variants" content="modelo-sistema-leitura,modelo-copia-rascunho,modelo-publicado,erro-validacao,conflito,carregando,erro,offline,sem-permissao">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <link rel="stylesheet" href="../../assets/grupo-g5.css">
+  <link rel="stylesheet" href="../../assets/grupo-g6.css">
+  <link rel="stylesheet" href="../../assets/g7-acomp.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g5.js"></script>
+  <script src="../../assets/data-g6.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g5.js"></script>
+  <script src="../../assets/grupo-g6.js"></script>
+  <script src="../../assets/g7-core.js"></script>
+  <script src="../../assets/g7-quest.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div id="bc"></div>
+  <div class="page-header">
+    <div>
+      <h1 id="titulo">Modelo de questionário</h1>
+      <p id="sub"></p>
+    </div>
+  </div>
+  <div id="area"></div>
+</main>
+<script>
+  G7.mount({ id: 'TRN-32', title: 'Modelo de questionário', active: 'questionarios' });
+  document.getElementById('bc').innerHTML = G7.crumbs([['Questionários', G7.url('questionarios.html')], ['Modelo']]);
+  G7Q.modelo();
+</script>
+</body>
+</html>

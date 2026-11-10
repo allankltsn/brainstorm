@@ -1,0 +1,125 @@
+/* grupo-g5.css - classes exclusivas do G5 (training: Meus alunos). So var(--color-*). */
+
+/* selo "Requer API nova" e "Em breve" */
+.g5-selo { vertical-align: middle; margin-inline: var(--space-1); }
+.g5-soon { margin-left: var(--space-2); }
+.btn[disabled] .g5-soon { opacity: 1; }
+
+/* faixa de privacidade */
+.g5-privacy { border: 1px solid rgb(var(--color-info-text)); background: rgb(var(--color-info-bg)); border-radius: var(--radius-md); padding: 0 var(--space-4); }
+.g5-privacy > summary { display: flex; align-items: center; gap: var(--space-3); min-height: var(--target); cursor: pointer; list-style: none; font-weight: 500; flex-wrap: wrap; padding: var(--space-2) 0; }
+.g5-privacy > summary::-webkit-details-marker { display: none; }
+.g5-privacy > summary > .icon { color: rgb(var(--color-info-text)); flex: none; }
+.g5-privacy > summary > span:not(.g5-privacy-more) { flex: 1 1 220px; min-width: 0; }
+.g5-privacy-more { font-weight: 600; color: rgb(var(--color-accent-text)); text-decoration: underline; }
+.g5-privacy summary:focus-visible { outline: 2px solid rgb(var(--focus-color)); outline-offset: 2px; }
+.g5-privacy-body { padding: 0 0 var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+
+/* bloqueio por consentimento */
+.g5-lock { display: flex; gap: var(--space-4); align-items: flex-start; padding: var(--space-5); border: 1px solid rgb(var(--color-line-strong)); border-radius: var(--radius-lg); background: rgb(var(--color-surface-2)); }
+.g5-lock p { color: rgb(var(--color-muted)); margin-top: var(--space-1); }
+.g5-lock-icon { flex: none; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: rgb(var(--color-surface)); border: 1px solid rgb(var(--color-line-strong)); color: rgb(var(--color-ink)); }
+.g5-lock.is-warning { background: rgb(var(--color-warning-bg)); border-color: rgb(var(--color-warning-text)); }
+.g5-lock.is-warning p { color: rgb(var(--color-ink)); }
+
+/* saude: 1440 = painel de consentimento a esquerda (320) e blocos a direita; 768 = blocos em 2 colunas */
+.g5-health { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr); align-items: start; }
+.g5-health-grid { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 768px) { .g5-health-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g5-health-grid > :nth-child(n+3) { grid-column: 1 / -1; } }
+@media (min-width: 1280px) { .g5-health { grid-template-columns: 320px minmax(0, 1fr); } .g5-consent-panel { position: sticky; top: var(--space-4); } }
+.g5-consent-panel .g4-list > li { align-items: flex-start; }
+
+/* lista Meus alunos */
+.g5-filters { display: grid; gap: var(--space-3); grid-template-columns: minmax(0, 1fr); align-items: end; }
+@media (min-width: 640px) { .g5-filters { grid-template-columns: minmax(200px, 2fr) repeat(2, minmax(140px, 1fr)); } }
+.g5-sortsel { display: none; }
+@media (max-width: 639px) { .g5-sortsel { display: flex; } }
+.g5-count { min-height: 24px; }
+.g5-sortbtn { display: inline-flex; align-items: center; gap: 4px; font: inherit; font-weight: 600; color: inherit; min-height: 32px; padding: 0; text-align: left; }
+.g5-sortbtn:hover { color: rgb(var(--color-ink)); }
+.g5-sortbtn:focus-visible { outline: 2px solid rgb(var(--focus-color)); outline-offset: 2px; }
+.g5-wrap:focus-visible { outline: 2px solid rgb(var(--focus-color)); outline-offset: 2px; }
+.g5-name { font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+.g5-name a { display: inline-block; min-height: 24px; line-height: 24px; overflow-wrap: anywhere; }
+@media (max-width: 639px) { .g5-name a { display: inline-flex; align-items: center; min-height: 44px; } }
+.g5-head-main h1, .page-header h1, .page-header p, .modal-title, .breadcrumb [aria-current], .g4-list strong, .g5-bigline, .g5-resp strong, .cell-main { overflow-wrap: anywhere; }
+.modal-title { min-width: 0; flex: 1 1 0; }
+.g5-name small { display: block; font-weight: 400; }
+.table .cell-user { min-width: 180px; }
+@container (min-width: 640px) and (max-width: 899px) { .g5-col-sec { display: none; } }
+@container (max-width: 639px) { .g5-col-sec { display: flex; } .table .cell-user { min-width: 0; } }
+.table td .badge { white-space: normal; }
+.g5-section-title { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-3); }
+.g5-actions-row { display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center; }
+.g5-hint { font-size: 13px; line-height: 20px; color: rgb(var(--color-muted)); }
+.g5-more { text-align: center; margin-top: var(--space-4); }
+.g5-limit-note { margin-top: var(--space-2); }
+
+/* detalhe */
+.g5-head { display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap; margin-bottom: var(--space-4); }
+.g5-head-main { flex: 1 1 260px; min-width: 0; }
+.g5-head-main .row { margin-top: var(--space-2); }
+.g5-head-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; position: relative; }
+.g5-menu { position: absolute; z-index: 40; top: 100%; right: 0; margin-top: var(--space-1); min-width: 260px; padding: var(--space-1); background: rgb(var(--color-surface)); border: 1px solid rgb(var(--color-line-strong)); border-radius: var(--radius-md); box-shadow: var(--shadow-elev-3); display: flex; flex-direction: column; }
+.g5-menu[hidden] { display: none; }
+.g5-menu button { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; min-height: var(--target); padding: 0 var(--space-3); text-align: left; border-radius: var(--radius-sm); font-weight: 500; }
+.g5-menu button:hover:not([disabled]) { background: rgb(var(--color-surface-2)); }
+.g5-menu button[disabled] { color: rgb(var(--color-muted)); cursor: not-allowed; }
+.g5-menu button:focus-visible { outline: 2px solid rgb(var(--focus-color)); outline-offset: -2px; }
+.g5-tabs-wrap { margin-top: var(--space-5); }
+.g5-tabs-wrap .tabs { scroll-snap-type: x proximity; }
+.g5-cards { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 768px) { .g5-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g5-cards > .g5-wide { grid-column: 1 / -1; } }
+@media (min-width: 1280px) { .g5-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.g5-cards .card-body > :first-child { margin-top: 0; }
+.g5-bigline { font-size: 18px; line-height: 26px; font-weight: 600; }
+.g5-alertrow { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; padding: var(--space-3) 0; border-top: 1px solid rgb(var(--color-line)); }
+.g5-alertrow:first-child { border-top: 0; }
+.g5-alertrow .grow { flex: 1 1 220px; min-width: 0; }
+.g5-media-grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr)); }
+.g5-thumb { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); min-height: 120px; padding: var(--space-3); border: 1px solid rgb(var(--color-line-strong)); border-radius: var(--radius-md); background: rgb(var(--color-surface-2)); text-align: center; width: 100%; }
+button.g5-thumb:hover { background: rgb(var(--color-primary-soft)); }
+button.g5-thumb:focus-visible { outline: 2px solid rgb(var(--focus-color)); outline-offset: 2px; }
+.g5-thumb .icon { width: 28px; height: 28px; color: rgb(var(--color-accent-text)); }
+.g5-chat li { display: flex; flex-direction: column; gap: 2px; padding: var(--space-3) 0; border-top: 1px solid rgb(var(--color-line)); }
+.g5-chat li:first-child { border-top: 0; }
+.g5-chat small { color: rgb(var(--color-muted)); }
+
+/* acompanhamento */
+.g5-panel { max-width: 640px; }
+.g5-panel .segmented { margin-top: var(--space-2); }
+@media (max-width: 479px) { .g5-panel .row .btn { flex: 1 1 100%; } }
+.g5-resp { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; padding: var(--space-3) 0; border-top: 1px solid rgb(var(--color-line)); }
+.g5-resp:first-child { border-top: 0; }
+.g5-resp .grow { flex: 1 1 200px; min-width: 0; }
+@media (min-width: 1280px) { .g5-panel { margin-left: auto; max-width: 480px; } }
+
+/* nome do aluno no modal de encerrar */
+.modal-header .g5-selo { margin-top: 12px; flex: none; }
+@media (max-width: 479px) { .modal-header { flex-wrap: wrap; } .modal-body { max-height: 70vh; } }
+
+/* abas rolaveis: indicio de rolagem nas bordas (QA-A-01) */
+.g5-tabs-wrap, .g5-tabs { position: relative; }
+.g5-tabscroll::before, .g5-tabscroll::after { content: ""; position: absolute; top: 0; height: 44px; width: 28px; z-index: 2; pointer-events: none; opacity: 0; }
+.g5-tabscroll::before { left: 0; background: linear-gradient(to right, rgb(var(--color-bg)), rgb(var(--color-bg) / 0)); }
+.g5-tabscroll::after { right: 0; background: linear-gradient(to left, rgb(var(--color-bg)), rgb(var(--color-bg) / 0)); }
+.g5-tabscroll.has-left::before, .g5-tabscroll.has-right::after { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) { .g5-tabscroll::before, .g5-tabscroll::after { transition: opacity .15s; } }
+
+/* links de nome em listas (Aguardando liberacao): alvo minimo 24 px (QA-A-05) */
+.g4-list .grow > strong > a { display: inline-block; min-height: 24px; line-height: 24px; overflow-wrap: anywhere; }
+@media (max-width: 639px) { .g4-list .grow > strong > a { display: inline-flex; align-items: center; min-height: 44px; } }
+
+/* QA-BC-05: separador do breadcrumb no fim do item anterior (sem ">" orfao no inicio da linha seguinte) */
+.breadcrumb li + li::before { content: none; display: none; }
+.breadcrumb li:not(:last-child)::after {
+  content: ""; width: 14px; height: 14px; background: rgb(var(--color-muted)); transform: rotate(-90deg);
+  -webkit-mask: var(--mask-chevron) center / contain no-repeat; mask: var(--mask-chevron) center / contain no-repeat;
+}
+/* QA-BC-04: alvos de toque de 44 px no 390 (titulos de cartao, links dentro de cartoes e paineis, radios de modo) */
+@media (max-width: 639px) {
+  .g6-card-title a, .card a:not(.btn):not(.tab), .g5-panel a:not(.btn), main .stack-sm > a:not(.btn), main li > a:not(.btn) { display: inline-flex; align-items: center; min-height: 44px; }
+  /* REV-E-04: link dentro de paragrafo e inline (isento), nao quebra o fluxo do texto */
+  main p a:not(.btn):not(.tab):not(.g6-card-title) { display: inline; min-height: 0; }
+  .segmented span { min-height: 44px; }
+}

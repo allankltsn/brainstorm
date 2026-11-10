@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HOME-03 · Início do aluno · aura-fit</title>
+  <meta name="aura-screen" content="HOME-03">
+  <meta name="aura-variants" content="dia-de-descanso,sem-treino-ainda,aguardando-responsavel">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g4.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Conta confirmada. Bem-vindo ao aura-fit!">
+  <div class="page-header" style="margin-bottom:var(--space-5)">
+    <div>
+      <h1 id="h1">Olá</h1>
+      <p id="sub"></p>
+    </div>
+  </div>
+  <div class="alert alert-success mb-4" role="status" data-when="success">
+    <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+    <div class="alert-body"><div class="alert-title">Tudo certo</div>Sua conta está confirmada. Seu treino fica aqui.</div>
+  </div>
+  <div id="area"></div>
+</main>
+<script>
+  G4.setDefaultRole('aluno');
+  G4.mount({ id: 'HOME-03', title: 'Início do aluno', active: 'inicio' });
+  var A = window.AURA, H = A.alunoHome, V = G4.variant(), me = A.me.aluno;
+  document.getElementById('h1').textContent = 'Olá, ' + G4.firstName(me.name);
+  document.getElementById('sub').textContent = G4.longDate();
+  var verTreino = G4.url('aluno-treino-do-dia.html', V === 'dia-de-descanso' ? 'variant=dia-de-descanso' : '');
+
+  function week() {
+    var w = G4DATA.week.map(function (d) { return d.slice(); });
+    if (V === 'dia-de-descanso') w[4][1] = 'descanso-hoje';
+    var label = { feito: 'treino feito', descanso: 'descanso planejado', hoje: 'hoje, treino', livre: 'sem treino', 'descanso-hoje': 'hoje, descanso' };
+    var icon = { feito: 'check', descanso: 'moon', hoje: 'dumbbell', livre: 'calendar', 'descanso-hoje': 'moon' };
+    return '<ul class="g4-week" aria-label="Sua semana">' + w.map(function (d) {
+      var s = d[1] === 'descanso-hoje' ? 'hoje' : d[1];
+      return '<li data-s="' + s + '"><span>' + d[0] + '</span><span class="g4-dot">' + G4.ico(icon[d[1]]) + '</span><span class="sr-only">' + label[d[1]] + '</span></li>';
+    }).join('') + '</ul>';
+  }
+  function todayCard() {
+    var t = H.todayWorkout;
+    if (V === 'sem-treino-ainda') return '<section class="card" aria-labelledby="t-hoje"><div class="card-body stack"><span class="g4-kicker">Treino de hoje</span><h2 id="t-hoje">Seu personal está preparando seu treino</h2><p class="muted">' + G4.esc(t.personalName) + ' ainda não montou o seu treino. Quando ele publicar, você vê aqui. Você não precisa fazer nada.</p></div></section>';
+    if (V === 'dia-de-descanso') return '<section class="g4-today" aria-labelledby="t-hoje" style="border-color:rgb(var(--color-info-text))"><span class="g4-kicker" style="color:rgb(var(--color-info-text))">Hoje</span><h2 id="t-hoje">' + G4.ico('moon', 'icon-lg') + ' Hoje é dia de descanso</h2><p>Ele faz parte do treino. Seu corpo se recupera e você volta mais forte.</p><a class="btn btn-secondary btn-lg btn-block" href="' + G4.esc(verTreino) + '">Ver o treino de segunda</a></section>';
+    return '<section class="g4-today" aria-labelledby="t-hoje"><span class="g4-kicker">Treino de hoje</span>' +
+      '<h2 id="t-hoje">' + G4.esc(t.name) + '</h2>' +
+      '<p class="g4-meta"><span>' + G4.ico('clock') + t.durationMin + ' minutos</span><span>' + G4.ico('dumbbell') + t.exercises.length + ' exercícios</span></p>' +
+      '<a class="btn btn-primary btn-lg btn-block" href="' + G4.esc(verTreino) + '">Ver treino' + G4.ico('arrow-right') + '</a></section>';
+  }
+  function minorCard() {
+    return '<section class="alert alert-warning" aria-labelledby="t-resp"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="alert-body"><div class="alert-title" id="t-resp">Aguardando seu responsável</div>Enviamos um pedido de autorização para o responsável. Quando ele responder, seu treino aparece aqui. Até lá, você não precisa fazer nada.</div></section>';
+  }
+  function streak() {
+    var s = H.streak;
+    return '<section class="card" aria-labelledby="t-seq"><div class="card-body stack"><h2 class="h3" id="t-seq">Sua sequência</h2>' +
+      '<p><strong style="font-size:22px">' + s.weeksActive + ' semanas ativas</strong></p>' + week() +
+      '<div class="g4-legend"><span>' + G4.ico('check', 'icon-sm') + 'Treino feito</span><span>' + G4.ico('moon', 'icon-sm') + 'Descanso</span></div>' +
+      '<p class="muted">O descanso conta como parte do plano. São ' + s.restDaysPlanned + ' dias de descanso por semana.</p></div></section>';
+  }
+  function nextCard() {
+    var n = H.nextWorkout;
+    return '<section class="card" aria-labelledby="t-prox"><div class="card-body"><h2 class="h3 mb-2" id="t-prox">Próximo treino</h2><p><strong>' + G4.esc(n.name) + '</strong></p><p class="muted">Segunda-feira, ' + A.fmtDate(n.date).slice(0, 5) + '</p></div></section>';
+  }
+  function msgCard() {
+    var m = H.personalMessage;
+    return '<section class="card" aria-labelledby="t-msg"><div class="card-body stack"><h2 class="h3" id="t-msg">Mensagem do seu personal</h2><div class="g4-quote"><span class="avatar" aria-hidden="true">' + A.initials(m.from) + '</span><div class="stack-sm"><p><span class="sr-only">' + G4.esc(m.from) + ' escreveu: </span>' + G4.esc(m.text) + '</p><span class="muted">' + G4.esc(m.from) + ', ' + A.relDate(m.at) + '</span></div></div></div></section>';
+  }
+  function render(el) {
+    var body = V === 'aguardando-responsavel' ? minorCard() + '<p class="muted">Enquanto isso, você pode ajustar a aparência do app e ler como cuidamos dos seus dados em <a href="' + G4.esc(G4.url('../config/configuracoes.html')) + '">Meu perfil</a>.</p>'
+      : todayCard() + (V === 'sem-treino-ainda' ? '' : streak() + (V === 'dia-de-descanso' ? '' : nextCard()) + msgCard());
+    el.innerHTML = '<div class="stack-lg">' + body +
+      '<aside class="alert alert-info" aria-label="Aviso de saúde">' + G4.ico('heart') + '<div class="alert-body">' + G4.esc(A.healthNotice) + '</div></aside></div>';
+  }
+  G4.ready(function () {
+    AuraState.render('#area', { rows: 3, variant: 'list', icon: 'dumbbell', title: 'Seu personal está preparando seu treino', text: 'Quando ele publicar, o treino aparece aqui. Você não precisa fazer nada.', renderDefault: render });
+    if (AuraState.get() === 'empty') { var e = document.querySelector('#area'); e.insertAdjacentHTML('beforeend', '<aside class="alert alert-info mt-6" aria-label="Aviso de saúde">' + G4.ico('heart') + '<div class="alert-body">' + G4.esc(A.healthNotice) + '</div></aside>'); }
+  });
+</script>
+</body>
+</html>

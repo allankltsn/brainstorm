@@ -1,0 +1,10 @@
+Titulo: Olá, Lucas
+Endereco: screens/home/aluno.html?role=aluno&theme=light
+Tela: 390x844, tema light, rolada 0 de 491px
+Mensagens visiveis:
+  - Informacao: O aura-fit não substitui a orientação de um profissional de saúde. Se sentir dor, tontura ou mal-estar, pare o exercício e procure ajuda.
+Botoes: Aparência: Claro. Alterar tema; Notificações, 1 não lidas; Menu da conta de Lucas Ferreira
+Links: aura-fit, ir para o início; Ver treino; Início; Treino; Perfil
+Campos: (nenhum)
+rolagem horizontal: nao
+Captura: E:\allan\aura\internal\aura-projects\prototype\_evidence\lay-browser\login-fluxo.png

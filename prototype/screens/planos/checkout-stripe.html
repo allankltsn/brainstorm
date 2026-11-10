@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLN-03 · Pagamento seguro · aura-fit</title>
+  <meta name="aura-screen" content="PLN-03">
+  <meta name="aura-variants" content="cartao-recusado,autenticacao-banco,processando">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/grupo-g2.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g2.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g2.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<header class="g2-stripe-banner" role="banner">
+  <svg class="icon icon-lg" aria-hidden="true" focusable="false"><use href="#i-alert"/></svg>
+  <p><strong>Só para teste. Nenhuma cobrança real.</strong> Os dados do cartão abaixo são fictícios e não aceitam digitação.</p>
+</header>
+<div class="g2-stripe">
+  <main id="conteudo" tabindex="-1">
+    <div class="g2-stripe-grid">
+      <div class="g2-stripe-merchant">
+        <a class="g2-stripe-back" id="voltar" href="pagamento-nao-concluido.html">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-left"/></svg>Voltar para o aura-fit
+        </a>
+        <div id="resumo"></div>
+      </div>
+      <div id="area"></div>
+    </div>
+  </main>
+</div>
+<div class="modal-backdrop" id="modal-3ds" hidden data-static>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="m3-t" aria-describedby="m3-d">
+    <div class="modal-header"><h2 class="modal-title" id="m3-t">Confirmação do banco (teste)</h2></div>
+    <div class="modal-body stack">
+      <p id="m3-d">Seu banco pede uma confirmação extra para liberar este pagamento. Na vida real, isso aparece como um código no app do banco ou por SMS.</p>
+      <p class="g2-fake-tag"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>Só para teste: nenhum código é pedido aqui.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-neutral" id="m3-no">Cancelar</button>
+      <button type="button" class="btn btn-primary" id="m3-yes" autofocus>Autorizar pagamento</button>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var A = window.AURA, D = window.AURA_G2, G = window.G2, Q = G.Q;
+  var planId = Q.plan || 'pro', cycle = Q.cycle === 'anual' ? 'anual' : 'mensal';
+  var plan = G.planById(planId);
+  var change = Q.change === '1' && !!G.liveSub();
+  var cp = Q.coupon && !change ? G.validateCoupon(Q.coupon, planId, cycle, {}) : null;
+  var coupon = cp && cp.ok ? cp.coupon : null;
+  var local = { processing: false, declined: false, cancelled3ds: false };
+  var okParams = { plan: planId, cycle: cycle, coupon: coupon ? coupon.code : '', change: change ? '1' : '' };
+  document.getElementById('voltar').href = G.url('pagamento-nao-concluido.html', okParams);
+
+  function mode() {
+    var st = G.state(), v = G.variant();
+    if (st === 'loading' || v === 'processando' || local.processing) return 'processando';
+    if (st === 'error' || v === 'cartao-recusado' || local.declined) return 'recusado';
+    if (st === 'success') return 'aprovado';
+    if (v === 'autenticacao-banco') return 'banco';
+    return 'normal';
+  }
+  function valid() { return plan && plan.prices.monthly > 0 && plan.status === 'ativo'; }
+
+  function go() { location.href = G.url('pagamento-confirmado.html', okParams); }
+  function process() {
+    local.processing = true; local.declined = false; render();
+    setTimeout(go, 1400);
+  }
+
+  function render() {
+    var m = mode(), res = document.getElementById('resumo'), area = document.getElementById('area');
+    if (G.state() === 'empty' || !valid()) {
+      res.innerHTML = '';
+      area.innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + G.ico('credit-card') + '</div><h1 class="h3">Não encontramos seu pedido</h1><p>Volte ao aura-fit e escolha um plano para continuar. Nenhum valor foi cobrado.</p><a class="btn btn-primary" href="' + G.esc(G.url('planos.html')) + '">Ver planos</a></div>';
+      return;
+    }
+    var q = G.quote(planId, cycle, coupon, { change: change });
+    res.innerHTML = '<p class="muted">' + (q.change ? 'Mudar para o aura-fit ' : 'Assinar aura-fit ') + G.esc(q.plan.name) + '</p><h1 class="g2-stripe-amount">' + G.money(q.today) + '</h1><p class="muted">Total a pagar hoje</p>' + G.summaryHtml(q);
+    if (m === 'aprovado') {
+      area.innerHTML = '<div class="g2-stripe-pay" role="status"><div class="row">' + G.ico('check-circle', 'icon-lg') + '<h2 class="h3">Pagamento aprovado</h2></div><p>Estamos levando você de volta ao aura-fit.</p><a class="btn btn-primary btn-lg btn-block" href="' + G.esc(G.url('pagamento-confirmado.html', okParams)) + '">Continuar</a></div>';
+      return;
+    }
+    var declined = m === 'recusado', busy = m === 'processando';
+    var card = declined ? D.fakeCard.declined : D.fakeCard.ok;
+    area.innerHTML = '<form class="g2-stripe-pay" id="f-pay" novalidate aria-labelledby="pay-t"><h2 class="h3" id="pay-t">Dados do cartão</h2>' +
+      '<p class="g2-fake-tag">' + G.ico('info', 'icon-sm') + 'Só para teste: valores fictícios, só leitura</p>' +
+      (declined ? '<div class="alert alert-danger" role="alert" id="aviso" tabindex="-1">' + G.ico('x-circle') + '<div class="alert-body"><div class="alert-title">Seu cartão foi recusado</div>O banco não autorizou este pagamento. <strong>Nenhum valor foi cobrado.</strong> Tente de novo ou use outro cartão.</div></div>' : '') +
+      (local.cancelled3ds ? '<div class="alert alert-warning" role="alert" id="aviso" tabindex="-1">' + G.ico('alert') + '<div class="alert-body"><div class="alert-title">A autenticação foi cancelada</div>Nenhum valor foi cobrado. Você pode tentar de novo.</div></div>' : '') +
+      '<div class="field"><label for="p-email">E-mail para o recibo</label><input class="input g2-fake" id="p-email" readonly value="' + G.esc(A.me.personal.emailMasked) + '"></div>' +
+      '<div class="field"><label for="p-num">Número do cartão (fictício)</label><input class="input g2-fake" id="p-num" readonly autocomplete="off" value="' + card + '" aria-describedby="p-num-h' + (declined ? ' aviso' : '') + '"' + (declined ? ' aria-invalid="true"' : '') + '><span class="field-help" id="p-num-h">' + (declined ? 'Número de teste que simula recusa.' : 'Número de teste.') + '</span></div>' +
+      '<div class="g2-cols-2"><div class="field"><label for="p-val">Validade</label><input class="input g2-fake" id="p-val" readonly autocomplete="off" value="' + D.fakeCard.exp + '"></div>' +
+      '<div class="field"><label for="p-cvc">Código de segurança</label><input class="input g2-fake" id="p-cvc" readonly autocomplete="off" value="' + D.fakeCard.cvc + '"></div></div>' +
+      '<div class="field"><label for="p-nome">Nome no cartão</label><input class="input g2-fake" id="p-nome" readonly autocomplete="off" value="' + G.esc(A.me.personal.name.toUpperCase()) + '"></div>' +
+      '<div class="g2-after"><p class="body-medium">' + G.ico('refresh', 'icon-sm') + ' ' + G.esc(q.after) + '</p><p class="muted">Cancele quando quiser em Minha assinatura, no aura-fit.</p><p class="muted"><strong>Desistir em até 7 dias: reembolso total.</strong></p></div>' +
+      '<button type="submit" class="btn btn-primary btn-lg btn-block' + (busy ? ' is-loading' : '') + '"' + (busy ? ' aria-busy="true" aria-disabled="true"' : '') + ' id="pagar">' + (busy ? 'Processando…' : (declined ? 'Tentar de novo: pagar ' : 'Pagar ') + G.money(q.today)) + '</button>' +
+      (busy ? '<p class="row" role="status"><span class="g2-spinner" aria-hidden="true"></span><span>Processando o pagamento. Não feche esta página.</span></p>' : '') +
+      '<p class="g2-help muted text-center">Pagamento processado pela Stripe, empresa de pagamentos. O aura-fit não vê o número do seu cartão.</p></form>';
+    document.getElementById('f-pay').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (busy || local.processing) return;
+      if (declined) { Q.variant = ''; local.declined = false; try { var u = new URL(location.href); u.searchParams.delete('variant'); u.searchParams.delete('state'); history.replaceState(null, '', u.toString()); document.getElementById('conteudo').setAttribute('data-state', 'default'); } catch (x) {} }
+      if (G.variant() === 'autenticacao-banco') { window.AuraUI.openModal('modal-3ds', document.getElementById('pagar')); return; }
+      process();
+    });
+    if (m === 'banco') window.AuraUI.openModal('modal-3ds', document.getElementById('pagar'));
+    var av = document.getElementById('aviso'); if (av && local.cancelled3ds) av.focus();
+  }
+  document.getElementById('m3-yes').addEventListener('click', function () { window.AuraUI.closeModal(); Q.variant = ''; process(); });
+  document.getElementById('m3-no').addEventListener('click', function () { window.AuraUI.closeModal(); Q.variant = ''; local.cancelled3ds = true; render(); });
+
+  document.addEventListener('g2:variantchange', function () { local = { processing: false, declined: false, cancelled3ds: false }; });
+  G.boot({ id: 'PLN-03', name: 'Pagamento seguro', role: 'personal', allowed: ['personal'], shell: false, render: render });
+})();
+</script>
+</body>
+</html>

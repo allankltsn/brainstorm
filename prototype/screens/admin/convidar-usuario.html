@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADM-03 · Convidar usuário · aura-fit</title>
+  <meta name="aura-screen" content="ADM-03">
+  <meta name="aura-variants" content="email-ja-cadastrado,enviado,revogar-confirmar">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g3.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g3.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g3.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div id="bc"></div>
+  <div class="page-header">
+    <div>
+      <h1>Convidar usuário</h1>
+      <p>Convide alguém da equipe por e-mail. Alunos são convidados pelo personal de cada um.</p>
+    </div>
+  </div>
+
+  <div class="stack-lg">
+    <div id="resultado" tabindex="-1"></div>
+
+    <section class="card" aria-labelledby="t-form" data-when="default success">
+      <div class="card-header"><h2 class="card-title" id="t-form">Novo convite</h2></div>
+      <div class="card-body">
+        <form id="form" class="stack" novalidate>
+          <div class="grid-2">
+            <div class="field">
+              <label for="c-email">E-mail da pessoa <span class="field-required" aria-hidden="true">*</span></label>
+              <input class="input" id="c-email" name="email" type="email" autocomplete="off" required aria-describedby="c-email-h">
+              <span class="field-help" id="c-email-h">Usamos só para enviar o convite.</span>
+            </div>
+            <div class="field">
+              <label for="c-papel">Papel <span class="field-required" aria-hidden="true">*</span></label>
+              <div class="select-wrap"><select class="select" id="c-papel" name="papel" required aria-describedby="c-papel-h">
+                <option value="">Escolha o papel</option>
+                <option value="suporte">Suporte</option>
+                <option value="personal">Personal</option>
+                <option value="admin">Administrador</option>
+              </select></div>
+              <span class="field-help" id="c-papel-h">O papel define o que a pessoa pode ver e fazer.</span>
+            </div>
+          </div>
+          <div id="aviso-admin" class="alert alert-warning" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
+            <div class="alert-body"><div class="alert-title">Administrador tem acesso total</div>Ele gerencia usuários, papéis, planos e cupons. Ao enviar, vamos pedir uma confirmação extra.</div>
+          </div>
+          <div class="field">
+            <label for="c-msg">Mensagem <span class="muted">(opcional)</span></label>
+            <textarea class="textarea" id="c-msg" name="msg" maxlength="300" aria-describedby="c-msg-h"></textarea>
+            <span class="field-help" id="c-msg-h">Aparece no e-mail do convite. Não escreva senhas nem dados de saúde.</span>
+          </div>
+          <p class="muted"><svg class="icon icon-sm" aria-hidden="true" style="display:inline;vertical-align:-3px"><use href="#i-clock"/></svg> O convite vale por 7 dias, até <strong id="validade"></strong>. Depois disso, é só enviar de novo.</p>
+          <div class="row">
+            <button type="submit" class="btn btn-primary">Enviar convite</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="t-pend">
+      <div class="card-header"><h2 class="card-title" id="t-pend">Convites pendentes</h2></div>
+      <div class="card-body" id="pendentes"></div>
+    </section>
+  </div>
+</main>
+
+<script>
+(function () {
+  var A = window.AURA, G = window.G3, $ = function (i) { return document.getElementById(i); };
+  G.boot({ id: 'ADM-03', title: 'Convidar usuário', shortTitle: 'Convidar usuário', active: 'usuarios', manage: true }, init);
+  function init() {
+    $('bc').innerHTML = G.breadcrumb([['Início', G.href('../home/admin.html')], ['Usuários', G.href('usuarios.html')], ['Convidar usuário']]);
+    var exp = G.dayShift(G.today, 7);
+    $('validade').textContent = A.fmtDate(exp);
+    var transient = null;
+
+    function rows() {
+      var list = G.invites().filter(function (i) { return i.status === 'pendente'; });
+      if (transient) list = [transient].concat(list);
+      return list;
+    }
+    function drawPend() {
+      G.region('#pendentes', {
+        rows: 3, icon: 'mail', title: 'Nenhum convite pendente', text: 'Quando você convidar alguém, o convite aparece aqui até a pessoa aceitar.',
+        renderDefault: function (el) {
+          var list = rows();
+          if (!list.length) { window.AuraState.render(el, 'empty', { icon: 'mail', title: 'Nenhum convite pendente', text: 'Quando você convidar alguém, o convite aparece aqui até a pessoa aceitar.' }); return; }
+          el.innerHTML = '<div class="table-wrap"><table class="table"><caption class="sr-only">Convites aguardando resposta</caption><thead><tr><th scope="col">E-mail</th><th scope="col">Papel</th><th scope="col">Enviado por</th><th scope="col">Enviado em</th><th scope="col">Vence em</th><th scope="col">Situação</th><th scope="col" class="col-actions"><span class="sr-only">Ações</span></th></tr></thead><tbody>' +
+            list.map(function (i) {
+              return '<tr><td class="cell-main">' + G.esc(i.emailMasked) + '</td><td data-label="Papel">' + G.roleName(i.role) + '</td><td data-label="Enviado por">' + G.esc(i.invitedBy) + '</td><td data-label="Enviado em">' + A.fmtDate(i.sentAt) + '</td><td data-label="Vence em">' + A.fmtDate(i.expiresAt) + '</td><td data-label="Situação">' + A.badge('pendente') + '</td>' +
+                '<td class="col-actions" data-label="Ações"><div class="row" style="justify-content:flex-end"><button type="button" class="btn btn-neutral" data-act="reenviar" data-id="' + i.id + '" aria-label="Reenviar convite para ' + G.esc(i.emailMasked) + '">Reenviar</button><button type="button" class="btn btn-neutral" data-act="revogar" data-id="' + i.id + '" aria-label="Revogar convite de ' + G.esc(i.emailMasked) + '">Revogar</button></div></td></tr>';
+            }).join('') + '</tbody></table></div>';
+        }
+      });
+    }
+
+    function result(html) { var r = $('resultado'); r.innerHTML = html; r.focus(); }
+    function sentAlert(masked, role) {
+      return '<div class="alert alert-success" role="status">' + G.ico('check-circle') + '<div class="alert-body"><div class="alert-title">Convite enviado</div>Mandamos o convite para ' + G.esc(masked) + ' com o papel ' + G.roleName(role) + '. Ele vale até ' + A.fmtDate(exp) + '. O envio ficou registrado no histórico.</div></div>';
+    }
+
+    $('c-papel').addEventListener('change', function () { $('aviso-admin').hidden = this.value !== 'admin'; });
+
+    $('form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var f = e.target, em = f.elements.email, pf = f.elements.papel;
+      window.AuraUI.clearError(em); window.AuraUI.clearError(pf); $('resultado').innerHTML = '';
+      var val = em.value.trim();
+      if (!val) window.AuraUI.setError(em, 'Digite o e-mail de quem você quer convidar.');
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)) window.AuraUI.setError(em, 'Digite um e-mail completo, como nome@exemplo.com.br.');
+      if (!pf.value) window.AuraUI.setError(pf, 'Escolha o papel da pessoa.');
+      if (window.AuraUI.focusFirstError(f)) return;
+      var exists = G.users().filter(function (u) { return u.email.toLowerCase() === val.toLowerCase(); })[0];
+      if (exists) {
+        result('<div class="alert alert-warning" role="alert">' + G.ico('info') + '<div class="alert-body"><div class="alert-title">Já existe uma conta com este e-mail</div>Para dar outro papel a ' + G.esc(exists.name) + ', use o detalhe do usuário. <a href="' + G.href('usuario-detalhe.html', { id: exists.id }) + '">Abrir o cadastro de ' + G.esc(exists.name) + '</a>.</div></div>');
+        return;
+      }
+      function send() {
+        var inv = { id: 'g3-' + Date.now(), emailMasked: A.maskEmail(val), role: pf.value, invitedBy: G.me.name, sentAt: G.nowIso(), expiresAt: exp + 'T12:00', status: 'pendente' };
+        G.addInvite(inv); G.addAudit('Enviou convite', A.maskEmail(val), 'Papel: ' + G.roleName(pf.value) + '.');
+        f.reset(); $('aviso-admin').hidden = true;
+        drawPend(); result(sentAlert(inv.emailMasked, inv.role));
+        window.AuraUI.toast('Convite enviado.', { tone: 'success' });
+      }
+      if (pf.value === 'admin') {
+        G.confirm({ title: 'Convidar como Administrador?', text: 'A pessoa terá acesso total: poderá gerenciar usuários, papéis, planos e cupons. Confirme só se tiver certeza.', confirmLabel: 'Sim, convidar como administrador' }).then(function (ok) { if (ok) send(); else em.focus(); });
+      } else send();
+    });
+
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-act]'); if (!b) return;
+      var id = b.dataset.id, inv = rows().filter(function (i) { return i.id === id; })[0]; if (!inv) return;
+      if (b.dataset.act === 'reenviar') {
+        if (transient && transient.id === id) { window.AuraUI.toast('Convite reenviado.', { tone: 'success' }); return; }
+        G.setInvite(id, { sentAt: G.nowIso(), expiresAt: exp + 'T12:00' }); G.addAudit('Reenviou convite', inv.emailMasked, 'Novo prazo de 7 dias.');
+        drawPend(); window.AuraUI.toast('Convite reenviado para ' + inv.emailMasked + '. Vale por mais 7 dias.', { tone: 'success' });
+      } else revogar(inv, b);
+    });
+    function revogar(inv, opener) {
+      G.confirm({ title: 'Revogar o convite de ' + inv.emailMasked + '?', text: 'O link do convite deixa de funcionar. Você pode enviar um novo depois. A ação fica registrada no histórico.', confirmLabel: 'Revogar convite', danger: true }).then(function (ok) {
+        if (!ok) return;
+        if (transient && transient.id === inv.id) transient = null; else { G.setInvite(inv.id, { status: 'revogado' }); G.addAudit('Revogou convite', inv.emailMasked, ''); }
+        drawPend(); window.AuraUI.toast('Convite revogado.', { tone: 'warning' });
+        var h = $('t-pend'); h.setAttribute('tabindex', '-1'); h.focus();
+      });
+    }
+
+    document.addEventListener('aura:statechange', drawPend);
+    drawPend();
+
+    var v = G.variant;
+    if (v === 'email-ja-cadastrado') { $('c-email').value = 'rafael.moreira@exemplo.com.br'; $('c-papel').value = 'suporte'; $('form').requestSubmit(); }
+    if (v === 'enviado') {
+      transient = { id: 'demo', emailMasked: A.maskEmail('novo.suporte@exemplo.com.br'), role: 'suporte', invitedBy: G.me.name, sentAt: G.today + 'T10:30', expiresAt: exp + 'T12:00', status: 'pendente' };
+      drawPend(); $('resultado').innerHTML = sentAlert(transient.emailMasked, 'suporte');
+    }
+    if (v === 'revogar-confirmar') { var first = rows()[0]; if (first) revogar(first, document.querySelector('[data-act="revogar"]')); }
+  }
+})();
+</script>
+</body>
+</html>

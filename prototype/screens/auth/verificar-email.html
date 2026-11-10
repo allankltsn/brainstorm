@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUTH-07 · Verificar e-mail · aura-fit</title>
+  <meta name="aura-screen" content="AUTH-07">
+  <meta name="aura-variants" content="reenvio-aguardando,link-expirado,verificado,aguardando-responsavel">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g1.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g1.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body class="g1">
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<div class="g1-split">
+  <aside class="g1-brand" aria-label="Sobre o aura-fit">
+    <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+    <div>
+      <p class="g1-claim">Mais que treinos. Resultados reais.</p>
+      <p class="g1-claim-sub">O espaço do personal para cuidar dos alunos, dos treinos e das cobranças.</p>
+      <ul class="g1-points">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg>Convite seguro para cada aluno</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Seus dados protegidos, como manda a LGPD</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-refresh"/></svg>Cancele a assinatura quando quiser</li>
+      </ul>
+    </div>
+    <p class="caption">Só para teste. Os dados são fictícios.</p>
+  </aside>
+  <div class="g1-pane">
+    <header class="g1-top">
+      <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+      <button type="button" class="g1-iconbtn" data-g1-theme aria-label="Mudar tema"></button>
+    </header>
+    <main id="conteudo" tabindex="-1" class="g1-main" data-state="default">
+      <div class="g1-card">
+        <div id="g1-state" data-when="loading error"></div>
+        <div class="stack-lg" data-when="default empty">
+          <div class="g1-statecard" data-vnot="verificado link-expirado aguardando-responsavel">
+            <span class="g1-bigicon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg></span>
+            <h1>Confirme seu e-mail</h1>
+            <p>Enviamos um link para <strong id="email-masc">ca***@exemplo.com.br</strong>. Abra o e-mail e toque no link para liberar o seu acesso.</p>
+            <ol class="g1-steps" aria-label="O que fazer agora">
+              <li>Abra o e-mail que enviamos.</li>
+              <li>Toque no botão vermelho.</li>
+              <li>Volte aqui. Seu acesso será liberado.</li>
+            </ol>
+            <div class="alert" role="note"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-info"/></svg><div class="alert-body">Não achou? Confira a caixa de spam ou lixo eletrônico.</div></div>
+            <div class="alert alert-info" id="nota-menor" role="note" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-info"/></svg><span class="alert-body">Sua conta ficará em espera até o responsável autorizar. Já enviamos o pedido para ele ou ela.</span></div>
+            <div class="g1-actions">
+              <button type="button" class="btn btn-secondary btn-block" id="btn-reenviar">Reenviar e-mail</button>
+              <p class="field-help text-center" id="espera" role="status" hidden>Você poderá pedir outro e-mail em 60 segundos.</p>
+              <a class="g1-link" id="trocar" href="cadastro-personal.html">Trocar e-mail</a>
+              <a class="g1-link" href="login.html">Voltar para o login</a>
+            </div>
+            <div class="g1-demo-note">
+              <p class="label">Só para teste</p>
+              <p class="muted">Faça de conta que você tocou no link que chegaria no e-mail.</p>
+              <button type="button" class="btn btn-neutral btn-block mt-2" id="simular">Só para teste: abrir o link do e-mail</button>
+            </div>
+          </div>
+
+          <div class="g1-statecard" data-v="link-expirado" hidden>
+            <span class="g1-bigicon is-warning"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg></span>
+            <h1>Este link expirou</h1>
+            <p>Por segurança, o link para confirmar o e-mail vale por tempo limitado. Peça outro e enviamos agora.</p>
+            <div class="g1-actions">
+              <button type="button" class="btn btn-primary btn-lg btn-block" id="pedir-outro">Enviar novo e-mail</button>
+              <a class="g1-link" href="login.html">Voltar para o login</a>
+            </div>
+          </div>
+
+          <div class="g1-statecard" data-v="verificado" hidden>
+            <span class="g1-bigicon is-success"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg></span>
+            <h1>E-mail confirmado</h1>
+            <p>Tudo certo. Seu acesso está liberado.</p>
+            <a class="btn btn-primary btn-lg btn-block" id="continuar" href="../planos/planos.html?role=personal">Continuar</a>
+          </div>
+
+          <div class="g1-statecard" data-v="aguardando-responsavel" hidden>
+            <span class="g1-bigicon is-info"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg></span>
+            <h1>Conta em espera</h1>
+            <p>Sua conta fica em espera até o responsável autorizar. Enviamos o pedido para o e-mail dele ou dela. Quando ele ou ela confirmar, o acesso é liberado sozinho.</p>
+            <p class="muted">Enquanto isso, você pode entrar e ver o aplicativo, sem registrar dados de saúde.</p>
+            <a class="btn btn-primary btn-lg btn-block" href="../home/aluno.html?role=aluno&variant=aguardando-responsavel">Entrar no aplicativo</a>
+          </div>
+        </div>
+        <div data-when="success" class="stack-lg">
+          <div class="alert alert-success" role="status"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg><div class="alert-body"><div class="alert-title">E-mail confirmado</div>Seu acesso está liberado.</div></div>
+          <a class="btn btn-primary btn-lg btn-block" href="../planos/planos.html?role=personal">Continuar</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="../../assets/grupo-g1.js"></script>
+<script>
+(function () {
+  var A = window.AURA, perfil = G1.q.perfil === 'aluno' ? 'aluno' : 'personal', menor = G1.q.menor === '1';
+  document.getElementById('email-masc').textContent = G1.mailParam() || (perfil === 'aluno' ? A.invites[0].emailMasked : A.me.personal.emailMasked);
+  if (perfil === 'aluno') document.getElementById('trocar').hidden = true;
+  document.getElementById('nota-menor').hidden = !(menor);
+  document.getElementById('continuar').href = G1.withTheme(perfil === 'aluno' ? '../home/aluno.html?role=aluno' : '../planos/planos.html?role=personal');
+  var b = document.getElementById('btn-reenviar'), w = document.getElementById('espera');
+  function wait() { b.setAttribute('aria-disabled', 'true'); w.hidden = false; }
+  if (G1.v() === 'reenvio-aguardando') wait();
+  b.addEventListener('click', function () {
+    if (b.getAttribute('aria-disabled') === 'true') return;
+    AuraUI.toast('Enviamos o e-mail de novo.', { tone: 'success' });
+    wait();
+  });
+  document.getElementById('simular').addEventListener('click', function () {
+    G1.setVariant(menor ? 'aguardando-responsavel' : 'verificado'); document.getElementById('conteudo').focus();
+  });
+  document.getElementById('pedir-outro').addEventListener('click', function () {
+    G1.setVariant('reenvio-aguardando'); AuraUI.toast('Enviamos um novo e-mail.', { tone: 'success' });
+  });
+})();
+</script>
+</body>
+</html>

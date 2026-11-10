@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CFG-01 · Aparência · aura-fit</title>
+  <meta name="aura-screen" content="CFG-01">
+  <meta name="aura-variants" content="escuro-ativo,texto-grande">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/tokens-scope.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g4.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Aparência salva neste celular ou computador.">
+  <div class="g4-settings-wrap">
+    <div id="col" class="stack-lg g4-measure">
+      <div class="page-header" style="margin-bottom:0">
+        <div>
+          <h1 id="h1">Aparência</h1>
+          <p>Deixe o aura-fit do jeito que cansa menos a sua vista. A mudança vale na hora e fica neste celular ou computador.</p>
+        </div>
+      </div>
+      <div class="alert alert-success" role="status" data-when="success">
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <div class="alert-body"><div class="alert-title">Tudo certo</div>Sua escolha foi salva.</div>
+      </div>
+      <div id="area"></div>
+    </div>
+  </div>
+</main>
+<script>
+  G4.setDefaultRole('aluno');
+  G4.mount({ id: 'CFG-01', title: 'Aparência', activeByRole: { aluno: 'perfil', admin: 'configuracoes', personal: 'configuracoes' } });
+  G4.settingsLayout('aparencia', 'col');
+  var V = G4.variant(), isAluno = G4.role() === 'aluno';
+  var where = isAluno ? 'celular' : 'computador';
+  if (isAluno) document.getElementById('h1').textContent = 'Aparência e tamanho da letra';
+  // variantes: aplicam a escolha pelas mesmas funcoes dos controles (tema e tamanho sincronizados)
+  if (V === 'escuro-ativo') AuraTheme.set('dark');
+  if (V === 'texto-grande') AuraTheme.setSize('grande');
+
+  function prev(kind) {
+    return '<span class="g4-prev ' + (kind === 'light' ? 'light' : kind === 'dark' ? 'dark' : '') + '" aria-hidden="true"><i class="g4-l1"></i><i class="g4-l2"></i><i></i><i class="g4-b"></i></span>';
+  }
+  var THEMES = [['light', 'Claro', 'Fundo branco. Bom para lugares claros.', prev('light')],
+    ['dark', 'Escuro', 'Fundo escuro. Cansa menos à noite.', prev('dark')],
+    ['system', 'Igual ao ' + where, 'Muda sozinho conforme o seu ' + where + '.', '<span class="g4-prev-split" aria-hidden="true">' + prev('light') + prev('dark') + '</span>']];
+  function render(el) {
+    el.innerHTML = '<form class="stack-lg" onsubmit="return false">' +
+      '<fieldset class="field"><legend class="field-label g4-legend-h">Tema</legend><div class="g4-theme-grid">' +
+      THEMES.map(function (t) {
+        return '<label class="g4-theme-opt">' + t[3] + '<span class="check"><input type="radio" name="tema" value="' + t[0] + '"><span class="check-text">' + t[1] + '<small>' + t[2] + '</small></span></span></label>';
+      }).join('') + '</div></fieldset>' +
+      '<fieldset class="field"><legend class="field-label g4-legend-h">Tamanho da letra</legend><div class="segmented" role="radiogroup" aria-label="Tamanho da letra" style="display:flex"><label style="flex:1"><input type="radio" name="tam" value="padrao"><span style="width:100%;justify-content:center;min-height:52px">Padrão</span></label><label style="flex:1"><input type="radio" name="tam" value="grande"><span style="width:100%;justify-content:center;min-height:52px">Grande</span></label></div></fieldset>' +
+      '<section class="card" aria-labelledby="t-ex"><div class="card-body stack-sm g4-sample"><h2 class="h3" id="t-ex">Prévia</h2><p><strong>Treino A: Superior</strong></p><p>45 minutos, 5 exercícios. Descanso também faz parte do treino.</p></div></section>' +
+      '</form>';
+    function sync(d) {
+      d = d || { mode: AuraTheme.get(), size: AuraTheme.getSize() };
+      el.querySelectorAll('input[name="tema"]').forEach(function (i) { i.checked = i.value === d.mode; });
+      el.querySelectorAll('input[name="tam"]').forEach(function (i) { i.checked = i.value === d.size; });
+    }
+    sync();
+    // os controles do topo (popover) e desta tela se atualizam pelo mesmo evento
+    AuraTheme.onChange(sync);
+    el.querySelectorAll('input[name="tema"]').forEach(function (i) {
+      i.addEventListener('change', function () {
+        AuraTheme.set(i.value);
+        AuraUI.toast('Tema alterado para ' + { light: 'Claro', dark: 'Escuro', system: 'Igual ao ' + where }[i.value] + '.', { tone: 'success', timeout: 4000 });
+      });
+    });
+    el.querySelectorAll('input[name="tam"]').forEach(function (i) {
+      i.addEventListener('change', function () {
+        AuraTheme.setSize(i.value);
+        AuraUI.toast(i.value === 'grande' ? 'Letra grande ativada.' : 'Letra padrão ativada.', { tone: 'success', timeout: 4000 });
+      });
+    });
+  }
+  G4.ready(function () {
+    // vazio e carregando nao se aplicam a esta tela; carregando mostra skeleton rapido
+    var s = AuraState.get();
+    AuraState.render('#area', s === 'empty' ? 'default' : s, { rows: 3, renderDefault: render });
+  });
+</script>
+</body>
+</html>

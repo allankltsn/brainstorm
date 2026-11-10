@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLN-04 · Pagamento confirmado · aura-fit</title>
+  <meta name="aura-screen" content="PLN-04">
+  <meta name="aura-variants" content="confirmando">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g2.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g2.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g2.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Pagamento confirmado. Enviamos o recibo por e-mail.">
+  <div class="g2-wrap"><div id="area"></div></div>
+</main>
+<script>
+(function () {
+  var A = window.AURA, G = window.G2, Q = G.Q;
+  var planId = Q.plan || 'pro', cycle = Q.cycle === 'anual' ? 'anual' : 'mensal';
+  var change = Q.change === '1' && !!G.liveSub();
+  var cp = Q.coupon && !change ? G.validateCoupon(Q.coupon, planId, cycle, {}) : null;
+  var q = G.quote(planId, cycle, cp && cp.ok ? cp.coupon : null, { change: change });
+  var pm = A.subscription.paymentMethod;
+
+  function actions(confirming) {
+    return '<div class="g2-actions"><a class="btn btn-primary btn-lg" href="' + G.esc(G.url(G.PATH.home)) + '">Ir para o início</a>' +
+      '<a class="btn btn-secondary btn-lg" href="' + G.esc(G.url(G.PATH.assinatura)) + '">Ver minha assinatura</a></div>';
+  }
+  function confirmed(el) {
+    el.innerHTML = '<div class="g2-status"><span class="g2-status-icon">' + G.ico('check-circle') + '</span><h1>Pagamento confirmado</h1>' +
+      '<p>Pronto! Você agora está no plano <strong>' + G.esc(q.plan.name) + '</strong>.</p>' +
+      '<section class="card" aria-label="Detalhes do pagamento"><div class="card-body"><dl class="kv">' +
+      '<dt>Plano</dt><dd>' + G.esc(q.plan.name) + ', cobrança ' + (q.cycle === 'anual' ? 'anual' : 'mensal') + '</dd>' +
+      '<dt>Valor pago hoje</dt><dd>' + G.money(q.today) + (q.coupon ? ' (cupom ' + G.esc(q.coupon.code) + ')' : '') + (q.change ? ' (diferença até a próxima cobrança)' : '') + '</dd>' +
+      '<dt>Próxima cobrança</dt><dd>' + G.dmy(q.renewAt) + ', ' + G.money(q.nextAmount) + '</dd>' +
+      '<dt>Renovação</dt><dd>Automática. ' + G.esc(q.after.replace(/^Depois: /, 'Depois: ').replace(/ Renovação automática.*$/, '')) + '</dd>' +
+      '<dt>Forma de pagamento</dt><dd>' + G.esc(pm.brand) + ' final ' + G.esc(pm.last4) + '</dd>' +
+      '<dt>Recibo</dt><dd>Enviamos para ' + G.esc(A.me.personal.emailMasked) + '</dd></dl></div></section>' +
+      '<p class="g2-note">' + G.ico('check-circle', 'icon-sm') + '<span>Cancele quando quiser em Minha assinatura, em 2 passos. Se mudar de ideia, você pode desistir em até 7 dias e receber o valor de volta.</span></p>' + actions() + '</div>';
+  }
+  function confirming(el) {
+    el.innerHTML = '<div class="g2-status"><span class="g2-status-icon is-info"><span class="g2-spinner" aria-hidden="true"></span></span><h1>Estamos confirmando seu pagamento</h1>' +
+      '<p role="status">Estamos confirmando com o banco; pode levar alguns minutos.</p>' +
+      '<div class="alert alert-info" style="text-align:left">' + G.ico('info') + '<div class="alert-body"><div class="alert-title">Não precisa pagar de novo</div>Assim que o banco confirmar, avisamos por e-mail e seu plano ' + G.esc(q.plan.name) + ' é liberado. Até lá você continua no seu plano atual, sem perder nada.</div></div>' +
+      '<div class="g2-actions"><button type="button" class="btn btn-secondary btn-lg" id="atualizar">' + G.ico('refresh') + 'Atualizar status</button><a class="btn btn-neutral btn-lg" href="' + G.esc(G.url(G.PATH.home)) + '">Ir para o início</a></div></div>';
+    document.getElementById('atualizar').addEventListener('click', function () {
+      var b = this; b.classList.add('is-loading'); b.setAttribute('aria-busy', 'true');
+      setTimeout(function () { G.setVariant(''); window.AuraState.set('default'); var h = document.querySelector('h1'); if (h) { h.setAttribute('tabindex', '-1'); h.focus(); } }, 900);
+    });
+  }
+  function render() {
+    var st = G.state();
+    window.AuraState.render('#area', st === 'loading' ? 'default' : st, {
+      icon: 'info', rows: 3,
+      title: 'Não conseguimos confirmar agora', text: 'O banco ainda não respondeu. Nenhum valor extra foi cobrado e seus dados estão seguros. Tente atualizar em alguns minutos ou fale com o suporte.',
+      renderDefault: function (el) { if (G.variant() === 'confirmando' || st === 'loading') confirming(el); else confirmed(el); }
+    });
+  }
+  G.boot({ id: 'PLN-04', name: 'Pagamento confirmado', role: 'personal', allowed: ['personal'], active: 'minha-assinatura', render: render });
+})();
+</script>
+</body>
+</html>

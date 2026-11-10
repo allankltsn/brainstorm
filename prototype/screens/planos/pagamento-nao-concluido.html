@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLN-05 · Pagamento não concluído · aura-fit</title>
+  <meta name="aura-screen" content="PLN-05">
+  <meta name="aura-variants" content="">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g2.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g2.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g2.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div class="g2-wrap"><div id="area"></div></div>
+</main>
+<script>
+(function () {
+  var G = window.G2, Q = G.Q;
+  var planId = Q.plan || 'pro', cycle = Q.cycle === 'anual' ? 'anual' : 'mensal';
+  var change = Q.change === '1' && !!G.liveSub();
+  var cp = Q.coupon && !change ? G.validateCoupon(Q.coupon, planId, cycle, {}) : null, coupon = cp && cp.ok ? cp.coupon : null;
+  function render() {
+    window.AuraState.render('#area', {
+      rows: 3, title: 'Não conseguimos mostrar esta página', text: 'Seus dados estão seguros e nenhum valor foi cobrado. Tente de novo em instantes.',
+      renderDefault: function (el) {
+        el.innerHTML = '<div class="g2-status"><span class="g2-status-icon is-info">' + G.ico('info') + '</span><h1>Pagamento não concluído</h1>' +
+          '<p><strong>Nenhum valor foi cobrado.</strong> Você saiu do pagamento antes de terminar.</p>' +
+          (coupon ? '<div class="alert alert-info" style="text-align:left">' + G.ico('tag') + '<div class="alert-body">Seu cupom <strong>' + G.esc(coupon.code) + '</strong> continua aplicado se você tentar de novo.</div></div>' : '') +
+          '<p class="muted">Seu plano continua o mesmo.</p>' +
+          '<div class="g2-actions"><a class="btn btn-primary btn-lg" href="' + G.esc(G.url(G.PATH.resumo, { plan: planId, cycle: cycle, coupon: coupon ? coupon.code : '', change: change ? '1' : '' })) + '">Tentar de novo</a>' +
+          '<a class="btn btn-secondary btn-lg" href="' + G.esc(G.url(G.PATH.planos, { cycle: cycle })) + '">Ver planos</a></div></div>';
+      }
+    });
+  }
+  G.boot({ id: 'PLN-05', name: 'Pagamento não concluído', role: 'personal', allowed: ['personal'], active: 'minha-assinatura', render: render });
+})();
+</script>
+</body>
+</html>

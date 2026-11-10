@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prévia do cartão de plano · aura-fit</title>
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/grupo-g2.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g2.js"></script>
+  <script src="../../assets/grupo-g2.js"></script>
+</head>
+<body>
+<!-- Apoio do PLN-08: mostra o mesmo cartão do PLN-01 em um quadro com o tema forçado por ?theme=. Recebe dados por postMessage. -->
+<main id="conteudo" style="padding:var(--space-4)"><div id="card"></div></main>
+<script>
+(function () {
+  var G = window.G2;
+  function paint(d) {
+    d = d || {};
+    var p = { id: 'previa', name: d.name, tagline: d.tagline, status: 'ativo', popular: !!d.popular, prices: { monthly: d.monthly, yearly: d.yearly }, features: d.features || [] };
+    document.getElementById('card').innerHTML = G.planCardHtml(p, d.cycle === 'anual' ? 'anual' : 'mensal', { id: 'previa', cta: { label: 'Escolher ' + (d.name || 'plano'), href: '#conteudo' } });
+    Array.prototype.forEach.call(document.querySelectorAll('a[href="#conteudo"]'), function (a) { a.setAttribute('tabindex', '-1'); a.setAttribute('aria-hidden', 'true'); });
+  }
+  paint({ name: 'Plano', monthly: 0, yearly: 0, features: [] });
+  window.addEventListener('message', function (e) { if (e.data && e.data.g2preview) paint(e.data.g2preview); });
+  try { window.parent.postMessage({ g2previewReady: true }, '*'); } catch (x) {}
+})();
+</script>
+</body>
+</html>

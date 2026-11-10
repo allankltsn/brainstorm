@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRN-04 · Modo de acompanhamento e responsáveis · aura-fit</title>
+  <meta name="aura-screen" content="TRN-04">
+  <meta name="aura-variants" content="padrao,mudanca-pendente,gestor,unico-responsavel,sem-responsavel,erro-salvar,nao-ativo,offline,sem-permissao">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <link rel="stylesheet" href="../../assets/grupo-g5.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g5.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g5.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div id="bc"></div>
+  <div class="page-header">
+    <div>
+      <h1>Acompanhamento</h1>
+      <p id="sub"></p>
+    </div>
+  </div>
+  <div id="area"></div>
+</main>
+<script>
+(function () {
+  G5.mount({ id: 'TRN-04', title: 'Modo de acompanhamento e responsáveis' });
+  var A = window.AURA, D = window.G5DATA, V = G5.variant() || 'padrao', esc = G5.esc, ico = G5.ico;
+  var MAP = { 'unico-responsavel': 's03', 'sem-responsavel': 's03', 'nao-ativo': 's05' };
+  var S = G5.pickStudent(MAP[V] || 's01');
+  if (!S || V === 'sem-permissao') {
+    /* ?id inexistente: nenhum dado de aluno (QA-A-03) */
+    document.getElementById('bc').innerHTML = G5.breadcrumb([['Início', G5.url('../home/personal.html')], ['Alunos', G5.url('meus-alunos.html')], ['Aluno']]);
+    document.getElementById('sub').textContent = '';
+    G4.ready(function () { if (V === 'sem-permissao') document.getElementById('area').innerHTML = G5.accessDenied(); else G5.notFound('#area', 2); });
+    return;
+  }
+  var BACK = G5.url('aluno-detalhe.html', 'id=' + S.id);
+  document.getElementById('bc').innerHTML = G5.breadcrumb([['Início', G5.url('../home/personal.html')], ['Alunos', G5.url('meus-alunos.html')], [S.name, BACK], ['Acompanhamento']]);
+  document.getElementById('sub').textContent = S.name + ': modo de acompanhamento e quem é responsável.';
+  var d = D.detail(S);
+  var resp = d.responsibles.slice();
+  if (V === 'sem-responsavel') resp = [];
+  if (V === 'unico-responsavel') resp = resp.slice(0, 1);
+  var isManager = (V === 'gestor'), offline = (V === 'offline'), inactive = (V === 'nao-ativo' || S.status !== 'ACTIVE');
+  var original = S.followMode, sel = (V === 'mudanca-pendente') ? (original === 'REMOTO' ? 'PRESENCIAL' : 'REMOTO') : original;
+  var LABEL = { PRESENCIAL: 'Presencial', REMOTO: 'Remoto' };
+  var lockMsg = offline ? 'Sem conexão. Tente quando estiver online.' : inactive ? 'Vínculo pausado ou encerrado: nada pode ser alterado agora.' : '';
+
+  function respRows() {
+    if (!resp.length) return '';
+    return resp.map(function (r) {
+      var mgr = isManager && !inactive && !offline;
+      return '<div class="g5-resp">' + G5.avatar(r.name) + '<div class="grow"><strong>' + esc(r.name) + '</strong><div class="muted">' + (r.isPrimary ? 'Principal' : 'Responsável') + ' · desde ' + A.fmtDate(r.since) + '</div></div>' +
+        (mgr ? (r.isPrimary ? '' : '<button type="button" class="btn btn-secondary" data-resp="main" data-name="' + esc(r.name) + '">Tornar principal<span class="sr-only">: ' + esc(r.name) + '</span></button>') + '<button type="button" class="btn btn-secondary" data-resp="rem" data-name="' + esc(r.name) + '">Remover<span class="sr-only">: ' + esc(r.name) + '</span></button>' : '') + '</div>';
+    }).join('');
+  }
+  function render(el) {
+    var lockDis = lockMsg ? ' disabled' : '';
+    el.innerHTML = '<div class="g5-panel stack-lg">' +
+      (offline ? G5.offlineAlert() : '') + (inactive ? G5.alertBox('info', '', 'O vínculo não está ativo. Você só consegue consultar esta tela.') : '') + G5.privacidade() +
+      '<div id="save-err" role="alert" tabindex="-1"></div>' +
+      '<section class="card" aria-labelledby="t-modo"><div class="card-header"><h2 class="card-title" id="t-modo">Modo de acompanhamento</h2></div><div class="card-body stack">' +
+      '<fieldset class="field" style="border:0;padding:0;margin:0"><legend class="field-label">Como você acompanha ' + esc(S.name.split(' ')[0]) + '</legend><div class="segmented" id="seg">' +
+      ['PRESENCIAL', 'REMOTO'].map(function (m) { return '<label><input type="radio" name="modo" value="' + m + '"' + (sel === m ? ' checked' : '') + lockDis + '><span>' + ico(m === 'PRESENCIAL' ? 'user' : 'monitor') + LABEL[m] + '</span></label>'; }).join('') + '</div>' +
+      '<span class="field-help" id="modo-h">Muda só como as telas se comportam, por exemplo quem registra a sessão. Não muda o que o aluno vê dos seus dados.</span></fieldset>' +
+      '<p class="g5-hint">Só o personal ou o administrador da conta mudam o modo.</p><p class="muted">Alterado por Carla Mendes em ' + A.fmtDate('2026-08-12') + '.</p>' +
+      (lockMsg ? '<p class="g5-hint" role="status">' + esc(lockMsg) + '</p>' : '') +
+      '<div id="live" class="sr-only" role="status" aria-live="polite"></div>' +
+      '<div class="row"><button type="button" class="btn btn-primary" id="b-save" disabled>Salvar modo</button><button type="button" class="btn btn-neutral" id="b-cancel">Cancelar</button></div></div></section>' +
+      '<section class="card" aria-labelledby="t-resp"><div class="card-header"><h2 class="card-title" id="t-resp">Responsáveis ' + G5.selo('V2') + '</h2></div><div class="card-body stack">' +
+      (resp.length ? '' : G5.alertBox('info', '', 'Este aluno está sem responsável. Os alertas vão para a fila do gestor.')) + '<div>' + respRows() + '</div>' +
+      '<div class="g5-resp">' + G5.avatar(D.managerName) + '<div class="grow"><strong>' + esc(D.managerName) + '</strong><div class="muted">Gestor da conta (vê este aluno)</div></div></div>' +
+      '<p class="muted">Os alertas vão ao responsável principal. Sem responsável, vão à fila do gestor.</p>' +
+      (isManager && !inactive && !offline ? '<div><button type="button" class="btn btn-secondary" data-resp="add">' + ico('plus') + 'Adicionar responsável</button></div>' : (isManager ? '' : '<p class="g5-hint">Só o gestor da conta altera os responsáveis.</p>')) + '</div></section>' +
+      '<section class="card" aria-labelledby="t-quem"><div class="card-header"><h2 class="card-title" id="t-quem">Quem vê os dados do aluno</h2></div><div class="card-body"><p>Responsáveis do vínculo e gestor da conta. Outros profissionais não veem este aluno.</p><p class="muted mt-2">O aluno é avisado disso. [LEGAL] [MOCK] texto provisório.</p></div></section></div>';
+    wire(el);
+  }
+  function wire(el) {
+    var save = el.querySelector('#b-save'), live = el.querySelector('#live');
+    function changed() { return sel !== original; }
+    el.querySelector('#seg').addEventListener('change', function (e) {
+      sel = e.target.value; save.disabled = !changed() || !!lockMsg; live.textContent = 'Modo selecionado: ' + LABEL[sel] + (changed() ? '. Falta salvar.' : '.');
+    });
+    save.disabled = !changed() || !!lockMsg;
+    save.addEventListener('click', function () {
+      var box = el.querySelector('#save-err');
+      if (V === 'erro-salvar') {
+        sel = original; el.querySelector('input[value="' + original + '"]').checked = true; save.disabled = true;
+        box.innerHTML = G5.alertBox('danger', '', 'Não foi possível salvar. Nada foi alterado.'); box.focus(); return;
+      }
+      save.disabled = true; save.setAttribute('aria-busy', 'true');
+      G5.flash('Modo alterado para ' + LABEL[sel] + '.', 'success');
+      location.href = BACK;
+    });
+    el.querySelector('#b-cancel').addEventListener('click', function () {
+      if (!changed()) { location.href = BACK; return; }
+      AuraUI.confirm({ title: 'Descartar a mudança?', text: 'Você escolheu outro modo e não salvou.', confirmLabel: 'Descartar', cancelLabel: 'Continuar editando' }).then(function (ok) { if (ok) location.href = BACK; });
+    });
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-resp]'); if (!b) return;
+      var k = b.dataset.resp;
+      if (k === 'add') AuraUI.toast('Demonstração: aqui o gestor escolheria outro profissional da conta.', { tone: 'info' });
+      else if (k === 'main') AuraUI.confirm({ title: 'Tornar ' + b.dataset.name + ' o responsável principal?', text: 'Os próximos alertas vão para ' + b.dataset.name + '. O aluno será avisado de que o responsável mudou.', confirmLabel: 'Tornar principal', cancelLabel: 'Cancelar' }).then(function (ok) { if (ok) AuraUI.toast('Responsável principal alterado.', { tone: 'success' }); });
+      else AuraUI.confirm({ title: 'Remover ' + b.dataset.name + '?', text: 'Remover ' + b.dataset.name + ': os alertas abertos dele passam para a fila do gestor. O aluno será avisado de que o responsável mudou.', confirmLabel: 'Remover', cancelLabel: 'Cancelar', danger: true }).then(function (ok) { if (ok) AuraUI.toast('Responsável removido.', { tone: 'warning' }); });
+    });
+  }
+  G4.ready(function () {
+    if (V === 'sem-permissao') { document.getElementById('area').innerHTML = G5.accessDenied(); return; }
+    AuraState.render('#area', { rows: 2, icon: 'users', title: 'Não achamos este aluno', text: 'O vínculo não existe mais.', action: { label: 'Voltar para Meus alunos', href: G5.url('meus-alunos.html') }, renderDefault: render });
+  });
+})();
+</script>
+</body>
+</html>

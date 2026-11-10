@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRN-42 · Dados usados pela IA · aura-fit</title>
+  <meta name="aura-screen" content="TRN-42">
+  <meta name="aura-variants" content="padrao,ia-liberada-saude-liberada,ia-liberada-sem-saude,ia-nao-liberada,ia-revogada,nao-confirmado,vinculo-pausado,vinculo-encerrando,vinculo-encerrado,menor-em-espera,pedido-modal,pedido-enviado,pedido-ja-enviado,pedido-limite,enviando-pedido,erro-pedido,registro-vazio,registro-com-itens,gestor-leitura,sem-alunos,carregando,erro,offline,conflito,sem-permissao,limite-cota,sem-plano-ia">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <link rel="stylesheet" href="../../assets/grupo-g5.css">
+  <link rel="stylesheet" href="../../assets/grupo-g6.css">
+  <link rel="stylesheet" href="../../assets/g7-acomp.css">
+  <link rel="stylesheet" href="../../assets/g8-ia.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g5.js"></script>
+  <script src="../../assets/data-g6.js"></script>
+  <script src="../../assets/data-g7-ia.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g5.js"></script>
+  <script src="../../assets/grupo-g6.js"></script>
+  <script src="../../assets/g7-core.js"></script>
+  <script src="../../assets/g7-ia.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div id="bc"></div>
+  <div class="page-header">
+    <div id="hd"></div>
+  </div>
+  <div id="area"></div>
+</main>
+<script>
+  G8.mount({ id: 'TRN-42', title: 'Dados usados pela IA', active: 'dados-ia' });
+  document.getElementById('hd').innerHTML = G8.head('Dados usados pela IA', 'O que a IA pode ler de cada aluno e o que ela já leu.', 'I4');
+  G8.dados();
+</script>
+</body>
+</html>

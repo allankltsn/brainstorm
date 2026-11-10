@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CFG-03 · Notificações · aura-fit</title>
+  <meta name="aura-screen" content="CFG-03">
+  <meta name="aura-variants" content="tudo-desligado">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g4.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Preferências salvas.">
+  <div class="g4-settings-wrap">
+    <div id="col" class="stack-lg g4-measure">
+      <div class="page-header" style="margin-bottom:0">
+        <div>
+          <h1>Notificações</h1>
+          <p>Escolha o que você quer receber. Cada mudança vale na hora.</p>
+        </div>
+      </div>
+      <div class="alert alert-success" role="status" data-when="success">
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <div class="alert-body"><div class="alert-title">Preferências salvas</div>Suas escolhas já valem.</div>
+      </div>
+      <div id="area"></div>
+    </div>
+  </div>
+</main>
+<script>
+  G4.setDefaultRole('aluno');
+  G4.mount({ id: 'CFG-03', title: 'Notificações', activeByRole: { aluno: 'perfil', admin: 'configuracoes', personal: 'configuracoes' } });
+  G4.settingsLayout('notificacoes', 'col');
+  var A = window.AURA, V = G4.variant(), r = G4.role(), isAluno = r === 'aluno', D = G4DATA;
+  var prefs = JSON.parse(JSON.stringify(A.notificationPrefs));
+  var allOff = V === 'tudo-desligado';
+  if (allOff) { prefs.channels.email = false; prefs.channels.push = false; prefs.types.forEach(function (t) { if (!t.transactional) t.enabled = false; }); }
+  var types = prefs.types.filter(function (t) { return D.notifTypes[r].indexOf(t.key) !== -1; });
+
+  function sw(id, label, on, small) {
+    return '<label class="switch"><input type="checkbox" role="switch" id="' + id + '"' + (on ? ' checked' : '') + '><span class="switch-text">' + label + (small ? '<small>' + small + '</small>' : '') + '</span></label>';
+  }
+  function render(el) {
+    var tr = types.filter(function (t) { return t.transactional; });
+    var opt = types.filter(function (t) { return !t.transactional && t.key !== 'novidades'; });
+    var nov = types.filter(function (t) { return t.key === 'novidades'; })[0];
+    var reminder = types.filter(function (t) { return t.key === 'treinos'; })[0];
+    el.innerHTML = '<div class="stack-lg">' +
+      (allOff ? '<div class="alert alert-info" role="status"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert-body">Todos os avisos opcionais estão desligados. Você ainda recebe por e-mail os avisos de segurança' + (r === 'personal' ? ' e de cobrança' : '') + ', porque protegem sua conta.</div></div>' : '') +
+      '<section class="card" aria-labelledby="t-canais"><div class="card-header"><h2 class="card-title" id="t-canais">Por onde avisar</h2></div><div class="card-body stack">' +
+        sw('ch-email', 'E-mail', prefs.channels.email, 'Para os avisos opcionais abaixo.') +
+        (isAluno ? sw('ch-push', 'Aviso no celular', prefs.channels.push, 'Aparece na tela do celular.') : '') + '</div></section>' +
+      '<section class="card" aria-labelledby="t-sempre"><div class="card-header"><h2 class="card-title" id="t-sempre">Sempre enviados</h2></div><div class="card-body"><ul class="g4-list">' +
+        tr.map(function (t) { return '<li>' + G4.ico('lock') + '<span class="grow"><strong>' + G4.esc(t.label) + '</strong><span>' + G4.esc(D.notifReason[t.key]) + '</span></span><span class="badge">Sempre enviado</span></li>'; }).join('') + '</ul></div></section>' +
+      (opt.length ? '<section class="card" aria-labelledby="t-opc"><div class="card-header"><h2 class="card-title" id="t-opc">Avisos que você escolhe</h2></div><div class="card-body stack">' +
+        opt.map(function (t) {
+          var small = t.key === 'treinos' ? 'Desligado por padrão. Um lembrete simples, sem cobrança.' : '';
+          return sw('t-' + t.key, G4.esc(t.label), t.enabled, small);
+        }).join('') +
+        (reminder ? '<div id="rem-box"' + (reminder.enabled ? '' : ' hidden') + ' class="stack-sm"><div class="field"><label for="rem-hora">Horário do lembrete</label><div class="select-wrap"><select class="select" id="rem-hora"><option>07:00</option><option>12:00</option><option selected>18:00</option><option>20:00</option></select></div></div><p class="muted g4-sample">Exemplo da mensagem: “Seu treino de hoje está disponível. Quando quiser.”</p></div>' : '') +
+        '</div></section>' : '') +
+      (nov ? '<section class="card" aria-labelledby="t-nov"><div class="card-header"><h2 class="card-title" id="t-nov">Novidades e ofertas</h2></div><div class="card-body stack">' +
+        '<p class="muted">Separado dos avisos acima. Desligado até você escolher. Dá para mudar quando quiser, do mesmo jeito.</p>' + sw('t-novidades', G4.esc(nov.label), nov.enabled) +
+        '<p class="muted">Isso também é um consentimento. Veja todos em <a href="' + G4.esc(G4.url('privacidade.html')) + '#consentimentos">Privacidade e meus direitos</a>.</p></div></section>' : '') +
+      '</div>';
+    el.querySelectorAll('input[role="switch"]').forEach(function (i) {
+      i.addEventListener('change', function () {
+        var name = i.parentNode.querySelector('.switch-text').childNodes[0].textContent.trim();
+        if (i.id === 't-treinos') { var b = document.getElementById('rem-box'); if (b) b.hidden = !i.checked; }
+        AuraUI.toast(name + (i.checked ? ': ligado.' : ': desligado.'), { tone: 'success', timeout: 4000 });
+      });
+    });
+  }
+  G4.ready(function () {
+    var s = AuraState.get();
+    if (s === 'empty') { allOff = true; prefs.channels.email = false; prefs.channels.push = false; prefs.types.forEach(function (t) { if (!t.transactional) t.enabled = false; }); }
+    AuraState.render('#area', s === 'empty' ? 'default' : s, { rows: 4, renderDefault: render });
+  });
+</script>
+</body>
+</html>

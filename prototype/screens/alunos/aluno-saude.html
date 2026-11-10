@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRN-03 · Saúde, objetivos e nutrição · aura-fit</title>
+  <meta name="aura-screen" content="TRN-03">
+  <meta name="aura-variants" content="liberado,nunca-liberado,revogado,nao-confirmado,menor-em-espera,vazio,erro">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <link rel="stylesheet" href="../../assets/grupo-g5.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g5.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g5.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div id="bc"></div>
+  <div class="page-header">
+    <div>
+      <h1>Saúde, objetivos e nutrição</h1>
+      <p id="sub"></p>
+    </div>
+    <div class="page-actions"><a class="btn btn-secondary" id="a-voltar" href="#">Voltar ao aluno</a></div>
+  </div>
+  <div id="area"></div>
+</main>
+<script>
+(function () {
+  G5.mount({ id: 'TRN-03', title: 'Saúde, objetivos e nutrição' });
+  var A = window.AURA, D = window.G5DATA, V = G5.variant() || 'liberado', esc = G5.esc;
+  var MAP = { liberado: 's01', 'nunca-liberado': 's04', revogado: 's06', 'nao-confirmado': 's01', 'menor-em-espera': 's20', vazio: 's07', erro: 's01' };
+  var S = G5.pickStudent(MAP[V] || 's01');
+  if (!S) {
+    /* ?id inexistente: nenhum dado de aluno (QA-A-03) */
+    document.getElementById('bc').innerHTML = G5.breadcrumb([['Início', G5.url('../home/personal.html')], ['Alunos', G5.url('meus-alunos.html')], ['Aluno']]);
+    var a = document.getElementById('a-voltar'); if (a) a.href = G5.url('meus-alunos.html'); document.getElementById('sub').textContent = '';
+    G4.ready(function () { G5.notFound('#area', 2); });
+    return;
+  }
+  document.getElementById('sub').textContent = 'Só o que o aluno liberou, e apenas isso.';
+  document.getElementById('bc').innerHTML = G5.breadcrumb([['Início', G5.url('../home/personal.html')], ['Alunos', G5.url('meus-alunos.html')], [S.name, G5.url('aluno-detalhe.html', 'id=' + S.id)], ['Saúde']]);
+  document.getElementById('a-voltar').href = G5.url('aluno-detalhe.html', 'id=' + S.id + '&aba=saude');
+  var fixed = false;
+  function render(el) {
+    el.innerHTML = G5.healthPanel(S, { variant: fixed ? '' : V, mediaHref: G5.url('aluno-detalhe.html', 'id=' + S.id + '&aba=midia'), acompHref: G5.url('aluno-acompanhamento.html', 'id=' + S.id) });
+  }
+  document.getElementById('area').addEventListener('click', function (e) {
+    if (e.target.closest('[data-g5-retry]')) { fixed = true; render(document.getElementById('area')); }
+  });
+  G4.ready(function () {
+    AuraState.render('#area', { rows: 4, variant: 'cards', icon: 'heart', title: 'Nada por aqui ainda', text: 'O aluno liberou, mas ainda não registrou dados de saúde.', renderDefault: render });
+  });
+})();
+</script>
+</body>
+</html>

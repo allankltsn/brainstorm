@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUTH-08 · Escolher acesso · aura-fit</title>
+  <meta name="aura-screen" content="AUTH-08">
+  <meta name="aura-variants" content="aluno-dois-personais,personal-e-admin">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g1.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g1.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body class="g1">
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<div class="g1-split">
+  <aside class="g1-brand" aria-label="Sobre o aura-fit">
+    <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+    <div>
+      <p class="g1-claim">Mais que treinos. Resultados reais.</p>
+      <p class="g1-claim-sub">O espaço do personal para cuidar dos alunos, dos treinos e das cobranças.</p>
+      <ul class="g1-points">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg>Convite seguro para cada aluno</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Seus dados protegidos, como manda a LGPD</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-refresh"/></svg>Cancele a assinatura quando quiser</li>
+      </ul>
+    </div>
+    <p class="caption">Só para teste. Os dados são fictícios.</p>
+  </aside>
+  <div class="g1-pane">
+    <header class="g1-top">
+      <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+      <button type="button" class="g1-iconbtn" data-g1-theme aria-label="Mudar tema"></button>
+    </header>
+    <main id="conteudo" tabindex="-1" class="g1-main" data-state="default">
+      <div class="g1-card">
+        <div id="g1-state" data-when="loading error"></div>
+        <div class="stack-lg" data-when="default empty">
+          <div class="g1-head">
+            <h1>Como você quer entrar?</h1>
+            <p class="muted">Sua conta pode entrar de mais de um jeito. Escolha um. Depois, você pode usar "Trocar conta" no menu da sua foto.</p>
+          </div>
+          <form id="form-perfil" class="stack" novalidate>
+            <fieldset class="field" id="grupo-perfil">
+              <legend class="field-label">Acesso</legend>
+              <div class="g1-options" id="opcoes" role="radiogroup" aria-labelledby="leg-perfil" aria-describedby="perfil-ajuda"></div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Continuar</button>
+          </form>
+          <div class="g1-foot-links is-flat"><a class="g1-link" href="login.html">Entrar com outra conta</a></div>
+        </div>
+        <div data-when="success" class="stack-lg">
+          <div class="alert alert-success" role="status"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg><div class="alert-body"><div class="alert-title">Acesso escolhido</div>Estamos abrindo o seu início.</div></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="../../assets/grupo-g1.js"></script>
+<script>
+(function () {
+  var A = window.AURA, v = G1.v() === 'personal-e-admin' ? 'personal-e-admin' : 'aluno-dois-personais';
+  var list = v === 'personal-e-admin' ? A.membershipVariants.personalEAdmin : A.membershipVariants.alunoDoisPersonais;
+  var DESC = { aluno: 'Seus treinos e a sua conta', personal: 'Seus alunos e sua assinatura', admin: 'Usuários, planos e cupons da plataforma' };
+  var ICO = { aluno: 'dumbbell', personal: 'users', admin: 'shield' };
+  var box = document.getElementById('opcoes'), grp = document.getElementById('grupo-perfil');
+  box.removeAttribute('aria-labelledby'); box.removeAttribute('aria-describedby'); box.removeAttribute('role');
+  list.forEach(function (m, i) {
+    var l = document.createElement('label'); l.className = 'g1-option';
+    l.innerHTML = '<input type="radio" name="perfil" value="' + i + '" data-role="' + m.role + '">' + G1.ico(ICO[m.role], 'icon-lg') + '<span><strong>' + G1.esc(m.label) + '</strong><small>' + G1.esc(DESC[m.role]) + '</small></span>';
+    box.appendChild(l);
+  });
+  var f = document.getElementById('form-perfil');
+  G1.autoClear(f);
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var sel = f.querySelector('input[name="perfil"]:checked');
+    var first = f.querySelector('input[name="perfil"]');
+    if (!sel) { grp.classList.add('has-error'); first.setAttribute('aria-invalid', 'true'); var er = document.getElementById('erro-perfil'); if (!er) { er = document.createElement('div'); er.id = 'erro-perfil'; er.className = 'field-error'; er.setAttribute('role', 'alert'); grp.appendChild(er); } er.innerHTML = G1.ico('alert', 'icon-sm') + '<span>Escolha um perfil para continuar.</span>'; first.focus(); return; }
+    G1.go(G1.home(sel.getAttribute('data-role')));
+  });
+  f.addEventListener('change', function () { grp.classList.remove('has-error'); var er = document.getElementById('erro-perfil'); if (er) er.remove(); });
+})();
+</script>
+</body>
+</html>

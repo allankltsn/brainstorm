@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRN-05 · Pausar ou encerrar vínculo · aura-fit</title>
+  <meta name="aura-screen" content="TRN-05">
+  <meta name="aura-variants" content="pausar,retomar,encerrar,encerrar-erro,encerrando,sem-permissao">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <link rel="stylesheet" href="../../assets/grupo-g5.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g5.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g5.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div id="bc"></div>
+  <div class="page-header">
+    <div>
+      <h1>Pausar ou encerrar vínculo</h1>
+      <p>Interrompa ou termine o acompanhamento. Cada ação mostra o que muda antes de você confirmar.</p>
+    </div>
+  </div>
+  <div id="area"></div>
+</main>
+<script>
+(function () {
+  G5.mount({ id: 'TRN-05', title: 'Pausar ou encerrar vínculo' });
+  var A = window.AURA, D = window.G5DATA, V = G5.variant() || 'pausar', esc = G5.esc, ico = G5.ico;
+  var MAP = { retomar: 's05', encerrando: 's23' };
+  var S = G5.pickStudent(MAP[V] || 's01');
+  if (!S) {
+    /* ?id inexistente: nenhum dado de aluno (QA-A-03) */
+    document.getElementById('bc').innerHTML = G5.breadcrumb([['Início', G5.url('../home/personal.html')], ['Alunos', G5.url('meus-alunos.html')], ['Aluno']]);
+    G4.ready(function () { G5.notFound('#area', 2); });
+    return;
+  }
+  var BACK = G5.url('aluno-detalhe.html', 'id=' + S.id);
+  document.getElementById('bc').innerHTML = G5.breadcrumb([['Início', G5.url('../home/personal.html')], ['Alunos', G5.url('meus-alunos.html')], [S.name, BACK], ['Pausar ou encerrar vínculo']]);
+  var canEnd = (V !== 'sem-permissao');
+  var autoOpen = { pausar: 'pausar', retomar: 'retomar', encerrar: 'encerrar', 'encerrar-erro': 'encerrar', 'sem-permissao': 'encerrar' }[V];
+  if (V === 'encerrando') { S.status = 'ENDING'; S.endedAt = A.today; }
+
+  function open(kind, opener) {
+    G5.vinculoModal(kind, { st: S, opener: opener, canEnd: canEnd, error: V === 'encerrar-erro', onDone: function (k) { G5.applyVinculo(S, k); render(document.getElementById('area')); var f = document.querySelector('#area h2'); if (f) { f.tabIndex = -1; f.focus(); } } });
+  }
+  function render(el) {
+    var ending = S.status === 'ENDING', paused = S.status === 'SUSPENDED';
+    var disEnd = ending || S.status === 'ENDED';
+    el.innerHTML = '<div class="stack-lg g4-measure"><section class="card" aria-labelledby="t-al"><div class="card-header"><h2 class="card-title" id="t-al">' + (ending ? 'Encerrando…' : esc(S.name)) + '</h2>' + G5.linkBadge(S) + '</div><div class="card-body stack">' +
+      '<div class="row">' + G5.avatar(S.name, 'avatar') + '<div><strong>' + esc(S.name) + '</strong><div class="muted">Desde ' + A.fmtDate(S.startedAt) + '</div></div></div>' +
+      (ending ? G5.alertBox('warning', '', 'Encerramento em andamento. Alguns dados já estão ocultos. O vínculo aparece na aba Histórico quando terminar.', '<a class="btn btn-secondary" href="' + esc(G5.url('meus-alunos.html', 'aba=hist')) + '">Ver Histórico</a>') : '') +
+      (!canEnd ? '<p class="g5-hint">Só o personal ou o administrador da conta encerram o vínculo.</p>' : '') +
+      '<div class="row">' + (paused ? '<button type="button" class="btn btn-secondary" id="b-ret">Retomar acompanhamento</button>' : '<button type="button" class="btn btn-secondary" id="b-pau"' + (disEnd ? ' disabled' : '') + '>Pausar acompanhamento</button>') +
+      '<button type="button" class="btn btn-secondary" id="b-enc"' + (disEnd ? ' disabled' : '') + '>Encerrar vínculo</button>' + G5.selo('V1') + '</div></div></section>' +
+      '<p class="muted"><a href="' + esc(BACK) + '">Voltar ao aluno</a></p></div>';
+    var p = el.querySelector('#b-pau'), r = el.querySelector('#b-ret'), e = el.querySelector('#b-enc');
+    if (p) p.addEventListener('click', function () { open('pausar', p); });
+    if (r) r.addEventListener('click', function () { open('retomar', r); });
+    e.addEventListener('click', function () { open('encerrar', e); });
+    return { p: p, r: r, e: e };
+  }
+  var els;
+  G4.ready(function () {
+    AuraState.render('#area', { rows: 3, icon: 'users', title: 'Não achamos este aluno', text: 'O vínculo não existe mais.', action: { label: 'Voltar para Meus alunos', href: G5.url('meus-alunos.html') }, renderDefault: function (el) { els = render(el); } });
+    if (autoOpen && els) { var b = autoOpen === 'encerrar' ? els.e : (els.p || els.r); if (b && !b.disabled) open(autoOpen, b); }
+  });
+})();
+</script>
+</body>
+</html>

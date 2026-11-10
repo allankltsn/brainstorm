@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Galeria do protótipo | aura-fit</title>
+  <script src="assets/theme.js"></script>
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/components.css">
+  <script src="assets/icons.js"></script>
+  <script src="assets/screens.js"></script>
+  <!-- Arquivos opcionais por grupo (ausentes sao ignorados) -->
+  <script src="assets/screens-auth.js"></script>
+  <script src="assets/screens-admin.js"></script>
+  <script src="assets/screens-personal.js"></script>
+  <script src="assets/screens-aluno.js"></script>
+  <script src="assets/screens-comum.js"></script>
+  <script src="assets/screens-g1.js"></script>
+  <script src="assets/screens-g2.js"></script>
+  <script src="assets/screens-g4.js"></script>
+  <script src="assets/screens-g5.js"></script>
+  <style>
+    /* layout da galeria (nao e uma tela do produto); cores so por token */
+    body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    .g-top { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: rgb(var(--color-surface)); border-bottom: 1px solid rgb(var(--color-line)); }
+    .g-top .field { min-width: 130px; }
+    .g-top .brand { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: rgb(var(--color-ink)); align-self: center; margin-right: var(--space-2); }
+    .g-top .brand span { color: rgb(var(--color-accent-text)); }
+    .g-main { flex: 1; display: flex; min-height: 0; }
+    .g-list { width: 300px; flex: none; overflow-y: auto; padding: var(--space-3); background: rgb(var(--color-surface)); border-right: 1px solid rgb(var(--color-line)); }
+    .g-list h2 { font-size: 11px; line-height: 16px; letter-spacing: .06em; text-transform: uppercase; color: rgb(var(--color-muted)); padding: var(--space-4) var(--space-2) var(--space-2); }
+    .g-list ul { display: flex; flex-direction: column; gap: var(--space-2); }
+    .g-item { width: 100%; min-height: var(--target); text-align: left; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); border: 1px solid transparent; display: flex; flex-direction: column; justify-content: center; font-weight: 500; }
+    .g-item:hover { background: rgb(var(--color-surface-2)); }
+    .g-item[aria-current="true"] { background: rgb(var(--color-primary-soft)); border-color: rgb(var(--color-accent-text)); color: rgb(var(--color-accent-text)); font-weight: 600; }
+    .g-item small { color: rgb(var(--color-muted)); font-size: 11px; line-height: 16px; font-weight: 400; }
+    .g-view { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .g-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-4); border-bottom: 1px solid rgb(var(--color-line)); }
+    .g-stage { flex: 1; min-height: 0; overflow: auto; padding: var(--space-4); }
+    .g-frame-box { margin: 0 auto; position: relative; background: rgb(var(--color-surface)); box-shadow: var(--shadow-elev-2); border: 1px solid rgb(var(--color-line-strong)); }
+    .g-frame { border: 0; transform-origin: 0 0; display: block; background: rgb(var(--color-bg)); }
+    @media (max-width: 899px) {
+      body { height: auto; overflow: auto; }
+      .g-main { flex-direction: column; }
+      .g-list { width: auto; max-height: 40vh; border-right: 0; border-bottom: 1px solid rgb(var(--color-line)); }
+      .g-stage { min-height: 70vh; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#viewer">Ir para o visualizador</a>
+  <header class="g-top">
+    <span class="brand">aura-<span>fit</span> <span class="muted caption" style="color:inherit">protótipo</span></span>
+    <div class="field"><label for="s-vp">Viewport</label><div class="select-wrap"><select class="select" id="s-vp"></select></div></div>
+    <div class="field"><label for="s-theme">Tema</label><div class="select-wrap"><select class="select" id="s-theme"><option value="light">Claro</option><option value="dark">Escuro</option><option value="system">Sistema</option></select></div></div>
+    <div class="field"><label for="s-role">Perfil</label><div class="select-wrap"><select class="select" id="s-role"><option value="admin">Admin</option><option value="personal">Personal</option><option value="aluno">Aluno</option></select></div></div>
+    <div class="field"><label for="s-state">Estado</label><div class="select-wrap"><select class="select" id="s-state"><option value="default">Padrão</option><option value="empty">Vazio</option><option value="loading">Carregando</option><option value="error">Erro</option><option value="success">Sucesso</option></select></div></div>
+    <div class="field" id="f-variant" hidden><label for="s-variant">Variante</label><div class="select-wrap"><select class="select" id="s-variant"></select></div></div>
+    <label class="check"><input type="checkbox" id="s-fit" checked><span class="check-text">Ajustar à janela</span></label>
+  </header>
+  <div class="g-main">
+    <nav class="g-list" id="lista" aria-label="Telas do protótipo"></nav>
+    <section class="g-view" id="viewer" tabindex="-1" aria-label="Visualizador">
+      <div class="g-bar">
+        <strong id="v-title">Selecione uma tela</strong>
+        <span class="muted" id="v-info" aria-live="polite"></span>
+        <a class="btn btn-text" id="v-open" href="#" target="_blank" rel="noopener" hidden><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg>Abrir em nova aba<span class="sr-only"> (abre em outra aba)</span></a>
+      </div>
+      <div class="g-stage" id="stage">
+        <div class="g-frame-box" id="box"><iframe class="g-frame" id="frame" title="Tela do protótipo" src="about:blank"></iframe></div>
+      </div>
+    </section>
+  </div>
+
+<script>
+(function () {
+  var VIEWPORTS = [
+    ['Mobile 390×844', 390, 844], ['Mobile 360×800', 360, 800], ['Mobile 414×896', 414, 896],
+    ['Tablet 768×1024', 768, 1024], ['Tablet 1024×1366', 1024, 1366], ['Tablet 800×1280', 800, 1280],
+    ['Desktop 1440×900 (referência)', 1440, 900], ['Desktop 1280×800', 1280, 800], ['Desktop 1920×1080', 1920, 1080], ['Desktop 2560×1440', 2560, 1440]
+  ];
+  var SCREENS = window.SCREENS || [];
+  var $ = function (id) { return document.getElementById(id); };
+  var sVariant = $('s-variant'), fVariant = $('f-variant');
+  var sVp = $('s-vp'), sTheme = $('s-theme'), sRole = $('s-role'), sState = $('s-state'), sFit = $('s-fit');
+  var frame = $('frame'), box = $('box'), stage = $('stage'), list = $('lista');
+  var cur = -1;
+
+  VIEWPORTS.forEach(function (v, i) { var o = document.createElement('option'); o.value = i; o.textContent = v[0]; sVp.appendChild(o); });
+  sVp.value = 6;
+  sTheme.value = window.AuraTheme ? window.AuraTheme.get() : 'light';
+
+  // lista agrupada
+  var groups = {}, order = [];
+  SCREENS.forEach(function (s, i) { if (!groups[s.group]) { groups[s.group] = []; order.push(s.group); } groups[s.group].push(i); });
+  if (!SCREENS.length) list.innerHTML = '<p class="muted" style="padding:16px">Nenhuma tela registrada ainda. Adicione em assets/screens.js.</p>';
+  order.forEach(function (g) {
+    var h = document.createElement('h2'); h.textContent = g; h.id = 'g-' + g.replace(/\W+/g, '-');
+    var ul = document.createElement('ul'); ul.setAttribute('aria-labelledby', h.id);
+    groups[g].forEach(function (i) {
+      var s = SCREENS[i], li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.className = 'g-item'; b.dataset.i = i;
+      b.innerHTML = '<span></span><small></small>'; b.firstChild.textContent = s.title; b.lastChild.textContent = s.path.replace(/^screens\//, '') + (s.role ? ' · ' + s.role : '');
+      b.addEventListener('click', function () { select(i, true); });
+      li.appendChild(b); ul.appendChild(li);
+    });
+    list.appendChild(h); list.appendChild(ul);
+  });
+  list.addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    var btns = Array.prototype.slice.call(list.querySelectorAll('.g-item')), k = btns.indexOf(document.activeElement);
+    if (k < 0) return; e.preventDefault();
+    btns[Math.max(0, Math.min(btns.length - 1, k + (e.key === 'ArrowDown' ? 1 : -1)))].focus();
+  });
+
+  function url() {
+    var s = SCREENS[cur]; if (!s) return 'about:blank';
+    return s.path + '?role=' + sRole.value + '&theme=' + sTheme.value + (sState.value !== 'default' ? '&state=' + sState.value : '') + (sVariant.value ? '&variant=' + encodeURIComponent(sVariant.value) : '');
+  }
+  function layout() {
+    var v = VIEWPORTS[sVp.value], w = v[1], h = v[2];
+    var sc = 1;
+    if (sFit.checked) { var cs = getComputedStyle(stage); sc = Math.min(1, (stage.clientWidth - parseFloat(cs.paddingLeft) * 2 - 2) / w, (stage.clientHeight - parseFloat(cs.paddingTop) * 2 - 2) / h); }
+    frame.style.width = w + 'px'; frame.style.height = h + 'px'; frame.style.transform = 'scale(' + sc + ')';
+    box.style.width = Math.round(w * sc) + 'px'; box.style.height = Math.round(h * sc) + 'px';
+    $('v-info').textContent = w + ' × ' + h + ' px · escala ' + Math.round(sc * 100) + '%';
+  }
+  function load() {
+    var u = url();
+    if (frame.getAttribute('src') !== u) frame.setAttribute('src', u);
+    var open = $('v-open'); if (cur >= 0) { open.href = u; open.hidden = false; }
+    layout(); save();
+  }
+  // variantes: campo "variants" (array ou texto) do registro, ou "Variantes: a, b, c." na nota (iframe file:// nao deixa ler o <meta aura-variants>)
+  function variantsOf(s) {
+    if (s.variants) return Array.isArray(s.variants) ? s.variants : String(s.variants).split(/\s*,\s*/);
+    var m = /Variantes?:\s*([a-z0-9\-,\s]+)/i.exec(s.note || '');
+    return m ? m[1].split(/\s*,\s*/).map(function (x) { return x.trim(); }).filter(Boolean) : [];
+  }
+  function fillVariants(s, keep) {
+    var vs = variantsOf(s);
+    sVariant.innerHTML = '<option value="">Padrão</option>' + vs.map(function (v) { return '<option value="' + v + '">' + v + '</option>'; }).join('');
+    sVariant.value = keep && vs.indexOf(keep) !== -1 ? keep : '';
+    fVariant.hidden = !vs.length;
+  }
+  function select(i, focusView, keepVariant) {
+    cur = i; var s = SCREENS[i];
+    fillVariants(s, keepVariant);
+    if (s.role) sRole.value = s.role;
+    $('v-title').textContent = s.title;
+    frame.title = 'Tela: ' + s.title;
+    Array.prototype.forEach.call(list.querySelectorAll('.g-item'), function (b) { if (+b.dataset.i === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+    load();
+  }
+  function save() { try { history.replaceState(null, '', '#' + ['s=' + cur, 'vp=' + sVp.value, 'th=' + sTheme.value, 'r=' + sRole.value, 'st=' + sState.value, 'v=' + sVariant.value].join('&')); } catch (e) {} }
+
+  sTheme.addEventListener('change', function () { if (window.AuraTheme) window.AuraTheme.set(sTheme.value); load(); });
+  [sRole, sState, sVariant].forEach(function (el) { el.addEventListener('change', load); });
+  sVp.addEventListener('change', layout); sVp.addEventListener('change', save);
+  sFit.addEventListener('change', layout);
+  window.addEventListener('resize', layout);
+  if (window.ResizeObserver) new ResizeObserver(layout).observe(stage);
+
+  // estado inicial a partir do hash
+  var h = {}; location.hash.replace(/^#/, '').split('&').forEach(function (p) { var kv = p.split('='); if (kv[0]) h[kv[0]] = kv[1]; });
+  if (h.vp && VIEWPORTS[h.vp]) sVp.value = h.vp;
+  if (h.th) sTheme.value = h.th;
+  if (h.r) sRole.value = h.r;
+  if (h.st) sState.value = h.st;
+  if (SCREENS.length) { var si = h.s && SCREENS[+h.s] ? +h.s : 0; select(si, false, h.v); if (h.r) sRole.value = h.r; load(); } else layout();
+})();
+</script>
+</body>
+</html>

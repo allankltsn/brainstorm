@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIS-02 · Acesso negado · aura-fit</title>
+  <meta name="aura-screen" content="SIS-02">
+  <meta name="aura-variants" content="com-outro-perfil">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g1.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g1.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-state="default">
+        <div id="g1-state" data-when="loading error"></div>
+  <div data-when="default empty success" class="g1-center">
+    <div class="card g1-card-wide"><div class="card-body">
+      <div class="g1-statecard">
+          <span class="g1-bigicon is-warning"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg></span>
+          <h1>Você não tem permissão para ver esta página.</h1>
+          <p>Se acha que deveria ter, fale com o administrador.</p>
+<div class="g1-actions is-row"><a class="btn btn-primary btn-lg" id="voltar" href="../home/personal.html">Voltar para o início</a><a class="btn btn-secondary btn-lg" id="trocar" href="../auth/selecionar-perfil.html" data-v="com-outro-perfil" hidden>Trocar conta</a></div>
+        </div>
+    </div></div>
+  </div>
+</main>
+<script src="../../assets/grupo-g1.js"></script>
+<script>
+(function () {
+  var role = (['admin', 'personal', 'aluno'].indexOf(G1.q.role) > -1 ? G1.q.role : 'personal');
+  var H = window.AURA_G1.home, th = G1.q.theme ? '&theme=' + encodeURIComponent(G1.q.theme) : '';
+  var routes = { login: '../auth/login.html', inicio: H[role] + th, configuracoes: '../config/configuracoes.html?role=' + role + th, perfil: '../config/configuracoes.html?role=aluno' + th,
+    'minha-assinatura': '../config/assinatura.html?role=personal' + th, treino: '../home/aluno-treino-do-dia.html?role=aluno' + th, usuarios: '../admin/usuarios.html?role=admin' + th,
+    'perfis-permissoes': '../admin/perfis.html?role=admin' + th, planos: '../planos/admin-planos.html?role=admin' + th, cupons: '../admin/cupons.html?role=admin' + th };
+  AuraShell.mount({ role: role, active: '', title: 'Acesso negado', routes: routes });
+  document.addEventListener('DOMContentLoaded', function () { document.title = 'SIS-02 · Acesso negado · aura-fit'; });
+  document.addEventListener('DOMContentLoaded', function () { document.getElementById('voltar').href = G1.withTheme(H[role]); var t = document.getElementById('trocar'); if (t) t.href = G1.withTheme('../auth/selecionar-perfil.html?variant=' + (role === 'admin' ? 'personal-e-admin' : 'aluno-dois-personais')); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLN-02 · Resumo do pedido · aura-fit</title>
+  <meta name="aura-screen" content="PLN-02">
+  <meta name="aura-variants" content="cupom-aplicado,cupom-invalido,cupom-expirado,cupom-esgotado,cupom-outro-plano,cupom-so-primeira,cupom-substituir">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g2.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g2.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g2.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Cupom aplicado. O total foi atualizado.">
+  <div class="g2-wrap">
+    <nav aria-label="Você está em" class="mb-2"><ol class="breadcrumb">
+      <li><a id="bc-planos" href="planos.html">Planos</a></li><li><span aria-current="page">Resumo do pedido</span></li></ol></nav>
+    <div class="page-header">
+      <div>
+        <h1>Confira seu pedido</h1>
+        <p>Veja quanto você paga hoje e como será a renovação, antes de ir ao pagamento.</p>
+      </div>
+    </div>
+    <div id="area"></div>
+    <details class="g2-proto-bar" id="atalho-teste"><summary>Atalho de teste: cupons</summary><ul class="stack-sm">
+      <li><code>BEMVINDA20</code>: válido (20% na primeira cobrança)</li><li><code>VERAO10</code>: expirado</li><li><code>LANCAMENTO</code>: esgotado</li><li><code>PREMIUM20</code>: vale só para o Premium</li><li><code>PRIMEIRA25</code>: só na primeira assinatura (esta conta já assinou)</li><li><code>FORCA5</code>: R$ 5,00 por mês, 12 meses</li></ul></details>
+  </div>
+</main>
+<script>
+(function () {
+  var A = window.AURA, G = window.G2, Q = G.Q;
+  var S = null, seen = null;
+  document.getElementById('bc-planos').href = G.url(G.PATH.planos);
+
+  var PRESET = {
+    'cupom-aplicado': { apply: 'BEMVINDA20' },
+    'cupom-invalido': { type: 'PROMO999' },
+    'cupom-expirado': { type: 'VERAO10' },
+    'cupom-esgotado': { type: 'LANCAMENTO' },
+    'cupom-outro-plano': { type: 'PREMIUM20' },
+    'cupom-so-primeira': { type: 'PRIMEIRA25', hadPrior: true },
+    'cupom-substituir': { apply: 'FORCA5', type: 'BEMVINDA20', replace: true }
+  };
+
+  // variantes de cupom e o estado success simulam uma assinatura nova; sem elas, quem ja tem plano pago faz uma troca
+  function forceNew() { return /^cupom-/.test(G.variant()) || G.state() === 'success'; }
+  function live() { return forceNew() ? null : G.liveSub(); }
+
+  function initState() {
+    var v = G.variant(), st = G.state(), pre = PRESET[v] || (st === 'success' ? PRESET['cupom-aplicado'] : {}), cur = live();
+    var planId = Q.plan || (cur ? (cur.planId === 'pro' ? 'premium' : 'pro') : 'pro');
+    S = { planId: planId, cycle: Q.cycle === 'anual' ? 'anual' : 'mensal', applied: null, input: '', error: null, pending: null, hadPrior: !!pre.hadPrior, notice: null, change: false };
+    if (cur) { S.change = cur.planId !== planId; S.cycle = cur.cycle; }
+    if (!S.change) {
+      var code = pre.apply || (!v && Q.coupon) || '';
+      if (code) { var r = G.validateCoupon(code, S.planId, S.cycle, S); if (r.ok) S.applied = r.coupon; }
+      if (pre.type) { S.input = pre.type; var r2 = G.validateCoupon(pre.type, S.planId, S.cycle, S);
+        if (pre.replace) { if (r2.ok) S.pending = r2.coupon; } else if (!r2.ok) S.error = r2; }
+    }
+    seen = v + '|' + st;
+  }
+
+  function paidPlans() { return G.catalog().filter(function (p) { return p.prices.monthly > 0 && !(S.change && G.liveSub() && p.id === G.liveSub().planId); }); }
+
+  function optionsHtml() {
+    var h = '<fieldset class="field"><legend class="field-label">' + (S.change ? 'Mudar para' : 'Plano') + '</legend>' + paidPlans().map(function (p) {
+      return '<label class="check g2-option"><input type="radio" name="plano" value="' + p.id + '"' + (p.id === S.planId ? ' checked' : '') + '><span class="check-text"><strong>' + G.esc(p.name) + '</strong><small>' + G.esc(p.features.slice(0, 2).join(' · ')) + '</small></span></label>';
+    }).join('') + '</fieldset>';
+    if (S.change) {
+      h += '<p class="g2-note g2-help mt-4">' + G.ico('info', 'icon-sm') + '<span>Você paga ' + (S.cycle === 'anual' ? 'por ano' : 'por mês') + '. A troca de plano mantém o seu ciclo e a data da próxima cobrança, ' + G.dmy(G.liveSub().nextChargeAt) + '.</span></p>';
+      return h;
+    }
+    var p = G.planById(S.planId);
+    h += '<fieldset class="field"><legend class="field-label">Como pagar</legend>' + ['mensal', 'anual'].map(function (c) {
+      var val = G.price(p, c);
+      return '<label class="check g2-option"><input type="radio" name="ciclo" value="' + c + '"' + (c === S.cycle ? ' checked' : '') + '><span class="check-text"><strong>' + (c === 'anual' ? 'Anual' : 'Mensal') + '</strong><small>' + (c === 'anual' ? 'Uma cobrança só por ano. Equivale a ' + G.monthsEq(p) + ' meses e economiza ' + G.money(G.savings(p)) + '.' : 'Renova todo mês.') + '</small></span><span class="g2-opt-price">' + (c === 'anual' ? G.moneyS(val) : G.money(val)) + ' <span class="muted g2-help">por ' + (c === 'anual' ? 'ano' : 'mês') + '</span></span></label>';
+    }).join('') + '</fieldset>';
+    return h;
+  }
+
+  function couponHtml() {
+    var h = '';
+    if (S.change) return '<p class="g2-note g2-help">' + G.ico('info', 'icon-sm') + '<span>Cupons valem para uma nova assinatura. Como você já tem um plano pago, a troca não aceita cupom.</span></p>';
+    if (S.applied) {
+      var q = G.quote(S.planId, S.cycle, S.applied);
+      h += '<div class="g2-applied" role="status">' + G.ico('check-circle') + '<div class="g2-applied-body"><strong>Cupom ' + G.esc(S.applied.code) + ' aplicado</strong><br>' + G.esc(q.headline) + '</div>' +
+        '<button type="button" class="btn btn-neutral" id="rm-cupom" aria-label="Remover o cupom ' + G.esc(S.applied.code) + '">' + G.ico('x') + 'Remover</button></div>';
+    }
+    if (S.pending) {
+      h += '<div class="alert alert-warning mt-4" role="alert" id="pend">' + G.ico('alert') + '<div class="alert-body"><div class="alert-title">Só um cupom por compra</div>Você já usa o ' + G.esc(S.applied.code) + '. Trocar pelo ' + G.esc(S.pending.code) + '?' +
+        '<div class="g2-alert-actions"><button type="button" class="btn btn-primary" id="swap-yes">Trocar pelo ' + G.esc(S.pending.code) + '</button><button type="button" class="btn btn-neutral" id="swap-no">Manter o ' + G.esc(S.applied.code) + '</button></div></div></div>';
+    }
+    h += '<form id="f-cupom" class="mt-4" novalidate><div class="g2-coupon-row"><div class="field' + (S.error ? ' has-error' : '') + '"><label for="cupom">' + (S.applied ? 'Usar outro cupom' : 'Código do cupom (opcional)') + '</label>' +
+      '<input class="input" id="cupom" name="cupom" autocomplete="off" autocapitalize="characters" spellcheck="false" value="' + G.esc(S.input) + '" aria-describedby="cupom-h' + (S.error ? ' cupom-erro' : '') + '"' + (S.error ? ' aria-invalid="true"' : '') + '>' +
+      '<span class="field-help" id="cupom-h">Um cupom por compra. Não soma com outro.</span>' +
+      (S.error ? '<div class="field-error" id="cupom-erro">' + G.ico('alert', 'icon-sm') + '<span>' + G.esc(S.error.message) + '</span></div>' : '') +
+      '</div><button type="submit" class="btn btn-secondary">Aplicar</button></div></form>';
+    if (S.error && S.error.action) h += '<p class="mt-2"><button type="button" class="btn btn-text" id="go-plan">' + G.esc(S.error.action.label) + '</button></p>';
+    return h;
+  }
+
+  function quoteNow() { return G.quote(S.planId, S.cycle, S.applied, { change: S.change }); }
+
+  function summaryCard() {
+    var q = quoteNow();
+    return '<section class="card g2-side" aria-labelledby="res-t"><div class="card-header"><h2 class="card-title" id="res-t">Resumo do pedido</h2></div><div class="card-body stack" aria-live="polite" aria-atomic="true">' +
+      G.summaryHtml(q) + '</div>' +
+      '<div class="card-body stack" style="padding-top:0"><p class="g2-note g2-help">' + G.ico('check-circle', 'icon-sm') + '<span>Cancele quando quiser em <a href="' + G.esc(G.url(G.PATH.assinatura)) + '">Minha assinatura</a>, em 2 passos.</span></p>' +
+      '<p class="g2-note g2-help">' + G.ico('refresh', 'icon-sm') + '<span><strong>Desistir em até 7 dias: reembolso total.</strong></span></p>' +
+      '<p class="g2-help muted">Ao continuar, você concorda com a <a href="' + G.esc(G.url(G.PATH.termosCobranca)) + '" target="_blank" rel="noopener">seção de cobrança dos Termos<span class="sr-only"> (abre em nova aba)</span></a>.</p>' +
+      '<a class="btn btn-primary btn-lg btn-block" id="pagar" href="' + G.esc(G.url(G.PATH.stripe, { plan: S.planId, cycle: S.cycle, coupon: S.applied ? S.applied.code : '', change: S.change ? '1' : '' })) + '">Ir para o pagamento</a>' +
+      '<p class="g2-help muted text-center">Você vai para o pagamento seguro. O aura-fit não vê o número do seu cartão.</p></div></section>';
+  }
+
+  function revalidateApplied() {
+    if (S.applied) {
+      var r = G.validateCoupon(S.applied.code, S.planId, S.cycle, S);
+      if (!r.ok) { S.notice = 'O cupom ' + S.applied.code + ' não vale para esta escolha e foi removido. ' + r.message.replace(/ Seu total continua.*$/, ''); S.applied = null; }
+    }
+  }
+
+  function build(el) {
+    var key = G.variant() + '|' + G.state();
+    if (!S || key !== seen) initState();
+    var done = '<ol class="stepper mb-6" aria-label="Etapas da compra"><li class="is-done"><span class="stepper-label">Plano</span></li><li aria-current="step"><span class="stepper-label">Resumo e cupom</span></li><li><span class="stepper-label">Pagamento</span></li></ol>';
+    function paint(focusId) {
+      el.innerHTML = done + (S.notice ? '<div class="alert alert-info mb-4" role="status">' + G.ico('info') + '<div class="alert-body">' + G.esc(S.notice) + '</div></div>' : '') +
+        '<div class="g2-checkout"><div class="stack-lg">' +
+        '<section class="card" aria-labelledby="s1"><div class="card-header"><h2 class="card-title" id="s1">Seu plano</h2></div><div class="card-body">' + optionsHtml() + '</div></section>' +
+        '<section class="card" aria-labelledby="s2"><div class="card-header"><h2 class="card-title" id="s2">Cupom de desconto</h2></div><div class="card-body">' + couponHtml() + '</div></section>' +
+        '</div>' + summaryCard() + '</div>';
+      bind(); if (focusId) { var f = document.getElementById(focusId); if (f) f.focus(); }
+    }
+    function bind() {
+      Array.prototype.forEach.call(el.querySelectorAll('input[name="plano"],input[name="ciclo"]'), function (r) {
+        r.addEventListener('change', function () {
+          var nm = r.name;
+          if (nm === 'plano') S.planId = r.value; else S.cycle = r.value;
+          S.notice = null; S.error = null; S.pending = null; revalidateApplied();
+          G.setParam('plan', S.planId); G.setParam('cycle', S.cycle);
+          paint(null); var again = el.querySelector('input[name="' + nm + '"]:checked'); if (again) again.focus();
+        });
+      });
+      var rm = document.getElementById('rm-cupom'); if (rm) rm.addEventListener('click', function () { S.applied = null; S.pending = null; S.notice = null; paint('cupom'); window.AuraUI.toast('Cupom removido. O total voltou ao valor cheio.', { tone: 'info' }); });
+      var yes = document.getElementById('swap-yes'); if (yes) yes.addEventListener('click', function () { S.applied = S.pending; S.pending = null; S.input = ''; paint('cupom'); window.AuraUI.toast('Cupom trocado para ' + S.applied.code + '.', { tone: 'success' }); });
+      var no = document.getElementById('swap-no'); if (no) no.addEventListener('click', function () { S.pending = null; S.input = ''; paint('cupom'); });
+      var gp = document.getElementById('go-plan'); if (gp) gp.addEventListener('click', function () { S.planId = S.error.action.planId; S.error = null; S.notice = null; G.setParam('plan', S.planId); revalidateApplied(); paint('cupom'); });
+      var f = document.getElementById('f-cupom');
+      if (f) f.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var code = document.getElementById('cupom').value.trim().toUpperCase();
+        S.input = code; S.error = null; S.pending = null; S.notice = null;
+        var r = G.validateCoupon(code, S.planId, S.cycle, S);
+        if (!r.ok) { S.error = r; paint('cupom'); return; }
+        if (S.applied && S.applied.code === r.coupon.code) { S.input = ''; paint('cupom'); window.AuraUI.toast('Este cupom já está aplicado.', { tone: 'info' }); return; }
+        if (S.applied) { S.pending = r.coupon; paint('swap-yes'); return; }
+        S.applied = r.coupon; S.input = ''; paint('cupom');
+        window.AuraUI.toast('Cupom ' + r.coupon.code + ' aplicado.', { tone: 'success' });
+      });
+    }
+    paint();
+  }
+
+  function render() {
+    var cur = live(), v = G.variant();
+    var plan = G.planById(Q.plan || (cur ? (cur.planId === 'pro' ? 'premium' : 'pro') : 'pro'));
+    var invalid = !plan || !(plan.prices.monthly > 0) || plan.status !== 'ativo';
+    var same = cur && plan && !invalid && cur.planId === plan.id;
+    var st = G.state();
+    G.render('#area', {
+      rows: 3, icon: 'credit-card', title: st === 'error' ? 'Não conseguimos calcular o valor' : 'Escolha um plano para continuar',
+      text: st === 'error' ? 'Nada foi cobrado. Tente de novo em instantes.' : (invalid ? 'O Starter é grátis e não precisa de pagamento. Escolha o Pro ou o Premium para ver o resumo.' : 'Você ainda não escolheu um plano. Volte à lista para comparar.'),
+      action: { label: 'Ver planos', href: G.url(G.PATH.planos), icon: 'arrow-left' },
+      renderDefault: function (el) {
+        if (invalid) { window.AuraState.render(el, 'empty', { icon: 'credit-card', title: 'Escolha um plano para continuar', text: 'O Starter é grátis e não precisa de pagamento. Escolha o Pro ou o Premium para ver o resumo.', action: { label: 'Ver planos', href: G.url(G.PATH.planos), icon: 'arrow-left' } }); return; }
+        if (same) { window.AuraState.render(el, 'empty', { icon: 'check-circle', title: 'Você já está no plano ' + plan.name, text: 'Sua próxima cobrança é em ' + G.dmy(A.renewalFor(plan.id, cur.cycle)) + '. Para mudar, escolha outro plano.', action: { label: 'Ver planos', href: G.url(G.PATH.planos), icon: 'arrow-left' } }); return; }
+        build(el);
+      }
+    });
+  }
+  G.boot({ id: 'PLN-02', name: 'Resumo do pedido', role: 'personal', allowed: ['personal'], active: 'minha-assinatura', render: render });
+})();
+</script>
+</body>
+</html>

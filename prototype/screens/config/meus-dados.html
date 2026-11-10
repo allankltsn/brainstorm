@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CFG-02 · Meus dados · aura-fit</title>
+  <meta name="aura-screen" content="CFG-02">
+  <meta name="aura-variants" content="email-alteracao-pendente,senha-atual-errada,foto-grande-demais,sessao-expirou-ao-salvar">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g4.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Seus dados foram salvos.">
+  <div class="g4-settings-wrap">
+    <div id="col" class="stack-lg g4-measure">
+      <div class="page-header" style="margin-bottom:0">
+        <div>
+          <h1>Meus dados</h1>
+          <p>Peça só o que precisamos. Você corrige quando quiser.</p>
+        </div>
+      </div>
+      <div class="alert alert-success" role="status" data-when="success">
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <div class="alert-body"><div class="alert-title">Dados salvos</div>Suas alterações já valem.</div>
+      </div>
+      <div id="area"></div>
+    </div>
+  </div>
+
+</main>
+
+  <div class="modal-backdrop" id="m-email" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="m-email-t">
+      <div class="modal-header"><h2 class="modal-title" id="m-email-t">Alterar e-mail</h2><button type="button" class="btn btn-text btn-icon" data-modal-close aria-label="Fechar"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+      <form id="f-email" novalidate>
+        <div class="modal-body stack">
+          <p class="muted">Enviamos um link de confirmação para o novo e-mail. Até você confirmar, vale o e-mail atual.</p>
+          <div class="field"><label for="novo-email">Novo e-mail</label><input class="input" id="novo-email" type="email" autocomplete="email"></div>
+          <div class="field"><label for="email-senha">Sua senha</label><input class="input" id="email-senha" type="password" autocomplete="current-password" aria-describedby="email-senha-h"><span class="field-help" id="email-senha-h">Pedimos a senha para proteger sua conta.</span></div>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-neutral" data-modal-close>Cancelar</button><button type="submit" class="btn btn-primary">Enviar link de confirmação</button></div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-backdrop" id="m-senha" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="m-senha-t">
+      <div class="modal-header"><h2 class="modal-title" id="m-senha-t">Alterar senha</h2><button type="button" class="btn btn-text btn-icon" data-modal-close aria-label="Fechar"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+      <form id="f-senha" novalidate>
+        <div class="modal-body stack">
+          <div class="field"><label for="s-atual">Senha atual</label><div class="input-group"><input class="input" id="s-atual" type="password" autocomplete="current-password"><button type="button" class="input-affix" data-toggle-password aria-controls="s-atual" aria-pressed="false" aria-label="Mostrar senha"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg></button></div></div>
+          <div class="field"><label for="s-nova">Nova senha</label><div class="input-group"><input class="input" id="s-nova" type="password" autocomplete="new-password" aria-describedby="s-nova-h"><button type="button" class="input-affix" data-toggle-password aria-controls="s-nova" aria-pressed="false" aria-label="Mostrar senha"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg></button></div><span class="field-help" id="s-nova-h">Mínimo de 8 caracteres.</span></div>
+          <div class="field"><label for="s-conf">Repita a nova senha</label><input class="input" id="s-conf" type="password" autocomplete="new-password"></div>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-neutral" data-modal-close>Cancelar</button><button type="submit" class="btn btn-primary">Salvar nova senha</button></div>
+      </form>
+    </div>
+  </div>
+<script>
+  G4.setDefaultRole('aluno');
+  G4.mount({ id: 'CFG-02', title: 'Meus dados', activeByRole: { aluno: 'perfil', admin: 'configuracoes', personal: 'configuracoes' } });
+  G4.settingsLayout('meus-dados', 'col');
+  var A = window.AURA, V = G4.variant(), r = G4.role(), me = A.me[r], isAluno = r === 'aluno', P = G4DATA.profile;
+
+  function render(el) {
+    var phoneWhy = r === 'personal' ? 'Para avisos da sua assinatura.' : 'Só para avisos importantes da sua conta. Pode deixar em branco.';
+    el.innerHTML = '<form id="f" novalidate class="stack-lg">' +
+      '<section class="card" aria-labelledby="t-foto"><div class="card-body"><h2 class="h3 mb-4" id="t-foto">Foto</h2><div class="g4-profile-head"><span class="avatar avatar-lg" aria-hidden="true">' + me.initials + '</span><div class="stack-sm"><div class="row"><label class="btn btn-secondary" for="foto" style="cursor:pointer">' + G4.ico('upload') + 'Enviar foto</label><input class="sr-only" id="foto" type="file" accept="image/png,image/jpeg" aria-describedby="foto-h"><button type="button" class="btn btn-text" id="b-rm">Remover foto</button></div><span class="field-help" id="foto-h">PNG ou JPG, até 2 MB. Sem foto, usamos suas iniciais.</span><div id="foto-err"></div></div></div></div></section>' +
+      '<section class="card" aria-labelledby="t-cad"><div class="card-body stack"><h2 class="h3" id="t-cad">Cadastro</h2>' +
+        '<div class="field"><label for="nome">Nome</label><input class="input" id="nome" name="nome" autocomplete="name" value="' + G4.esc(me.name) + '"></div>' +
+        '<div class="field"><label for="tel">Telefone <span class="muted">(opcional)</span></label><div class="row" style="flex-wrap:nowrap"><input class="input grow" id="tel" name="telefone" type="tel" autocomplete="tel" aria-describedby="tel-h" value="' + P.phoneMasked + '" readonly><button type="button" class="btn btn-secondary" id="b-tel">Alterar telefone</button></div><span class="field-help" id="tel-h">' + phoneWhy + ' Por segurança, mostramos só parte do número.</span></div>' +
+        (isAluno ? '<div class="field"><label for="nasc">Data de nascimento</label><input class="input" id="nasc" type="date" autocomplete="bday" aria-describedby="nasc-h" value="' + P.birth + '"><span class="field-help" id="nasc-h">Para saber se precisamos da autorização de um responsável. Não usamos para mais nada.</span><div id="nasc-aviso" aria-live="polite"></div></div>' : '') +
+      '</div></section>' +
+      '<section class="card" aria-labelledby="t-acesso"><div class="card-body stack"><h2 class="h3" id="t-acesso">Acesso à conta</h2>' +
+        '<div class="row-between"><div><p class="label muted">E-mail (parte escondida por segurança)</p><p class="body-medium">' + G4.esc(me.emailMasked) + '</p></div><button type="button" class="btn btn-secondary" data-modal-open="m-email">Alterar e-mail<span class="sr-only"> (pede sua senha)</span></button></div>' +
+        (V === 'email-alteracao-pendente' ? '<div class="alert alert-info" role="status"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><div class="alert-body"><div class="alert-title">Falta confirmar o novo e-mail</div>Enviamos um link para <strong>no***@exemplo.com.br</strong>. Até confirmar, você entra com o e-mail atual. O link vale por 24 horas.</div><button type="button" class="btn btn-text" id="b-reenv">Reenviar link</button></div>' : '') +
+        '<hr><div class="row-between"><div><p class="label muted">Senha</p><p class="body-medium">••••••••••</p></div><button type="button" class="btn btn-secondary" data-modal-open="m-senha">Alterar senha</button></div>' +
+      '</div></section>' +
+      (V === 'sessao-expirou-ao-salvar' ? '<div class="alert alert-warning"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="alert-body">Só para teste: ao salvar, você vai sair da conta. Guardamos o seu nome por 30 minutos neste celular ou computador. A senha, a data de nascimento e dados de saúde nunca são guardados.</div></div>' : '') +
+      '<div id="draft" role="status"></div><div class="row"><button type="submit" class="btn btn-primary">Salvar</button><a class="btn btn-text" href="' + G4.esc(G4.url('configuracoes.html')) + '">Cancelar</a></div></form>';
+    wire();
+  }
+  function age(v) { var d = new Date(v), t = new Date(2026, 9, 16), a = t.getFullYear() - d.getFullYear(); if (t < new Date(t.getFullYear(), d.getMonth(), d.getDate())) a--; return a; }
+  function wire() {
+    var f = document.getElementById('f');
+    var nasc = document.getElementById('nasc');
+    if (nasc) { var chk = function () { document.getElementById('nasc-aviso').innerHTML = nasc.value && age(nasc.value) < 18 ? '<div class="alert alert-info mt-2"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert-body">Quem tem menos de 18 anos precisa da autorização de um responsável. Vamos pedir o contato dele.</div></div>' : ''; }; nasc.addEventListener('change', chk); chk(); }
+    document.getElementById('b-rm').addEventListener('click', function () { AuraUI.confirm({ title: 'Remover sua foto?', text: 'Vamos usar suas iniciais no lugar. Você pode enviar outra quando quiser.', confirmLabel: 'Remover foto' }).then(function (ok) { if (ok) AuraUI.toast('Foto removida.', { tone: 'success' }); }); });
+    var foto = document.getElementById('foto');
+    function fotoErr() { document.getElementById('foto-err').innerHTML = '<div class="field-error" id="foto-e">' + G4.ico('alert', 'icon-sm') + '<span>Essa foto passa de 2 MB. Escolha uma menor ou reduza o tamanho dela.</span></div>'; foto.setAttribute('aria-invalid', 'true'); foto.setAttribute('aria-describedby', 'foto-h foto-e'); }
+    foto.addEventListener('change', function () { if (foto.files[0] && foto.files[0].size > 2 * 1024 * 1024) fotoErr(); else if (foto.files[0]) AuraUI.toast('Foto escolhida. Toque em Salvar para guardar.', { tone: 'info' }); });
+    if (V === 'foto-grande-demais') fotoErr();
+    var rs = document.getElementById('b-reenv'); if (rs) rs.addEventListener('click', function () { AuraUI.toast('Link reenviado. Confira a caixa de entrada e o spam.', { tone: 'success' }); });
+    f.addEventListener('submit', function (e) {
+      e.preventDefault(); var nome = document.getElementById('nome'); AuraUI.clearError(nome);
+      if (!nome.value.trim()) AuraUI.setError(nome, 'Digite seu nome.');
+      if (AuraUI.focusFirstError(f)) return;
+      if (V === 'sessao-expirou-ao-salvar') {
+        AuraDraft.save('config/meus-dados', f, ['nome']);
+        location.href = G4.url('../sistema/sessao-expirada.html', 'variant=com-rascunho&from=' + encodeURIComponent(AuraSession.currentFrom() || 'config/meus-dados.html'));
+        return;
+      }
+      AuraUI.toast('Seus dados foram salvos.', { tone: 'success' });
+    });
+    document.getElementById('b-tel').addEventListener('click', function () { var t = document.getElementById('tel'); t.readOnly = false; t.value = ''; t.placeholder = '(11) 90000-0000'; t.focus(); this.hidden = true; });
+    var rec = AuraDraft.restore('config/meus-dados', f);
+    if (rec) { document.getElementById('draft').innerHTML = '<div class="alert alert-info" role="status"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert-body">Recuperamos o que você escreveu antes de sair.</div><button type="button" class="btn btn-text" id="b-disc">Descartar</button></div>'; document.getElementById('b-disc').addEventListener('click', function () { AuraDraft.clear('config/meus-dados'); f.reset(); document.getElementById('draft').innerHTML = ''; }); }
+    var fe = document.getElementById('f-email');
+    fe.addEventListener('submit', function (e) {
+      e.preventDefault(); var n = document.getElementById('novo-email'), s = document.getElementById('email-senha'); [n, s].forEach(AuraUI.clearError);
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(n.value)) AuraUI.setError(n, 'Digite um e-mail completo, como nome@exemplo.com.br.');
+      if (!s.value) AuraUI.setError(s, 'Digite sua senha para confirmar a troca.');
+      if (AuraUI.focusFirstError(fe)) return;
+      AuraUI.closeModal('m-email'); AuraUI.toast('Enviamos o link para ' + A.maskEmail(n.value) + '. Até confirmar, vale o e-mail atual.', { tone: 'success' });
+    });
+    var fs = document.getElementById('f-senha');
+    if (V === 'senha-atual-errada') document.querySelector('[data-modal-open="m-senha"]').addEventListener('click', function () { setTimeout(function () { var a = document.getElementById('s-atual'); a.value = 'senhaerrada'; AuraUI.setError(a, 'A senha atual não confere. Confira e tente de novo, ou use Esqueci minha senha na tela de entrada.'); a.focus(); }, 60); });
+    fs.addEventListener('submit', function (e) {
+      e.preventDefault(); var a = document.getElementById('s-atual'), n = document.getElementById('s-nova'), c = document.getElementById('s-conf'); [a, n, c].forEach(AuraUI.clearError);
+      if (!a.value) AuraUI.setError(a, 'Digite sua senha atual.');
+      else if (a.value === 'senhaerrada') AuraUI.setError(a, 'A senha atual não confere. Confira e tente de novo.');
+      if (n.value.length < 8) AuraUI.setError(n, 'A nova senha precisa ter pelo menos 8 caracteres.');
+      if (c.value !== n.value) AuraUI.setError(c, 'As senhas não são iguais.');
+      if (AuraUI.focusFirstError(fs)) return;
+      AuraUI.closeModal('m-senha'); AuraUI.toast('Senha alterada. Avisamos você por e-mail.', { tone: 'success' });
+    });
+  }
+  G4.ready(function () {
+    var s = AuraState.get();
+    // vazio nao se aplica: o cadastro sempre existe
+    AuraState.render('#area', s === 'empty' ? 'default' : s, { rows: 4, renderDefault: render });
+    if (V === 'senha-atual-errada') setTimeout(function () { var b = document.querySelector('[data-modal-open="m-senha"]'); if (b) b.click(); }, 200);
+  });
+</script>
+</body>
+</html>

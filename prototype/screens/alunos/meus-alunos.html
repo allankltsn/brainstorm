@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRN-01 · Meus alunos · aura-fit</title>
+  <meta name="aura-screen" content="TRN-01">
+  <meta name="aura-variants" content="primeiro-acesso,limite-proximo,limite-atingido,so-pendentes,historico-vazio,erro,filtro-sem-resultado,gestor,offline,ilimitado,limite-desatualizado,aceite-sem-vaga,limite-erro,sem-convite">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <link rel="stylesheet" href="../../assets/grupo-g5.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g5.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g5.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div class="page-header">
+    <div>
+      <h1>Meus alunos</h1>
+      <p id="sub">Quem você acompanha, convites e histórico.</p>
+    </div>
+    <div class="page-actions" id="acoes"></div>
+  </div>
+  <div id="area"></div>
+</main>
+<script>
+  G5.mount({ id: 'TRN-01', title: 'Meus alunos' });
+  var A = window.AURA, D = window.G5DATA, V = G5.variant(), esc = G5.esc, ico = G5.ico;
+  var PER_PAGE = 20;
+  var failed = (V === 'erro'), limitFailed = (V === 'limite-erro');
+  var offline = (V === 'offline');
+  var n = 18;
+  if (V === 'limite-proximo') n = 28;
+  if (V === 'limite-atingido' || V === 'aceite-sem-vaga') n = 30;
+  if (V === 'primeiro-acesso' || V === 'so-pendentes') n = 0;
+  var unlimited = (V === 'ilimitado'), limit = unlimited ? null : D.plan.limit;
+  var ativos = n === 0 ? [] : D.students.concat(D.more.slice(0, Math.max(0, n - D.students.length)));
+  var pendLinks = V === 'primeiro-acesso' ? [] : D.pending;
+  var invites = V === 'primeiro-acesso' ? [] : D.invites.slice();
+  var hist = (V === 'primeiro-acesso' || V === 'historico-vazio') ? [] : D.history;
+  var gestor = (V === 'gestor');
+  var st = { q: V === 'filtro-sem-resultado' ? 'xyz' : '', mode: 'todos', alert: 'todos', sort: 'alert', dir: 1, page: 1, tab: G5.q.aba || (V === 'so-pendentes' ? 'pendentes' : 'ativos') };
+  var urlPlans = G5.url('../planos/planos.html', 'variant=limite-atingido');
+  var atLimit = !unlimited && n >= limit;
+  var nearLimit = !unlimited && !atLimit && n / limit >= 0.9;
+
+  function tv(s) { return D.trainView(s); }   /* null fora do portao de saude (regra 8) */
+  var HID = '<span class="badge">' + ico('lock') + 'Oculto por privacidade</span>';
+  function norm(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
+  function respName(s, i) { return i % 3 === 2 ? 'Rafael Antunes' : s.responsibleName; }
+  function sortList(list) {
+    var l = list.slice(), d = st.dir;
+    l.sort(function (a, b) {
+      if (st.sort === 'name') return d * a.name.localeCompare(b.name, 'pt-BR');
+      if (st.sort === 'last') { var x = (tv(a) || {}).lastSessionAt || '', y = (tv(b) || {}).lastSessionAt || ''; return d * (x < y ? 1 : x > y ? -1 : 0) || a.name.localeCompare(b.name, 'pt-BR'); }
+      return (b.openAlerts - a.openAlerts) || a.name.localeCompare(b.name, 'pt-BR');
+    });
+    return l;
+  }
+  function filtered(list, withFilters) {
+    return list.filter(function (s) {
+      if (st.q && norm(s.name).indexOf(norm(st.q)) === -1) return false;
+      if (!withFilters) return true;
+      if (st.mode !== 'todos' && s.followMode !== st.mode) return false;
+      if (st.alert === 'com' && !s.openAlerts) return false;
+      return true;
+    });
+  }
+  function sortTh(key, label, cls) {
+    var cur = st.sort === key ? (st.dir === 1 ? 'ascending' : 'descending') : 'none';
+    return '<th scope="col"' + (cls ? ' class="' + cls + '"' : '') + ' aria-sort="' + cur + '"><button type="button" class="g5-sortbtn" data-sort="' + key + '">' + label + ico(cur === 'descending' ? 'chevron-up' : 'chevron-down', 'icon-sm') + '<span class="sr-only">. Ordenar por ' + label.toLowerCase() + '</span></button></th>';
+  }
+  function ativosHtml(list) {
+    var shown = list.slice(0, st.page * PER_PAGE);
+    var th = sortTh('name', 'Aluno') + '<th scope="col">Modo</th><th scope="col">Treino atual</th>' + sortTh('last', 'Última sessão', 'g5-col-sec') +
+      '<th scope="col">Alertas</th><th scope="col" class="g5-col-sec">Consentimento de saúde</th>' + (gestor ? '<th scope="col" class="g5-col-sec">Responsável</th>' : '') + '<th scope="col" class="col-actions"><span class="sr-only">Ação</span></th>';
+    var rows = shown.map(function (s, i) {
+      var href = G5.url('aluno-detalhe.html', 'id=' + s.id), v = tv(s);
+      return '<tr><td class="cell-main"><div class="cell-user">' + G5.avatar(s.name) + '<div class="g5-name"><a href="' + esc(href) + '">' + esc(s.name) + '</a>' + (s.status === 'SUSPENDED' ? ' ' + G5.linkBadge(s) : '') + '<small>' + esc(s.emailMasked) + '</small></div></div></td>' +
+        '<td data-label="Modo">' + G5.modeBadge(s.followMode) + '</td>' +
+        '<td data-label="Treino atual">' + (!v ? HID : v.activeAssignmentName ? esc(v.activeAssignmentName) : '<span class="muted">Sem treino</span>') + '</td>' +
+        '<td data-label="Última sessão" class="g5-col-sec">' + (!v ? HID : v.lastSessionAt ? A.relDate(v.lastSessionAt) : '<span class="muted">Sem sessão</span>') + '</td>' +
+        '<td data-label="Alertas">' + G5.alertBadge(s.openAlerts) + '</td>' +
+        '<td data-label="Consentimento de saúde" class="g5-col-sec">' + G5.consentBadge(s.consents.SAUDE_GERAL) + '</td>' +
+        (gestor ? '<td data-label="Responsável" class="g5-col-sec">' + esc(respName(s, i)) + '</td>' : '') +
+        '<td class="col-actions"><a class="btn btn-secondary" href="' + esc(href) + '">Abrir<span class="sr-only"> aluno ' + esc(s.name) + '</span></a></td></tr>';
+    }).join('');
+    return '<div class="table-wrap g5-wrap" role="region" aria-label="Alunos ativos" tabindex="0"><table class="table"><caption class="sr-only">Alunos ativos</caption><thead><tr>' + th + '</tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      (list.length > shown.length ? '<div class="g5-more"><button type="button" class="btn btn-secondary" data-more>Carregar mais<span class="sr-only"> alunos, mostrando ' + shown.length + ' de ' + list.length + '</span></button></div>' : '');
+  }
+  function paintAtivos() {
+    var p = document.getElementById('pn-ativos-body'); if (!p) return;
+    var all = ativos, list = sortList(filtered(all, true));
+    var cnt = document.getElementById('g5-count');
+    if (!all.length) {
+      p.innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ico('users') + '</div><h2 class="h3">' + (V === 'primeiro-acesso' ? 'Você ainda não tem alunos' : 'Nenhum aluno ativo agora.') + '</h2><p>' + (V === 'primeiro-acesso' ? 'Convide a primeira pessoa por e-mail ou WhatsApp. Ela só entra pelo seu convite.' : 'Quando um aluno aceitar o convite, ele aparece aqui.') + '</p>' + (V === 'primeiro-acesso' ? inviteBtn() : '') + '</div>';
+      if (cnt) cnt.textContent = '';
+    } else if (!list.length) {
+      p.innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + ico('search') + '</div><h2 class="h3">Nenhum aluno encontrado</h2><p>Nenhum aluno encontrado para “' + esc(st.q) + '”. Revise a busca ou os filtros.</p><button type="button" class="btn btn-secondary" data-clear>Limpar busca</button></div>';
+      if (cnt) cnt.textContent = 'Nenhum aluno encontrado.';
+    } else {
+      p.innerHTML = ativosHtml(list);
+      if (cnt) cnt.textContent = list.length + (list.length === 1 ? ' aluno encontrado' : ' alunos encontrados');
+    }
+  }
+  function histHtml(list) {
+    if (!hist.length) return '<div class="empty-state"><div class="empty-state-icon">' + ico('clock') + '</div><h2 class="h3">Nenhum vínculo encerrado.</h2><p>Quando um vínculo terminar, ele fica guardado aqui.</p></div>';
+    if (!list.length) return '<p class="muted" role="status">Nenhum vínculo encerrado para “' + esc(st.q) + '”.</p>';
+    return '<div class="table-wrap g5-wrap" role="region" aria-label="Vínculos encerrados" tabindex="0"><table class="table"><caption class="sr-only">Histórico de vínculos</caption><thead><tr><th scope="col">Aluno</th><th scope="col">Período</th><th scope="col">Estado</th><th scope="col" class="col-actions"><span class="sr-only">Ação</span></th></tr></thead><tbody>' +
+      list.map(function (s) {
+        var href = G5.url('aluno-detalhe.html', 'id=' + s.id);
+        return '<tr><td class="cell-main"><div class="cell-user">' + G5.avatar(s.name) + '<div class="g5-name"><a href="' + esc(href) + '">' + esc(s.name) + '</a><small>' + esc(s.emailMasked) + '</small></div></div></td>' +
+          '<td data-label="Período">' + G5.time(s.startedAt) + ' a ' + G5.time(s.endedAt) + '</td><td data-label="Estado">' + G5.linkBadge(s) + '</td>' +
+          '<td class="col-actions"><a class="btn btn-secondary" href="' + esc(href) + '">Abrir<span class="sr-only"> histórico de ' + esc(s.name) + '</span></a></td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+  function paintHist() { var p = document.getElementById('pn-hist-body'); if (p) p.innerHTML = histHtml(filtered(hist, false)); }
+
+  function pendHtml() {
+    var dis = offline ? ' disabled title="Sem conexão. Tente quando estiver online."' : '';
+    var h = '<div class="stack-lg"><section aria-labelledby="t-conv"><div class="g5-section-title"><h2 class="h3" id="t-conv">Convites enviados</h2>' + G5.selo('V5') + '</div>';
+    h += '<p class="g5-hint" id="aviso-convite">Ao convidar, você informa que responsáveis e gestor poderão ver os dados liberados. [LEGAL] [MOCK] texto provisório.</p>';
+    if (!invites.length && V !== 'aceite-sem-vaga') h += '<p class="muted">Nenhum convite pendente.</p>';
+    else {
+      h += '<ul class="g4-list">' + invites.map(function (i) {
+        var open = i.status === 'pendente' || i.status === 'expirado';
+        return '<li>' + G5.avatar(i.emailMasked.slice(0, 1)) + '<span class="grow"><strong>' + esc(i.emailMasked) + '</strong><span>Enviado em ' + A.fmtDate(i.sentAt) + (i.status === 'pendente' ? ', vale até ' + A.fmtDate(i.expiresAt) : '') + '</span></span>' + A.badge(i.status) +
+          (open ? '<span class="g4-invite-actions"><button type="button" class="btn btn-text" data-act="resend" data-who="' + esc(i.emailMasked) + '"' + dis + '>Reenviar<span class="sr-only"> convite para ' + esc(i.emailMasked) + '</span></button>' +
+          (i.status === 'pendente' ? '<button type="button" class="btn btn-text" data-act="cancel"' + dis + '>Cancelar<span class="sr-only"> convite de ' + esc(i.emailMasked) + '</span></button>' : '') + '</span>' : '') + '</li>';
+      }).join('') + (V === 'aceite-sem-vaga' ? '<li>' + G5.avatar('L') + '<span class="grow"><strong>' + esc(D.acceptedNoSeat.emailMasked) + '</strong><span>Convite aceito, sem vaga no plano agora.</span></span>' + G5.badge('warning', 'clock', 'Aguardando vaga') + G5.selo('V3') + '<a class="btn btn-secondary" href="' + esc(urlPlans) + '">Ver planos</a></li>' : '') + '</ul>';
+    }
+    h += '</section><section aria-labelledby="t-lib"><div class="g5-section-title"><h2 class="h3" id="t-lib">Aguardando liberação</h2>' + G5.selo('V5') + '</div>';
+    if (!pendLinks.length) h += '<p class="muted">Nenhum aluno aguardando liberação.</p>';
+    else h += '<ul class="g4-list">' + pendLinks.map(function (s) {
+      var href = G5.url('aluno-detalhe.html', 'id=' + s.id);
+      return '<li>' + G5.avatar(s.name) + '<span class="grow"><strong><a href="' + esc(href) + '">' + esc(s.name) + '</a></strong><span>Desde ' + A.fmtDate(s.startedAt) + '. ' + (s.awaiting === 'age' ? 'Conta em espera.' : 'Aguardando consentimento. Treinos e sessões ficam ocultos até a liberação.') + '</span></span>' +
+        (s.awaiting === 'age' ? G5.badge('warning', 'clock', 'Aguardando idade ou responsável') : G5.badge('warning', 'clock', 'Aguardando consentimento')) +
+        '<a class="btn btn-secondary" href="' + esc(href) + '">Abrir<span class="sr-only"> aluno ' + esc(s.name) + '</span></a></li>';
+    }).join('') + '</ul>';
+    return h + '</section></div>';
+  }
+
+  function inviteBtn() {
+    if (V === 'sem-convite') return '';
+    var blocked = atLimit || offline || limitFailed;
+    if (blocked) return '<button type="button" class="btn btn-primary" disabled aria-describedby="why-conv">' + ico('plus') + 'Convidar aluno</button>';
+    return '<a class="btn btn-primary" href="' + esc(G5.url('../home/convidar-aluno.html')) + '">' + ico('plus') + 'Convidar aluno</a>';
+  }
+  function whyText() {
+    if (V === 'sem-convite') return 'Convites são feitos pelo gestor.';
+    if (offline) return 'Sem conexão. Tente quando estiver online.';
+    if (limitFailed) return 'Não foi possível verificar o limite do plano.';
+    if (atLimit) return 'Sem vagas. Veja os planos ou libere uma vaga.';
+    return '';
+  }
+  function limitBlock() {
+    if (limitFailed) return G5.alertBox('danger', 'Não foi possível verificar o limite do plano.', 'Seus alunos continuam aqui. Tente de novo em instantes.', '<button type="button" class="btn btn-secondary" data-retry-limit>' + ico('refresh') + 'Tentar de novo</button>');
+    var pct = unlimited ? 0 : Math.round(n / limit * 100);
+    var h = '<div class="card stat"><span class="stat-label">Alunos ativos</span>';
+    if (unlimited) h += '<span class="stat-value">' + n + ' alunos ativos</span><span class="stat-delta">' + ico('check', 'icon-sm') + 'Seu plano não tem limite de alunos</span>';
+    else h += '<span class="stat-value">' + n + ' <span class="muted body-medium" style="font-size:14px">de ' + limit + ' alunos ativos</span></span>' +
+      '<div class="progress" role="progressbar" aria-label="Alunos no plano" aria-valuemin="0" aria-valuemax="' + limit + '" aria-valuenow="' + n + '"><div class="progress-bar' + (pct >= 90 ? ' is-warning' : '') + '" style="--value:' + pct + '%"></div></div>' +
+      '<span class="g5-hint g5-limit-note">' + (atLimit ? 'Sem vagas no plano ' + D.plan.name + '.' : 'Restam ' + (limit - n) + (limit - n === 1 ? ' vaga' : ' vagas') + '.') + '</span>';
+    h += '</div>';
+    if (atLimit) h += '<div class="alert alert-warning" role="status">' + ico('alert') + '<div class="alert-body"><div class="alert-title">Você chegou ao limite de alunos do seu plano</div>Seu plano ' + D.plan.name + ' permite ' + limit + ' alunos e todos já estão em uso. Os alunos atuais continuam funcionando normalmente. Os convites já enviados continuam valendo, mas só entram quando houver vaga.</div>' +
+      '<div class="g5-actions-row"><a class="btn btn-primary" href="' + esc(urlPlans) + '">Ver planos</a><button type="button" class="btn btn-secondary" data-raise>Aumentar o limite</button><button type="button" class="btn btn-text" data-goto="hist">Ver quem posso encerrar</button></div></div>';
+    else if (nearLimit) h += '<div class="alert alert-info" role="status">' + ico('info') + '<div class="alert-body"><div class="alert-title">Você está perto do limite do plano</div>Seu plano ' + D.plan.name + ' permite ' + limit + ' alunos e você já tem ' + n + '. Dá para convidar mais ' + (limit - n) + '.</div><a class="btn btn-secondary" href="' + esc(urlPlans) + '">Ver planos</a></div>';
+    if (V === 'limite-desatualizado') h += G5.alertBox('info', 'Não conseguimos confirmar o limite agora.', 'Usando o último valor conhecido (' + limit + ', de ' + A.fmtDate(D.plan.staleSince) + ').');
+    return h;
+  }
+  function raiseModal(opener) {
+    var id = 'raise', w = document.createElement('div');
+    w.className = 'modal-backdrop'; w.hidden = true; w.dataset.autoremove = '1';
+    w.innerHTML = '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="' + id + '-t"><div class="modal-header"><h2 class="modal-title" id="' + id + '-t">Aumentar o limite de alunos</h2></div>' +
+      '<div class="modal-body"><p>Veja os planos e escolha com calma. Nada muda na sua conta até você confirmar.</p></div>' +
+      '<div class="modal-footer"><button type="button" class="btn btn-secondary" data-m="keep" autofocus>Manter meu plano atual</button><a class="btn btn-secondary" href="' + esc(urlPlans) + '">Ver planos</a></div></div>';
+    document.body.appendChild(w);
+    w.addEventListener('click', function (e) { if (e.target.closest('[data-m="keep"]')) AuraUI.closeModal(w); });
+    AuraUI.openModal(w, opener);
+  }
+
+  function render(el) {
+    document.getElementById('acoes').innerHTML = inviteBtn();
+    if (failed) {
+      el.innerHTML = G5.alertBox('danger', 'Não foi possível carregar seus alunos.', 'Seus dados estão seguros. Tente de novo em instantes.', '<button type="button" class="btn btn-secondary" data-retry>' + ico('refresh') + 'Tentar de novo</button>');
+      wire(el);
+      return;
+    }
+    var counts = { ativos: ativos.length, pendentes: invites.length + pendLinks.length + (V === 'aceite-sem-vaga' ? 1 : 0), hist: hist.length };
+    var tabs = [['ativos', 'Ativos'], ['pendentes', 'Pendentes'], ['hist', 'Histórico']];
+    var why = whyText();
+    document.getElementById('sub').textContent = gestor ? 'Como gestor da conta, você vê todos os alunos, com o responsável de cada um.' : 'Quem você acompanha, convites e histórico.';
+    el.innerHTML = '<div class="stack-lg">' +
+      (why ? '<p class="g5-hint" id="why-conv">' + esc(why) + '</p>' : '') +
+      (offline ? G5.offlineAlert() : '') + '<div class="stack">' + limitBlock() + '</div>' +
+      '<div><div class="g5-section-title mb-2"><h2 class="h3">Buscar e ordenar</h2>' + G5.selo('V6') + '</div><div class="g5-filters" role="search" aria-label="Filtrar alunos">' +
+      '<div class="field"><label for="f-q">Buscar aluno</label><input class="input" id="f-q" type="search" autocomplete="off" placeholder="Nome" value="' + esc(st.q) + '"></div>' +
+      '<div class="field"><label for="f-mode">Modo</label><div class="select-wrap"><select class="select" id="f-mode"><option value="todos">Todos</option><option value="PRESENCIAL">Presencial</option><option value="REMOTO">Remoto</option></select></div></div>' +
+      '<div class="field"><label for="f-alert">Alertas</label><div class="select-wrap"><select class="select" id="f-alert"><option value="todos">Todos</option><option value="com">Com alerta aberto</option></select></div></div>' +
+      '<div class="field g5-sortsel"><label for="f-sort">Ordenar por</label><div class="select-wrap"><select class="select" id="f-sort"><option value="alert">Alertas primeiro</option><option value="name">Nome</option><option value="last">Última sessão</option></select></div></div></div>' +
+      '<div class="g5-count" id="g5-count" role="status" aria-live="polite"></div></div>' +
+      '<div class="g5-tabs"><div class="tabs" role="tablist" aria-label="Alunos">' + tabs.map(function (t) {
+        return '<button type="button" class="tab" role="tab" id="tab-' + t[0] + '" aria-controls="pn-' + t[0] + '" aria-selected="' + (st.tab === t[0]) + '">' + t[1] + ' (' + counts[t[0]] + ')</button>';
+      }).join('') + '</div>' +
+      '<div class="tab-panel" role="tabpanel" id="pn-ativos" aria-labelledby="tab-ativos" tabindex="0"><div id="pn-ativos-body"></div></div>' +
+      '<div class="tab-panel" role="tabpanel" id="pn-pendentes" aria-labelledby="tab-pendentes" tabindex="0" hidden>' + pendHtml() + '</div>' +
+      '<div class="tab-panel" role="tabpanel" id="pn-hist" aria-labelledby="tab-hist" tabindex="0" hidden><div class="stack"><p class="g5-hint">De vínculos encerrados você lê só o que disponibilizou ao aluno e os dados básicos de cadastro (LGPD); saúde e treino ficam ocultos. [LEGAL] [MOCK] prazo e destino provisórios.</p><div id="pn-hist-body"></div></div></div></div></div>';
+    el.querySelector('#f-mode').value = st.mode; el.querySelector('#f-alert').value = st.alert; el.querySelector('#f-sort').value = st.sort;
+    AuraUI.initTabs(el);
+    G5.tabScroll(el);
+    paintAtivos(); paintHist();
+    el.querySelector('#f-q').addEventListener('input', function (e) { st.q = e.target.value; st.page = 1; paintAtivos(); paintHist(); });
+    el.querySelector('#f-mode').addEventListener('change', function (e) { st.mode = e.target.value; st.page = 1; paintAtivos(); });
+    el.querySelector('#f-alert').addEventListener('change', function (e) { st.alert = e.target.value; st.page = 1; paintAtivos(); });
+    el.querySelector('#f-sort').addEventListener('change', function (e) { st.sort = e.target.value; st.dir = 1; paintAtivos(); });
+    el.querySelectorAll('[role="tab"]').forEach(function (tb) { tb.addEventListener('click', function () { st.tab = tb.id.replace('tab-', ''); }); });
+    wire(el);
+  }
+  function wire(el) {
+    if (el.dataset.wired) return; el.dataset.wired = '1';
+    el.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-sort],[data-more],[data-clear],[data-act],[data-goto],[data-raise],[data-retry],[data-retry-limit]'); if (!t) return;
+      var ds = t.dataset;
+      if (ds.sort) { var k = ds.sort; if (st.sort === k) st.dir = -st.dir; else { st.sort = k; st.dir = 1; } paintAtivos(); var b = el.querySelector('[data-sort="' + k + '"]'); if (b) b.focus(); }
+      else if ('more' in ds) {
+        var prev = Math.min(st.page * PER_PAGE, ativos.length);
+        st.page++; paintAtivos();
+        /* foco no primeiro item novo (link do nome); sem item novo, no botao atualizado */
+        var rows = el.querySelectorAll('#pn-ativos-body tbody tr'), nl = rows[prev] && rows[prev].querySelector('a'), mb = el.querySelector('[data-more]');
+        var cn = document.getElementById('g5-count'); if (cn) cn.textContent = 'Mais ' + (Math.min(st.page * PER_PAGE, ativos.length) - prev) + ' alunos carregados. Mostrando ' + Math.min(st.page * PER_PAGE, ativos.length) + ' de ' + ativos.length + '.';
+        var tgt = nl || mb; if (tgt) { try { tgt.focus({ preventScroll: false }); } catch (x) { tgt.focus(); } }
+      }
+      else if ('clear' in ds) { st.q = ''; el.querySelector('#f-q').value = ''; paintAtivos(); paintHist(); el.querySelector('#f-q').focus(); }
+      else if (ds.act === 'resend') AuraUI.toast('Convite reenviado para ' + ds.who + '.', { tone: 'success' });
+      else if (ds.act === 'cancel') AuraUI.confirm({ title: 'Cancelar este convite?', text: 'O link deixa de funcionar. Você pode convidar a pessoa de novo quando quiser.', confirmLabel: 'Cancelar convite', cancelLabel: 'Manter convite' }).then(function (ok) { if (ok) AuraUI.toast('Convite cancelado.', { tone: 'warning' }); });
+      else if (ds.goto) { var tb = document.getElementById('tab-hist'); tb.click(); tb.focus(); }
+      else if ('raise' in ds) raiseModal(t);
+      else if ('retry' in ds) { failed = false; el.innerHTML = '<div role="status" aria-busy="true">Carregando…</div>'; setTimeout(function () { render(el); }, 500); }
+      else if ('retryLimit' in ds) { limitFailed = false; render(el); }
+    });
+  }
+  G4.ready(function () {
+    G5.showFlash();
+    AuraState.render('#area', { rows: 6, icon: 'users', title: 'Você ainda não tem alunos', text: 'Convide a primeira pessoa por e-mail ou WhatsApp. Ela só entra pelo seu convite.',
+      action: { label: 'Convidar aluno', icon: 'plus', href: G5.url('../home/convidar-aluno.html') }, renderDefault: render });
+  });
+</script>
+</body>
+</html>

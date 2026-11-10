@@ -1,0 +1,58 @@
+/* grupo-g3.css - classes exclusivas do grupo G3 (Admin). So tokens (rgb(var(--color-*))). */
+.g3-code { font-weight: 700; letter-spacing: .03em; font-variant-numeric: tabular-nums; }
+.g3-key { display: block; font-size: 11px; line-height: 16px; color: rgb(var(--color-muted)); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.g3-split { display: grid; gap: var(--space-6); grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 1100px) { .g3-split { grid-template-columns: minmax(0, 1fr) 380px; } .g3-sticky { position: sticky; top: 88px; } }
+.g3-userhead { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+.g3-userhead .grow { min-width: 220px; }
+.g3-timeline { display: flex; flex-direction: column; }
+.g3-timeline li { display: grid; grid-template-columns: 32px 1fr; gap: var(--space-3); padding: var(--space-3) 0; border-top: 1px solid rgb(var(--color-line)); }
+.g3-timeline li:first-child { border-top: 0; }
+.g3-tl-ico { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgb(var(--color-surface-2)); color: rgb(var(--color-accent-text)); }
+.g3-uses { display: flex; flex-direction: column; gap: 4px; min-width: 120px; }
+.g3-uses .progress { height: 8px; }
+.g3-reason { white-space: normal; max-width: 52ch; }
+.g3-lockline { display: inline-flex; align-items: center; gap: 6px; color: rgb(var(--color-muted)); font-size: 12px; line-height: 18px; font-weight: 600; }
+.g3-help-inline { color: rgb(var(--color-muted)); font-size: 12px; line-height: 18px; }
+
+/* matriz de permissoes */
+.g3-matrix th, .g3-matrix td { text-align: center; }
+.g3-matrix th:first-child, .g3-matrix td:first-child { text-align: left; }
+.g3-matrix .check { justify-content: center; min-width: var(--target); }
+.g3-matrix tr.g3-group td { background: rgb(var(--color-surface-2)); font-weight: 700; text-align: left; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: rgb(var(--color-muted)); padding-block: var(--space-2); }
+.g3-matrix tr.g3-group:hover { background: transparent; }
+.g3-matrix tr.is-changed td { background: rgb(var(--color-warning-bg)); }
+.g3-matrix tr.is-fixed td { background: rgb(var(--color-surface-2)); }
+.g3-matrix input[aria-disabled="true"] { opacity: .65; cursor: not-allowed; }
+.g3-perm-name { font-weight: 600; display: block; }
+.g3-perm-desc { display: block; color: rgb(var(--color-muted)); font-size: 12px; line-height: 18px; font-weight: 400; }
+@container (max-width: 639px) {
+  .g3-matrix td, .g3-matrix td:first-child { text-align: right; }
+  .g3-matrix td.cell-main { text-align: left; display: block; }
+  .g3-matrix td.cell-main::before { display: none; }
+  .g3-matrix tr.g3-group { background: transparent; border: 0; padding: var(--space-3) 0 0; margin-bottom: var(--space-2); }
+  .g3-matrix tr.g3-group td { background: transparent; padding: 0; border: 0; display: block; text-align: left; }
+  .g3-matrix .check { justify-content: flex-end; min-width: 0; }
+  .g3-matrix tr.is-changed { background: rgb(var(--color-warning-bg)); }
+}
+.g3-savebar {
+  position: sticky; bottom: var(--space-4); z-index: 40; margin-top: var(--space-4);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap;
+  padding: var(--space-3) var(--space-4); background: rgb(var(--color-surface)); border: 2px solid rgb(var(--color-accent-text));
+  border-radius: var(--radius-md); box-shadow: var(--shadow-elev-3);
+}
+.g3-savebar[hidden] { display: none !important; }
+
+/* previa do cupom (como o personal ve) */
+
+/* relatorio */
+.g3-bars { display: flex; align-items: flex-end; gap: 3px; height: 160px; padding-top: var(--space-2); }
+.g3-bars span { flex: 1; min-width: 2px; background: rgb(var(--color-primary)); border-radius: 3px 3px 0 0; min-height: 3px; }
+.g3-bars span.is-zero { background: rgb(var(--color-line-strong)); }
+.g3-axis { display: flex; justify-content: space-between; margin-top: var(--space-2); }
+.g3-bar-row { display: grid; grid-template-columns: 90px 1fr 70px; gap: var(--space-3); align-items: center; }
+@media (max-width: 479px) { .g3-bar-row { grid-template-columns: 70px 1fr 56px; } }
+.g3-contents { display: contents; }
+.g3-matrix .cell-main { min-width: 240px; }
+.g3-matrix thead th { vertical-align: bottom; }
+.g3-checks li { display: flex; gap: var(--space-2); align-items: flex-start; } .g3-checks .icon { margin-top: 3px; color: rgb(var(--color-success-text)); }

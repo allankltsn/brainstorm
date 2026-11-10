@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRN-41 · Importar planilha ou texto · aura-fit</title>
+  <meta name="aura-screen" content="TRN-41">
+  <meta name="aura-variants" content="padrao,origem-arquivo,origem-texto,aviso-nao-marcado,lendo,revisao,revisao-ambigua,revisao-nao-reconhecida,revisao-tudo-decidido,aceitar-reconhecidas,resumo,levando-ao-editor,arquivo-grande,arquivo-formato-invalido,arquivo-com-macros,arquivo-vazio,texto-com-instrucao,limite-linhas,limite-cota,sem-plano-ia,ia-indisponivel,erro-ler,erro-validacao,conflito,carregando,erro,offline,sem-permissao">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <link rel="stylesheet" href="../../assets/grupo-g5.css">
+  <link rel="stylesheet" href="../../assets/grupo-g6.css">
+  <link rel="stylesheet" href="../../assets/g7-acomp.css">
+  <link rel="stylesheet" href="../../assets/g8-ia.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g5.js"></script>
+  <script src="../../assets/data-g6.js"></script>
+  <script src="../../assets/data-g7-ia.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g5.js"></script>
+  <script src="../../assets/grupo-g6.js"></script>
+  <script src="../../assets/g7-core.js"></script>
+  <script src="../../assets/g7-ia.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div id="bc"></div>
+  <div class="page-header">
+    <div id="hd"></div>
+  </div>
+  <div id="area"></div>
+</main>
+<script>
+  G8.mount({ id: 'TRN-41', title: 'Importar planilha ou texto', active: 'importar-ia' });
+  document.getElementById('hd').innerHTML = G8.head('Importar planilha ou texto', 'A IA lê o seu arquivo e propõe os itens. Você revisa cada linha.', 'I3');
+  G8.importar();
+</script>
+</body>
+</html>

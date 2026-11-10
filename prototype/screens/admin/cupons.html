@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADM-08 · Cupons · aura-fit</title>
+  <meta name="aura-screen" content="ADM-08">
+  <meta name="aura-variants" content="com-esgotado,com-expirado,com-pausado">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g3.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g3.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g3.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Cupom salvo e registrado no histórico.">
+  <div class="page-header">
+    <div>
+      <h1>Cupons</h1>
+      <p>Só 1 cupom por compra, e ele não soma com outro.</p>
+    </div>
+    <div class="page-actions" id="acoes"></div>
+  </div>
+  <div id="aviso"></div>
+  <section class="card" aria-labelledby="t-lista">
+    <div class="card-header"><h2 class="card-title" id="t-lista">Todos os cupons</h2></div>
+    <div class="card-body stack">
+      <div class="chip-tabs" role="group" aria-label="Filtrar por situação" id="chips"></div>
+      <p class="muted" id="resumo" role="status" aria-live="polite"></p>
+      <div id="area"></div>
+    </div>
+  </section>
+</main>
+<script>
+(function () {
+  var A = window.AURA, G = window.G3, $ = function (i) { return document.getElementById(i); };
+  G.boot({ id: 'ADM-08', title: 'Cupons', active: 'cupons' }, init);
+  function init() {
+    var filter = { 'com-esgotado': 'esgotado', 'com-expirado': 'expirado', 'com-pausado': 'pausado' }[G.variant] || G.q.status || '';
+    var canManage = G.can('coupons:manage');
+    if (canManage) $('acoes').innerHTML = '<a class="btn btn-primary" href="' + G.href('cupom-editar.html') + '">' + G.ico('plus') + 'Novo cupom</a>';
+    else $('aviso').innerHTML = '<div class="alert alert-info mb-4"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert-body"><div class="alert-title">Você está no modo leitura</div>Com o papel Suporte você vê os cupons e o relatório, mas não cria nem edita.</div></div>';
+    if (G.q.pausado) window.AuraUI.toast('Cupom ' + G.q.pausado + ' pausado. Dá para reativar quando quiser.', { tone: 'warning' });
+    if (G.q.salvo) window.AuraUI.toast('Cupom ' + G.q.salvo + ' salvo e registrado no histórico.', { tone: 'success' });
+
+    var FILTERS = [['', 'Todos'], ['ativo', 'Ativos'], ['agendado', 'Agendados'], ['pausado', 'Pausados'], ['expirado', 'Expirados'], ['esgotado', 'Esgotados']];
+    function chips() {
+      var list = G.coupons();
+      $('chips').innerHTML = FILTERS.map(function (f) {
+        var n = f[0] ? list.filter(function (c) { return G.couponStatus(c) === f[0]; }).length : list.length;
+        return '<button type="button" class="chip" data-f="' + f[0] + '" aria-pressed="' + (filter === f[0]) + '">' + f[1] + ' <span class="muted">(' + n + ')</span></button>';
+      }).join('');
+    }
+    function row(c) {
+      var st = G.couponStatus(c), pct = Math.min(100, Math.round(c.uses / c.maxUses * 100)), tone = pct >= 100 ? ' is-danger' : pct >= 90 ? ' is-warning' : '';
+      var val = c.validFrom > G.today ? 'De ' + A.fmtDate(c.validFrom) + ' até ' + A.fmtDate(c.validUntil) : 'Até ' + A.fmtDate(c.validUntil);
+      return '<tr><td class="cell-main"><span class="g3-code">' + G.esc(c.code) + '</span></td>' +
+        '<td data-label="Desconto">' + G.discountText(c) + '</td><td data-label="Duração">' + G.durationText(c) + '</td><td data-label="Validade">' + val + '</td>' +
+        '<td data-label="Usos"><div class="g3-uses"><span class="tabular"><strong>' + c.uses + '</strong> de ' + c.maxUses + '</span><div class="progress" role="progressbar" aria-label="Usos do cupom ' + G.esc(c.code) + '" aria-valuemin="0" aria-valuemax="' + c.maxUses + '" aria-valuenow="' + c.uses + '"><div class="progress-bar' + tone + '" style="--value:' + pct + '%"></div></div></div></td>' +
+        '<td data-label="Planos">' + c.planIds.map(G.planName).join(', ') + '</td><td data-label="Situação">' + A.badge(st) + '</td>' +
+        '<td class="col-actions" data-label="Ações"><div class="row" style="justify-content:flex-end">' +
+        (canManage ? '<a class="btn btn-neutral" href="' + G.href('cupom-editar.html', { id: c.id }) + '" aria-label="Editar o cupom ' + G.esc(c.code) + '">' + G.ico('edit') + 'Editar</a>' : '') +
+        '<a class="btn btn-neutral" href="' + G.href('cupom-relatorio.html', { id: c.id }) + '" aria-label="Ver relatório do cupom ' + G.esc(c.code) + '">' + G.ico('chart') + 'Relatório</a></div></td></tr>';
+    }
+    function draw() {
+      chips();
+      var list = G.coupons().filter(function (c) { return !filter || G.couponStatus(c) === filter; });
+      $('resumo').textContent = list.length === 1 ? '1 cupom.' : list.length + ' cupons.';
+      G.region('#area', {
+        rows: 5, icon: 'tag', title: 'Nenhum cupom por aqui', text: filter ? 'Nenhum cupom está nesta situação.' : 'Crie o primeiro cupom para oferecer desconto aos personais.',
+        action: filter ? { label: 'Ver todos os cupons', onClick: function () { filter = ''; draw(); } } : (canManage ? { label: 'Novo cupom', icon: 'plus', href: G.href('cupom-editar.html') } : null),
+        renderDefault: function (el) {
+          if (!list.length) { window.AuraState.render(el, 'empty', { icon: 'tag', title: 'Nenhum cupom nesta situação', text: 'Mude o filtro para ver os outros cupons.', action: { label: 'Ver todos os cupons', onClick: function () { filter = ''; draw(); } } }); return; }
+          el.innerHTML = '<div class="table-wrap"><table class="table"><caption class="sr-only">Cupons de desconto</caption><thead><tr><th scope="col">Código</th><th scope="col">Desconto</th><th scope="col">Duração</th><th scope="col">Validade</th><th scope="col">Usos</th><th scope="col">Planos</th><th scope="col">Situação</th><th scope="col" class="col-actions"><span class="sr-only">Ações</span></th></tr></thead><tbody>' + list.map(row).join('') + '</tbody></table></div>';
+        }
+      });
+    }
+    $('chips').addEventListener('click', function (e) { var b = e.target.closest('[data-f]'); if (!b) return; filter = b.dataset.f; draw(); var n = $('chips').querySelector('[aria-pressed="true"]'); if (n) n.focus(); });
+    document.addEventListener('aura:statechange', draw);
+    draw();
+  }
+})();
+</script>
+</body>
+</html>

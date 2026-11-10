@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CFG-04 · Assinatura · aura-fit</title>
+  <meta name="aura-screen" content="CFG-04">
+  <meta name="aura-variants" content="ativa,ativa-com-cupom,vencendo,inadimplente,cancelamento-agendado,cancelada,starter">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g2.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g2.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g2.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Forma de pagamento atualizada.">
+  <div class="g2-wrap">
+    <nav aria-label="Você está em" class="mb-2"><ol class="breadcrumb">
+      <li><a id="bc-cfg" href="configuracoes.html">Configurações</a></li><li><span aria-current="page">Assinatura</span></li></ol></nav>
+    <div class="page-header">
+      <div>
+        <h1>Minha assinatura</h1>
+        <p>Seu plano, sua próxima cobrança e como cancelar ou trocar, tudo nesta tela.</p>
+      </div>
+    </div>
+    <div id="area"></div>
+  </div>
+</main>
+<script>
+(function () {
+  var A = window.AURA, D = window.AURA_G2, G = window.G2;
+  document.getElementById('bc-cfg').href = G.url(G.PATH.config);
+
+  // ativa com cupom de 3 meses (PRO10OFF): mesma data de cobranca da fonte unica; o desconto vale na fatura de out, nov e dez
+  function withCoupon() {
+    var s = JSON.parse(JSON.stringify(A.subscriptionVariants.ativa));
+    s.couponApplied = 'PRO10OFF'; s.amount = 39.9; s.couponEndsAt = A.addMonths(s.nextChargeAt, 1);
+    s.invoices[0].amount = 39.9;
+    return s;
+  }
+  // a faixa e o sino do shell seguem a mesma assinatura da tela
+  (function () {
+    var m = { vencendo: 1, inadimplente: 1, cancelamento_agendado: 1, cancelada: 1, ativa: 1 }, v = (G.variant() || '').replace(/-/g, '_');
+    if (m[v] && !G.Q.sub) { A.subscription = A.subscriptionVariants[v]; }
+  })();
+  function data() {
+    var v = (G.variant() || 'ativa').replace(/-/g, '_'), st = G.state();
+    if (st === 'empty') v = 'starter';
+    if (v === 'starter') return { status: 'starter' };
+    if (v === 'ativa_com_cupom') return withCoupon();
+    if (!G.variant()) return A.subscription;
+    return A.subscriptionVariants[v] || A.subscriptionVariants.ativa;
+  }
+  function couponHtml(s) {
+    if (!s.couponApplied) return 'Nenhum cupom ativo';
+    var c = G.findCoupon(s.couponApplied), t = G.esc(s.couponApplied);
+    if (!c) return t;
+    var what = c.type === 'percentual' ? c.value + '% de desconto' : G.money(c.value) + ' de desconto';
+    if (c.duration === 'n_meses' && s.couponEndsAt) return t + ': ' + what + ' por mês, até ' + G.dmy(s.couponEndsAt) + '. Depois, ' + G.money(G.planById(s.planId).prices.monthly) + ' por mês.';
+    if (c.duration === 'n_meses') return t + ': ' + what + ' por ' + c.months + ' meses';
+    return t + ': ' + what + ' na primeira cobrança, já aplicado';
+  }
+  function banner(s) {
+    var pm = s.paymentMethod, upd = '<a class="btn btn-primary" href="#forma-pagamento" id="atualizar-pg">Atualizar pagamento</a>';
+    if (s.status === 'vencendo') return '<div class="alert alert-warning mb-4" role="status">' + G.ico('clock') + '<div class="alert-body"><div class="alert-title">Seu cartão vence em ' + G.esc(pm.exp) + '</div>A próxima cobrança é em ' + G.dmy(s.nextChargeAt) + '. Para evitar uma falha, atualize o cartão antes dessa data.<div class="g2-alert-actions"><a class="btn btn-primary" href="#forma-pagamento">Atualizar cartão</a></div></div></div>';
+    if (s.status === 'inadimplente') return '<div class="alert alert-warning mb-4" role="alert">' + G.ico('alert') + '<div class="alert-body"><div class="alert-title">Seu pagamento não passou</div>O cartão foi recusado em ' + G.dmy(s.failedAt) + '. Você tem 7 dias para resolver, até ' + G.dmy(s.graceUntil) + ', e usa tudo normalmente. Depois disso, seus alunos e treinos ficam só para consulta. <strong>Nada é apagado.</strong><div class="g2-alert-actions">' + upd + '</div></div></div>';
+    if (s.status === 'cancelamento_agendado') return '<div class="alert alert-info mb-4" role="status">' + G.ico('calendar') + '<div class="alert-body"><div class="alert-title">Cancelamento agendado</div>Você tem acesso ao plano Pro até ' + G.dmy(s.endsAt) + '. Depois volta ao Starter (grátis). Nenhuma nova cobrança será feita.<div class="g2-alert-actions"><button type="button" class="btn btn-primary" id="reativar">Reativar assinatura</button></div></div></div>';
+    if (s.status === 'cancelada') return '<div class="alert alert-info mb-4" role="status">' + G.ico('info') + '<div class="alert-body"><div class="alert-title">Sua assinatura terminou em ' + G.dmy(s.endsAt) + '</div>Você está no Starter (grátis). Seus alunos e treinos continuam guardados.<div class="g2-alert-actions"><a class="btn btn-primary" href="' + G.esc(G.url(G.PATH.planos)) + '">Assinar de novo</a></div></div></div>';
+    return '';
+  }
+  function planCard(s) {
+    if (s.status === 'starter' || s.status === 'cancelada') {
+      var st = G.planById('starter');
+      return '<section class="card" aria-labelledby="pl-t"><div class="card-header"><h2 class="card-title" id="pl-t">Seu plano</h2>' + A.badge(s.status === 'starter' ? 'ativa' : 'cancelada').replace('Ativa', 'Grátis') + '</div><div class="card-body stack">' +
+        '<p class="g2-sub-price">Starter <span class="muted body-medium">grátis, sem prazo</span></p><ul class="g2-feat">' + st.features.map(function (f) { return '<li class="' + (/^Sem /.test(f) ? 'is-no' : '') + '">' + G.ico(/^Sem /.test(f) ? 'x' : 'check', 'icon-sm') + '<span>' + G.esc(f) + '</span></li>'; }).join('') + '</ul>' +
+        '<p class="muted">Sem cobrança e sem cartão. Para mais alunos ou IA, veja os planos pagos.</p></div></section>';
+    }
+    var p = G.planById(s.planId), per = s.cycle === 'anual' ? 'ano' : 'mês', next;
+    if (s.status === 'cancelamento_agendado') next = 'Nenhuma. Acesso até ' + G.dmy(s.endsAt);
+    else if (s.status === 'inadimplente') next = 'Nova tentativa de cobrança em ' + G.dmy(s.retryAt || s.nextChargeAt);
+    else next = G.dmy(s.nextChargeAt) + ' (renovação automática)';
+    return '<section class="card" aria-labelledby="pl-t"><div class="card-header"><h2 class="card-title" id="pl-t">Seu plano</h2>' + A.badge(s.status) + '</div><div class="card-body stack">' +
+      '<p class="g2-sub-price">' + G.esc(p.name) + ' <span class="muted body-medium">' + G.money(s.amount) + ' por ' + per + '</span></p>' +
+      '<dl class="kv"><dt>Cobrança</dt><dd>' + (s.cycle === 'anual' ? 'Anual' : 'Mensal') + '</dd>' +
+      '<dt>Próxima cobrança</dt><dd>' + next + '</dd>' +
+      '<dt>Cupom</dt><dd>' + couponHtml(s) + '</dd>' +
+      '<dt>Limite do plano</dt><dd>' + (p.limits.students == null ? 'Alunos ilimitados' : 'Até ' + p.limits.students + ' alunos') + ', ' + G.esc(p.ai) + '</dd></dl></div></section>';
+  }
+  function manageCard(s) {
+    var paid = s.status !== 'starter' && s.status !== 'cancelada';
+    var h = '<section class="card" aria-labelledby="man-t"><div class="card-header"><h2 class="card-title" id="man-t">Trocar ou cancelar</h2></div><div class="card-body stack">';
+    h += '<a class="btn btn-secondary btn-block" href="' + G.esc(G.url(G.PATH.planos)) + '">' + (paid ? 'Trocar plano' : 'Ver planos') + '</a>';
+    if (paid && s.status !== 'cancelamento_agendado') h += '<a class="btn btn-secondary btn-block" id="cancelar" href="' + G.esc(G.url(G.PATH.cancelar)) + '">Cancelar assinatura</a><p class="g2-help muted">Se cancelar, você continua com o ' + G.esc(G.planById(s.planId).name) + ' até ' + G.dmy(s.status === 'inadimplente' ? s.graceUntil : s.nextChargeAt) + (s.status === 'inadimplente' ? ', o fim do prazo para resolver.' : ', o dia da próxima cobrança.') + '</p><p class="g2-help muted">Contratou há menos de 7 dias? Você pode desistir e receber o valor de volta. <a href="' + G.esc(G.url(G.PATH.termosCobranca)) + '">Ver como</a></p>';
+    if (s.status === 'cancelamento_agendado') h += '<p class="muted">Você pode reativar até ' + G.dmy(s.endsAt) + ', sem pagar nada a mais.</p>';
+    return h + '</div></section>';
+  }
+  function payCard(s) {
+    if (s.status === 'starter' || s.status === 'cancelada') return '<section class="card" aria-labelledby="pg-t"><div class="card-header"><h2 class="card-title" id="pg-t">Forma de pagamento</h2></div><div class="card-body"><p class="muted">Nenhum cartão cadastrado. Você só informa um cartão ao assinar um plano pago, na tela segura de pagamento.</p></div></section>';
+    var m = s.paymentMethod;
+    return '<section class="card" id="forma-pagamento" tabindex="-1" aria-labelledby="pg-t"><div class="card-header"><h2 class="card-title" id="pg-t">Forma de pagamento</h2></div><div class="card-body stack">' +
+      '<p class="row">' + G.ico('credit-card') + '<strong>' + G.esc(m.brand) + ' final ' + G.esc(m.last4) + '</strong><span class="muted">vence ' + G.esc(m.exp) + '</span></p>' +
+      '<button type="button" class="btn btn-secondary" id="trocar-cartao">' + G.ico('external') + 'Trocar cartão</button>' +
+      '<p class="g2-help muted">Seus dados de cartão ficam com a empresa de pagamentos. O aura-fit nunca vê o número completo.</p></div></section>';
+  }
+  function invoices(s) {
+    var list = s.invoices || [];
+    var body = list.length ? '<div class="table-wrap"><table class="table"><caption class="sr-only">Histórico de faturas</caption><thead><tr><th scope="col">Data</th><th scope="col">Número</th><th scope="col">Valor</th><th scope="col">Situação</th><th scope="col" class="col-actions"><span class="sr-only">Recibo</span></th></tr></thead><tbody>' +
+      list.map(function (i) { return '<tr><td class="cell-main" data-label="Data">' + G.dmy(i.date) + '</td><td data-label="Número">' + G.esc(i.number) + '</td><td data-label="Valor">' + G.money(i.amount) + '</td><td data-label="Situação">' + A.badge(i.status) + '</td><td class="col-actions" data-label="Recibo">' + (i.status === 'paga' ? '<button type="button" class="btn btn-text" data-toast="Download simulado do recibo ' + G.esc(i.number) + '." data-tone="info">' + G.ico('download') + 'Recibo<span class="sr-only"> da fatura ' + G.esc(i.number) + '</span></button>' : '<span class="muted">Sem recibo</span>') + '</td></tr>'; }).join('') + '</tbody></table></div>'
+      : '<p class="muted">Você ainda não tem faturas. Elas aparecem aqui depois da primeira cobrança.</p>';
+    return '<section class="card g2-sub-wide" aria-labelledby="fa-t"><div class="card-header"><h2 class="card-title" id="fa-t">Faturas</h2></div><div class="card-body">' + body + '</div></section>';
+  }
+  function build(el) {
+    var s = data();
+    el.innerHTML = banner(s) + '<div class="g2-sub">' + planCard(s) + '<div class="stack">' + manageCard(s) + '</div>' + payCard(s) + invoices(s) + '</div>';
+    var alt = document.getElementById('trocar-cartao');
+    if (alt) alt.addEventListener('click', function () { window.AuraUI.toast('Aqui abriríamos a tela segura de pagamento para trocar o cartão. Só para teste.', { tone: 'info', title: 'Só para teste' }); });
+    var up = document.getElementById('atualizar-pg');
+    if (up) up.addEventListener('click', function () { var t = document.getElementById('forma-pagamento'); if (t) setTimeout(function () { t.focus(); }, 0); });
+    var re = document.getElementById('reativar');
+    if (re) re.addEventListener('click', function () { window.AuraUI.toast('Assinatura reativada. Nada mudou no seu plano.', { tone: 'success' }); G.setVariant('ativa'); });
+  }
+  function render() {
+    window.AuraState.render('#area', {
+      rows: 4, icon: 'credit-card', action: { label: 'Ver planos', href: G.url(G.PATH.planos), icon: 'arrow-right' },
+      title: G.state() === 'empty' ? 'Você está no plano Starter' : 'Não conseguimos carregar sua assinatura',
+      text: G.state() === 'empty' ? 'Sem assinatura paga e sem cobrança. Veja os planos se quiser mais alunos ou IA.' : 'Seus dados estão seguros e nenhuma cobrança foi alterada. Tente de novo em instantes.',
+      renderDefault: build
+    });
+  }
+  G.boot({ id: 'CFG-04', name: 'Assinatura', role: 'personal', allowed: ['personal'], active: 'minha-assinatura', render: render, subscriptionBanner: false });
+})();
+</script>
+</body>
+</html>

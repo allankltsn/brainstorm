@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLN-06 · Cancelar assinatura · aura-fit</title>
+  <meta name="aura-screen" content="PLN-06">
+  <meta name="aura-variants" content="com-cupom-ativo,anual">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g2.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g2.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g2.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div class="g2-wrap">
+    <nav aria-label="Você está em" class="mb-2"><ol class="breadcrumb">
+      <li><a id="bc-ass" href="../config/assinatura.html">Minha assinatura</a></li><li><span aria-current="page">Cancelar assinatura</span></li></ol></nav>
+    <div id="area"></div>
+  </div>
+</main>
+<script>
+(function () {
+  var A = window.AURA, D = window.AURA_G2, G = window.G2;
+  var step = 1;
+  document.getElementById('bc-ass').href = G.url(G.PATH.assinatura);
+
+  function sub() {
+    var v = G.variant(), base = (v === 'anual' || v === 'com-cupom-ativo') ? A.subscriptionVariants.ativa : A.subscription, s = JSON.parse(JSON.stringify(base));
+    if (s.status === 'inadimplente') s.nextChargeAt = s.graceUntil; // acesso completo ate o fim do prazo
+    if (v === 'anual') { s.cycle = 'anual'; s.amount = 499; s.nextChargeAt = '2027-02-03'; }
+    if (v === 'com-cupom-ativo') { s.couponApplied = 'FORCA5'; s.amount = 44.9; }
+    return s;
+  }
+  function stepper(n) {
+    return '<ol class="stepper mb-6" aria-label="Etapas do cancelamento"><li' + (n === 1 ? ' aria-current="step"' : ' class="is-done"') + '><span class="stepper-label">O que muda</span></li><li' + (n === 2 ? ' aria-current="step"' : '') + '><span class="stepper-label">Confirmação</span></li></ol>';
+  }
+  function step1(el) {
+    var s = sub(), p = G.planById(s.planId), end = G.dmy(s.nextChargeAt || s.endsAt), annual = s.cycle === 'anual';
+    var c = s.couponApplied ? G.findCoupon(s.couponApplied) : null;
+    el.innerHTML = stepper(1) + '<div class="page-header"><div><h1>Cancelar assinatura</h1><p>Cancele aqui, em 2 passos. Sem multa e sem falar com ninguém.</p></div></div>' +
+      '<div class="stack-lg" style="max-width:720px">' +
+      (c ? '<div class="alert alert-warning" role="status">' + G.ico('alert') + '<div class="alert-body"><div class="alert-title">Seu desconto acaba junto</div>O cupom ' + G.esc(c.code) + ' (' + G.money(c.value) + ' de desconto por mês) deixa de valer quando a assinatura terminar. Cada cupom vale para uma compra.</div></div>' : '') +
+      '<section class="card" aria-labelledby="muda-t"><div class="card-header"><h2 class="card-title" id="muda-t">O que acontece se você cancelar</h2></div><div class="card-body"><ul class="g2-checklist">' +
+      '<li>' + G.ico('calendar') + '<span>Você continua com o plano ' + G.esc(p.name) + ' <strong>até ' + end + '</strong>, fim do período que já pagou.</span></li>' +
+      '<li>' + G.ico('refresh') + '<span>Não haverá nova cobrança depois de ' + end + '.</span></li>' +
+      '<li>' + G.ico('users') + '<span>Depois disso você volta ao Starter (grátis): até 3 alunos ativos e sem IA. Se tiver mais alunos, você escolhe quais 3 continuam ativos.</span></li>' +
+      '<li>' + G.ico('check-circle') + '<span><strong>Nada é apagado.</strong> Seus alunos, treinos e histórico continuam guardados.</span></li>' +
+      '<li>' + G.ico('arrow-left') + '<span>Mudou de ideia? Você pode reativar até ' + end + ', sem pagar nada a mais.</span></li>' +
+      '<li>' + G.ico('info') + '<span>Contratou há menos de 7 dias? Você pode desistir da compra e receber o valor de volta.</span></li>' +
+      (annual ? '<li>' + G.ico('info') + '<span>Seu plano é anual e já foi pago: o acesso vai até ' + end + ' e não devolvemos o valor proporcional. Se você contratou há menos de 7 dias, pode pedir reembolso total (veja a <a href="' + G.esc(G.url(G.PATH.termosCobranca)) + '" target="_blank" rel="noopener">seção de cobrança dos Termos<span class="sr-only"> (abre em nova aba)</span></a>).</span></li>' : '') +
+      '</ul></div></section>' +
+      '<form id="f-cancel" class="card" aria-labelledby="mot-t"><div class="card-header"><h2 class="card-title" id="mot-t">Por que você está saindo? <span class="muted body-medium">(opcional)</span></h2></div><div class="card-body stack">' +
+      '<div class="field"><label for="motivo">Motivo</label><div class="select-wrap"><select class="select" id="motivo" aria-describedby="motivo-h"><option value="">Prefiro não dizer</option>' + D.cancelReasons.map(function (r) { return '<option>' + G.esc(r) + '</option>'; }).join('') + '</select></div>' +
+      '<span class="field-help" id="motivo-h">Ajuda a melhorar o aura-fit. Você não precisa responder para cancelar. Não escreva dados de alunos.</span></div>' +
+      '<div class="g2-actions-equal"><a class="btn btn-secondary btn-lg" href="' + G.esc(G.url(G.PATH.assinatura)) + '">' + G.ico('arrow-left') + 'Não cancelar</a>' +
+      '<button type="submit" class="btn g2-btn-danger-outline btn-lg">' + G.ico('x') + 'Cancelar assinatura</button></div>' +
+      '<p class="g2-help muted">Nada muda até você tocar em "Cancelar assinatura". Se cancelar, o plano segue até ' + end + '.</p></div></form></div>';
+    document.getElementById('f-cancel').addEventListener('submit', function (e) { e.preventDefault(); step = 2; render(true); });
+  }
+  function step2(el) {
+    var s = sub(), p = G.planById(s.planId), end = G.dmy(s.nextChargeAt || s.endsAt);
+    el.innerHTML = stepper(2) + '<div class="g2-status" style="padding-top:0"><span class="g2-status-icon is-info">' + G.ico('calendar') + '</span><h1 id="h-ok" tabindex="-1">Cancelamento agendado</h1>' +
+      '<p role="status">Sua assinatura do plano ' + G.esc(p.name) + ' termina em <strong>' + end + '</strong>. Até lá, tudo continua igual.</p>' +
+      '<section class="card" aria-label="Resumo"><div class="card-body"><dl class="kv"><dt>Acesso ao ' + G.esc(p.name) + ' até</dt><dd>' + end + '</dd><dt>Próxima cobrança</dt><dd>Nenhuma</dd><dt>Depois disso</dt><dd>Starter (grátis), com seus dados guardados</dd><dt>Confirmação</dt><dd>Enviamos para ' + G.esc(A.me.personal.emailMasked) + '</dd></dl></div></section>' +
+      '<div class="g2-actions"><button type="button" class="btn btn-secondary btn-lg" id="reativar">Reativar assinatura</button><a class="btn btn-primary btn-lg" href="' + G.esc(G.url(G.PATH.assinatura, { variant: 'cancelamento-agendado' })) + '">Ir para Minha assinatura</a></div></div>';
+    document.getElementById('reativar').addEventListener('click', function () {
+      window.AuraUI.toast('Assinatura reativada. Nada mudou no seu plano.', { tone: 'success' });
+      setTimeout(function () { location.href = G.url(G.PATH.assinatura, { variant: 'ativa' }); }, 1200);
+    });
+  }
+  function render(focus) {
+    var st = G.state();
+    if (st === 'success') step = 2;
+    window.AuraState.render('#area', {
+      rows: 3, icon: 'credit-card', title: st === 'error' ? 'Não conseguimos carregar sua assinatura' : 'Você não tem assinatura paga', text: st === 'error' ? 'Nada foi cancelado e seus dados estão seguros. Tente de novo em instantes.' : 'Você está no Starter, que é grátis. Não há nada para cancelar. Se quiser mais alunos ou IA, veja os planos.',
+      action: { label: 'Ver planos', href: G.url(G.PATH.planos), icon: 'arrow-right' },
+      renderDefault: function (el) {
+        var cs = sub();
+        if (['ativa', 'vencendo', 'inadimplente', 'cancelamento_agendado'].indexOf(cs.status) === -1) { window.AuraState.render(el, 'empty', { icon: 'credit-card', title: 'Você não tem assinatura paga', text: 'Você está no Starter, que é grátis. Não há nada para cancelar. Se quiser mais alunos ou IA, veja os planos.', action: { label: 'Ver planos', href: G.url(G.PATH.planos), icon: 'arrow-right' } }); return; }
+        if (step === 2 || cs.status === 'cancelamento_agendado') step2(el); else step1(el); if (focus === true) { var h = document.getElementById('h-ok'); if (h) h.focus(); } }
+    });
+  }
+  G.boot({ id: 'PLN-06', name: 'Cancelar assinatura', role: 'personal', allowed: ['personal'], active: 'minha-assinatura', render: function () { render(); } });
+})();
+</script>
+</body>
+</html>

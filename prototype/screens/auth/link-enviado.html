@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUTH-05 · Link enviado · aura-fit</title>
+  <meta name="aura-screen" content="AUTH-05">
+  <meta name="aura-variants" content="reenvio-aguardando">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g1.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g1.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body class="g1">
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<div class="g1-split">
+  <aside class="g1-brand" aria-label="Sobre o aura-fit">
+    <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+    <div>
+      <p class="g1-claim">Mais que treinos. Resultados reais.</p>
+      <p class="g1-claim-sub">O espaço do personal para cuidar dos alunos, dos treinos e das cobranças.</p>
+      <ul class="g1-points">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg>Convite seguro para cada aluno</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Seus dados protegidos, como manda a LGPD</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-refresh"/></svg>Cancele a assinatura quando quiser</li>
+      </ul>
+    </div>
+    <p class="caption">Só para teste. Os dados são fictícios.</p>
+  </aside>
+  <div class="g1-pane">
+    <header class="g1-top">
+      <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+      <button type="button" class="g1-iconbtn" data-g1-theme aria-label="Mudar tema"></button>
+    </header>
+    <main id="conteudo" tabindex="-1" class="g1-main" data-state="default">
+      <div class="g1-card">
+        <div id="g1-state" data-when="loading error"></div>
+        <div class="stack-lg" data-when="default empty success">
+          <div class="g1-statecard">
+            <span class="g1-bigicon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg></span>
+            <h1>Confira seu e-mail</h1>
+            <p>Se o e-mail estiver cadastrado, você receberá um link para redefinir a senha. O link expira em 15 minutos.</p>
+            <ol class="g1-steps" aria-label="O que fazer agora">
+              <li>Abra o e-mail que enviamos.</li>
+              <li>Toque no botão vermelho.</li>
+              <li>Crie a sua nova senha.</li>
+            </ol>
+            <div class="alert" role="note"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-info"/></svg><div class="alert-body">Não achou? Confira a caixa de spam ou lixo eletrônico.</div></div>
+          </div>
+          <div class="stack-sm">
+            <button type="button" class="btn btn-secondary btn-block" id="btn-reenviar">Reenviar link</button>
+            <p class="field-help text-center" id="espera" role="status" hidden>Você poderá pedir outro link em 60 segundos.</p>
+          </div>
+          <div class="g1-demo-note">
+            <p class="label">Só para teste</p>
+            <p class="muted">Para seguir o teste, faça de conta que você tocou no botão do e-mail.</p>
+            <a class="btn btn-neutral btn-block mt-2" href="redefinir-senha.html">Só para teste: abrir o link do e-mail</a>
+          </div>
+          <div class="g1-foot-links is-flat"><a class="g1-link" href="login.html"><svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-arrow-left"/></svg>Voltar para o login</a></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+<script src="../../assets/grupo-g1.js"></script>
+<script>
+(function () {
+  var b = document.getElementById('btn-reenviar'), w = document.getElementById('espera');
+  function wait() { b.setAttribute('aria-disabled', 'true'); b.classList.add('is-disabled'); w.hidden = false; }
+  if (G1.v() === 'reenvio-aguardando') wait();
+  b.addEventListener('click', function () {
+    if (b.getAttribute('aria-disabled') === 'true') { w.focus && w.focus(); return; }
+    AuraUI.toast('Pedimos o envio de novo. A mensagem é a mesma de antes.', { tone: 'info' });
+    wait();
+  });
+})();
+</script>
+</body>
+</html>

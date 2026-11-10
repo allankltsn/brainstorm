@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HOME-02 · Início do personal · aura-fit</title>
+  <meta name="aura-screen" content="HOME-02">
+  <meta name="aura-variants" content="primeiro-acesso,inadimplente,limite-proximo">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g4.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Convite enviado. Você será avisado quando a pessoa aceitar.">
+  <div class="page-header">
+    <div>
+      <h1 id="h1">Olá</h1>
+      <p id="sub"></p>
+    </div>
+    <div class="page-actions" data-when="default success">
+      <a class="btn btn-primary" id="a-convidar" href="#"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Convidar aluno</a>
+    </div>
+  </div>
+  <div class="alert alert-success mb-4" role="status" data-when="success">
+    <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+    <div class="alert-body"><div class="alert-title">Convite enviado</div>Quando a pessoa aceitar, ela aparece na sua lista de alunos.</div>
+  </div>
+  <div id="banner"></div>
+  <div id="area"></div>
+</main>
+<script>
+  G4.setDefaultRole('personal');
+  // variante inadimplente = ?sub=inadimplente (a faixa de pagamento pendente vem do shell)
+  if (G4.variant() === 'inadimplente' && !G4.q.sub) { location.replace(location.href + (location.search ? '&' : '?') + 'sub=inadimplente'); }
+  G4.mount({ id: 'HOME-02', title: 'Início do personal', active: 'inicio' });
+  var A = window.AURA, P = G4DATA.personal, V = G4.variant();
+  var me = A.me.personal;
+  var students = P.activeStudents, limit = P.studentLimit;
+  if (V === 'primeiro-acesso') students = 0;
+  if (V === 'limite-proximo') students = 28;
+  var sub = A.subscription, plan = A.currentPlan().plan;
+  document.getElementById('h1').textContent = 'Olá, ' + G4.firstName(me.name);
+  document.getElementById('sub').textContent = G4.longDate() + '. Veja como estão seus alunos hoje.';
+  document.getElementById('a-convidar').href = G4.url('convidar-aluno.html');
+
+  var urlCfg4 = G4.url('../config/assinatura.html');
+  var urlPlans = G4.url('../planos/planos.html');
+
+  function banner() {
+    var h = '';
+    if (V === 'limite-proximo') {
+      h = '<div class="alert alert-info mb-4"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert-body"><div class="alert-title">Você está perto do limite do plano</div>Seu plano Pro permite ' + limit + ' alunos e você já tem ' + students + '. Dá para convidar mais ' + (limit - students) + '.</div><a class="btn btn-secondary" href="' + G4.esc(urlPlans) + '">Ver planos</a></div>';
+    }
+    document.getElementById('banner').innerHTML = h;
+  }
+  function attention() {
+    var list = students === 0 ? [] : P.attention;
+    if (!list.length) return '<p class="muted">Nenhum aluno parado agora.</p>';
+    return '<ul class="g4-list">' + list.map(function (s) {
+      return '<li><span class="avatar avatar-sm avatar-neutral" aria-hidden="true">' + A.initials(s.name) + '</span><span class="grow"><strong>' + G4.esc(s.name) + '</strong><span>Sem treino registrado há ' + s.days + ' dias</span></span></li>';
+    }).join('') + '</ul><p class="muted mt-4">Uma conversa costuma ajudar mais que um aviso. O aura-fit não envia cobrança de treino ao aluno.</p>';
+  }
+  function agenda() {
+    if (students === 0) return '<p class="muted">Sem compromissos hoje.</p>';
+    return '<ul class="g4-list">' + A.agendaToday.map(function (a) {
+      return '<li><span class="g4-time">' + a.time + '</span><span class="grow"><strong>' + G4.esc(a.studentName) + '</strong><span>' + G4.esc(a.workoutName) + '</span></span><span class="badge">' + G4.ico(a.mode === 'online' ? 'monitor' : 'user') + (a.mode === 'online' ? 'Online' : 'Presencial') + '</span></li>';
+    }).join('') + '</ul>';
+  }
+  function checklist() {
+    var items = [['Convidar seu primeiro aluno', G4.url('convidar-aluno.html'), 'Convidar'], ['Conferir seu plano', urlPlans, 'Ver planos'], ['Ajustar suas notificações', G4.url('../config/notificacoes.html'), 'Ajustar']];
+    return '<section class="card mb-6" aria-labelledby="t-start"><div class="card-header"><h2 class="card-title" id="t-start">Comece por aqui</h2><span class="muted">0 de 3 feitos</span></div><div class="card-body"><ol class="g4-checklist">' +
+      items.map(function (it, i) { return '<li><span class="g4-step" aria-hidden="true">' + (i + 1) + '</span><span class="grow body-medium">' + it[0] + '</span><a class="btn btn-secondary" href="' + G4.esc(it[1]) + '">' + it[2] + '<span class="sr-only">: ' + it[0].toLowerCase() + '</span></a></li>'; }).join('') + '</ol></div></section>';
+  }
+  function render(el) {
+    var pct = Math.round(students / limit * 100);
+    var tone = pct >= 90 ? ' is-warning' : '';
+    el.innerHTML = (V === 'primeiro-acesso' ? checklist() : '') +
+      '<div class="stack-lg">' +
+      '<section aria-label="Resumo" class="grid-4">' +
+      '<div class="card stat"><span class="stat-label">Alunos ativos</span><span class="stat-value">' + students + ' <span class="muted body-medium" style="font-size:14px">de ' + limit + ' do seu plano</span></span>' +
+        '<div class="progress" role="progressbar" aria-label="Alunos no plano" aria-valuemin="0" aria-valuemax="' + limit + '" aria-valuenow="' + students + '"><div class="progress-bar' + tone + '" style="--value:' + pct + '%"></div></div></div>' +
+      '<div class="card stat"><span class="stat-label">Receita do mês ' + G4.example('Financeiro ainda não faz parte desta versão') + '</span><span class="stat-value">' + (students ? G4.money(P.revenueMonth) : G4.money(0)) + '</span><span class="stat-delta">' + G4.ico('calendar', 'icon-sm') + 'Outubro</span></div>' +
+      '<div class="card stat"><span class="stat-label">Sem treinar há 7 dias ou mais ' + G4.example('Treinos ainda não fazem parte desta versão') + '</span><span class="stat-value">' + (students ? P.attention.length : 0) + '</span><span class="stat-delta is-down">' + G4.ico('clock', 'icon-sm') + (students ? 'Veja quem na lista' : 'Nenhum aluno') + '</span></div>' +
+      '<div class="card stat"><span class="stat-label">Agenda de hoje ' + G4.example('Agenda ainda não faz parte desta versão') + '</span><span class="stat-value">' + (students ? A.agendaToday.length : 0) + '</span><span class="stat-delta">' + G4.ico('calendar', 'icon-sm') + 'Compromissos</span></div>' +
+      '</section>' +
+      '<section class="grid-2" aria-label="Alunos e agenda">' +
+      '<div class="card"><div class="card-header"><h2 class="card-title">Alunos que podem precisar de atenção</h2>' + G4.example('Treinos ainda não fazem parte desta versão') + '</div><div class="card-body">' + attention() + '</div></div>' +
+      '<div class="card"><div class="card-header"><h2 class="card-title">Agenda de hoje</h2>' + G4.example('Agenda ainda não faz parte desta versão') + '</div><div class="card-body">' + agenda() + '</div></div>' +
+      '</section>' +
+      '<section class="grid-2" aria-label="Treinos e plano">' +
+      '<div class="card"><div class="card-body">' + (students ? '<p class="mb-2">' + G4.example('Treinos ainda não fazem parte desta versão') + '</p>' + G4.barChart('g-trein', 'Treinos concluídos pelos alunos nos últimos 7 dias', 'Treinos por dia, de sexta a quinta: ' + P.workoutsWeek.map(function (w) { return w[0] + ' ' + w[1]; }).join(', ') + '.', P.workoutsWeek, String, ['Dia', 'Treinos']) : '<p class="muted">Quando seus alunos treinarem, o resumo da semana aparece aqui.</p>') + '</div></div>' +
+      '<div class="card"><div class="card-header"><h2 class="card-title">Seu plano atual</h2></div><div class="card-body stack"><div class="row"><strong>Plano ' + G4.esc(plan.name) + '</strong>' + A.badge(sub.status) + '</div>' +
+        '<p class="muted">' + (sub.status === 'inadimplente' ? 'Seu pagamento não passou. Troque o cartão até ' + A.fmtDate(sub.graceUntil) + '. Nada é apagado.' : 'Próxima cobrança em ' + A.fmtDate(A.nextChargeAt) + ', ' + G4.money(sub.amount) + '. Cancele quando quiser.') + '</p>' +
+        '<div class="row">' + (sub.status === 'inadimplente' ? '<a class="btn btn-primary" href="' + G4.esc(urlCfg4) + '">Trocar cartão</a>' : '<a class="btn btn-secondary" href="' + G4.esc(urlCfg4) + '">Minha assinatura</a>') + '<a class="btn btn-text" href="' + G4.esc(urlPlans) + '">Ver planos</a></div></div></div>' +
+      '</section>' +
+      '<p class="muted">' + G4.esc(A.healthNotice) + '</p></div>';
+  }
+  G4.ready(function () {
+    banner();
+    AuraState.render('#area', { rows: 4, variant: 'cards', icon: 'users', title: 'Você ainda não tem alunos', text: 'Convide a primeira pessoa por e-mail ou WhatsApp. Ela só entra pelo seu convite.',
+      action: { label: 'Convidar aluno', icon: 'plus', href: G4.url('convidar-aluno.html') }, renderDefault: render });
+  });
+</script>
+</body>
+</html>

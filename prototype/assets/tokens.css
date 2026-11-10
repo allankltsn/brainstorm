@@ -1,0 +1,62 @@
+/* Gerado por scripts/build-tokens-css.mjs a partir de tokens.json. Não edite. */
+:root {
+  --color-bg: 245 245 245;
+  --color-surface: 255 255 255;
+  --color-surface-2: 239 239 239;
+  --color-line: 227 227 227;
+  --color-line-strong: 207 207 207;
+  --color-ink: 31 31 31;
+  --color-muted: 92 92 92;
+  --color-faint: 102 102 102;
+  --color-primary: 177 17 27;
+  --color-primary-hover: 150 15 23;
+  --color-primary-press: 123 12 19;
+  --color-primary-soft: 251 232 233;
+  --color-primary-line: 236 180 184;
+  --color-on-primary: 255 255 255;
+  --color-accent-text: 177 17 27;
+  --color-success: 34 164 93;
+  --color-success-bg: 227 245 234;
+  --color-success-text: 19 122 61;
+  --color-warning: 183 121 31;
+  --color-warning-bg: 253 240 204;
+  --color-warning-text: 133 88 0;
+  --color-danger: 217 45 32;
+  --color-on-danger: 255 255 255;
+  --color-danger-bg: 253 236 234;
+  --color-danger-text: 180 35 24;
+  --color-info: 23 92 211;
+  --color-info-bg: 239 244 255;
+  --color-info-text: 23 92 211;
+}
+
+.dark {
+  --color-bg: 20 20 20;
+  --color-surface: 31 31 31;
+  --color-surface-2: 42 42 42;
+  --color-line: 51 51 51;
+  --color-line-strong: 74 74 74;
+  --color-ink: 245 245 245;
+  --color-muted: 176 176 176;
+  --color-faint: 153 153 153;
+  --color-primary: 208 32 43;
+  --color-primary-hover: 216 50 60;
+  --color-primary-press: 177 17 27;
+  --color-primary-soft: 69 27 30;
+  --color-primary-line: 122 26 33;
+  --color-on-primary: 255 255 255;
+  --color-accent-text: 255 111 120;
+  --color-success: 82 216 138;
+  --color-success-bg: 31 52 41;
+  --color-success-text: 82 216 138;
+  --color-warning: 241 185 58;
+  --color-warning-bg: 62 52 26;
+  --color-warning-text: 241 185 58;
+  --color-danger: 249 112 102;
+  --color-on-danger: 31 31 31;
+  --color-danger-bg: 58 26 24;
+  --color-danger-text: 255 138 128;
+  --color-info: 132 173 255;
+  --color-info-bg: 22 35 61;
+  --color-info-text: 132 173 255;
+}

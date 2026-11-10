@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HOME-01 · Início do administrador · aura-fit</title>
+  <meta name="aura-screen" content="HOME-01">
+  <meta name="aura-variants" content="sem-alertas">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g4.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Dados atualizados.">
+  <div class="page-header">
+    <div>
+      <h1>Início</h1>
+      <p>Como a plataforma está hoje. Aqui não aparece nenhum dado de saúde.</p>
+    </div>
+    <div class="page-actions" data-when="default success">
+      <a class="btn btn-secondary" id="a-convidar" href="#"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Convidar usuário</a>
+      <a class="btn btn-primary" id="a-cupom" href="#"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Novo cupom</a>
+    </div>
+  </div>
+  <div class="alert alert-success mb-4" role="status" data-when="success">
+    <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+    <div class="alert-body"><div class="alert-title">Tudo certo</div>Os números foram atualizados agora.</div>
+  </div>
+  <div id="area"></div>
+</main>
+<script>
+  G4.setDefaultRole('admin');
+  G4.mount({ id: 'HOME-01', title: 'Início do administrador', active: 'inicio' });
+  var A = window.AURA, K = A.kpis.admin, D = G4DATA.admin;
+  document.getElementById('a-convidar').href = G4.url('../admin/convidar-usuario.html');
+  document.getElementById('a-cupom').href = G4.url('../admin/cupom-editar.html', 'variant=novo');
+
+  function statusRows() {
+    var order = ['ativa', 'vencendo', 'inadimplente', 'cancelamento_agendado', 'cancelada'];
+    var total = order.reduce(function (s, k) { return s + (K.subscriptionsByStatus[k] || 0); }, 0) || 1;
+    return order.map(function (k) {
+      var n = K.subscriptionsByStatus[k] || 0;
+      return '<div class="g4-status-row"><div>' + A.badge(k) + '</div><span class="num">' + n + '</span>' +
+        '<div class="progress" role="progressbar" aria-label="' + A.statusMeta[k].label + ': ' + n + ' de ' + total + '" aria-valuemin="0" aria-valuemax="' + total + '" aria-valuenow="' + n + '"><div class="progress-bar" style="--value:' + Math.round(n / total * 100) + '%"></div></div></div>';
+    }).join('');
+  }
+  function alertsHtml() {
+    var list = G4.variant() === 'sem-alertas' ? [] : K.alerts;
+    if (!list.length) return '<div class="row"><svg class="icon icon-lg text-success" aria-hidden="true"><use href="#i-check-circle"/></svg><p><strong>Nenhum alerta agora.</strong> <span class="muted">Quando algo precisar de você, aparece aqui.</span></p></div>';
+    return '<ul class="g4-list">' + list.map(function (a) {
+      var icon = a.type === 'warning' ? 'alert' : 'info', tone = a.type === 'warning' ? 'warning' : 'info';
+      var link = a.link.replace(/^(\.\.\/[a-z]+\/[a-z-]+\.html).*$/, '$1');
+      var extra = /usuarios/.test(link) && a.type === 'warning' ? 'variant=filtro-bloqueados' : /usuarios/.test(link) ? 'variant=convites-pendentes' : '';
+      return '<li><span class="badge badge-' + tone + '">' + G4.ico(icon) + (a.type === 'warning' ? 'Atenção' : 'Aviso') + '</span><span class="grow">' + G4.esc(a.text) + '</span><a class="btn btn-text" href="' + G4.esc(G4.url(link, extra)) + '">Ver<span class="sr-only"> detalhes: ' + G4.esc(a.text) + '</span></a></li>';
+    }).join('') + '</ul>';
+  }
+  function render(el) {
+    var mrr = D.mrr6.map(function (r) { return r; });
+    el.innerHTML =
+      '<div class="stack-lg">' +
+      '<section aria-label="Resumo" class="grid-4">' +
+      '<div class="card stat"><span class="stat-label">Usuários ativos</span><span class="stat-value">' + K.activeUsers + '</span><span class="stat-delta">' + G4.ico('users', 'icon-sm') + 'Contas com acesso liberado</span></div>' +
+      '<div class="card stat"><span class="stat-label">Receita recorrente por mês</span><span class="stat-value">' + G4.money(K.mrr) + '</span><span class="stat-delta">' + G4.ico('chevron-up', 'icon-sm') + 'Sobe há 5 meses</span></div>' +
+      '<div class="card stat"><span class="stat-label">Novos cadastros em 30 dias</span><span class="stat-value">' + K.newSignups30d + '</span><span class="stat-delta">' + G4.ico('user', 'icon-sm') + 'Personais e alunos</span></div>' +
+      '<div class="card stat"><span class="stat-label">Assinaturas em atraso</span><span class="stat-value">' + K.subscriptionsByStatus.inadimplente + '</span><span class="stat-delta is-down">' + G4.ico('alert', 'icon-sm') + (K.subscriptionsByStatus.inadimplente ? 'Precisa de atenção' : 'Tudo em dia') + '</span></div>' +
+      '</section>' +
+      '<section class="card" aria-labelledby="t-alertas"><div class="card-header"><h2 class="card-title" id="t-alertas">Alertas</h2></div><div class="card-body">' + alertsHtml() + '</div></section>' +
+      '<section class="grid-2" aria-label="Gráficos">' +
+      '<div class="card"><div class="card-body">' + G4.barChart('g-mrr', 'Receita recorrente por mês (R$)', 'Receita recorrente nos últimos 6 meses: de ' + G4.money(mrr[0][1]) + ' em maio a ' + G4.money(mrr[5][1]) + ' em outubro. Sobe todos os meses.', mrr, function (v) { return Math.round(v); }, ['Mês', 'Receita']) + '</div></div>' +
+      '<div class="card"><div class="card-header"><h2 class="card-title">Assinaturas por situação</h2></div><div class="card-body">' + statusRows() + '</div></div>' +
+      '</section></div>';
+  }
+  G4.ready(function () { AuraState.render('#area', { rows: 4, variant: 'cards', icon: 'chart', title: 'Ainda não há dados', text: 'Quando as primeiras pessoas se cadastrarem, os números aparecem aqui.',
+    action: { label: 'Convidar usuário', icon: 'mail', href: G4.url('../admin/convidar-usuario.html') }, renderDefault: render }); });
+</script>
+</body>
+</html>

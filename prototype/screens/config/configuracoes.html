@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CFG-00 · Configurações · aura-fit</title>
+  <meta name="aura-screen" content="CFG-00">
+  <meta name="aura-variants" content="">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g4.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Alterações salvas.">
+  <div class="g4-measure stack-lg">
+    <div class="page-header" style="margin-bottom:0">
+      <div>
+        <h1 id="h1">Configurações</h1>
+        <p id="sub">Escolha o que você quer ajustar.</p>
+      </div>
+    </div>
+    <div class="alert alert-success" role="status" data-when="success">
+      <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+      <div class="alert-body"><div class="alert-title">Tudo certo</div>Suas alterações foram salvas.</div>
+    </div>
+    <div id="area"></div>
+  </div>
+</main>
+<script>
+  G4.setDefaultRole('aluno');
+  G4.mount({ id: 'CFG-00', title: 'Configurações', activeByRole: { aluno: 'perfil', admin: 'configuracoes', personal: 'configuracoes' } });
+  var A = window.AURA, r = G4.role(), me = A.me[r];
+  var isAluno = r === 'aluno';
+  if (isAluno) { document.getElementById('h1').textContent = 'Meu perfil'; document.getElementById('sub').textContent = 'Seus dados, sua aparência e sua privacidade.'; }
+
+  function item(href, icon, title, desc, cls) {
+    return '<a class="g4-bigitem' + (cls ? ' ' + cls : '') + '" href="' + G4.esc(href) + '"><span class="g4-bigico">' + G4.ico(icon) + '</span><span><strong>' + title + '</strong>' + (desc ? '<small>' + desc + '</small>' : '') + '</span><span class="g4-chev">' + G4.ico('chevron-right') + '</span></a>';
+  }
+  function render(el) {
+    var h = '';
+    var T = window.AuraTheme, modeName = { light: 'Claro', dark: 'Escuro', system: 'Igual ao ' + (isAluno ? 'celular' : 'computador') }[T.get()], sizeName = T.getSize() === 'grande' ? 'Letra grande' : 'Letra padrão';
+    if (isAluno) {
+      h += '<div class="g4-profile-head"><span class="avatar avatar-lg" aria-hidden="true">' + me.initials + '</span><div><p class="h3">' + G4.esc(me.name) + '</p><p class="muted">' + G4.esc(me.emailMasked) + '</p><p class="muted">Aluno de ' + G4.esc(A.me.personal.name) + '</p></div></div>';
+    }
+    h += '<a class="g4-shortcut" href="' + G4.esc(G4.url('aparencia.html')) + '"><span class="g4-bigico" style="width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;background:rgb(var(--color-primary-soft));color:rgb(var(--color-accent-text))">' + G4.ico('sun') + '</span><span><strong>Aparência</strong><small id="atalho-estado">' + modeName + ' · ' + sizeName + '. Toque para mudar.</small></span><span class="g4-chev">' + G4.ico('chevron-right') + '</span></a>';
+    var list = [
+      item(G4.url('aparencia.html'), 'sun', 'Aparência', 'Claro ou escuro e tamanho da letra'),
+      item(G4.url('meus-dados.html'), 'user', 'Meus dados', 'Nome, e-mail, telefone e senha'),
+      item(G4.url('notificacoes.html'), 'bell', 'Notificações', 'O que você quer receber')
+    ];
+    if (r === 'personal') list.push(item(G4.url('assinatura.html'), 'credit-card', 'Assinatura', 'Plano, cobrança e cancelamento'));
+    list.push(item(G4.url('privacidade.html'), 'shield', 'Privacidade e meus direitos', 'Quem vê seus dados, baixar e excluir'));
+    list.push(item(G4.url('../legal/termos.html'), 'file-text', 'Termos de uso', 'Leia o que você aceitou'));
+    list.push(item(G4.url('../auth/selecionar-perfil.html'), 'users', 'Trocar conta', isAluno ? 'Entrar com outro personal' : 'Entrar com outro acesso'));
+    list.push(item('../auth/login.html', 'logout', 'Sair', 'Sair da conta neste celular ou computador'));
+    h += '<nav aria-label="Configurações"><div class="g4-biglist">' + list.join('') + '</div></nav>';
+    h += '<div class="stack-sm"><h2 class="h4 muted">Zona de cuidado</h2><div class="g4-biglist">' + item(G4.url('excluir-conta.html'), 'trash', 'Excluir minha conta', 'Leva dois passos e dá tempo de desistir', 'is-danger') + '</div></div>';
+    if (isAluno) h += '<aside class="alert alert-info" aria-label="Aviso de saúde">' + G4.ico('heart') + '<div class="alert-body">' + G4.esc(A.healthNotice) + '</div></aside>';
+    el.innerHTML = '<div class="stack-lg">' + h + '</div>';
+    AuraTheme.onChange(function (d) { var e = document.getElementById('atalho-estado'); if (e) e.textContent = { light: 'Claro', dark: 'Escuro', system: 'Igual ao ' + (isAluno ? 'celular' : 'computador') }[d.mode] + ' · ' + (d.size === 'grande' ? 'Letra grande' : 'Letra padrão') + '. Toque para mudar.'; });
+  }
+  G4.ready(function () {
+    // vazio nao se aplica (indice sempre tem itens): mostra o padrao
+    var s = AuraState.get();
+    AuraState.render('#area', s === 'empty' ? 'default' : s, { rows: 5, renderDefault: render });
+  });
+</script>
+</body>
+</html>

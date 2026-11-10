@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIS-01 · Sessão expirada · aura-fit</title>
+  <meta name="aura-screen" content="SIS-01">
+  <meta name="aura-variants" content="com-rascunho,sem-rascunho">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g1.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g1.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body class="g1">
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<div class="g1-page">
+  <header class="g1-pubbar">
+    <a class="g1-wordmark" href="../auth/login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+    <div class="g1-pubbar-actions">
+      <a class="btn btn-secondary" href="../auth/login.html">Entrar</a>
+      <button type="button" class="g1-iconbtn" data-g1-theme aria-label="Mudar tema"></button>
+    </div>
+  </header>
+  <main id="conteudo" tabindex="-1" class="g1-center" data-state="default">
+    <div class="g1-card g1-card-wide">
+        <div id="g1-state" data-when="loading error"></div>
+      <div class="stack-lg" data-when="default empty success">
+        <div class="g1-statecard">
+          <span class="g1-bigicon is-info"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg></span>
+          <h1>Você saiu da conta</h1>
+          <p>Ficou um tempo sem usar o app e saímos por segurança. É só entrar de novo.</p>
+          <div class="alert alert-success" id="aviso-rascunho" role="status" data-v="com-rascunho" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg><div class="alert-body"><p>Guardamos o que você estava escrevendo, neste celular ou computador, por 30 minutos. Quando entrar de novo, o texto volta para você. A senha e os dados de saúde nunca são guardados.</p><button type="button" class="btn btn-text" id="descartar">Descartar o que foi guardado</button></div></div>
+          <div class="alert" id="aviso-descartado" role="status" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-info"/></svg><div class="alert-body">Pronto. Apagamos o que estava guardado.</div></div>
+          <p class="muted">Ao entrar, você volta para <strong id="origem">a tela em que estava</strong>.</p>
+          <div class="g1-actions">
+            <a class="btn btn-primary btn-lg btn-block" id="entrar-de-novo" href="../auth/login.html?variant=veio-de-sessao-expirada">Entrar de novo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../../assets/grupo-g1.js"></script>
+<script>
+(function () {
+  var D = window.AURA_G1, S = window.AuraSession, Dr = window.AuraDraft;
+  var role = ['admin', 'personal', 'aluno'].indexOf(G1.q.role) > -1 ? G1.q.role : 'aluno';
+  var from = S.safeFrom(G1.q.from) || 'home/' + role + '.html?role=' + role;
+  var path = from.split('?')[0], file = path.split('/').pop();
+  document.getElementById('origem').textContent = D.origens[file] || 'a tela em que estava';
+  document.getElementById('entrar-de-novo').href = G1.withTheme('../auth/login.html?variant=veio-de-sessao-expirada&from=' + encodeURIComponent(from));
+  // sem variante: o aviso aparece so se houver algo guardado de fato
+  if (!G1.v()) G1.setVariant(Dr.has(path) || Dr.has(from) ? 'com-rascunho' : 'sem-rascunho');
+  document.getElementById('descartar').addEventListener('click', function () {
+    Dr.clear(path); Dr.clear(from);
+    document.getElementById('aviso-rascunho').hidden = true; document.getElementById('aviso-descartado').hidden = false;
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADM-05 · Papéis e permissões · aura-fit</title>
+  <meta name="aura-screen" content="ADM-05">
+  <meta name="aura-variants" content="so-papeis-do-sistema,com-papel-novo">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g3.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g3.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g3.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div class="page-header">
+    <div>
+      <h1>Papéis e permissões</h1>
+      <p>Cada pessoa tem um papel. O papel define o que ela pode ver e fazer na plataforma.</p>
+    </div>
+    <div class="page-actions" id="acoes"></div>
+  </div>
+
+  <div class="stack-lg">
+    <section class="card" aria-labelledby="t-lista">
+      <div class="card-header">
+        <h2 class="card-title" id="t-lista">Papéis</h2>
+        <a class="btn btn-secondary" id="ver-matriz" href="matriz-permissoes.html"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>Ver e ajustar quem pode o quê</a>
+      </div>
+      <div class="card-body" id="area"></div>
+    </section>
+    <div class="alert alert-info" data-when="default success">
+      <svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>
+      <div class="alert-body"><div class="alert-title">Papéis do sistema têm limites</div>Eles não podem ser apagados. O papel Administrador nunca perde as permissões de gerenciar usuários e papéis, e a última pessoa com esse papel não pode ser rebaixada nem bloqueada.</div>
+    </div>
+  </div>
+</main>
+<script>
+(function () {
+  var A = window.AURA, G = window.G3, $ = function (i) { return document.getElementById(i); };
+  G.boot({ id: 'ADM-05', title: 'Papéis e permissões', active: 'perfis-permissoes', manage: true }, init);
+  function init() {
+    $('ver-matriz').href = G.href('matriz-permissoes.html');
+    var extra = G.variant === 'com-papel-novo';
+    if (extra) $('acoes').innerHTML = '<button type="button" class="btn btn-primary" data-toast="Criar papel novo ainda é uma proposta. Aguardando decisão do dono do produto." data-tone="info"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Novo papel</button>';
+    else $('acoes').innerHTML = '<p class="muted" style="max-width:34ch">Na primeira versão os papéis são fixos. Você ajusta o que cada um pode fazer na matriz.</p>';
+
+    function draw() {
+      G.region('#area', {
+        rows: 4, icon: 'shield', title: 'Nenhum papel cadastrado', text: 'Os papéis do sistema aparecem aqui.',
+        renderDefault: function (el) {
+          var us = G.users();
+          var list = A.roles.map(function (r) { return { key: r.key, name: r.name, description: r.description, system: true, count: us.filter(function (u) { return u.roles.indexOf(r.key) !== -1; }).length }; });
+          if (extra) list.push({ key: 'financeiro', name: 'Atendimento financeiro', description: 'Consulta cobranças e cupons para atender dúvidas de pagamento.', system: false, count: 0 });
+          el.innerHTML = '<div class="table-wrap"><table class="table"><caption class="sr-only">Papéis da plataforma</caption><thead><tr><th scope="col">Papel</th><th scope="col">O que faz</th><th scope="col">Pessoas</th><th scope="col">Tipo</th><th scope="col" class="col-actions"><span class="sr-only">Ações</span></th></tr></thead><tbody>' +
+            list.map(function (r) {
+              return '<tr><td class="cell-main"><span class="body-medium">' + G.esc(r.name) + '</span></td><td data-label="O que faz">' + G.esc(r.description) + '</td><td data-label="Pessoas" class="tabular">' + r.count + '</td>' +
+                '<td data-label="Tipo">' + (r.system ? '<span class="g3-lockline">' + G.ico('lock', 'icon-sm') + 'Do sistema</span>' : '<span class="badge badge-info">' + G.ico('edit', 'icon-sm') + 'Personalizado</span>') + '</td>' +
+                '<td class="col-actions" data-label="Ações"><div class="row" style="justify-content:flex-end"><a class="btn btn-neutral" href="' + G.href('atribuir-papel.html', { papel: r.key }) + '" aria-label="Ver as pessoas do papel ' + G.esc(r.name) + '">Ver pessoas</a><a class="btn btn-neutral" href="' + G.href('matriz-permissoes.html', { destaque: r.key }) + '" aria-label="Ver permissões do papel ' + G.esc(r.name) + '">Ver permissões</a></div></td></tr>';
+            }).join('') + '</tbody></table></div>';
+        }
+      });
+    }
+    document.addEventListener('aura:statechange', draw);
+    draw();
+  }
+})();
+</script>
+</body>
+</html>

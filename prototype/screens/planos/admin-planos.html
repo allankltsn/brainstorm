@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLN-07 · Planos (admin) · aura-fit</title>
+  <meta name="aura-screen" content="PLN-07">
+  <meta name="aura-variants" content="com-rascunho,com-arquivado">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g2.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g2.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g2.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Plano salvo. Ele já aparece na página de planos.">
+  <div class="g2-wrap">
+    <div class="page-header">
+      <div>
+        <h1>Planos</h1>
+        <p>A ordem desta lista é a ordem em que os planos aparecem para os personais.</p>
+      </div>
+      <div class="page-actions"><a class="btn btn-primary" id="novo" href="admin-plano-editar.html">Novo plano</a></div>
+    </div>
+    <div id="area"></div>
+  </div>
+</main>
+<script>
+(function () {
+  var A = window.AURA, G = window.G2;
+  var list = null, showDraft = false, showArch = false, lastVar = null;
+  function init() {
+    list = A.plans.slice().sort(function (a, b) { return a.order - b.order; }).map(function (p) { return p; });
+    var v = G.variant();
+    showDraft = v === 'com-rascunho'; showArch = v === 'com-arquivado'; lastVar = v;
+  }
+  function visible() { return list.filter(function (p) { return p.status === 'ativo' || (p.status === 'rascunho' && showDraft) || (p.status === 'arquivado' && showArch); }); }
+  function fmt(v) { return v == null ? '<span class="muted">A definir</span>' : (v === 0 ? 'Grátis' : G.money(v)); }
+  function aiText(p) { return p.ai + (p.limits.aiMonthly ? ', ' + p.limits.aiMonthly + ' por mês' : ''); }
+
+  function paint(el, focusId) {
+    var vis = visible();
+    el.innerHTML =
+      '<div class="toolbar mb-4" role="group" aria-label="Mostrar também"><span class="muted">Mostrar também:</span>' +
+      '<button type="button" class="chip" id="ch-r" aria-pressed="' + showDraft + '">Rascunhos</button>' +
+      '<button type="button" class="chip" id="ch-a" aria-pressed="' + showArch + '">Arquivados</button></div>' +
+      '<p class="sr-only" id="live" role="status" aria-live="polite"></p>' +
+      '<section class="card card-flush" aria-label="Lista de planos"><div class="card-body"><div class="table-wrap"><table class="table"><caption class="sr-only">Planos cadastrados, na ordem em que aparecem</caption><thead><tr>' +
+      '<th scope="col">Ordem</th><th scope="col">Plano</th><th scope="col">Preço por mês</th><th scope="col">Preço por ano</th><th scope="col">Alunos</th><th scope="col">IA</th><th scope="col">Situação</th><th scope="col">Assinantes</th><th scope="col" class="col-actions"><span class="sr-only">Ações</span></th></tr></thead><tbody>' +
+      vis.map(function (p, i) {
+        return '<tr><td data-label="Ordem"><span class="g2-sort"><button type="button" class="btn btn-neutral btn-icon" data-up="' + p.id + '" aria-label="Mover ' + G.esc(p.name) + ' para cima"' + (i === 0 ? ' aria-disabled="true"' : '') + '>' + G.ico('chevron-up') + '</button>' +
+          '<span class="g2-order" aria-label="Posição ' + (i + 1) + '">' + (i + 1) + '</span>' +
+          '<button type="button" class="btn btn-neutral btn-icon" data-down="' + p.id + '" aria-label="Mover ' + G.esc(p.name) + ' para baixo"' + (i === vis.length - 1 ? ' aria-disabled="true"' : '') + '>' + G.ico('chevron-down') + '</button></span></td>' +
+          '<td class="cell-main"><span>' + G.esc(p.name) + '</span>' + (p.popular ? ' <span class="badge badge-primary">' + G.ico('star') + 'Mais popular</span>' : '') + '</td>' +
+          '<td data-label="Preço por mês">' + fmt(p.prices.monthly) + '</td><td data-label="Preço por ano">' + fmt(p.prices.yearly) + '</td>' +
+          '<td data-label="Alunos">' + (p.limits.students == null ? 'Ilimitados' : p.limits.students) + '</td><td data-label="IA">' + G.esc(aiText(p)) + '</td>' +
+          '<td data-label="Situação">' + A.badge(p.status) + '</td><td data-label="Assinantes">' + p.subscribers + '</td>' +
+          '<td class="col-actions" data-label="Ações"><a class="btn btn-secondary" href="' + G.esc(G.url('admin-plano-editar.html', { plan: p.id })) + '">Editar<span class="sr-only"> ' + G.esc(p.name) + '</span></a></td></tr>';
+      }).join('') + '</tbody></table></div></div></section>' +
+      '<p class="g2-note mt-4">' + G.ico('info', 'icon-sm') + '<span>Mudar um preço vale só para novas assinaturas. Quem já assina mantém o preço atual.</span></p>';
+    function move(id, d) {
+      var v = visible(), i = v.map(function (p) { return p.id; }).indexOf(id), j = i + d;
+      if (j < 0 || j >= v.length) return;
+      var a = list.indexOf(v[i]), b = list.indexOf(v[j]), t = list[a]; list[a] = list[b]; list[b] = t;
+      paint(el, (d < 0 ? 'data-up' : 'data-down') + '=' + id);
+      document.getElementById('live').textContent = t.name + ' agora está na posição ' + (j + 1) + ' de ' + v.length + '.';
+      window.AuraUI.toast('Ordem salva. ' + t.name + ' agora está na posição ' + (j + 1) + '.', { tone: 'success', timeout: 3500 });
+    }
+    Array.prototype.forEach.call(el.querySelectorAll('[data-up],[data-down]'), function (b) {
+      b.addEventListener('click', function () { if (b.getAttribute('aria-disabled') === 'true') return; var up = b.hasAttribute('data-up'); move(b.getAttribute(up ? 'data-up' : 'data-down'), up ? -1 : 1); });
+    });
+    document.getElementById('ch-r').addEventListener('click', function () { showDraft = !showDraft; paint(el, 'ch-r'); });
+    document.getElementById('ch-a').addEventListener('click', function () { showArch = !showArch; paint(el, 'ch-a'); });
+    if (focusId) {
+      var f = focusId.indexOf('=') > -1 ? el.querySelector('[' + focusId.split('=')[0] + '="' + focusId.split('=')[1] + '"]') : document.getElementById(focusId);
+      if (f && f.getAttribute('aria-disabled') === 'true') f = document.getElementById('ch-r');
+      if (f) f.focus();
+    }
+  }
+  function render() {
+    if (!list || lastVar !== G.variant()) init();
+    window.AuraState.render('#area', {
+      rows: 4, icon: 'credit-card', title: window.AuraState.get() === 'empty' ? 'Nenhum plano cadastrado' : 'Não conseguimos carregar os planos',
+      text: window.AuraState.get() === 'empty' ? 'Crie o primeiro plano para os personais poderem assinar.' : 'Nada foi alterado. Tente de novo em instantes.',
+      action: { label: 'Novo plano', href: G.url('admin-plano-editar.html', { variant: 'novo' }), icon: 'plus' },
+      renderDefault: function (el) { paint(el); }
+    });
+  }
+  G.boot({ id: 'PLN-07', name: 'Planos', role: 'admin', allowed: ['admin'], active: 'planos', render: render });
+  document.getElementById('novo').href = G.url('admin-plano-editar.html', { variant: 'novo' });
+})();
+</script>
+</body>
+</html>

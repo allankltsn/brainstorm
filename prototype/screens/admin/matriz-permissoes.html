@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADM-06 · Quem pode o quê · aura-fit</title>
+  <meta name="aura-screen" content="ADM-06">
+  <meta name="aura-variants" content="alteracoes-pendentes,papel-sistema-travado,conflito">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g3.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g3.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g3.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Permissões salvas e registradas no histórico.">
+  <div id="bc"></div>
+  <div class="page-header">
+    <div>
+      <h1>Quem pode o quê</h1>
+      <p>Marque o que cada papel pode fazer. Nada vale até você revisar e salvar.</p>
+    </div>
+  </div>
+
+  <div class="stack">
+    <div id="conflito"></div>
+    <div id="info-travado" class="alert alert-info" hidden>
+      <svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>
+      <div class="alert-body"><div class="alert-title">Por que algumas caixas estão travadas</div>O papel Administrador não pode perder as permissões de ver e gerenciar usuários e papéis. Assim sempre existe alguém capaz de corrigir o acesso. O cadeado marca o que não muda.</div>
+    </div>
+    <p class="muted" id="msg-travado" role="status" aria-live="polite"></p>
+
+    <section class="card card-flush" aria-labelledby="t-mat" data-when="default success">
+      <div class="card-header" style="padding-bottom:var(--space-3)"><h2 class="card-title" id="t-mat">O que cada papel pode fazer</h2><span class="g3-lockline"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-lock"/></svg>Cadeado: não pode ser mudado</span></div>
+      <div class="card-body" id="matriz"></div>
+    </section>
+    <div id="estado"></div>
+
+    <div class="g3-savebar" id="barra" hidden role="region" aria-label="Alterações não salvas">
+      <p class="body-medium" id="barra-txt" role="status" aria-live="polite"></p>
+      <div class="row">
+        <button type="button" class="btn btn-neutral" id="descartar">Descartar</button>
+        <button type="button" class="btn btn-primary" id="revisar">Revisar e salvar</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="modal-backdrop" id="dlg-rev" hidden>
+  <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="dlg-rev-t">
+    <div class="modal-header"><h2 class="modal-title" id="dlg-rev-t">Revisar antes de salvar</h2>
+      <button type="button" class="btn btn-text btn-icon" data-modal-close aria-label="Fechar"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+    <div class="modal-body stack" id="rev-corpo"></div>
+    <div class="modal-footer"><button type="button" class="btn btn-neutral" data-modal-close>Voltar e editar</button><button type="button" class="btn btn-primary" id="salvar">Salvar alterações</button></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var A = window.AURA, G = window.G3, D = G.data, $ = function (i) { return document.getElementById(i); };
+  var ROLES = ['admin', 'suporte', 'personal', 'aluno'];
+  G.boot({ id: 'ADM-06', title: 'Quem pode o quê', shortTitle: 'Quem pode o quê', active: 'perfis-permissoes', manage: true }, init);
+
+  function init() {
+    $('bc').innerHTML = G.breadcrumb([['Início', G.href('../home/admin.html')], ['Papéis e permissões', G.href('perfis.html')], ['Quem pode o quê']]);
+    var v = G.variant, conflict = v === 'conflito', conflictOpen = conflict;
+    var base = {}, server = null, cur = {};
+    ROLES.forEach(function (r) { base[r] = G.rolePerms(r); });
+    if (conflict) { server = {}; ROLES.forEach(function (r) { server[r] = base[r].slice(); }); server.suporte = server.suporte.filter(function (k) { return k !== 'audit:read'; }); }
+    ROLES.forEach(function (r) { cur[r] = base[r].slice(); });
+    function set(r, k, on) { var i = cur[r].indexOf(k); if (on && i === -1) cur[r].push(k); if (!on && i !== -1) cur[r].splice(i, 1); }
+    if (v === 'alteracoes-pendentes') { set('suporte', 'invites:create', true); set('suporte', 'users:manage', true); }
+    if (conflict) set('suporte', 'invites:create', true);
+    if (v === 'papel-sistema-travado') { $('info-travado').hidden = false; $('msg-travado').textContent = 'Tente desmarcar "Bloquear, reativar e alterar usuários" do Administrador: a caixa está travada.'; }
+
+    var P = {}; A.permissions.forEach(function (p) { P[p.key] = p; });
+    function lower(s) { return s.charAt(0).toLowerCase() + s.slice(1); }
+    function locked(r, k) { return r === 'admin' && D.adminLocked.indexOf(k) !== -1; }
+    function has(list, k) { return list.indexOf(k) !== -1; }
+    function changed(r, k) { return has(cur[r], k) !== has(base[r], k); }
+    function count() { var n = 0; ROLES.forEach(function (r) { A.permissions.forEach(function (p) { if (changed(r, p.key)) n++; }); }); return n; }
+    function rname(r) { return G.roleName(r); }
+
+    function table() {
+      var users = G.users();
+      var h = '<div class="table-wrap"><table class="table g3-matrix"><caption class="sr-only">Permissões de cada papel</caption><thead><tr><th scope="col">Permissão</th>' +
+        ROLES.map(function (r) { var n = users.filter(function (u) { return u.roles.indexOf(r) !== -1; }).length; return '<th scope="col">' + rname(r) + '<span class="g3-perm-desc">' + n + (n === 1 ? ' pessoa' : ' pessoas') + '</span></th>'; }).join('') + '</tr></thead><tbody>';
+      D.permGroups.forEach(function (g) {
+        h += '<tr class="g3-group"><td colspan="5">' + g.name + '</td></tr>';
+        g.keys.forEach(function (k) {
+          var p = P[k]; if (!p) return;
+          var anyChanged = ROLES.some(function (r) { return changed(r, k); });
+          h += '<tr data-key="' + k + '" class="' + (anyChanged ? 'is-changed' : '') + '"><td class="cell-main" role="rowheader"><span class="g3-perm-name">' + G.esc(p.label) + '</span><span class="g3-perm-desc">' + G.esc(p.description) + '</span><span class="g3-key">' + k + '</span></td>' +
+            ROLES.map(function (r) {
+              var lk = locked(r, k), on = has(cur[r], k), lab = rname(r) + ' pode ' + lower(p.label);
+              return '<td data-label="' + rname(r) + '"><label class="check"><input type="checkbox" data-role="' + r + '" data-key="' + k + '" aria-label="' + G.esc(lab) + (lk ? ' (travado, não pode ser mudado)' : '') + '"' + (on ? ' checked' : '') + (lk ? ' aria-disabled="true"' : '') + '>' +
+                (lk ? '<span class="g3-lockline" aria-hidden="true">' + G.ico('lock', 'icon-sm') + '</span>' : '') + '</label></td>';
+            }).join('') + '</tr>';
+        });
+      });
+      h += '<tr class="g3-group"><td colspan="5">Regras que nunca mudam</td></tr>' +
+        '<tr class="is-fixed"><td class="cell-main" role="rowheader"><span class="g3-perm-name">Direitos do titular</span><span class="g3-perm-desc">Ver, baixar, corrigir e excluir os próprios dados. Sempre ativo para todos.</span></td>' +
+        ROLES.map(function (r) { return '<td data-label="' + rname(r) + '"><span class="g3-lockline">' + G.ico('lock', 'icon-sm') + 'Sempre ativo</span></td>'; }).join('') + '</tr>' +
+        '<tr class="is-fixed"><td class="cell-main" role="rowheader"><span class="g3-perm-name">Dados de saúde dos alunos</span><span class="g3-perm-desc">Nenhuma permissão de administração dá acesso a eles.</span></td>' +
+        [['admin', 'Sem acesso'], ['suporte', 'Sem acesso'], ['personal', 'Só dos próprios alunos'], ['aluno', 'Só os próprios dados']].map(function (x) { return '<td data-label="' + rname(x[0]) + '"><span class="g3-lockline">' + G.ico('lock', 'icon-sm') + x[1] + '</span></td>'; }).join('') + '</tr>';
+      return h + '</tbody></table></div>';
+    }
+
+    function bar() {
+      var n = count(), b = $('barra');
+      b.hidden = n === 0;
+      $('barra-txt').textContent = n + (n === 1 ? ' alteração não salva' : ' alterações não salvas');
+    }
+    function draw() {
+      var st = window.AuraState.get();
+      if (st === 'default' || st === 'success') { $('estado').innerHTML = ''; $('matriz').innerHTML = table(); }
+      else { window.AuraState.render('#estado', st, { rows: 6, icon: 'shield', title: 'Sem permissões para mostrar', text: 'Os papéis do sistema aparecem aqui quando carregados.' }); }
+      bar();
+      drawConflict();
+    }
+    function drawConflict() {
+      $('conflito').innerHTML = conflictOpen ? '<div class="alert alert-warning" role="alert">' + G.ico('alert') + '<div class="alert-body"><div class="alert-title">Outra pessoa mudou as permissões enquanto você editava</div>Henrique Salles desligou "Ver histórico de ações" no papel Suporte hoje às 10:12. Sua tela ainda mostra a versão antiga.<div class="row mt-4"><button type="button" class="btn btn-secondary" id="c-nova">Carregar a versão dele (descarta as minhas)</button><button type="button" class="btn btn-neutral" id="c-minha">Manter as minhas alterações</button></div></div></div>' : '';
+    }
+
+    $('matriz').addEventListener('click', function (e) {
+      var i = e.target.closest('input[type=checkbox]'); if (!i) return;
+      if (i.getAttribute('aria-disabled') === 'true') { e.preventDefault(); $('msg-travado').textContent = 'Esta caixa está travada: o Administrador não pode perder a permissão "' + P[i.dataset.key].label + '".'; return; }
+    });
+    $('matriz').addEventListener('change', function (e) {
+      var i = e.target.closest('input[type=checkbox]'); if (!i || i.getAttribute('aria-disabled') === 'true') return;
+      set(i.dataset.role, i.dataset.key, i.checked);
+      i.closest('tr').classList.toggle('is-changed', ROLES.some(function (r) { return changed(r, i.dataset.key); }));
+      $('msg-travado').textContent = '';
+      bar();
+    });
+    $('conflito').addEventListener('click', function (e) {
+      if (e.target.id === 'c-nova') { ROLES.forEach(function (r) { base[r] = server[r].slice(); cur[r] = server[r].slice(); }); conflictOpen = false; conflict = false; draw(); window.AuraUI.toast('Carregamos a versão mais nova. Suas alterações não salvas foram descartadas.', { tone: 'info' }); $('t-mat').setAttribute('tabindex', '-1'); $('t-mat').focus(); }
+      if (e.target.id === 'c-minha') { conflictOpen = false; drawConflict(); window.AuraUI.toast('Ao salvar, sua versão vai substituir a mudança de Henrique.', { tone: 'warning' }); $('revisar').focus(); }
+    });
+    $('descartar').addEventListener('click', function () { ROLES.forEach(function (r) { cur[r] = base[r].slice(); }); draw(); window.AuraUI.toast('Alterações descartadas.', { tone: 'info' }); $('t-mat').setAttribute('tabindex', '-1'); $('t-mat').focus(); });
+
+    $('revisar').addEventListener('click', function (e) {
+      var rows = '', sens = [];
+      ROLES.forEach(function (r) { A.permissions.forEach(function (p) {
+        if (!changed(r, p.key)) return;
+        var on = has(cur[r], p.key);
+        if (on && D.sensitive.indexOf(p.key) !== -1) sens.push(rname(r) + ': ' + p.label);
+        rows += '<tr><td class="cell-main">' + rname(r) + '</td><td data-label="Permissão">' + G.esc(p.label) + '</td><td data-label="Antes">' + (on ? '<span class="badge">' + G.ico('x-circle') + 'Não pode</span>' : '<span class="badge badge-success">' + G.ico('check-circle') + 'Pode</span>') + '</td><td data-label="Depois">' + (on ? '<span class="badge badge-success">' + G.ico('check-circle') + 'Pode</span>' : '<span class="badge badge-danger">' + G.ico('x-circle') + 'Não pode</span>') + '</td></tr>';
+      }); });
+      $('rev-corpo').innerHTML = '<p>Confira o que muda. Vale para todas as pessoas desses papéis, a partir de agora.</p>' +
+        '<div class="table-wrap"><table class="table"><caption class="sr-only">Alterações de permissão</caption><thead><tr><th scope="col">Papel</th><th scope="col">Permissão</th><th scope="col">Antes</th><th scope="col">Depois</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+        (sens.length ? '<div class="alert alert-warning">' + G.ico('alert') + '<div class="alert-body"><div class="alert-title">Atenção: permissão que dá acesso a dados de pessoas</div>' + sens.map(G.esc).join('; ') + '. Mesmo assim, ninguém de administração vê dados de saúde.</div></div>' : '') +
+        (v === 'conflito' && !conflictOpen && server ? '<div class="alert alert-warning">' + G.ico('info') + '<div class="alert-body">Ao salvar, você substitui a mudança de Henrique Salles em "Ver histórico de ações" (Suporte).</div></div>' : '');
+      window.AuraUI.openModal('dlg-rev', e.currentTarget);
+    });
+    $('salvar').addEventListener('click', function () {
+      var n = count();
+      ROLES.forEach(function (r) {
+        var add = [], rem = [];
+        A.permissions.forEach(function (p) { if (changed(r, p.key)) (has(cur[r], p.key) ? add : rem).push(p.label); });
+        if (!add.length && !rem.length) return;
+        G.setPerms(r, cur[r]);
+        G.addAudit('Alterou permissões do papel', rname(r), (add.length ? 'Adicionou: ' + add.join(', ') + '. ' : '') + (rem.length ? 'Removeu: ' + rem.join(', ') + '.' : ''));
+        base[r] = cur[r].slice();
+      });
+      window.AuraUI.closeModal('dlg-rev');
+      conflictOpen = false; draw();
+      window.AuraUI.toast(n + (n === 1 ? ' alteração salva' : ' alterações salvas') + ' e registradas no histórico.', { tone: 'success' });
+      $('t-mat').setAttribute('tabindex', '-1'); $('t-mat').focus();
+    });
+    document.addEventListener('aura:statechange', draw);
+    draw();
+  }
+})();
+</script>
+</body>
+</html>

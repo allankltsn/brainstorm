@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLN-01 · Planos · aura-fit</title>
+  <meta name="aura-screen" content="PLN-01">
+  <meta name="aura-variants" content="plano-atual-pro,limite-atingido,downgrade">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g2.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g2.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g2.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Seu plano foi atualizado.">
+  <div class="g2-wrap">
+    <div class="page-header">
+      <div>
+        <h1>Escolha seu plano</h1>
+        <p>Compare os planos e veja o valor total antes de pagar. Você cancela quando quiser.</p>
+      </div>
+    </div>
+    <div id="area"></div>
+  </div>
+</main>
+<script>
+(function () {
+  var A = window.AURA, D = window.AURA_G2, G = window.G2, Q = G.Q;
+  var cycle = Q.cycle === 'anual' ? 'anual' : (Q.cycle === 'mensal' ? 'mensal' : null);
+
+  // contexto: quem ja tem plano pago vem de AURA.subscription (fonte unica); as variantes forcam um cenario
+  function ctx() {
+    var v = G.variant(), s = G.liveSub();
+    if (v === 'limite-atingido') s = null;
+    if (v === 'plano-atual-pro' || v === 'downgrade') s = s || A.subscriptionVariants.ativa;
+    return { v: v, sub: s, current: s ? s.planId : 'starter' };
+  }
+
+  function alertsHtml(c) {
+    var h = '';
+    if (c.v === 'limite-atingido') {
+      h += '<div class="alert alert-warning mb-4" role="status">' + G.ico('alert') + '<div class="alert-body"><div class="alert-title">Você chegou a 3 alunos no Starter</div>Para convidar mais alunos, escolha um plano com mais vagas. Os alunos que você já tem continuam normais.</div></div>';
+    }
+    if (c.v === 'downgrade' && c.sub) {
+      h += '<div class="alert alert-info mb-4" role="status">' + G.ico('info') + '<div class="alert-body"><div class="alert-title">O que muda se você cancelar o plano pago</div>' +
+        '<ul class="stack-sm mt-2">' +
+        '<li>Você continua no ' + G.esc(G.planById(c.sub.planId).name) + ' até ' + G.dmy(c.sub.nextChargeAt) + ', o dia da próxima cobrança.</li>' +
+        '<li>Depois, fica com até 3 alunos ativos e sem IA.</li>' +
+        '<li>Nada é apagado. Você escolhe quais 3 alunos continuam ativos.</li></ul></div></div>';
+    }
+    return h;
+  }
+
+  function cardsHtml(c) {
+    var s = c.sub, cur = s ? G.planById(s.planId) : null;
+    return G.catalog().map(function (p) {
+      var isCur = p.id === c.current, cta, note = '';
+      if (p.id === 'starter') {
+        if (isCur) cta = { label: 'Seu plano atual', disabled: true };
+        else if (s && s.status === 'cancelamento_agendado') cta = { label: 'Cancelamento agendado', disabled: true };
+        else {
+          cta = { label: 'Cancelar e ir para o Starter', href: G.url(G.PATH.cancelar), kind: 'btn-secondary' };
+          note = 'Isso cancela o plano pago. Você usa o ' + G.esc(cur.name) + ' até ' + G.dmy(s.nextChargeAt) + ' e depois fica no Starter (grátis), com seus dados guardados.';
+        }
+      } else if (isCur) {
+        cta = { label: 'Seu plano atual', disabled: true };
+        note = s.nextChargeAt ? 'Próxima cobrança em ' + G.dmy(A.renewalFor(p.id, s.cycle)) + '. Você paga ' + (s.cycle === 'anual' ? 'por ano' : 'por mês') + '.' : 'Acesso até ' + G.dmy(s.endsAt) + '.';
+      } else if (s) {
+        cta = { label: 'Mudar para ' + p.name, href: G.url(G.PATH.resumo, { plan: p.id, cycle: s.cycle, change: '1' }) };
+        note = 'Você paga só a diferença até ' + G.dmy(s.nextChargeAt) + '. A data da cobrança não muda.';
+      } else cta = { label: 'Escolher ' + p.name, href: G.url(G.PATH.resumo, { plan: p.id, cycle: cycle }) };
+      return G.planCardHtml(p, cycle, { current: isCur, cta: cta, note: note });
+    }).join('');
+  }
+
+  function compareHtml() {
+    var plans = G.catalog();
+    function val(p, k) {
+      if (k === 'monthly') return p.prices.monthly ? G.money(p.prices.monthly) : 'Grátis';
+      if (k === 'yearly') return p.prices.yearly ? G.moneyS(p.prices.yearly) : 'Grátis';
+      if (k === 'students') return p.limits.students == null ? 'Ilimitados' : 'Até ' + p.limits.students;
+      if (k === 'ai') return p.ai;
+      if (k === 'aiMonthly') return p.limits.aiMonthly ? p.limits.aiMonthly + ' usos' : 'Não inclui';
+      if (k === 'support') return D.support[p.id] || '-';
+    }
+    return '<div class="table-wrap"><table class="table g2-compare"><caption class="sr-only">Comparação dos planos</caption><thead><tr><th scope="col">Recurso</th>' +
+      plans.map(function (p) { return '<th scope="col">' + G.esc(p.name) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      D.compare.map(function (r) {
+        return '<tr><th scope="row">' + r.label + '</th>' + plans.map(function (p) { return '<td data-label="' + G.esc(p.name) + '">' + val(p, r.key) + '</td>'; }).join('') + '</tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+
+  function build(el) {
+    var c = ctx();
+    if (!cycle) cycle = c.sub && c.sub.cycle === 'anual' ? 'anual' : 'mensal';
+    var best = G.catalog().filter(function (p) { return p.prices.yearly > 0; }).map(function (p) { return G.savings(p); }).sort(function (a, b) { return b - a; })[0];
+    el.innerHTML = alertsHtml(c) +
+      '<div class="g2-toggle-row"><div class="segmented" role="radiogroup" aria-label="Como você quer pagar">' +
+      '<label><input type="radio" name="ciclo" value="mensal"' + (cycle === 'mensal' ? ' checked' : '') + '><span>Mensal</span></label>' +
+      '<label><input type="radio" name="ciclo" value="anual"' + (cycle === 'anual' ? ' checked' : '') + '><span>Anual</span></label></div>' +
+      '<span class="badge badge-success">' + G.ico('tag') + 'Anual: pague 10 meses, use 12</span></div>' +
+      '<p class="sr-only" aria-live="polite" id="ciclo-live"></p>' +
+      '<div class="g2-plans" id="cards">' + cardsHtml(c) + '</div>' +
+      '<p class="g2-note g2-help mt-4">' + G.ico('refresh', 'icon-sm') + '<span>Os planos pagos renovam automaticamente, todo mês ou todo ano, até você cancelar. Você vê o total e a data da próxima cobrança antes de pagar. Cancele quando quiser em Minha assinatura. Desistir em até 7 dias: reembolso total.</span></p>' +
+      '<div class="mt-6">' +
+      '<details class="g2-details" id="det-comparar"><summary>Comparar todos os recursos</summary><div>' + compareHtml() + '</div></details></div>' +
+      '<section class="mt-6" aria-labelledby="faq-t"><h2 class="h3 mb-4" id="faq-t">Perguntas frequentes</h2>' +
+      D.faq.map(function (f, i) { return '<details class="g2-details" id="faq-' + i + '"><summary>' + G.esc(f.q) + '</summary><div><p>' + G.esc(f.a) + '</p></div></details>'; }).join('') + '</section>';
+    Array.prototype.forEach.call(el.querySelectorAll('input[name="ciclo"]'), function (r) {
+      r.addEventListener('change', function () {
+        cycle = r.value; G.setParam('cycle', cycle);
+        document.getElementById('cards').innerHTML = cardsHtml(ctx());
+        bindDisabled(el);
+        document.getElementById('ciclo-live').textContent = 'Preços ' + (cycle === 'anual' ? 'anuais' : 'mensais') + ' mostrados.';
+      });
+    });
+    bindDisabled(el);
+  }
+  function bindDisabled(el) {
+    Array.prototype.forEach.call(el.querySelectorAll('[aria-disabled="true"]'), function (b) { b.addEventListener('click', function (e) { e.preventDefault(); }); });
+  }
+
+  function render() {
+    G.render('#area', {
+      variant: 'cards', rows: 3, icon: 'credit-card', title: window.AuraState.get() === 'empty' ? 'Os planos não estão disponíveis agora' : 'Não conseguimos carregar os planos',
+      text: 'Estamos ajustando os planos. Você continua com o seu plano atual e nada é cobrado. Volte em instantes.',
+      action: { label: 'Voltar ao início', href: G.url(G.PATH.home), icon: 'arrow-left' },
+      renderDefault: build
+    });
+  }
+  G.boot({ id: 'PLN-01', name: 'Planos', role: 'personal', allowed: ['personal'], active: 'minha-assinatura', render: render });
+})();
+</script>
+</body>
+</html>

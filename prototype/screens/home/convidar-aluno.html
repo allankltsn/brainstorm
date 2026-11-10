@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PER-01 · Convidar aluno · aura-fit</title>
+  <meta name="aura-screen" content="PER-01">
+  <meta name="aura-variants" content="limite-atingido,link-copiado,email-ja-convidado">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g4.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Convite enviado por e-mail.">
+  <nav aria-label="Você está em" class="mb-2"><ol class="breadcrumb"><li><a id="bc-home" href="#">Início</a></li><li><span aria-current="page">Convidar aluno</span></li></ol></nav>
+  <div class="page-header">
+    <div>
+      <h1>Convidar aluno</h1>
+      <p>A pessoa só entra no aura-fit pelo seu convite. Escolha o canal que ela já usa.</p>
+    </div>
+  </div>
+  <div class="alert alert-success mb-4" role="status" data-when="success">
+    <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+    <div class="alert-body"><div class="alert-title">Convite enviado</div>O convite vale por 7 dias. Você vê a resposta na lista abaixo.</div>
+  </div>
+  <div id="area"></div>
+</main>
+<script>
+  G4.setDefaultRole('personal');
+  G4.mount({ id: 'PER-01', title: 'Convidar aluno', active: 'inicio' });
+  var A = window.AURA, P = G4DATA.personal, V = G4.variant();
+  document.getElementById('bc-home').href = G4.url('personal.html');
+  var left = P.studentLimit - P.activeStudents;
+  if (V === 'limite-atingido') left = 0;
+  var invites = A.invites.filter(function (i) { return i.invitedBy === A.me.personal.name; });
+  var LINK = 'https://app.exemplo.com.br/convite/mr8k2x';
+
+  function listHtml() {
+    if (!invites.length) return '';
+    return '<ul class="g4-list">' + invites.map(function (i) {
+      var open = i.status === 'pendente' || i.status === 'expirado';
+      return '<li><span class="avatar avatar-sm avatar-neutral" aria-hidden="true">' + G4.esc(i.emailMasked.slice(0, 1).toUpperCase()) + '</span><span class="grow"><strong>' + G4.esc(i.emailMasked) + '</strong><span>Enviado em ' + A.fmtDate(i.sentAt) + (i.status === 'pendente' ? ', vale até ' + A.fmtDate(i.expiresAt) : '') + '</span></span>' + A.badge(i.status) +
+        (open ? '<span class="g4-invite-actions"><button type="button" class="btn btn-text" data-act="resend" data-who="' + G4.esc(i.emailMasked) + '">Reenviar<span class="sr-only"> convite para ' + G4.esc(i.emailMasked) + '</span></button>' +
+        (i.status === 'pendente' ? '<button type="button" class="btn btn-text" data-act="cancel" data-who="' + G4.esc(i.emailMasked) + '">Cancelar<span class="sr-only"> convite de ' + G4.esc(i.emailMasked) + '</span></button>' : '') + '</span>' : '') + '</li>';
+    }).join('') + '</ul>';
+  }
+  function render(el) {
+    var dis = left === 0 ? ' disabled' : '';
+    var copied = V === 'link-copiado';
+    el.innerHTML = '<div class="stack-lg">' +
+      (left === 0 ? '<div class="alert alert-warning" role="status"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div class="alert-body"><div class="alert-title">Você chegou ao limite de alunos do seu plano</div>Seu plano permite ' + P.studentLimit + ' alunos e todos já estão em uso. Os convites abaixo continuam valendo. Para convidar mais gente, veja os planos.</div><a class="btn btn-primary" href="' + G4.esc(G4.url('../planos/planos.html', 'variant=limite-atingido')) + '">Ver planos</a></div>' : '') +
+      '<section class="card" aria-labelledby="t-novo"><div class="card-header"><h2 class="card-title" id="t-novo">Quem você quer convidar?</h2><span class="badge badge-info" id="contador">' + G4.ico('users') + (left === 0 ? 'Nenhum convite disponível' : 'Você pode convidar mais ' + left + ' alunos no seu plano') + '</span></div>' +
+      '<div class="card-body"><form id="f" novalidate class="stack g4-measure"' + '>' +
+      '<div class="field"><label for="nome">Nome do aluno</label><input class="input" id="nome" name="nome" autocomplete="off" aria-describedby="nome-h"' + dis + ' value="' + (copied ? 'Marina' : '') + '"><span class="field-help" id="nome-h">Para você reconhecer o convite na lista.</span></div>' +
+      '<div class="field"><label for="email">E-mail do aluno <span class="muted">(só para enviar por e-mail)</span></label><input class="input" id="email" name="email" type="email" autocomplete="off" aria-describedby="email-h"' + dis + ' value="' + (V === 'email-ja-convidado' ? 'vinicius.barros@exemplo.com.br' : '') + '"><span class="field-help" id="email-h">Para WhatsApp você não precisa preencher.</span></div>' +
+      '<div class="row"><button type="submit" class="btn btn-primary"' + dis + '>' + G4.ico('mail') + 'Enviar por e-mail</button></div>' +
+      '<hr><div class="stack-sm"><h3 class="h4">Ou compartilhe o link do convite</h3><p class="muted">Link para sua aluna entrar. Ele só vale para uma pessoa, por 7 dias. Cole na conversa.</p>' +
+      '<div class="g4-link-box"><label class="sr-only" for="link">Link do convite</label><input class="input" id="link" readonly value="' + LINK + '"' + dis + '>' +
+      '<button type="button" class="btn btn-secondary" id="b-copy"' + dis + '>' + G4.ico('external') + 'Copiar link</button>' +
+      '<button type="button" class="btn btn-neutral" id="b-wpp"' + dis + '>' + G4.ico('mail') + 'Compartilhar no WhatsApp</button></div>' +
+      '<div id="copy-msg" role="status" aria-live="polite">' + (copied ? '<div class="alert alert-success"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><div class="alert-body"><div class="alert-title">Link copiado</div>Agora cole na conversa da Marina no WhatsApp.</div></div>' : '') + '</div></div>' +
+      '</form></div></section>' +
+      '<section class="card" aria-labelledby="t-lista"><div class="card-header"><h2 class="card-title" id="t-lista">Convites enviados</h2></div><div class="card-body" id="lista">' + listHtml() + '</div></section></div>';
+    wire();
+  }
+  function wire() {
+    var f = document.getElementById('f'), nome = document.getElementById('nome'), email = document.getElementById('email');
+    if (V === 'email-ja-convidado') AuraUI.setError(email, 'Você já convidou este e-mail e o convite está pendente. Use Reenviar na lista abaixo.');
+    f.addEventListener('submit', function (e) {
+      e.preventDefault(); [nome, email].forEach(AuraUI.clearError);
+      if (!nome.value.trim()) AuraUI.setError(nome, 'Digite o nome do aluno.');
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value)) AuraUI.setError(email, 'Digite um e-mail completo, como nome@exemplo.com.br.');
+      else if (/vinicius\.barros/.test(email.value)) AuraUI.setError(email, 'Você já convidou este e-mail e o convite está pendente. Use Reenviar na lista abaixo.');
+      if (!AuraUI.focusFirstError(f)) AuraUI.toast('Convite enviado para ' + A.maskEmail(email.value) + '. Vale por 7 dias.', { tone: 'success' });
+    });
+    function needName() { AuraUI.clearError(nome); if (!nome.value.trim()) { AuraUI.setError(nome, 'Digite o nome do aluno para gerar o link.'); nome.focus(); return false; } return true; }
+    document.getElementById('b-copy').addEventListener('click', function () {
+      if (!needName()) return;
+      try { if (navigator.clipboard) navigator.clipboard.writeText(LINK); } catch (e) {}
+      document.getElementById('copy-msg').innerHTML = '<div class="alert alert-success"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><div class="alert-body"><div class="alert-title">Link copiado</div>Agora cole na conversa de ' + G4.esc(nome.value.trim()) + ' no WhatsApp.</div></div>';
+    });
+    document.getElementById('b-wpp').addEventListener('click', function () {
+      if (!needName()) return;
+      AuraUI.toast('No celular, o WhatsApp abre com a mensagem pronta para ' + nome.value.trim() + '. Aqui é só demonstração.', { tone: 'info' });
+    });
+    document.getElementById('lista').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-act]'); if (!b) return;
+      if (b.dataset.act === 'resend') AuraUI.toast('Convite reenviado para ' + b.dataset.who + '.', { tone: 'success' });
+      else AuraUI.confirm({ title: 'Cancelar este convite?', text: 'O link deixa de funcionar. Você pode convidar a pessoa de novo quando quiser.', confirmLabel: 'Cancelar convite', cancelLabel: 'Manter convite' }).then(function (ok) { if (ok) AuraUI.toast('Convite cancelado.', { tone: 'warning' }); });
+    });
+  }
+  G4.ready(function () {
+    AuraState.render('#area', { rows: 4, icon: 'mail', title: 'Nenhum convite ainda', text: 'Você ainda não convidou ninguém. Preencha o nome e escolha como enviar.',
+      renderDefault: render });
+    if (AuraState.get() === 'empty') { invites = []; var a = document.getElementById('area'); a.innerHTML = ''; render(a); document.getElementById('lista').innerHTML = '<div class="empty-state"><div class="empty-state-icon">' + G4.ico('mail') + '</div><h3 class="h3">Nenhum convite ainda</h3><p>Seus convites aparecem aqui, com o estado de cada um.</p></div>'; }
+  });
+</script>
+</body>
+</html>

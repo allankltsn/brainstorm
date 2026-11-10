@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADM-09 · Criar ou editar cupom · aura-fit</title>
+  <meta name="aura-screen" content="ADM-09">
+  <meta name="aura-variants" content="novo,codigo-duplicado,desconto-maior-que-preco,com-usos,pausar">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g3.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g3.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g3.js"></script>
+</head>
+<body>
+<main id="conteudo">
+  <div id="bc"></div>
+  <div class="page-header">
+    <div>
+      <h1 id="titulo">Novo cupom</h1>
+      <p id="sub">Preencha os campos. A prévia ao lado mostra como o personal vai ver o desconto antes de pagar.</p>
+    </div>
+  </div>
+  <div id="resultado" tabindex="-1"></div>
+  <div id="estado"></div>
+
+  <div class="g3-split" id="conteudo-form" data-when="default success">
+    <form class="card" id="form" novalidate aria-labelledby="titulo">
+      <div class="card-body stack">
+        <div id="aviso-usos"></div>
+
+        <div class="field">
+          <label for="f-code">Código do cupom <span class="field-required" aria-hidden="true">*</span></label>
+          <input class="input" id="f-code" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" required aria-describedby="f-code-h">
+          <span class="field-help" id="f-code-h" aria-live="polite">Letras e números, sem espaço. Escrevemos em maiúsculas para você. Exemplo: BEMVINDA20.</span>
+        </div>
+
+        <div class="grid-2">
+          <fieldset class="field">
+            <legend class="field-label">Tipo de desconto</legend>
+            <div class="segmented" role="radiogroup" aria-label="Tipo de desconto">
+              <label><input type="radio" name="tipo" value="percentual" checked><span>Porcentagem (%)</span></label>
+              <label><input type="radio" name="tipo" value="fixo"><span>Valor fixo (R$)</span></label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="f-value"><span id="lbl-value">Valor do desconto (%)</span> <span class="field-required" aria-hidden="true">*</span></label>
+            <input class="input" id="f-value" name="valor" type="number" inputmode="decimal" min="1" max="100" step="1" required aria-describedby="f-value-h">
+            <span class="field-help" id="f-value-h">De 1% a 100%.</span>
+          </div>
+        </div>
+
+        <fieldset class="field">
+          <legend class="field-label">Por quanto tempo vale o desconto</legend>
+          <label class="check"><input type="radio" name="duracao" value="primeira" checked><span class="check-text">Só na primeira cobrança</span></label>
+          <label class="check"><input type="radio" name="duracao" value="n_meses"><span class="check-text">Desconto nas primeiras N mensalidades<small>Vale para quem paga por mês. No plano anual, o desconto vale só na primeira cobrança.</small></span></label>
+          <div class="field" id="meses-box" hidden>
+            <label for="f-months">Quantas mensalidades <span class="field-required" aria-hidden="true">*</span></label>
+            <input class="input" id="f-months" name="meses" type="number" inputmode="numeric" min="2" max="12" step="1" value="3" style="max-width:160px">
+          </div>
+        </fieldset>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="f-from">Vale a partir de (dia/mês/ano)</label>
+            <input class="input" id="f-from" name="de" type="text" inputmode="numeric" autocomplete="off" placeholder="dd/mm/aaaa" maxlength="10" aria-describedby="f-from-h">
+            <span class="field-help" id="f-from-h">Exemplo: 16/10/2026. Em branco, vale a partir de hoje.</span>
+          </div>
+          <div class="field">
+            <label for="f-until">Vale até (dia/mês/ano) <span class="field-required" aria-hidden="true">*</span></label>
+            <input class="input" id="f-until" name="ate" type="text" inputmode="numeric" autocomplete="off" placeholder="dd/mm/aaaa" maxlength="10" required aria-describedby="f-until-h">
+            <span class="field-help" id="f-until-h">Exemplo: 31/10/2026. Vale até 23:59 (horário de Brasília) desse dia.</span>
+            <div><button type="button" class="btn btn-text" id="fim-mes">Usar o fim deste mês</button></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-max">Limite de usos <span class="field-required" aria-hidden="true">*</span></label>
+          <input class="input" id="f-max" name="max" type="number" inputmode="numeric" min="1" step="1" required aria-describedby="f-max-h" style="max-width:200px">
+          <span class="field-help" id="f-max-h">Quantas compras podem usar este cupom. Depois disso ele esgota.</span>
+        </div>
+
+        <fieldset class="field" id="fs-planos">
+          <legend class="field-label">Planos que aceitam o cupom <span class="field-required" aria-hidden="true">*</span></legend>
+          <div id="planos"></div>
+          <span class="field-help">O Starter é grátis e não aceita cupom.</span>
+        </fieldset>
+
+        <fieldset class="field">
+          <legend class="field-label">Situação ao salvar</legend>
+          <label class="check"><input type="radio" name="status" value="ativo" checked><span class="check-text">Ativo<small>Já pode ser usado dentro da validade.</small></span></label>
+          <label class="check"><input type="radio" name="status" value="pausado"><span class="check-text">Pausado<small>Fica guardado, mas ninguém consegue usar.</small></span></label>
+        </fieldset>
+
+        <div class="alert alert-info"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert-body"><div class="alert-title">Só 1 cupom por compra</div>Ele não soma com outro cupom.</div></div>
+      </div>
+      <div class="card-footer" style="justify-content:space-between">
+        <div class="row" id="acoes-extra"></div>
+        <div class="row"><a class="btn btn-neutral" id="cancelar" href="cupons.html">Cancelar</a><button type="submit" class="btn btn-primary" id="salvar">Salvar cupom</button></div>
+      </div>
+    </form>
+
+    <aside class="card g3-sticky" aria-labelledby="t-prev">
+      <div class="card-header"><h2 class="card-title" id="t-prev">Como o personal vai ver</h2></div>
+      <div class="card-body stack">
+        <p class="muted">Prévia do resumo do pedido, antes do pagamento. Muda enquanto você preenche.</p>
+        <div class="grid-2" style="gap:var(--space-3)">
+          <div class="field"><label for="pv-plano">Plano da prévia</label><div class="select-wrap"><select class="select" id="pv-plano"></select></div></div>
+          <fieldset class="field"><legend class="field-label">Cobrança</legend>
+            <div class="segmented" role="radiogroup" aria-label="Cobrança da prévia"><label><input type="radio" name="pv-ciclo" value="monthly" checked><span>Mensal</span></label><label><input type="radio" name="pv-ciclo" value="yearly"><span>Anual</span></label></div>
+          </fieldset>
+        </div>
+        <div class="order-preview" id="preview" aria-live="polite"></div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script>
+(function () {
+  var A = window.AURA, G = window.G3, $ = function (i) { return document.getElementById(i); };
+  G.boot({ id: 'ADM-09', title: 'Criar ou editar cupom', shortTitle: 'Cupom', active: 'cupons', manage: true }, init);
+
+  function init() {
+    var v = G.variant, form = $('form'), F = form.elements;
+    var id = G.q.id || (v === 'com-usos' ? 'c1' : v === 'pausar' ? 'c2' : '');
+    var editing = id ? G.coupon(id) : null;
+    var isNew = !editing;
+    var eligible = A.plans.filter(function (p) { return p.status === 'ativo' && p.prices.monthly > 0; });
+    $('cancelar').href = G.href('cupons.html');
+
+    $('bc').innerHTML = G.breadcrumb([['Início', G.href('../home/admin.html')], ['Cupons', G.href('cupons.html')], [isNew ? 'Novo cupom' : editing.code]]);
+    if (id && !editing) { $('titulo').textContent = 'Cupom não encontrado'; $('sub').textContent = ''; }
+    else if (!isNew) { $('titulo').textContent = 'Editar cupom ' + editing.code; }
+
+    $('planos').innerHTML = eligible.map(function (p) { return '<label class="check"><input type="checkbox" name="plano" value="' + p.id + '"><span class="check-text">' + G.esc(p.name) + '<small>R$ ' + p.prices.monthly.toFixed(2).replace('.', ',') + ' por mês · R$ ' + p.prices.yearly + ' por ano</small></span></label>'; }).join('');
+    $('pv-plano').innerHTML = eligible.map(function (p) { return '<option value="' + p.id + '">' + G.esc(p.name) + '</option>'; }).join('');
+
+    function chosenPlans() { return Array.prototype.filter.call(form.querySelectorAll('input[name=plano]'), function (x) { return x.checked; }).map(function (x) { return x.value; }); }
+    function setPlans(list) { Array.prototype.forEach.call(form.querySelectorAll('input[name=plano]'), function (x) { x.checked = list.indexOf(x.value) !== -1; }); }
+    function radio(name) { return document.querySelector('input[name=' + name + ']:checked').value; }
+    function setRadio(name, val) { Array.prototype.forEach.call(form.querySelectorAll('input[name=' + name + ']'), function (x) { x.checked = x.value === val; }); }
+
+    function parseBR(t) {
+      var m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(t).trim()); if (!m) return null;
+      var d = +m[1], mo = +m[2], y = +m[3], dt = new Date(y, mo - 1, d);
+      if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d) return null;
+      return m[3] + '-' + m[2] + '-' + m[1];
+    }
+    function toBR(iso) { var p = iso.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
+    function mask(el) { el.addEventListener('input', function () { var d = el.value.replace(/\D/g, '').slice(0, 8); el.value = d.length > 4 ? d.slice(0, 2) + '/' + d.slice(2, 4) + '/' + d.slice(4) : d.length > 2 ? d.slice(0, 2) + '/' + d.slice(2) : d; }); }
+    // valores iniciais
+    F.de.value = toBR(G.today);
+    if (editing) {
+      F.code.value = editing.code; setRadio('tipo', editing.type); F.valor.value = editing.value; setRadio('duracao', editing.duration);
+      if (editing.months) F.meses.value = editing.months; F.de.value = toBR(editing.validFrom); F.ate.value = toBR(editing.validUntil); F.max.value = editing.maxUses;
+      setPlans(editing.planIds); setRadio('status', editing.status === 'pausado' ? 'pausado' : 'ativo');
+    }
+    if (v === 'codigo-duplicado') { F.code.value = 'BEMVINDA20'; F.valor.value = 15; setPlans(['pro']); F.ate.value = '31/10/2026'; F.max.value = 50; }
+    if (v === 'desconto-maior-que-preco') { F.code.value = 'DESC60'; setRadio('tipo', 'fixo'); F.valor.value = 60; setPlans(['pro']); F.ate.value = '31/10/2026'; F.max.value = 50; }
+
+    var locked = !!editing && editing.uses > 0;
+    if (locked) {
+      ['code', 'valor', 'meses'].forEach(function (n) { F[n].disabled = true; });
+      Array.prototype.forEach.call(form.querySelectorAll('input[name=tipo],input[name=duracao],input[name=plano]'), function (x) { x.disabled = true; });
+      F.max.min = editing.uses;
+      $('aviso-usos').innerHTML = '<div class="alert alert-warning">' + G.ico('lock') + '<div class="alert-body"><div class="alert-title">Este cupom já foi usado ' + editing.uses + (editing.uses === 1 ? ' vez' : ' vezes') + '</div>Código, tipo, valor, duração e planos ficam travados, porque quem já usou ficaria com regras diferentes. Você ainda pode mudar validade, limite de usos e situação.</div></div>';
+      $('f-max-h').textContent = 'Quantas compras podem usar este cupom. Não pode ser menor que os ' + editing.uses + ' usos que já aconteceram.';
+    }
+
+    /* ---------- campos dinâmicos ---------- */
+    function typeSync() {
+      var pct = radio('tipo') === 'percentual';
+      $('lbl-value').textContent = pct ? 'Valor do desconto (%)' : 'Valor do desconto (R$)';
+      F.valor.max = pct ? 100 : ''; F.valor.step = pct ? 1 : 0.01;
+      $('f-value-h').textContent = pct ? 'De 1% a 100%.' : 'Em reais. Não pode ser maior que o preço do plano mais barato escolhido.';
+      $('meses-box').hidden = radio('duracao') !== 'n_meses';
+    }
+
+    function minPrice() {
+      var ch = chosenPlans(), list = eligible.filter(function (p) { return !ch.length || ch.indexOf(p.id) !== -1; });
+      return list.reduce(function (a, p) { return !a || p.prices.monthly < a.prices.monthly ? p : a; }, null);
+    }
+    function num(el) { var n = parseFloat(String(el.value).replace(',', '.')); return isNaN(n) ? null : n; }
+
+    function checkCode(final) {
+      var el = F.code, val = el.value, h = $('f-code-h');
+      window.AuraUI.clearError(el); // devolve aria-describedby
+      el.setAttribute('aria-describedby', 'f-code-h');
+      if (locked) return true;
+      var dup = G.coupons().filter(function (c) { return c.code === val && (!editing || c.id !== editing.id); })[0];
+      if (!val) { if (final) window.AuraUI.setError(el, 'Digite um código para o cupom.'); return !final; }
+      if (!/^[A-Z0-9]{3,20}$/.test(val)) { if (final || val.length >= 3) window.AuraUI.setError(el, 'Use de 3 a 20 letras ou números, sem espaços.'); return false; }
+      if (dup) { window.AuraUI.setError(el, 'Já existe um cupom com o código ' + val + '. Escolha outro código.'); return false; }
+      h.textContent = 'Código disponível.';
+      return true;
+    }
+    function checkValue() {
+      var el = F.valor; window.AuraUI.clearError(el);
+      if (locked) return true;
+      var n = num(el), pct = radio('tipo') === 'percentual';
+      if (n === null) { window.AuraUI.setError(el, 'Digite o valor do desconto.'); return false; }
+      if (n <= 0) { window.AuraUI.setError(el, 'O desconto precisa ser maior que zero.'); return false; }
+      if (pct) {
+        if (n > 100) { window.AuraUI.setError(el, 'A porcentagem não pode passar de 100%.'); return false; }
+        if (Math.floor(n) !== n) { window.AuraUI.setError(el, 'Use um número inteiro, como 15.'); return false; }
+      } else {
+        var mp = minPrice();
+        if (mp && n > mp.prices.monthly) { window.AuraUI.setError(el, 'O desconto de ' + A.fmtBRL(n) + ' é maior que o preço do plano mais barato escolhido (' + mp.name + ', ' + A.fmtBRL(mp.prices.monthly) + '). Use um valor menor.'); return false; }
+      }
+      return true;
+    }
+    function checkOthers() {
+      var ok = true;
+      [F.meses, F.ate, F.max, F.de].forEach(window.AuraUI.clearError);
+      var first = form.querySelector('input[name=plano]'); window.AuraUI.clearError(first);
+      if (radio('duracao') === 'n_meses' && !locked) { var m = num(F.meses); if (m === null || m < 2 || m > 12 || Math.floor(m) !== m) { window.AuraUI.setError(F.meses, 'Digite de 2 a 12 meses.'); ok = false; } }
+      var deIso = F.de.value.trim() ? parseBR(F.de.value) : G.today, ateIso = parseBR(F.ate.value);
+      if (F.de.value.trim() && !deIso) { window.AuraUI.setError(F.de, 'Essa data não existe. Use dia/mês/ano, por exemplo 16/10/2026.'); ok = false; }
+      if (!F.ate.value.trim()) { window.AuraUI.setError(F.ate, 'Informe até quando o cupom vale, no formato dd/mm/aaaa.'); ok = false; }
+      else if (!ateIso) { window.AuraUI.setError(F.ate, 'Essa data não existe. Use dia/mês/ano, por exemplo 31/10/2026.'); ok = false; }
+      else if (deIso && ateIso < deIso) { window.AuraUI.setError(F.ate, 'A data final não pode ser antes da data inicial.'); ok = false; }
+      else if (ateIso < G.today) { window.AuraUI.setError(F.ate, 'Essa data já passou. Escolha hoje ou um dia à frente.'); ok = false; }
+      var mx = num(F.max);
+      if (mx === null || mx < 1 || Math.floor(mx) !== mx) { window.AuraUI.setError(F.max, 'Digite quantas vezes o cupom pode ser usado (1 ou mais).'); ok = false; }
+      else if (locked && mx < editing.uses) { window.AuraUI.setError(F.max, 'O limite não pode ser menor que os ' + editing.uses + ' usos que já aconteceram.'); ok = false; }
+      if (!locked && !chosenPlans().length) { window.AuraUI.setError(first, 'Escolha ao menos um plano. O Starter é grátis e não aceita cupom.'); ok = false; }
+      return ok;
+    }
+
+    /* ---------- prévia ---------- */
+    function addMonths(iso, n) { var p = iso.split('-'), d = new Date(+p[0], +p[1] - 1 + n, +p[2]); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+    function preview() {
+      var ch = chosenPlans(), sel = $('pv-plano'), cyc = radio('pv-ciclo'), el = $('preview');
+      Array.prototype.forEach.call(sel.options, function (o) { o.disabled = ch.length > 0 && ch.indexOf(o.value) === -1; });
+      if (ch.length && ch.indexOf(sel.value) === -1) sel.value = ch[0];
+      var p = A.byId(A.plans, sel.value), n = num(F.valor), code = F.code.value, pct = radio('tipo') === 'percentual';
+      var bad = n === null || n <= 0 || (pct && n > 100) || !code;
+      if (!ch.length || bad) { el.className = 'order-preview'; el.innerHTML = '<p class="muted">' + (!ch.length ? 'Escolha ao menos um plano elegível, o código e o valor para ver a prévia.' : 'Preencha o código e um valor válido para ver a prévia.') + '</p>'; return; }
+      var price = p.prices[cyc === 'monthly' ? 'monthly' : 'yearly'];
+      if (!pct && n > price) { el.innerHTML = '<p class="muted">O desconto é maior que o preço do plano. Corrija o valor para ver a prévia.</p>'; return; }
+      var disc = pct ? Math.round(price * n) / 100 : Math.min(n, price), total = Math.max(0, Math.round((price - disc) * 100) / 100);
+      var months = radio('duracao') === 'n_meses' ? (num(F.meses) || 0) : 0, renew = cyc === 'monthly' ? addMonths(G.today, 1) : addMonths(G.today, 12);
+      var after = cyc === 'monthly' ? A.fmtBRL(price) + ' a cada mês' : A.fmtBRL(price) + ' a cada ano';
+      var line;
+      if (cyc === 'monthly' && months) line = A.fmtBRL(total) + '/mês por ' + months + ' meses, depois ' + A.fmtBRL(price) + '/mês.';
+      else line = 'Desconto só na primeira cobrança. Depois: ' + after + '.';
+      el.className = 'order-preview';
+      el.innerHTML = '<dl class="order-lines"><div class="order-line"><dt>Plano ' + G.esc(p.name) + ' · ' + (cyc === 'monthly' ? 'mensal' : 'anual') + '</dt><dd>' + A.fmtBRL(price) + '</dd></div>' +
+        '<div class="order-line order-line-discount"><dt>' + G.ico('tag', 'icon-sm') + ' Cupom ' + G.esc(code) + '</dt><dd>− ' + A.fmtBRL(disc) + '</dd></div>' +
+        '<div class="order-line order-total"><dt>Total hoje</dt><dd>' + A.fmtBRL(total) + '</dd></div></dl>' +
+        '<div class="order-after"><p><strong>' + line + '</strong></p>' +
+        '<p class="muted">Depois: ' + after + ', renovação automática em ' + A.fmtDate(renew) + '. Cancele quando quiser em Configurações &gt; Assinatura.</p></div>' +
+        (n === 100 && pct ? '<p class="alert alert-warning mt-4">' + G.ico('alert') + '<span class="alert-body">Com 100% o plano sai de graça na primeira cobrança.</span></p>' : '');
+    }
+
+    /* ---------- eventos ---------- */
+    F.code.addEventListener('input', function () { var s = F.code.selectionStart; F.code.value = F.code.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); try { F.code.setSelectionRange(s, s); } catch (e) {} checkCode(false); preview(); });
+    form.addEventListener('input', function (e) { if (e.target === F.valor) { checkValue(); } preview(); });
+    form.addEventListener('change', function (e) {
+      if (e.target.name === 'tipo' || e.target.name === 'duracao') typeSync();
+      if (e.target.name === 'tipo' || e.target.name === 'plano') { if (F.valor.value) checkValue(); }
+      preview();
+    });
+    $('pv-plano').addEventListener('change', preview);
+    mask(F.de); mask(F.ate);
+    $('fim-mes').addEventListener('click', function () { var p = G.today.split('-'); var last = new Date(+p[0], +p[1], 0); F.ate.value = ('0' + last.getDate()).slice(-2) + '/' + p[1] + '/' + p[0]; window.AuraUI.clearError(F.ate); F.ate.focus(); });
+    if (locked) { $('fim-mes').hidden = false; }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var a = checkCode(true), b = checkValue(), c = checkOthers();
+      if (!(a && b && c)) {
+        // ordem de foco: primeiro erro na ordem da tela
+        var first = form.querySelector('[aria-invalid="true"]'); if (first) first.focus();
+        $('resultado').innerHTML = '<div class="alert alert-danger mb-4" role="alert">' + G.ico('x-circle') + '<div class="alert-body"><div class="alert-title">Não deu para salvar</div>Corrija os campos marcados em vermelho e tente de novo.</div></div>';
+        return;
+      }
+      $('resultado').innerHTML = '';
+      var c0 = {
+        code: F.code.value, type: radio('tipo'), value: num(F.valor), duration: radio('duracao'), validFrom: parseBR(F.de.value) || G.today, validUntil: parseBR(F.ate.value),
+        maxUses: num(F.max), planIds: chosenPlans(), status: radio('status')
+      };
+      if (c0.duration === 'n_meses') c0.months = num(F.meses); else c0.months = undefined;
+      c0.limit = c0.maxUses; c0.plans = c0.planIds;
+      var detail = G.discountText(c0) + ' · ' + G.durationText(c0) + ' · até ' + A.fmtDate(c0.validUntil) + ' · limite de ' + c0.maxUses + ' usos · planos: ' + c0.planIds.map(G.planName).join(', ') + ' · ' + (c0.status === 'pausado' ? 'pausado' : 'ativo');
+      if (isNew) { c0.id = 'g3c-' + Date.now(); c0.uses = 0; c0.createdBy = G.me.name; G.saveCoupon(c0, true); G.addAudit('Criou o cupom', c0.code, detail); }
+      else { c0.id = editing.id; G.saveCoupon(c0, false); G.addAudit('Editou o cupom', c0.code, detail); }
+      if (G.q.state === 'success') { $('resultado').innerHTML = ''; return; }
+      location.href = G.href('cupons.html', { salvo: c0.code });
+    });
+
+    // pausar / reativar
+    if (!isNew && editing) {
+      var st = G.couponStatus(editing);
+      if (st === 'ativo' || st === 'agendado') $('acoes-extra').innerHTML = '<button type="button" class="btn btn-neutral" id="pausar">' + G.ico('ban') + 'Pausar cupom</button>';
+    }
+    function pausar(opener) {
+      G.confirm({ title: 'Pausar o cupom ' + editing.code + '?', text: 'Ninguém consegue usar o cupom enquanto ele estiver pausado. Quem já usou não é afetado. Você pode reativar quando quiser. A ação fica registrada no histórico.', confirmLabel: 'Pausar cupom', danger: true }).then(function (ok) {
+        if (!ok) return;
+        G.saveCoupon({ id: editing.id, status: 'pausado' }, false); G.addAudit('Pausou o cupom', editing.code, 'Pausado pela tela de edição.');
+        location.href = G.href('cupons.html', { pausado: editing.code });
+      });
+    }
+    $('acoes-extra').addEventListener('click', function (e) { if (e.target.closest('#pausar')) pausar(); });
+
+    function draw() {
+      var st = window.AuraState.get();
+      if (id && !editing) { $('conteudo-form').hidden = true; window.AuraState.render('#estado', 'empty', { icon: 'tag', title: 'Não achamos esse cupom', text: 'O endereço pode estar errado ou o cupom não existe mais.', action: { label: 'Voltar para Cupons', href: G.href('cupons.html') } }); return; }
+      $('conteudo-form').hidden = false;
+      if (st === 'default' || st === 'success') { $('estado').innerHTML = ''; }
+      else window.AuraState.render('#estado', st, { rows: 6, icon: 'tag', title: 'Sem dados do cupom', text: 'Quando houver cupom, os campos aparecem aqui.' });
+      if (st === 'success') $('resultado').innerHTML = '<div class="alert alert-success mb-4" role="status">' + G.ico('check-circle') + '<div class="alert-body"><div class="alert-title">Cupom salvo</div>Ele já está na lista e a criação ficou registrada no histórico. <a href="' + G.href('cupons.html') + '">Voltar para Cupons</a>.</div></div>';
+    }
+    document.addEventListener('aura:statechange', draw);
+    typeSync(); preview(); draw();
+    if (v === 'codigo-duplicado' || v === 'desconto-maior-que-preco') form.requestSubmit();
+    if (v === 'pausar' && editing) pausar();
+  }
+})();
+</script>
+</body>
+</html>

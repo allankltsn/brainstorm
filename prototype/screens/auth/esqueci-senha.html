@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUTH-04 · Esqueci a senha · aura-fit</title>
+  <meta name="aura-screen" content="AUTH-04">
+  <meta name="aura-variants" content="email-invalido">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g1.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g1.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body class="g1">
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<div class="g1-split">
+  <aside class="g1-brand" aria-label="Sobre o aura-fit">
+    <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+    <div>
+      <p class="g1-claim">Mais que treinos. Resultados reais.</p>
+      <p class="g1-claim-sub">O espaço do personal para cuidar dos alunos, dos treinos e das cobranças.</p>
+      <ul class="g1-points">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg>Convite seguro para cada aluno</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Seus dados protegidos, como manda a LGPD</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-refresh"/></svg>Cancele a assinatura quando quiser</li>
+      </ul>
+    </div>
+    <p class="caption">Só para teste. Os dados são fictícios.</p>
+  </aside>
+  <div class="g1-pane">
+    <header class="g1-top">
+      <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+      <button type="button" class="g1-iconbtn" data-g1-theme aria-label="Mudar tema"></button>
+    </header>
+    <main id="conteudo" tabindex="-1" class="g1-main" data-state="default">
+      <div class="g1-card">
+        <div id="g1-state" data-when="loading error"></div>
+        <div class="stack-lg" data-when="default empty">
+          <div class="g1-head">
+            <h1>Esqueceu a senha?</h1>
+            <p class="muted">Digite o e-mail da sua conta. Enviaremos um link para você criar uma nova senha.</p>
+          </div>
+          <form id="form-esqueci" class="stack" novalidate>
+            <div class="field"><label for="email">E-mail</label><input class="input" type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="nome@exemplo.com.br" aria-required="true"></div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-enviar">Enviar link</button>
+          </form>
+          <div class="g1-foot-links is-flat"><a class="g1-link" href="login.html"><svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-arrow-left"/></svg>Voltar para o login</a></div>
+        </div>
+        <div data-when="success" class="stack-lg">
+          <div class="alert alert-success" role="status"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg><div class="alert-body"><div class="alert-title">Pedido enviado</div>Se o e-mail estiver cadastrado, você receberá um link para redefinir a senha. O link expira em 15 minutos.</div></div>
+          <a class="btn btn-primary btn-lg btn-block" href="link-enviado.html">Ver o que fazer agora</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="../../assets/grupo-g1.js"></script>
+<script>
+(function () {
+  var f = document.getElementById('form-esqueci'), em = f.elements.email;
+  G1.autoClear(f);
+  function check() {
+    AuraUI.clearError(em);
+    var v = em.value.trim();
+    if (!v) AuraUI.setError(em, 'Digite o e-mail da sua conta.');
+    else if (!G1.emailOk(v)) AuraUI.setError(em, 'Digite o e-mail completo, como nome@exemplo.com.br.');
+    return !G1.firstErrorFocus(f);
+  }
+  if (G1.v() === 'email-invalido') { em.value = window.AURA_G1.exemplo.emailIncompleto; check(); }
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!check()) return;
+    var btn = document.getElementById('btn-enviar'); G1.busy(btn, true, 'Enviando…');
+    setTimeout(function () { G1.go('link-enviado.html?email=' + encodeURIComponent(em.value.trim())); }, 700);
+  });
+})();
+</script>
+</body>
+</html>

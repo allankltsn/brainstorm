@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADM-01 · Usuários · aura-fit</title>
+  <meta name="aura-screen" content="ADM-01">
+  <meta name="aura-variants" content="busca-sem-resultado,filtro-bloqueados,convites-pendentes">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g3.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g3.js"></script>
+  <script src="../../assets/shell.js"></script>
+  <script src="../../assets/grupo-g3.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Lista atualizada.">
+  <div class="page-header">
+    <div>
+      <h1>Usuários</h1>
+      <p>Encontre uma pessoa pelo nome ou pelo e-mail completo. Esta lista não mostra dados de saúde.</p>
+    </div>
+    <div class="page-actions" id="acoes"></div>
+  </div>
+
+  <div id="aviso-leitura"></div>
+  <div id="convites-pendentes"></div>
+
+  <section class="card" aria-labelledby="t-lista">
+    <div class="card-header"><h2 class="card-title" id="t-lista">Todas as pessoas</h2></div>
+    <div class="card-body stack">
+      <form class="stack" id="filtros" role="search" aria-label="Buscar e filtrar usuários" novalidate>
+        <div class="field">
+          <label for="busca">Buscar por nome ou e-mail completo</label>
+          <div class="input-icon-left">
+            <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="input" id="busca" name="q" type="search" autocomplete="off" aria-describedby="busca-ajuda">
+          </div>
+          <span class="field-help" id="busca-ajuda">Para buscar pelo e-mail, digite ele inteiro. Na lista, o e-mail aparece escondido em parte, por segurança.</span>
+        </div>
+        <div class="grid-3">
+          <div class="field"><label for="f-papel">Papel</label><div class="select-wrap"><select class="select" id="f-papel" name="papel">
+            <option value="">Todos os papéis</option><option value="admin">Administrador</option><option value="suporte">Suporte</option><option value="personal">Personal</option><option value="aluno">Aluno</option></select></div></div>
+          <div class="field"><label for="f-status">Situação</label><div class="select-wrap"><select class="select" id="f-status" name="status">
+            <option value="">Todas as situações</option><option value="ativo">Ativo</option><option value="bloqueado">Bloqueado</option><option value="convidado">Convidado</option><option value="pendente_verificacao">Verificação pendente</option></select></div></div>
+          <div class="field"><label for="f-plano">Plano</label><div class="select-wrap"><select class="select" id="f-plano" name="plano">
+            <option value="">Todos os planos</option><option value="Starter">Starter</option><option value="Pro">Pro</option><option value="Premium">Premium</option></select></div></div>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-text" id="limpar">Limpar busca e filtros</button>
+          <p class="muted" id="resumo" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+      <div id="area"></div>
+    </div>
+    <div class="card-footer" style="justify-content:space-between;align-items:center" data-when="default success">
+      <span class="page-info" id="pg-info" aria-live="polite"></span>
+      <div id="pg"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var A = window.AURA, G = window.G3, SIZE = 10, page = 1;
+  G.boot({ id: 'ADM-01', title: 'Usuários', active: 'usuarios' }, init);
+  function init() {
+  var q = G.q, v = G.variant;
+  var $ = function (id) { return document.getElementById(id); };
+
+  // valores iniciais (URL e variantes)
+  if (q.q) $('busca').value = q.q;
+  if (q.papel) $('f-papel').value = q.papel;
+  if (q.status) $('f-status').value = q.status;
+  if (q.plano) $('f-plano').value = q.plano;
+  if (v === 'busca-sem-resultado' && !q.q) $('busca').value = 'Tiago Nogueira';
+  if (v === 'filtro-bloqueados') $('f-status').value = 'bloqueado';
+  if (v === 'convites-pendentes') $('f-status').value = 'convidado';
+
+  if (G.can('invites:create')) {
+    $('acoes').innerHTML = '<a class="btn btn-primary" href="' + G.href('convidar-usuario.html') + '">' + G.ico('plus') + 'Convidar usuário</a>';
+  } else {
+    $('aviso-leitura').innerHTML = '<div class="alert alert-info mb-4"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert-body"><div class="alert-title">Você está no modo leitura</div>Com o papel Suporte você consulta usuários, mas não convida nem altera ninguém.</div></div>';
+  }
+
+  if (v === 'convites-pendentes') {
+    var pend = G.invites().filter(function (i) { return i.status === 'pendente'; });
+    $('convites-pendentes').innerHTML = '<section class="card mb-4" aria-labelledby="t-conv"><div class="card-header"><h2 class="card-title" id="t-conv">Convites aguardando resposta (' + pend.length + ')</h2>' +
+      (G.can('invites:create') ? '<a class="btn btn-secondary" href="' + G.href('convidar-usuario.html') + '">Gerenciar convites</a>' : '') + '</div><div class="card-body">' +
+      pend.map(function (i) { return '<div class="list-row"><span class="avatar avatar-sm avatar-neutral" aria-hidden="true">' + G.ico('mail', 'icon-sm') + '</span><div class="grow"><div class="body-medium">' + G.esc(i.emailMasked) + '</div><small class="muted">' + G.roleName(i.role) + ' · vence em ' + A.fmtDate(i.expiresAt) + '</small></div>' + A.badge('pendente') + '</div>'; }).join('') +
+      '</div></section>';
+  }
+
+  function filtered() {
+    var term = $('busca').value.trim(), nt = G.norm(term), papel = $('f-papel').value, st = $('f-status').value, pl = $('f-plano').value;
+    var isMail = term.indexOf('@') !== -1;
+    return G.users().filter(function (u) {
+      if (papel && u.roles.indexOf(papel) === -1) return false;
+      if (st && u.status !== st) return false;
+      if (pl && u.plan !== pl) return false;
+      if (term) {
+        if (isMail) { if (u.email.toLowerCase() !== term.toLowerCase()) return false; }
+        else if (G.norm(u.name).indexOf(nt) === -1) return false;
+      }
+      return true;
+    }).sort(function (a, b) { return (a.lastLoginAt || '') < (b.lastLoginAt || '') ? 1 : -1; });
+  }
+
+  function row(u) {
+    var link = G.href('usuario-detalhe.html', { id: u.id });
+    return '<tr><td class="cell-main"><div class="cell-user"><span class="avatar avatar-sm avatar-' + (u.avatarColor === 'primary' ? 'info' : 'neutral') + '" aria-hidden="true">' + u.initials + '</span><div><a class="body-medium" href="' + link + '">' + G.esc(u.name) + '</a></div></div></td>' +
+      '<td data-label="E-mail">' + G.esc(u.emailMasked) + '</td>' +
+      '<td data-label="Papel">' + u.roles.map(G.roleName).join(', ') + '</td>' +
+      '<td data-label="Situação">' + A.badge(u.status) + '</td>' +
+      '<td data-label="Plano">' + (u.plan ? G.esc(u.plan) : '<span class="muted">Sem plano</span>') + '</td>' +
+      '<td data-label="Último acesso">' + (u.lastLoginAt ? A.relDate(u.lastLoginAt) : '<span class="muted">Ainda não entrou</span>') + '</td>' +
+      '<td class="col-actions" data-label="Ações"><a class="btn btn-neutral" href="' + link + '" aria-label="Ver detalhes de ' + G.esc(u.name) + '">Ver detalhes</a></td></tr>';
+  }
+
+  function table(list) {
+    return '<div class="table-wrap"><table class="table"><caption class="sr-only">Usuários da plataforma</caption><thead><tr><th scope="col">Nome</th><th scope="col">E-mail</th><th scope="col">Papel</th><th scope="col">Situação</th><th scope="col">Plano</th><th scope="col">Último acesso</th><th scope="col" class="col-actions"><span class="sr-only">Ações</span></th></tr></thead><tbody>' +
+      list.map(row).join('') + '</tbody></table></div>';
+  }
+
+  function draw() {
+    var all = filtered(), pages = Math.max(1, Math.ceil(all.length / SIZE));
+    if (page > pages) page = pages;
+    var slice = all.slice((page - 1) * SIZE, page * SIZE);
+    $('resumo').textContent = all.length === 1 ? '1 pessoa encontrada.' : all.length + ' pessoas encontradas.';
+    var term = $('busca').value.trim();
+    G.region('#area', {
+      rows: 6, icon: 'search',
+      title: (term || $('f-papel').value || $('f-status').value || $('f-plano').value) ? 'Nenhum usuário encontrado' : 'Ainda não há usuários',
+      text: term ? 'Não achamos ninguém para "' + term + '". Confira a escrita ou digite o e-mail completo.' : 'Convide a primeira pessoa para começar.',
+      action: (term || $('f-status').value || $('f-papel').value || $('f-plano').value) ? { label: 'Limpar busca e filtros', onClick: clear } : (G.can('invites:create') ? { label: 'Convidar usuário', icon: 'plus', href: G.href('convidar-usuario.html') } : null),
+      onRetry: function () { window.AuraState.set('loading'); setTimeout(function () { window.AuraState.set('default'); draw(); }, 700); },
+      renderDefault: function (el) {
+        if (!all.length) { window.AuraState.render(el, 'empty', { icon: 'search', title: 'Nenhum usuário encontrado', text: term ? 'Não achamos ninguém para "' + term + '". Confira a escrita ou digite o e-mail completo.' : 'Nenhuma pessoa combina com esses filtros.', action: { label: 'Limpar busca e filtros', onClick: clear } }); return; }
+        el.innerHTML = table(slice);
+      }
+    });
+    var from = all.length ? (page - 1) * SIZE + 1 : 0;
+    $('pg-info').textContent = all.length ? 'Mostrando ' + from + ' a ' + Math.min(page * SIZE, all.length) + ' de ' + all.length : '';
+    $('pg').innerHTML = G.pager(all.length, page, SIZE, 'Paginação da lista de usuários');
+  }
+  function clear() { $('busca').value = ''; $('f-papel').value = ''; $('f-status').value = ''; $('f-plano').value = ''; page = 1; draw(); $('busca').focus(); }
+
+  $('filtros').addEventListener('submit', function (e) { e.preventDefault(); page = 1; draw(); });
+  ['busca', 'f-papel', 'f-status', 'f-plano'].forEach(function (id) { $(id).addEventListener(id === 'busca' ? 'input' : 'change', function () { page = 1; draw(); }); });
+  $('limpar').addEventListener('click', clear);
+  $('pg').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-page]'); if (!b || b.getAttribute('aria-disabled') === 'true') return;
+    page = +b.dataset.page; draw();
+    var t = $('pg').querySelector('[aria-current="page"]'); if (t) t.focus();
+    document.getElementById('t-lista').scrollIntoView({ block: 'start' });
+  });
+  draw();
+  document.addEventListener('aura:statechange', function () { draw(); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUTH-01 · Login · aura-fit</title>
+  <meta name="aura-screen" content="AUTH-01">
+  <meta name="aura-variants" content="credenciais-invalidas,muitas-tentativas,conta-bloqueada,veio-de-sessao-expirada">
+  <script src="../../assets/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g1.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g1.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body class="g1">
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<div class="g1-split">
+  <aside class="g1-brand" aria-label="Sobre o aura-fit">
+    <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+    <div>
+      <p class="g1-claim">Mais que treinos. Resultados reais.</p>
+      <p class="g1-claim-sub">O espaço do personal para cuidar dos alunos, dos treinos e das cobranças.</p>
+      <ul class="g1-points">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg>Convite seguro para cada aluno</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>Seus dados protegidos, como manda a LGPD</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-refresh"/></svg>Cancele a assinatura quando quiser</li>
+      </ul>
+    </div>
+    <p class="caption">Só para teste. Os dados são fictícios.</p>
+  </aside>
+  <div class="g1-pane">
+    <header class="g1-top">
+      <a class="g1-wordmark" href="login.html" aria-label="aura-fit, ir para a entrada">aura-<span>fit</span></a>
+      <button type="button" class="g1-iconbtn" data-g1-theme aria-label="Mudar tema"></button>
+    </header>
+    <main id="conteudo" tabindex="-1" class="g1-main" data-state="default">
+      <div class="g1-card">
+        <div id="g1-state" data-when="loading error"></div>
+        <div class="stack-lg" data-when="default empty">
+          <div class="g1-head">
+            <h1>Entrar</h1>
+            <p class="muted">Use o e-mail e a senha da sua conta.</p>
+          </div>
+
+          <div class="stack-sm g1-alerts">
+            <div class="alert alert-info" role="status" data-v="veio-de-sessao-expirada" hidden>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><div class="alert-body"><div class="alert-title">Você saiu da conta</div>Ficou um tempo sem usar o app e saímos por segurança. Entre de novo para continuar de onde parou.</div>
+            </div>
+            <div class="alert alert-danger" id="alerta-invalido" role="alert" tabindex="-1" data-v="credenciais-invalidas" hidden>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-alert"/></svg><div class="alert-body"><div class="alert-title">E-mail ou senha inválidos.</div>
+              <p>Você digitou: <span class="g1-typed" id="digitado"></span></p>
+              <p>Confira se está certo. Se não lembra a senha, use o link <a href="esqueci-senha.html">Esqueceu a senha?</a></p></div>
+            </div>
+            <div class="alert alert-warning" id="alerta-limite" role="alert" tabindex="-1" data-v="muitas-tentativas" hidden>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><div class="alert-body"><div class="alert-title">Muitas tentativas de entrada</div>Por segurança, espere 5 minutos e tente de novo. Se não lembra a senha, <a href="esqueci-senha.html">crie uma nova</a>.</div>
+            </div>
+            <div class="alert alert-danger" id="alerta-bloqueio" role="alert" tabindex="-1" data-v="conta-bloqueada" hidden>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ban"/></svg><div class="alert-body"><div class="alert-title">Sua conta está suspensa. Fale com o suporte.</div>Escreva para <a href="mailto:suporte@exemplo.com.br">suporte@exemplo.com.br</a>. Nada foi apagado.</div>
+            </div>
+          </div>
+
+          <form id="form-login" class="stack" novalidate>
+            <div class="field"><label for="email">E-mail</label><input class="input" type="email" id="email" name="email" autocomplete="username" inputmode="email" placeholder="nome@exemplo.com.br" aria-required="true"></div>
+            <div class="stack-sm">
+              <div class="field"><label for="senha">Senha</label><div class="input-group"><input class="input" type="password" id="senha" name="senha" autocomplete="current-password" aria-required="true"><button type="button" class="input-affix" data-toggle-password aria-controls="senha" aria-label="Mostrar senha" aria-pressed="false"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-eye"/></svg></button></div></div>
+              <div class="row-between"><span></span><a class="g1-link" href="esqueci-senha.html">Esqueceu a senha?</a></div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-entrar">Entrar</button>
+          </form>
+
+          <details class="g1-demo">
+            <summary><svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-info"/></svg>Só para teste: entrar como…</summary>
+            <div class="g1-demo-list" id="demo-contas"></div>
+            <p class="field-help">Só para teste. Toque em uma conta para preencher e depois em Entrar. Qualquer senha serve. Para ver o erro de login, digite a senha <strong>errada</strong>.</p>
+          </details>
+
+          <div class="g1-foot-links">
+            <p class="muted">Ainda não tem conta?</p>
+            <div class="g1-link-row">
+              <a class="g1-link" href="cadastro-personal.html">Criar conta de personal</a>
+              <a class="g1-link" href="aceitar-convite.html?variant=sem-link">Recebi um convite</a>
+            </div>
+          </div>
+        </div>
+        <div data-when="success" class="stack-lg">
+          <div class="alert alert-success" role="status"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check-circle"/></svg><div class="alert-body"><div class="alert-title">Tudo certo</div>Estamos levando você para o seu início.</div></div>
+          <a class="btn btn-primary btn-lg btn-block" href="../home/aluno.html?role=aluno">Continuar</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="../../assets/grupo-g1.js"></script>
+<script>
+(function () {
+  var f = document.getElementById('form-login'), em = f.elements.email, pw = f.elements.senha, fails = 0;
+  var A = window.AURA, S = window.AuraSession;
+  G1.autoClear(f);
+  if (G1.v() === 'credenciais-invalidas') { em.value = S.testAccounts[2].email; document.getElementById('digitado').textContent = em.value; }
+
+  var demo = S.testAccounts.map(function (a) {
+    return [(a.role === 'admin' ? 'Admin' : a.role === 'personal' ? 'Personal' : 'Aluno') + ' · ' + a.name + (a.sub ? ' (pagamento pendente)' : ''), a.email, a.note];
+  }).concat([
+    ['Aluno de dois personais', 'jorge.dois@exemplo.com.br', 'escolhe com qual personal entrar'],
+    ['E-mail ainda não confirmado', 'ana.naoverificado@exemplo.com.br', 'vai para a confirmação de e-mail'],
+    ['Conta suspensa', 'bruno.bloqueado@exemplo.com.br', 'mostra o aviso de conta suspensa']
+  ]);
+  var box = document.getElementById('demo-contas');
+  demo.forEach(function (d) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-neutral btn-block';
+    b.innerHTML = '<span><strong>' + G1.esc(d[0]) + '</strong><br><span class="caption muted">' + G1.esc(d[2]) + '</span></span>';
+    b.addEventListener('click', function () { em.value = d[1]; pw.value = 'Treino#2026'; AuraUI.clearError(em); AuraUI.clearError(pw); document.getElementById('btn-entrar').focus(); });
+    box.appendChild(b);
+  });
+
+  function alertFor(v) {
+    G1.setVariant(v);
+    var id = { 'credenciais-invalidas': 'alerta-invalido', 'muitas-tentativas': 'alerta-limite', 'conta-bloqueada': 'alerta-bloqueio' }[v];
+    var el = document.getElementById(id); if (el) { el.scrollIntoView({ block: 'nearest' }); el.focus(); }
+  }
+  var fails = 0, hasFrom = !!S.safeFrom((/[?&]from=([^&]*)/.exec(location.search) || [])[1] && decodeURIComponent(/[?&]from=([^&]*)/.exec(location.search)[1]));
+
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    AuraUI.clearError(em); AuraUI.clearError(pw);
+    if (G1.v() === 'muitas-tentativas') { document.getElementById('alerta-limite').focus(); return; }
+    var mail = em.value.trim().toLowerCase();
+    if (!mail) AuraUI.setError(em, 'Digite seu e-mail.');
+    else if (!G1.emailOk(mail)) AuraUI.setError(em, 'Digite o e-mail completo, como nome@exemplo.com.br.');
+    if (!pw.value) AuraUI.setError(pw, 'Digite sua senha.');
+    if (G1.firstErrorFocus(f)) return;
+    var btn = document.getElementById('btn-entrar');
+    G1.busy(btn, true, 'Entrando…');
+    setTimeout(function () {
+      G1.busy(btn, false);
+      if (pw.value === 'errada') {
+        fails++;
+        document.getElementById('digitado').textContent = em.value.trim();
+        alertFor(fails >= 5 ? 'muitas-tentativas' : 'credenciais-invalidas'); return;
+      }
+      if (mail.indexOf('bloqueado') > -1) { alertFor('conta-bloqueada'); return; }
+      if (mail.indexOf('naoverificado') > -1) { G1.go('verificar-email.html?perfil=personal&email=' + encodeURIComponent(mail)); return; }
+      var r = S.signIn(mail, /personal|carla/.test(mail) ? 'personal' : 'aluno');
+      if (mail.indexOf('dois') > -1 && !hasFrom) { G1.go('selecionar-perfil.html?variant=aluno-dois-personais'); return; }
+      if (r.role === 'admin' && !hasFrom) { G1.go('selecionar-perfil.html?variant=personal-e-admin'); return; }
+      G1.go(r.redirect);
+    }, 700);
+  });
+})();
+</script>
+</body>
+</html>

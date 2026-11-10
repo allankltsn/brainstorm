@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CFG-05 · Privacidade e meus direitos · aura-fit</title>
+  <meta name="aura-screen" content="CFG-05">
+  <meta name="aura-variants" content="exportacao-em-preparo,exportacao-pronta,revogar-confirmar,consentimento-saude-pendente">
+  <script src="../../assets/theme.js"></script>
+  <script src="../../assets/grupo-g4.js"></script>
+  <link rel="stylesheet" href="../../assets/tokens.css">
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="../../assets/components.css">
+  <link rel="stylesheet" href="../../assets/shell.css">
+  <link rel="stylesheet" href="../../assets/grupo-g4.css">
+  <script src="../../assets/icons.js"></script>
+  <script src="../../assets/data.js"></script>
+  <script src="../../assets/data-g4.js"></script>
+  <script src="../../assets/shell.js"></script>
+</head>
+<body>
+<main id="conteudo" data-success-message="Preferências de privacidade salvas.">
+  <div class="g4-settings-wrap">
+    <div id="col" class="stack-lg g4-measure">
+      <div class="page-header" style="margin-bottom:0">
+        <div>
+          <h1>Privacidade e meus direitos</h1>
+          <p>Seus dados são seus. Aqui você vê quem tem acesso, escolhe o que autoriza, baixa uma cópia ou apaga tudo.</p>
+        </div>
+      </div>
+      <div class="alert alert-success" role="status" data-when="success">
+        <svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <div class="alert-body"><div class="alert-title">Tudo certo</div>Sua escolha foi registrada com data e hora.</div>
+      </div>
+      <div id="area"></div>
+    </div>
+  </div>
+</main>
+<script>
+  G4.setDefaultRole('aluno');
+  G4.mount({ id: 'CFG-05', title: 'Privacidade e meus direitos', activeByRole: { aluno: 'perfil', admin: 'configuracoes', personal: 'configuracoes' } });
+  G4.settingsLayout('privacidade', 'col');
+  var A = window.AURA, V = G4.variant(), r = G4.role(), me = A.me[r], isAluno = r === 'aluno';
+  var consents = A.consents.map(function (c) { return Object.assign({ version: A.legal.privacyVersion }, c); });
+  if (isAluno) consents.splice(2, 0, Object.assign({}, G4DATA.iaConsent));
+  var visible = consents.filter(function (c) { return isAluno || ['termos', 'email_novidades', 'analytics'].indexOf(c.key) !== -1; });
+  var exportState = V === 'exportacao-em-preparo' ? 'preparing' : V === 'exportacao-pronta' ? 'ready' : 'none';
+
+  var CONSEQ = {
+    saude: 'Seu personal deixa de usar seus dados de saúde para ajustar seu treino. Você continua usando o app normalmente e pode voltar atrás quando quiser. O que já foi registrado fica guardado; para apagar, use Excluir minha conta.',
+    ia: 'Seus dados de saúde deixam de seguir para a inteligência artificial. As sugestões passam a usar só os dados do treino. Você pode voltar atrás quando quiser.',
+    compartilhar_personal: 'Seu personal deixa de ver seus treinos e registros novos. O que já foi registrado continua com você. Você pode voltar a compartilhar quando quiser.',
+    email_novidades: 'Você deixa de receber novidades por e-mail. Avisos de segurança e de cobrança continuam, porque protegem sua conta.',
+    analytics: 'Paramos de medir como você usa o app. Nada muda no seu uso.'
+  };
+  var RIGHTS = [
+    ['Quem vê meus dados', '#compartilho', 'users', 'Veja com quem compartilhamos'],
+    ['Meus consentimentos', '#consentimentos', 'check-circle', 'Dê ou retire cada autorização'],
+    ['Baixar meus dados', '#baixar', 'download', 'Uma cópia de tudo que guardamos'],
+    ['Corrigir meus dados', '#corrigir', 'edit', 'Nome, e-mail, telefone'],
+    ['Excluir minha conta', '#excluir', 'trash', 'Apaga seus dados, com prazo para desistir'],
+    ['Falar com o responsável pelos dados', '#encarregado', 'mail', 'Dúvidas e reclamações sobre dados']
+  ];
+  var ART18 = [
+    ['Saber se tratamos seus dados', 'Esta página e a Política de privacidade respondem isso.'],
+    ['Acessar seus dados', 'Em Baixar meus dados.'],
+    ['Corrigir dados errados', 'Em Meus dados.'],
+    ['Pedir anonimização, bloqueio ou eliminação do que for desnecessário', 'Fale com o encarregado ou exclua a conta.'],
+    ['Levar seus dados para outro serviço (portabilidade)', 'O arquivo de Baixar meus dados é aberto e legível.'],
+    ['Apagar dados tratados com o seu consentimento', 'Retire o consentimento aqui ou exclua a conta.'],
+    ['Saber com quem compartilhamos', 'Em Quem vê meus dados.'],
+    ['Saber que pode não consentir e o que acontece se não consentir', 'Cada consentimento diz o que muda se você disser não.'],
+    ['Retirar o consentimento quando quiser', 'Em Meus consentimentos, com o mesmo esforço de dar.']
+  ];
+
+  function consentRow(c) {
+    var sensitive = c.key === 'saude';
+    var status = c.granted ? 'Concedido em ' + A.fmtDate(c.grantedAt) : 'Não concedido';
+    var sw = c.required
+      ? '<span class="badge">' + G4.ico('lock') + 'Necessário</span>'
+      : '<label class="switch g4-sw"><input type="checkbox" role="switch" data-key="' + c.key + '"' + (c.granted ? ' checked' : '') + '><span class="switch-text"><span class="sr-only">' + G4.esc(c.label) + ': </span>' + (c.granted ? 'Ligado' : 'Desligado') + '</span></label>';
+    return '<div class="g4-consent" id="c-' + c.key + '"><div class="grow"><p class="body-medium">' + G4.esc(c.label) + (sensitive ? ' <span class="badge badge-warning">' + G4.ico('alert') + 'Dado sensível</span>' : '') + '</p>' +
+      '<dl><dt>Para quê</dt><dd>' + G4.esc(c.purpose) + '</dd><dt>Base legal</dt><dd>' + G4.esc(c.legalBase) + '</dd><dt>Situação</dt><dd>' + status + '</dd><dt>Texto</dt><dd>versão ' + c.version + '</dd></dl>' +
+      (c.required ? '<p class="muted mt-2">Sem isso não dá para manter a conta. Para retirar, <a href="' + G4.esc(G4.url('excluir-conta.html')) + '">exclua a conta</a>.</p>' : '') + '</div>' + sw + '</div>';
+  }
+  function group(title, keys, extraCls, intro) {
+    var rows = visible.filter(function (c) { return keys.indexOf(c.key) !== -1; });
+    if (!rows.length) return '';
+    return '<section class="card ' + (extraCls || '') + '" aria-labelledby="g-' + keys[0] + '"><div class="card-header"><h3 class="card-title" id="g-' + keys[0] + '">' + title + '</h3></div><div class="card-body">' + (intro ? '<p class="muted mb-4">' + intro + '</p>' : '') + rows.map(consentRow).join('') + '</div></section>';
+  }
+  function exportCard() {
+    var body;
+    if (exportState === 'none') body = '<p>Juntamos seu cadastro, seus consentimentos e seu histórico em um arquivo. Fica pronto em até <strong>2 dias úteis</strong> e avisamos por <strong>' + G4.esc(me.emailMasked) + '</strong>. Antes de liberar o arquivo, pedimos a sua senha, porque ele pode ter dados de saúde.</p><button type="button" class="btn btn-secondary" id="b-export">' + G4.ico('download') + 'Pedir meus dados</button>';
+    else if (exportState === 'preparing') body = '<div class="alert alert-info" role="status"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><div class="alert-body"><div class="alert-title">Estamos preparando seus dados</div>Pedido feito em ' + A.fmtDate(A.today) + '. Fica pronto até ' + A.fmtDate(A.addDays(A.today, 2)) + '. Avisamos por ' + G4.esc(me.emailMasked) + ', você não precisa ficar aqui.</div></div>';
+    else body = '<div class="alert alert-success" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><div class="alert-body"><div class="alert-title">Seus dados estão prontos</div>O arquivo fica disponível por 7 dias, até ' + A.fmtDate(A.addDays(A.today, 7)) + '.</div></div><button type="button" class="btn btn-primary" id="b-down">' + G4.ico('download') + 'Baixar arquivo (12 KB)</button>';
+    return '<section class="card" id="baixar" aria-labelledby="t-baixar"><div class="card-header"><h2 class="card-title" id="t-baixar">Baixar meus dados</h2></div><div class="card-body stack">' + body + '<p class="muted">O arquivo vem em formato aberto (JSON e CSV), para você abrir ou levar para outro serviço.</p></div></section>';
+  }
+  function answer() {
+    if (isAluno) return '<section class="g4-answer" aria-labelledby="t-resp">' + G4.ico('shield') + '<div><h2 id="t-resp">Quem pode ver seus dados de saúde?</h2><p><strong>Seu personal vê seus treinos.</strong> O acesso é restrito e fica registrado. A equipe do aura-fit só acessa dados de saúde quando for necessário para suporte, com o seu pedido ou a sua autorização.</p></div></section>';
+    return '<section class="g4-answer" aria-labelledby="t-resp">' + G4.ico('shield') + '<div><h2 id="t-resp">Quem pode ver seus dados?</h2><p>Só quem precisa para o serviço funcionar. O acesso é restrito e fica registrado. Dados de saúde só são acessados pela equipe quando necessário para suporte, com pedido ou autorização. Veja a lista abaixo.</p></div></section>';
+  }
+  function resumo() {
+    var li = isAluno
+      ? ['Pedimos só o que precisamos: nome, e-mail e data de nascimento.', 'Dados de saúde só com a sua autorização, separada de tudo. Quem vê: você e o seu personal.', 'Não vendemos seus dados. Só passamos para quem faz o serviço funcionar, como e-mail, hospedagem e, se você autorizar, inteligência artificial.', 'Aqui você vê, baixa, corrige e apaga seus dados, e retira autorizações.']
+      : ['Pedimos só o que precisamos: nome, e-mail, telefone e dados do pagamento do plano.', 'Não vendemos seus dados. Só passamos para quem faz o serviço funcionar, como pagamento, e-mail e hospedagem.', 'Os dados de saúde dos seus alunos são deles. Você só vê o que eles autorizarem.', 'Aqui você vê, baixa, corrige e apaga seus dados, e retira autorizações.'];
+    return '<section class="alert alert-info" aria-labelledby="t-res"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert-body"><div class="alert-title" id="t-res">Em resumo</div><ul class="g4-list-plain">' + li.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul></div></section>';
+  }
+  function render(el, emptyMode) {
+    var sharing = (isAluno ? A.sharing : A.sharing.slice(1)).concat(G4DATA.sharingExtra);
+    var pend = V === 'consentimento-saude-pendente' && isAluno;
+    el.innerHTML = '<div class="stack-lg">' +
+      (pend ? '<div class="alert alert-warning" role="status"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg><div class="alert-body"><div class="alert-title">Seu personal pediu seu consentimento para dados de saúde</div>Você decide. Sem ele, você usa o app normalmente. Não há prazo.</div><a class="btn btn-secondary" href="#c-saude" id="b-rev">Revisar pedido</a></div>' : '') +
+      answer() + resumo() +
+      '<nav aria-label="Seus direitos"><ul class="g4-rights">' + RIGHTS.map(function (x) { return '<li><a class="g4-right" href="' + x[1] + '">' + G4.ico(x[2]) + '<span><strong>' + x[0] + '</strong><small>' + x[3] + '</small></span></a></li>'; }).join('') + '</ul></nav>' +
+      '<section class="card" id="compartilho" aria-labelledby="t-comp"><div class="card-header"><h2 class="card-title" id="t-comp">Com quem eu compartilho</h2></div><div class="card-body"><ul class="g4-list">' +
+        sharing.map(function (s) { return '<li>' + G4.ico('check-circle') + '<span class="grow"><strong>' + G4.esc(s.with) + '</strong><span>' + G4.esc(s.what) + '. ' + G4.esc(s.why) + '.</span></span></li>'; }).join('') + '</ul></div></section>' +
+      '<section aria-labelledby="t-cons" id="consentimentos" class="stack"><div><h2 id="t-cons">Meus consentimentos</h2><p class="muted">Dar e retirar leva o mesmo esforço: um toque e uma confirmação. Registramos a data de cada escolha.</p>' +
+        (emptyMode ? '<div class="alert alert-info mt-4" role="status"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><div class="alert-body">Você ainda não deu nenhum consentimento opcional. Está tudo desligado.</div></div>' : '') + '</div>' +
+        group('Sua conta', ['termos']) +
+        group('Saúde, inteligência artificial e compartilhamento com seu personal', ['saude', 'ia', 'compartilhar_personal'], 'g4-consent-sensitive', 'Dados de saúde são sensíveis. Pedimos um consentimento só para eles, separado de qualquer outro. <br><span>' + G4.esc(A.healthNotice) + '</span>') +
+        group('Novidades e melhorias', ['email_novidades', 'analytics'], '', 'Totalmente opcional. Não tem relação com seus dados de saúde.') + '</section>' +
+      exportCard() +
+      '<section class="card" id="corrigir" aria-labelledby="t-corr"><div class="card-header"><h2 class="card-title" id="t-corr">Corrigir meus dados</h2></div><div class="card-body stack"><p>Algo errado no seu nome, e-mail ou telefone? Você mesmo corrige.</p><div><a class="btn btn-secondary" href="' + G4.esc(G4.url('meus-dados.html')) + '">' + G4.ico('edit') + 'Ir para Meus dados</a></div></div></section>' +
+      '<section class="card" id="excluir" aria-labelledby="t-exc"><div class="card-header"><h2 class="card-title" id="t-exc">Excluir minha conta</h2></div><div class="card-body stack"><p>Apagamos seus dados, menos o que a lei manda guardar. Você tem 30 dias para desistir. Sugerimos baixar seus dados antes.</p><div><a class="btn btn-secondary" href="' + G4.esc(G4.url('excluir-conta.html')) + '">' + G4.ico('trash') + 'Começar a exclusão</a></div></div></section>' +
+      '<section class="card" id="encarregado" aria-labelledby="t-dpo"><div class="card-header"><h2 class="card-title" id="t-dpo">Falar com a pessoa responsável pelos seus dados</h2></div><div class="card-body stack"><p>É a pessoa responsável pelos seus dados no aura-fit. Quem decide como os dados são usados (o controlador) é ' + G4.esc(G4DATA.controller) + '. Responde em até 15 dias.</p><p><a href="mailto:' + A.legal.dpoEmail + '">' + A.legal.dpoEmail + '</a></p>' +
+        '<p class="muted">Se não ficar satisfeito, você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD). Alguns serviços, como e-mail e pagamento, podem guardar dados em servidores fora do Brasil, com as mesmas regras de proteção.</p>' +
+        '<p>Política de privacidade, versão ' + A.legal.privacyVersion + ', de ' + A.fmtDate(A.legal.updatedAt) + ': <a href="' + G4.esc(G4.url('../legal/privacidade.html')) + '">ler em linguagem simples</a>.</p></div></section>' +
+      '<details class="card g4-details"><summary style="padding:0 var(--space-5)">' + G4.ico('chevron-down', 'icon-sm') + 'Lista completa dos seus direitos pela lei de proteção de dados (LGPD, art. 18)</summary><div class="card-body"><ol class="g4-list-plain" style="list-style:decimal">' + ART18.map(function (x) { return '<li><strong>' + x[0] + '.</strong> <span class="muted">' + x[1] + '</span></li>'; }).join('') + '</ol></div></details>' +
+      '</div>';
+    wire(el);
+  }
+  function setConsent(c, on) {
+    c.granted = on; c.grantedAt = on ? A.today + 'T10:00' : null;
+    var row = document.getElementById('c-' + c.key);
+    row.outerHTML = consentRow(c);
+    wireRow(document.getElementById('c-' + c.key));
+    var sw = document.querySelector('#c-' + c.key + ' input'); if (sw) sw.focus();
+    AuraUI.toast(on ? 'Consentimento concedido. Registramos a data.' : 'Consentimento retirado. Registramos a data.', { tone: 'success', timeout: 6000 });
+  }
+  function ask(c, wantOn) {
+    var t = c.key === 'saude' && wantOn ? 'Você autoriza o uso dos seus dados de saúde?' : wantOn ? 'Dar este consentimento?' : 'Retirar este consentimento?';
+    var txt = wantOn ? c.label + '. Para quê: ' + c.purpose + ' Base legal: ' + c.legalBase + '. Você pode retirar quando quiser, com o mesmo esforço.' : (CONSEQ[c.key] || '');
+    return AuraUI.confirm({ title: t, text: txt, confirmLabel: wantOn ? 'Dar consentimento' : 'Retirar consentimento', cancelLabel: wantOn ? 'Agora não' : 'Manter' }).then(function (ok) { if (ok) setConsent(c, wantOn); return ok; });
+  }
+  function wireRow(row) {
+    var inp = row && row.querySelector('input[data-key]'); if (!inp) return;
+    inp.addEventListener('change', function () {
+      var c = consents.filter(function (x) { return x.key === inp.dataset.key; })[0], want = inp.checked;
+      inp.checked = !want; // so muda depois da confirmacao
+      ask(c, want);
+    });
+  }
+  function wire(el) {
+    Array.prototype.forEach.call(el.querySelectorAll('.g4-consent'), wireRow);
+    var e = document.getElementById('b-export'); if (e) e.addEventListener('click', function () { exportState = 'preparing'; render(document.getElementById('area')); AuraUI.toast('Pedido feito. Avisamos por e-mail quando estiver pronto.', { tone: 'success' }); document.getElementById('baixar').scrollIntoView(); });
+    var d = document.getElementById('b-down'); if (d) d.addEventListener('click', function () { AuraUI.toast('No protótipo o arquivo é fictício e não é baixado.', { tone: 'info' }); });
+    var rv = document.getElementById('b-rev'); if (rv) rv.addEventListener('click', function (ev) { ev.preventDefault(); var row = document.getElementById('c-saude'); row.classList.add('g4-consent-focus'); row.scrollIntoView({ block: 'center' }); row.querySelector('input').focus(); });
+  }
+  G4.ready(function () {
+    var s = AuraState.get(), area = document.getElementById('area');
+    if (s === 'empty') { consents.forEach(function (c) { if (!c.required) { c.granted = false; c.grantedAt = null; } }); }
+    AuraState.render('#area', s === 'empty' ? 'default' : s, { rows: 5, renderDefault: function (el) { render(el, s === 'empty'); } });
+    if (V === 'revogar-confirmar' && isAluno) {
+      var c = consents.filter(function (x) { return x.key === 'compartilhar_personal'; })[0];
+      setTimeout(function () { ask(c, false); }, 150);
+    }
+  });
+</script>
+</body>
+</html>
