@@ -46,6 +46,8 @@ Os componentes dos kits são código-fonte copiado para o projeto (modelo shadcn
 - `src/sections/Closing.tsx`: depoimentos (mural em colunas), planos, comparativo, FAQ, CTA final, rodapé.
 - `src/sections/Porque.tsx`: "Por que o aura-fit", seis benefícios em cartões que inclinam com o ponteiro, cada um com uma mini-ilustração animada.
 - `src/components/ui.tsx`: logo, botões e blocos comuns.
+- `src/sections/Relatorios.tsx`: painel "Gráficos e relatórios".
+- `src/components/charts.tsx`: **estilo padrão de gráficos** (`LineChart`, `Bars`, `BarList`, `Ring`, `Delta`), inspirado nas telas de Analytics do affectUI. Todo gráfico novo deve sair daqui: entra animado quando aparece na tela e reage ao ponteiro (linha-guia, pontos e dica com valores).
 
 ## Telas do app e fluxo interativo
 

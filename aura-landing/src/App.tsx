@@ -8,6 +8,7 @@ import { AiUses } from "@/sections/AiUses"
 import { Demo } from "@/sections/Demo"
 import { Porque } from "@/sections/Porque"
 import { ComoFunciona, Manifesto, Problema, Recursos } from "@/sections/Product"
+import { Relatorios } from "@/sections/Relatorios"
 import { Roi } from "@/sections/Roi"
 
 export default function App() {
@@ -40,6 +41,7 @@ export default function App() {
         <Recursos />
         <AiUses />
         <Demo />
+        <Relatorios />
         <ComoFunciona />
         <Roi />
         <Depoimentos />

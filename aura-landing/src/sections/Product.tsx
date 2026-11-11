@@ -7,6 +7,7 @@ import { BlurFade } from "@/components/magicui/blur-fade"
 import { BorderBeam } from "@/components/magicui/border-beam"
 import { DotPattern } from "@/components/magicui/dot-pattern"
 import { MagicCard } from "@/components/magicui/magic-card"
+import { Bars } from "@/components/charts"
 import { Btn, Container, Eyebrow, SectionHead } from "@/components/ui"
 import { cn } from "@/lib/utils"
 
@@ -187,28 +188,14 @@ function MockIA() {
 const semanas = [92, 88, 80, 71, 52, 34]
 function MockAderencia() {
   return (
-    <div aria-hidden="true" className="rounded-2xl border border-line bg-bg/80 p-4">
+    <div className="rounded-2xl border border-line bg-bg/80 p-4">
       <div className="mb-4 flex items-center justify-between text-xs">
         <span className="font-semibold text-ink">Aluno B · frequência</span>
         <motion.span animate={{ opacity: [1, 0.45, 1] }} transition={{ duration: 1.6, repeat: Infinity }} className="inline-flex items-center gap-1 rounded-full bg-warn/15 px-2 py-1 font-semibold text-warn">
           <AlertTriangle size={12} /> Risco
         </motion.span>
       </div>
-      <div className="flex h-28 items-end gap-2">
-        {semanas.map((h, i) => (
-          <div key={i} className="flex h-full flex-1 flex-col justify-end gap-1.5">
-            <motion.div
-              initial={{ scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{ delay: 0.15 + i * 0.09, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              style={{ height: `${h}%` }}
-              className={cn("origin-bottom rounded-md", i >= 4 ? "bg-gradient-to-t from-brand to-accent" : "bg-surface-2")}
-            />
-            <span className="text-center text-[10px] text-faint">S{i + 1}</span>
-          </div>
-        ))}
-      </div>
+      <Bars data={semanas} labels={semanas.map((_, i) => `S${i + 1}`)} format={(v) => `${v}% de presença`} accentFrom={4} max={100} height={112} />
       <p className="mt-3 flex items-center gap-1.5 text-xs text-muted"><TrendingDown size={14} className="text-accent" /> Ritmo caiu nas últimas 2 semanas</p>
     </div>
   )
