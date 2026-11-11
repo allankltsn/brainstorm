@@ -32,6 +32,7 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useContent } from '@/lib/content'
+import { useCrm } from '@/lib/crm'
 import { initials, notifications, session } from '@/lib/data'
 import { currentNav, NAV, pageTitle, type NavItem } from '@/lib/nav'
 import { useTheme } from '@/lib/theme'
@@ -55,10 +56,13 @@ function BrandMark() {
   )
 }
 
-/* O selo de Conteúdo mostra quantos itens esperam aprovação. */
+/* Selos calculados: Conteúdo mostra o que espera aprovação; Mensagens, as conversas não lidas. */
 function useBadge(item: NavItem) {
   const { items } = useContent()
-  return item.to === '/conteudo' ? items.filter((i) => i.status === 'aprovacao').length : item.badge
+  const { conversations } = useCrm()
+  if (item.to === '/conteudo') return items.filter((i) => i.status === 'aprovacao').length
+  if (item.to === '/mensagens') return conversations.filter((c) => c.unread).length
+  return item.badge
 }
 
 function NavEntry({ item }: { item: NavItem }) {

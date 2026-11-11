@@ -8,7 +8,7 @@ export const NAV: NavItem[] = [
   { to: '/marca', label: 'Marca', icon: Palette },
   { to: '/conteudo', label: 'Conteúdo', icon: CalendarDays },
   { to: '/leads', label: 'Leads', icon: Users },
-  { to: '/mensagens', label: 'Mensagens', icon: MessageSquare, badge: 2 },
+  { to: '/mensagens', label: 'Mensagens', icon: MessageSquare },
 ]
 
 export function currentNav(path: string) {

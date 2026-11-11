@@ -4,9 +4,11 @@ import { AppShell } from '@/components/app-shell'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ContentProvider } from '@/lib/content'
+import { CrmProvider } from '@/lib/crm'
 import { ThemeProvider } from '@/lib/theme'
 import { Conteudo } from '@/pages/conteudo'
 import { Inicio } from '@/pages/inicio'
+import { Leads } from '@/pages/leads'
 import { Marca } from '@/pages/marca'
 import { Placeholder } from '@/pages/placeholder'
 
@@ -21,7 +23,9 @@ export default function App() {
               <Route
                 element={
                   <ContentProvider>
-                    <AppShell />
+                    <CrmProvider>
+                      <AppShell />
+                    </CrmProvider>
                   </ContentProvider>
                 }
               >
@@ -29,6 +33,7 @@ export default function App() {
                 <Route path="/inicio" element={<Inicio />} />
                 <Route path="/marca" element={<Marca />} />
                 <Route path="/conteudo" element={<Conteudo />} />
+                <Route path="/leads" element={<Leads />} />
                 <Route path="*" element={<Placeholder />} />
               </Route>
             </Routes>
