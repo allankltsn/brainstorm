@@ -85,6 +85,8 @@ export function Configuracoes() {
         {tab === 'avisos' && (
           <Section title="Avisos por e-mail" description="As mudanças valem na hora.">
             <div className="grid gap-5">
+              {role === 'aluno' && <Switch placement="end" defaultChecked label="Lembrete de treino" description="Um aviso às 7h nos dias em que você tem treino." />}
+              {role === 'aluno' && <Switch placement="end" defaultChecked label="Lembrete de check-in" description="A cada 14 dias, para registrar peso e medidas." />}
               <Switch placement="end" defaultChecked label="Convites" description="Quando alguém aceita ou recusa um convite seu." />
               <Switch placement="end" defaultChecked label="Treinos" description="Quando um aluno conclui ou deixa de fazer um treino." />
               <Switch placement="end" label="Novidades" description="Dicas e novos recursos do aura-fit." />

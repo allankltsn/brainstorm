@@ -1,4 +1,4 @@
-import { Bell, ChevronsUpDown, ClipboardList, CreditCard, Dumbbell, LogOut, Moon, Palette, Plus, Search, Settings, Sparkles, Sun, UserPlus } from 'lucide-react'
+import { Bell, ChevronsUpDown, ClipboardList, CreditCard, Dumbbell, LifeBuoy, ListChecks, LogOut, Moon, Palette, Plus, Receipt, Search, Settings, Sparkles, Sun, UserPlus } from 'lucide-react'
 import { useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { AssistantWidget } from '@/components/assistant'
@@ -154,6 +154,29 @@ function UserMenu() {
               <CreditCard /> Minha assinatura
             </DropdownMenuItem>
           )}
+          {role === 'personal' && (
+            <DropdownMenuItem onSelect={() => navigate('/cobrancas')}>
+              <Receipt /> Cobranças dos alunos
+            </DropdownMenuItem>
+          )}
+          {role === 'personal' && (
+            <DropdownMenuItem onSelect={() => navigate('/ia/creditos')}>
+              <Sparkles /> Créditos de IA
+            </DropdownMenuItem>
+          )}
+          {role === 'aluno' && (
+            <DropdownMenuItem onSelect={() => navigate('/pagamentos')}>
+              <Receipt /> Pagamentos
+            </DropdownMenuItem>
+          )}
+          {role === 'aluno' && (
+            <DropdownMenuItem onSelect={() => navigate('/primeiros-passos')}>
+              <ListChecks /> Primeiros passos
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuItem onSelect={() => navigate('/suporte')}>
+            <LifeBuoy /> Ajuda e suporte
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuLabel className="text-xs text-muted-foreground">Protótipo: ver como</DropdownMenuLabel>

@@ -1,4 +1,4 @@
-import { CalendarDays, Check, MessageSquare, Monitor, Moon, Play, Plus, Timer, User, Users } from 'lucide-react'
+import { CalendarDays, Check, ChevronRight, ListChecks, MessageSquare, Monitor, Moon, Play, Plus, Timer, User, Users } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
@@ -9,6 +9,8 @@ import { NumberTicker } from '@/components/affect/number-ticker'
 import { ProgressTracker } from '@/components/affect/progress-tracker'
 import { TextArea } from '@/components/affect/text-area'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Birthdays } from '@/components/birthdays'
+import { DailyQuote } from '@/components/daily-quote'
 import { PageHeader, Person, Pill, Section } from '@/components/page'
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
 import { Progress } from '@/components/ui/progress'
@@ -25,6 +27,7 @@ import {
   week,
   workoutsWeek,
 } from '@/lib/data'
+import { studentOnboarding } from '@/lib/engagement'
 import { useRole } from '@/lib/role'
 import { cn } from '@/lib/utils'
 
@@ -189,7 +192,14 @@ function HomePersonal() {
         >
           <NumberTicker value={late} />
         </Kpi>
-        <Kpi label="Receita de outubro" foot="Exemplo. O financeiro chega em breve.">
+        <Kpi
+          label="Receita de outubro"
+          foot={
+            <Link to="/cobrancas" className="font-medium text-brand-text hover:underline">
+              Ver cobranças
+            </Link>
+          }
+        >
           <NumberTicker value={revenueMonth} locale="pt-BR" format={{ style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }} />
         </Kpi>
       </div>
@@ -206,6 +216,7 @@ function HomePersonal() {
           </ChartContainer>
         </Section>
         <div className="grid min-w-0 grid-cols-1 content-start gap-6">
+          <Birthdays />
           <ProgressTracker
             title="Comece por aqui"
             steps={[
@@ -256,9 +267,23 @@ function HomeAluno() {
   const [done, setDone] = useState<string[]>(['e1'])
   const total = todayWorkout.exercises.length
   const pct = Math.round((done.length / total) * 100)
+  const stepsLeft = studentOnboarding.filter((s) => !s.done).length
   return (
     <div className="mx-auto max-w-2xl">
       <PageHeader title={`Olá, ${firstName(me.name)}`} description={`Hoje é ${TODAY_LABEL}.`} />
+      <DailyQuote className="mb-6" />
+      {stepsLeft > 0 && (
+        <Link to="/primeiros-passos" className="mb-6 flex min-h-11 items-center justify-between gap-3 rounded-xl border bg-card px-4 py-3 text-sm outline-none hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring">
+          <span className="flex items-center gap-3">
+            <ListChecks className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+            <span>
+              <span className="font-medium">Primeiros passos</span>
+              <span className="text-muted-foreground"> · faltam {stepsLeft}</span>
+            </span>
+          </span>
+          <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+        </Link>
+      )}
 
       <section className="rounded-2xl border bg-card p-5 sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-3">

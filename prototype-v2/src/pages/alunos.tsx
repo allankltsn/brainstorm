@@ -230,6 +230,16 @@ export function AlunoDetalhe() {
             <HealthPill s={s} />
             <span>Aluno desde {s.since}</span>
           </div>
+          {s.status !== 'pendente' && (
+            <div className="mt-2 flex flex-wrap gap-x-4 text-sm font-medium">
+              <Link to={`/alunos/${s.id}/evolucao`} className="inline-flex min-h-11 items-center text-brand-text underline-offset-4 hover:underline sm:min-h-0">
+                Ver evolução
+              </Link>
+              <Link to={`/alunos/${s.id}/linha-do-tempo`} className="inline-flex min-h-11 items-center text-brand-text underline-offset-4 hover:underline sm:min-h-0">
+                Linha do tempo
+              </Link>
+            </div>
+          )}
         </div>
         <div className="flex flex-wrap gap-2">
           {s.status !== 'encerrado' && s.status !== 'pendente' && (

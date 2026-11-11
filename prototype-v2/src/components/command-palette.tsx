@@ -1,4 +1,4 @@
-import { Dumbbell, Palette, Settings, Sparkles, UserPlus } from 'lucide-react'
+import { Dumbbell, LifeBuoy, ListChecks, Palette, Receipt, Ruler, Settings, Sparkles, UserPlus } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -49,6 +49,20 @@ export function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenCh
       items: [
         ...NAV[role].map((n) => ({ key: n.to, label: n.label, icon: <n.icon />, run: go(n.to) })),
         { key: 'cfg', label: 'Configurações', words: 'conta assinatura tema avisos', icon: <Settings />, run: go('/configuracoes') },
+        { key: 'suporte', label: 'Ajuda e suporte', words: 'dúvidas contato problema', icon: <LifeBuoy />, run: go('/suporte') },
+        ...(role === 'personal'
+          ? [
+              { key: 'cobrancas', label: 'Cobranças dos alunos', words: 'mensalidade financeiro pagamento pix', icon: <Receipt />, run: go('/cobrancas') },
+              { key: 'creditos', label: 'Créditos de IA', words: 'saldo inteligência artificial', icon: <Sparkles />, run: go('/ia/creditos') },
+            ]
+          : []),
+        ...(role === 'aluno'
+          ? [
+              { key: 'checkin', label: 'Fazer check-in', words: 'peso medidas fotos', icon: <Ruler />, run: go('/check-in') },
+              { key: 'pagamentos', label: 'Pagamentos', words: 'mensalidade pix', icon: <Receipt />, run: go('/pagamentos') },
+              { key: 'passos', label: 'Primeiros passos', words: 'começar checklist', icon: <ListChecks />, run: go('/primeiros-passos') },
+            ]
+          : []),
         { key: 'kit', label: 'Kit de interface', words: 'design componentes', icon: <Palette />, run: go('/design-system') },
       ],
     },
