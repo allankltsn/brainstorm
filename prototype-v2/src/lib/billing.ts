@@ -37,12 +37,12 @@ export type Account = {
   plan?: string
 }
 export const accounts: Account[] = [
-  { id: 'u1', name: 'Carla Mendes', email: 'carla.mendes@exemplo.com.br', role: 'personal', status: 'ativo', since: '12/03/2026', plan: 'Pro' },
-  { id: 'u2', name: 'Rodrigo Teixeira', email: 'rodrigo.teixeira@exemplo.com.br', role: 'personal', status: 'ativo', since: '02/05/2026', plan: 'Studio' },
-  { id: 'u3', name: 'Marcela Duarte', email: 'marcela.duarte@exemplo.com.br', role: 'personal', status: 'ativo', since: '18/06/2026', plan: 'Starter' },
-  { id: 'u4', name: 'Vinícius Prado', email: 'vinicius.prado@exemplo.com.br', role: 'personal', status: 'bloqueado', since: '07/08/2026', plan: 'Pro' },
-  { id: 'u5', name: 'Jorge Batista', email: 'jorge.batista@exemplo.com.br', role: 'aluno', status: 'ativo', since: '20/04/2026' },
-  { id: 'u6', name: 'Marina Lopes', email: 'marina.lopes@exemplo.com.br', role: 'aluno', status: 'ativo', since: '03/05/2026' },
-  { id: 'u7', name: 'Ana Ribeiro', email: 'ana.ribeiro@exemplo.com.br', role: 'admin', status: 'ativo', since: '01/01/2026' },
-  { id: 'u8', name: 'Sérgio Matos', email: 'sergio.matos@exemplo.com.br', role: 'personal', status: 'convidado', since: '14/10/2026' },
+  { id: 'u1', name: 'Carla Mendes', email: 'carla.mendes@aura.example', role: 'personal', status: 'ativo', since: '12/03/2026', plan: 'Pro' },
+  { id: 'u2', name: 'Rodrigo Teixeira', email: 'rodrigo.teixeira@aura.example', role: 'personal', status: 'ativo', since: '02/05/2026', plan: 'Studio' },
+  { id: 'u3', name: 'Marcela Duarte', email: 'marcela.duarte@aura.example', role: 'personal', status: 'ativo', since: '18/06/2026', plan: 'Starter' },
+  { id: 'u4', name: 'Vinícius Prado', email: 'vinicius.prado@aura.example', role: 'personal', status: 'bloqueado', since: '07/08/2026', plan: 'Pro' },
+  { id: 'u5', name: 'Jorge Batista', email: 'jorge.batista@aura.example', role: 'aluno', status: 'ativo', since: '20/04/2026' },
+  { id: 'u6', name: 'Marina Lopes', email: 'marina.lopes@aura.example', role: 'aluno', status: 'ativo', since: '03/05/2026' },
+  { id: 'u7', name: 'Ana Ribeiro', email: 'ana.ribeiro@aura.example', role: 'admin', status: 'ativo', since: '01/01/2026' },
+  { id: 'u8', name: 'Sérgio Matos', email: 'sergio.matos@aura.example', role: 'personal', status: 'convidado', since: '14/10/2026' },
 ]

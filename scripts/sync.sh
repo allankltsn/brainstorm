@@ -10,6 +10,8 @@ set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
 CONF=scripts/sync.conf
+[ -f "$CONF" ] || { echo "$CONF não existe; crie com linhas '<pasta> <branch>'."; exit 1; }
+grep -qvE '^[[:space:]]*(#|$)' "$CONF" || { echo "$CONF não tem nenhuma linha '<pasta> <branch>'; nada para sincronizar."; exit 1; }
 TARGET=${TARGET:-main}
 
 [ -z "$(git status --porcelain)" ] || { echo "Há alterações locais não commitadas; abortando."; exit 1; }

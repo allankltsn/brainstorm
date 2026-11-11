@@ -23,7 +23,7 @@ export function ConvidarAluno() {
     e.preventDefault()
     const next: typeof errors = {}
     if (!name.trim()) next.name = 'Digite o nome do aluno.'
-    if (!/^\S+@\S+\.\S+$/.test(email)) next.email = 'Digite um e-mail válido, como nome@exemplo.com.br.'
+    if (!/^\S+@\S+\.\S+$/.test(email)) next.email = 'Digite um e-mail válido, como nome@aura.example.'
     else if (students.some((s) => s.email === email.trim().toLowerCase())) next.email = 'Este e-mail já foi convidado.'
     setErrors(next)
     if (Object.keys(next).length) return

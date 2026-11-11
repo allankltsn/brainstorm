@@ -5,9 +5,9 @@ export type Role = 'personal' | 'aluno' | 'admin'
 export const TODAY_LABEL = 'sexta-feira, 16 de outubro'
 
 export const sessions: Record<Role, { name: string; email: string; title: string }> = {
-  personal: { name: 'Carla Mendes', email: 'carla.mendes@exemplo.com.br', title: 'Personal trainer' },
-  aluno: { name: 'Jorge Batista', email: 'jorge.batista@exemplo.com.br', title: 'Aluno' },
-  admin: { name: 'Ana Ribeiro', email: 'ana.ribeiro@exemplo.com.br', title: 'Administradora' },
+  personal: { name: 'Carla Mendes', email: 'carla.mendes@aura.example', title: 'Personal trainer' },
+  aluno: { name: 'Jorge Batista', email: 'jorge.batista@aura.example', title: 'Aluno' },
+  admin: { name: 'Ana Ribeiro', email: 'ana.ribeiro@aura.example', title: 'Administradora' },
 }
 
 export const initials = (name: string) => {
@@ -52,7 +52,7 @@ function mk(n: number, name: string, o: Partial<Student> = {}): Student {
   return {
     id: `s${String(n).padStart(2, '0')}`,
     name,
-    email: `${slug(name)}@exemplo.com.br`,
+    email: `${slug(name)}@aura.example`,
     mode: n % 3 === 0 ? 'Presencial' : 'Remoto',
     status: 'ativo',
     plan: ['Treino A/B', 'Full body', 'ABC', 'Força base'][n % 4],

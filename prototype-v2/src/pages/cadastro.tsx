@@ -5,27 +5,33 @@ import { Checkbox } from '@/components/affect/checkbox'
 import { TextField } from '@/components/affect/text-field'
 import { AuthLayout } from '@/components/auth-layout'
 import { passwordRules } from '@/lib/auth'
+import { DEMO_EMAIL } from '@/lib/demo'
+import { focusFirstInvalid } from '@/lib/focus-invalid'
+import { useTimers } from '@/lib/use-timers'
 
 type Errors = Partial<Record<'name' | 'email' | 'pwd' | 'terms', string>>
 
 export function Cadastro() {
   const navigate = useNavigate()
+  const later = useTimers()
   const [f, setF] = useState({ name: '', email: '', pwd: '', terms: false })
   const [errors, setErrors] = useState<Errors>({})
   const [loading, setLoading] = useState(false)
 
-  function submit(e: FormEvent) {
+  function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    if (loading) return
+    const form = e.currentTarget
     const next: Errors = {}
     if (f.name.trim().split(/\s+/).length < 2) next.name = 'Digite nome e sobrenome.'
-    if (!/^\S+@\S+\.\S+$/.test(f.email)) next.email = 'Digite um e-mail válido, como nome@exemplo.com.br.'
-    else if (f.email === 'carla.mendes@exemplo.com.br') next.email = 'Este e-mail já tem conta. Tente entrar.'
+    if (!/^\S+@\S+\.\S+$/.test(f.email)) next.email = 'Digite um e-mail válido, como nome@aura.example.'
+    else if (f.email === DEMO_EMAIL) next.email = 'Este e-mail já tem conta. Tente entrar.'
     if (!passwordRules(f.pwd).every((r) => r.ok)) next.pwd = 'Use 8 caracteres ou mais, com letra e número.'
     if (!f.terms) next.terms = 'Para continuar, aceite os termos de uso.'
     setErrors(next)
-    if (Object.keys(next).length) return
+    if (Object.keys(next).length) return focusFirstInvalid(form)
     setLoading(true)
-    setTimeout(() => navigate('/verificar-email'), 900)
+    later(() => navigate('/verificar-email', { state: { email: f.email } }), 900)
   }
 
   return (
@@ -43,11 +49,11 @@ export function Cadastro() {
           label={
             <>
               Li e aceito os{' '}
-              <Link to="/termos" className="underline underline-offset-4">
+              <Link to="/termos" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
                 termos de uso
               </Link>{' '}
               e a{' '}
-              <Link to="/privacidade" className="underline underline-offset-4">
+              <Link to="/privacidade" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
                 política de privacidade
               </Link>
               .

@@ -1,8 +1,14 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>aura-fit</title>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abrindo o Aura...</title>
 <script>
-  // GitHub Pages: devolve /<repo>/login para o index com ?p=/login
+  // GitHub Pages: devolve /<repo>/qualquer-caminho para o index com ?p=/qualquer-caminho
   var base = location.pathname.split('/').slice(0, 2).join('/') + '/'
   var rest = location.pathname.slice(base.length - 1)
   location.replace(base + '?p=' + encodeURIComponent(rest) + location.hash)
-</script></head><body></body></html>
+</script></head>
+<body style="font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0">
+<p>Abrindo o Aura...</p>
+<noscript><p>Para abrir o Aura, ative o JavaScript ou volte para a <a href="./">página inicial</a>.</p></noscript>
+</body></html>

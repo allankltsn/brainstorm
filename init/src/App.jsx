@@ -14,7 +14,8 @@ export function Landing() {
       (ev) => {
         const a = ev.target.closest?.('a,button')
         if (!a) return
-        const toLogin = a.getAttribute('href') === '#/login' || /^\s*come[cç]ar/i.test(a.textContent)
+        // Contrato explícito: data-aura-login. Os outros dois (href '#/login' e texto "Começar...") seguem por compatibilidade.
+        const toLogin = a.closest('[data-aura-login]') || a.getAttribute('href') === '#/login' || /^\s*come[cç]ar/i.test(a.textContent)
         if (!toLogin) return
         ev.preventDefault()
         ev.stopImmediatePropagation()
@@ -32,8 +33,8 @@ export function Prototype() {
   return <iframe title="aura-fit · protótipo" src={`${BASE}proto/#/login`} style={frame} />
 }
 
-// "/brand" → aura-brand (também usa HashRouter). index.html explícito: em desenvolvimento,
+// "/brand" → aura-brand, compilado em brand-app/ (também usa HashRouter). index.html explícito: em desenvolvimento,
 // o Vite não resolve a pasta public/brand/ sozinho e devolveria o próprio host.
 export function Brand() {
-  return <iframe title="aura-brand · protótipo" src={`${BASE}brand/index.html`} style={frame} />
+  return <iframe title="aura-brand · protótipo" src={`${BASE}brand-app/index.html`} style={frame} />
 }

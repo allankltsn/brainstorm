@@ -9,8 +9,8 @@ export const workoutVersions = [
 
 export type Guardian = { id: string; name: string; relation: string; email: string; main: boolean }
 export const guardians: Guardian[] = [
-  { id: 'g1', name: 'Sandra Lopes', relation: 'Mãe', email: 'sandra.lopes@exemplo.com.br', main: true },
-  { id: 'g2', name: 'Marcos Lopes', relation: 'Pai', email: 'marcos.lopes@exemplo.com.br', main: false },
+  { id: 'g1', name: 'Sandra Lopes', relation: 'Mãe', email: 'sandra.lopes@aura.example', main: true },
+  { id: 'g2', name: 'Marcos Lopes', relation: 'Pai', email: 'marcos.lopes@aura.example', main: false },
 ]
 
 export const accessProfiles = [
