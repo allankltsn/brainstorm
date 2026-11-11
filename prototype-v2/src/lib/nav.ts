@@ -33,6 +33,10 @@ const TITLES: Record<string, string> = {
   '/configuracoes': 'Configurações',
   '/design-system': 'Kit de interface',
   '/ia': 'Sugerir treino',
+  '/convidar-aluno': 'Convidar aluno',
+  '/planos': 'Planos',
+  '/assinatura': 'Assinatura',
+  '/avisos': 'Avisos',
 }
 
 export function currentNav(role: Role, path: string) {

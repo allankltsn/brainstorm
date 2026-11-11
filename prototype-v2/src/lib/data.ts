@@ -122,6 +122,19 @@ export const notifications = [
   { id: 'n3', title: 'Sua assinatura renova em 03/11', when: 'ontem', unread: false },
 ]
 
+export const todayWorkout = {
+  name: 'Treino A: Superior',
+  minutes: 45,
+  by: 'Carla Mendes',
+  exercises: [
+    { id: 'e1', name: 'Supino reto com halteres', detail: '3 séries · 10 a 12 repetições · 60 s de descanso' },
+    { id: 'e2', name: 'Remada curvada', detail: '3 séries · 10 repetições · 60 s de descanso' },
+    { id: 'e3', name: 'Desenvolvimento de ombros', detail: '3 séries · 12 repetições · 45 s de descanso' },
+    { id: 'e4', name: 'Rosca direta', detail: '2 séries · 12 repetições · 45 s de descanso' },
+    { id: 'e5', name: 'Prancha', detail: '3 séries · 30 segundos' },
+  ],
+}
+
 export const week: { d: string; state: 'feito' | 'descanso' | 'hoje' | 'livre' }[] = [
   { d: 'Seg', state: 'feito' },
   { d: 'Ter', state: 'descanso' },

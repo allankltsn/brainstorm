@@ -1,7 +1,6 @@
 import { Bell, ChevronsUpDown, ClipboardList, CreditCard, Dumbbell, LogOut, Moon, Palette, Plus, Search, Settings, Sparkles, Sun, UserPlus } from 'lucide-react'
 import { useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { toast } from 'sonner'
 import { AssistantWidget } from '@/components/assistant'
 import { CommandPalette } from '@/components/command-palette'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -102,7 +101,7 @@ function NewButton() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-60">
         <DropdownMenuLabel className="text-xs text-muted-foreground">O que você quer fazer?</DropdownMenuLabel>
-        <DropdownMenuItem onSelect={() => toast.success('Convite enviado', { description: 'Você será avisado quando a pessoa aceitar.' })}>
+        <DropdownMenuItem onSelect={go('/convidar-aluno')}>
           <UserPlus /> Convidar aluno
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={go('/treinos/novo')}>
@@ -111,7 +110,7 @@ function NewButton() {
         <DropdownMenuItem onSelect={go('/ia')}>
           <Sparkles /> Sugerir treino com IA
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={go('/acompanhamento?aba=questionarios')}>
+        <DropdownMenuItem onSelect={go('/acompanhamento/questionarios/enviar')}>
           <ClipboardList /> Enviar questionário
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -193,6 +192,7 @@ function Tip({ label, children }: { label: string; children: React.ReactNode }) 
 }
 
 function Notifications() {
+  const navigate = useNavigate()
   const unread = notifications.filter((n) => n.unread).length
   return (
     <DropdownMenu>
@@ -216,6 +216,10 @@ function Notifications() {
             </span>
           </DropdownMenuItem>
         ))}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onSelect={() => navigate('/avisos')} className="justify-center text-sm font-medium">
+          Ver todos os avisos
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

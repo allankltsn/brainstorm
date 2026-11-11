@@ -29,19 +29,31 @@ npm run dev
 - Entrar (`#/login`) e confirmar e-mail (`#/verificar-email`)
 - Início do personal, do aluno e do admin (`#/inicio`; troque o perfil no menu do usuário, no rodapé do menu lateral)
 - Alunos: lista com busca e filtros, e detalhe do aluno (`#/alunos`)
-- Programação semanal do aluno: um treino ou descanso por dia, na aba Programação do detalhe (`#/alunos/s01`)
 - Treinos: meus treinos, exercícios e importar planilha em abas (`#/treinos`)
 - Criar e editar treino: seções, adicionar exercício, séries, repetições, descanso e ordem (`#/treinos/novo`, `#/treinos/t1`)
 - Exercícios: biblioteca em cartões, detalhe e formulário de criar/editar (`#/treinos/exercicios/e01`, `#/treinos/exercicios/novo`)
-- Meu treino (perfil aluno): semana programada e treino de cada dia (`#/treino`)
-- Executar treino (perfil aluno): carga e repetições por série, descanso cronometrado e resumo ao finalizar (`#/treino/executar`)
 - Acompanhar: alertas, treinos feitos e questionários em abas (`#/acompanhamento`)
 - Mensagens (`#/mensagens`)
 - Sugerir treino com IA (`#/ia`)
 - Configurações: dados, aparência, avisos, assinatura, privacidade e IA (`#/configuracoes`)
+- Recuperar senha (`#/esqueci-senha`, `#/redefinir-senha`) e criar conta de personal (`#/cadastro`)
+- Convidar aluno (`#/convidar-aluno`), com vagas do plano e link copiável
+- Planos do personal: escolher, cupom e pagamento simulado (`#/planos`); cancelar assinatura (`#/assinatura/cancelar`)
+- Meu treino do aluno: execução exercício a exercício, descanso e esforço percebido (`#/treino`)
+- Avisos (`#/avisos`) e resposta de questionário (`#/acompanhamento/respostas/s01`)
+- Admin: usuários com bloqueio e convite (`#/usuarios`), planos e cupons (`#/planos` no perfil admin)
+- Aceitar convite (`#/convite`), selecionar perfil (`#/selecionar-perfil`), termos (`#/termos`) e privacidade (`#/privacidade`)
+- Sessão expirada (`#/sessao-expirada`) e manutenção (`#/manutencao`)
+- Pausar ou encerrar acompanhamento do aluno (`#/alunos/s01/vinculo`)
+- Detalhe do treino feito com retorno (`#/acompanhamento/treinos/x3`)
+- Enviar questionário e criar modelo (`#/acompanhamento/questionarios/enviar`, `.../modelo`)
+- Importar planilha com revisão (`#/treinos/importar`) e dados usados pela IA (`#/ia/dados`)
+- Admin: detalhe do usuário (`#/usuarios/u1`), permissões por perfil (`#/usuarios/permissoes`) e relatório de cupom (`#/planos/cupons/PRO20`)
+- Página não encontrada (qualquer rota inexistente)
 - Kit de interface: cores e componentes dos dois kits lado a lado (`#/design-system`)
 
-As telas ainda não migradas mostram um aviso de "ainda não migrada".
+Ainda faltam, do protótipo antigo: histórico de versões do treino, atribuir treino a aluno, visibilidade e personalização de exercício,
+responsáveis do aluno, excluir conta e exportar dados, e as variantes de erro de cada tela.
 
 ## Como o menu é organizado
 

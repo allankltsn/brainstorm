@@ -1,6 +1,6 @@
 import { CheckCircle2, Clock, MessageSquare, Send, TrendingDown, TriangleAlert } from 'lucide-react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
 import { SegmentedControl } from '@/components/affect/segmented-control'
@@ -8,6 +8,7 @@ import { PageHeader, Person, Pill } from '@/components/page'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Progress } from '@/components/ui/progress'
 import { students } from '@/lib/data'
+import { doneSessions } from '@/lib/tracking'
 import { useTab } from '@/lib/use-tab'
 
 const TABS = ['alertas', 'frequencia', 'feitos', 'questionarios'] as const
@@ -17,13 +18,6 @@ const ALERTS = [
   { id: 'a1', name: 'Marina Lopes', sid: 's01', text: 'Faltou 2 das últimas 4 sessões', when: 'há 2 dias' },
   { id: 'a2', name: 'Felipe Almeida', sid: 's02', text: 'Relatou dor no tornozelo no questionário', when: 'ontem' },
 ]
-const DONE = [
-  ['Carlos Nunes', 'Força base · Treino A', 'Hoje, 07:40', '52 min', 'Moderado'],
-  ['Beatriz Cunha', 'Treino A/B · Treino B', 'Hoje, 06:55', '47 min', 'Leve'],
-  ['Helena Matos', 'ABC · Treino C', 'Ontem, 19:10', '58 min', 'Intenso'],
-  ['Júlia Campos', 'ABC · Treino A', 'Ontem, 18:02', '44 min', 'Moderado'],
-  ['Larissa Prado', 'Treino A/B · Treino A', 'Ontem, 07:15', '50 min', 'Moderado'],
-] as const
 const FORMS = [
   { name: 'Marina Lopes', form: 'Rotina da semana', status: 'respondido', when: 'há 20 min' },
   { name: 'Felipe Almeida', form: 'Rotina da semana', status: 'respondido', when: 'ontem' },
@@ -109,7 +103,7 @@ export function Acompanhamento() {
         title="Acompanhar"
         description="O que pede sua atenção e como os alunos estão treinando."
         actions={
-          <Button icon={<Send />} onClick={() => toast.success('Questionário enviado')}>
+          <Button icon={<Send />} onClick={() => navigate('/acompanhamento/questionarios/enviar')}>
             Enviar questionário
           </Button>
         }
@@ -185,16 +179,18 @@ export function Acompanhamento() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {DONE.map((d) => (
-                  <TableRow key={d[0] + d[2]}>
+                {doneSessions.map((d) => (
+                  <TableRow key={d.id} className="cursor-pointer" onClick={() => navigate(`/acompanhamento/treinos/${d.id}`)}>
                     <TableCell className="py-3 pl-5">
-                      <Person name={d[0]} size="sm" />
+                      <Link to={`/acompanhamento/treinos/${d.id}`} className="rounded-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none" aria-label={`Ver treino de ${d.name}`}>
+                        <Person name={d.name} size="sm" />
+                      </Link>
                     </TableCell>
-                    <TableCell className="text-sm">{d[1]}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground">{d[2]}</TableCell>
-                    <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">{d[3]}</TableCell>
+                    <TableCell className="text-sm">{d.workout}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{d.when}</TableCell>
+                    <TableCell className="hidden text-sm text-muted-foreground sm:table-cell">{d.duration}</TableCell>
                     <TableCell className="hidden pr-5 sm:table-cell">
-                      <Pill tone={d[4] === 'Intenso' ? 'warning' : 'neutral'}>{d[4]}</Pill>
+                      <Pill tone={d.effort === 'Intenso' ? 'warning' : 'neutral'}>{d.effort}</Pill>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -214,7 +210,7 @@ export function Acompanhamento() {
                     <Pill tone="success" icon={<CheckCircle2 />}>
                       Respondido
                     </Pill>
-                    <Button size="sm" variant="secondary" onClick={() => toast(`Abrindo respostas de ${f.name.split(' ')[0]}`)}>
+                    <Button size="sm" variant="secondary" onClick={() => navigate(`/acompanhamento/respostas/${students.find((s) => s.name === f.name)?.id}`)}>
                       Ver respostas
                     </Button>
                   </>

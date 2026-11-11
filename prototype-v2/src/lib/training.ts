@@ -75,33 +75,3 @@ export const workouts: Workout[] = [
 ]
 
 export const countItems = (wk: Workout) => wk.sections.reduce((t, s) => t + s.items.length, 0)
-
-/* estimativa simples: 40 s por série mais o descanso */
-export const estimateMinutes = (items: WorkoutItem[]) => Math.round(items.reduce((t, i) => t + i.sets * (40 + i.rest), 0) / 60)
-export const workoutMinutes = (wk: Workout) => estimateMinutes(wk.sections.flatMap((s) => s.items))
-export const findWorkout = (id?: string | null) => workouts.find((x) => x.id === id)
-
-/* Programação semanal: um treino (ou descanso) por dia. "Hoje" é sexta, como no resto do protótipo. */
-export const DAYS = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'] as const
-export const TODAY_INDEX = 4
-export type WeekPlan = (string | null)[]
-
-const PLANS: Record<string, WeekPlan> = {
-  'Hipertrofia A/B': ['t1', 't2', null, 't1', 't2', null, null],
-  'Treino A/B': ['t1', null, 't2', null, 't1', 't2', null],
-  ABC: ['t1', 't2', null, 't3', 't1', null, null],
-  'Full body': ['t3', null, 't3', null, 't3', null, null],
-  'Condicionamento 3x': ['t3', null, 't3', null, 't3', null, null],
-  'Força base': ['t4', null, 't4', null, 't1', null, null],
-  'Adaptação 2x': [null, 't5', null, null, 't5', null, null],
-  Emagrecimento: ['t6', 't3', null, 't6', 't3', null, null],
-}
-const REST_WEEK: WeekPlan = [null, null, null, null, null, null, null]
-export const weekPlanFor = (plan: string | null): WeekPlan => [...((plan && PLANS[plan]) || REST_WEEK)]
-
-/* Aluno logado (Jorge): semana, o que já fez e a carga usada da última vez em cada exercício. */
-export const myWeek: WeekPlan = weekPlanFor('Força base')
-export const myDoneDays = [0, 2]
-const LAST_LOAD: Record<string, number> = { e01: 40, e02: 14, e03: 10, e04: 45, e05: 35, e06: 60, e07: 50, e08: 120, e09: 12, e10: 12, e11: 20, e12: 25 }
-export const lastLoad = (exerciseId: string): number | null => LAST_LOAD[exerciseId] ?? null
-export const firstReps = (reps: string) => Number(reps.match(/\d+/)?.[0] ?? 10)
