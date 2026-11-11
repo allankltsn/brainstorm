@@ -65,7 +65,7 @@ As capturas em `public/img/` vêm de `../_evidence/` (testes Cypress, 390×844):
 ## IA ilustrada e login
 
 - `src/sections/AiUses.tsx`: quatro SVGs animados (SMIL) dos usos da IA: dúvidas de treino, análise de vídeo do movimento, relatos de dor e exames, treino preenchido a partir de um documento.
-- Os botões de cadastro ("Começar grátis" e afins) levam para `https://aura.teotonio.xyz/login`.
+- Os botões de cadastro ("Começar grátis" e afins) levam para `https://allankltsn.github.io/brainstorm/login`.
 
 ## Fotos e referências de movimento
 

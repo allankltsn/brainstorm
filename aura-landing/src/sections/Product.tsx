@@ -325,7 +325,7 @@ export function Recursos() {
             treino com vídeo por exercício, white-label (logo e cores próprias), cadastro de equipamentos, anamnese e avaliação física com fotos de progresso. Dados de saúde e fotos só iriam à IA com o consentimento do aluno. Nenhum deles é compromisso de entrega.
           </p>
           <div className="mt-8">
-            <Btn href="https://aura.teotonio.xyz/login">Testar com meus alunos <ArrowRight size={18} /></Btn>
+            <Btn href="https://allankltsn.github.io/brainstorm/login">Testar com meus alunos <ArrowRight size={18} /></Btn>
           </div>
         </BlurFade>
       </Container>
@@ -373,7 +373,7 @@ export function ComoFunciona() {
         </ol>
         <BlurFade inView delay={0.2}>
           <div className="mt-14 flex flex-col items-center gap-3 text-center">
-            <Btn href="https://aura.teotonio.xyz/login">Criar minha conta grátis <ArrowRight size={18} /></Btn>
+            <Btn href="https://allankltsn.github.io/brainstorm/login">Criar minha conta grátis <ArrowRight size={18} /></Btn>
             <p className="text-sm text-faint">Leva minutos para configurar o primeiro aluno</p>
           </div>
         </BlurFade>

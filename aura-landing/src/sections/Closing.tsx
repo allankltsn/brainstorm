@@ -61,7 +61,7 @@ export function Depoimentos() {
         </div>
       </Container>
       <Container className="mt-10">
-        <Btn href="https://aura.teotonio.xyz/login">Quero ganhar tempo <ArrowRight size={18} /></Btn>
+        <Btn href="https://allankltsn.github.io/brainstorm/login">Quero ganhar tempo <ArrowRight size={18} /></Btn>
       </Container>
     </section>
   )
@@ -152,7 +152,7 @@ export function Planos() {
                         </div>
                       ))}
                     </dl>
-                    <Btn href="https://aura.teotonio.xyz/login" variant={pl.pro ? "primary" : "ghost"} className="mt-7 w-full">{pl.cta}</Btn>
+                    <Btn href="https://allankltsn.github.io/brainstorm/login" variant={pl.pro ? "primary" : "ghost"} className="mt-7 w-full">{pl.cta}</Btn>
                   </motion.article>
                 </BlurFade>
               </li>
@@ -292,7 +292,7 @@ export function CtaFinal() {
                 strength={0.3}
                 radius={110}
                 className="bg-ink text-brand shadow-[0_20px_60px_-10px_rgb(0_0_0/.6)] hover:bg-white"
-                onClick={() => { location.href = "https://aura.teotonio.xyz/login" }}
+                onClick={() => { location.href = "https://allankltsn.github.io/brainstorm/login" }}
               >
                 Começar grátis <ArrowRight size={20} />
               </MagneticButton>

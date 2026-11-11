@@ -181,7 +181,7 @@ export function Roi() {
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Btn href="https://aura.teotonio.xyz/login">Começar grátis <ArrowRight size={18} /></Btn>
+                  <Btn href="https://allankltsn.github.io/brainstorm/login">Começar grátis <ArrowRight size={18} /></Btn>
                   <Btn href="#planos" variant="ghost">Ver os planos</Btn>
                 </div>
               </div>
