@@ -9,7 +9,8 @@ import { ExerciseThumb } from '@/components/exercise-thumb'
 import { PageHeader, Pill, Section } from '@/components/page'
 import { Input } from '@/components/ui/input'
 import { Progress } from '@/components/ui/progress'
-import { firstName, sessions } from '@/lib/data'
+import { TrendChart } from '@/components/charts/charts'
+import { firstName, loadHistory, sessions } from '@/lib/data'
 import { countItems, DAYS, findExercise, findWorkout, firstReps, lastLoad, myDoneDays, myWeek, TODAY_INDEX, workoutMinutes, type WorkoutItem } from '@/lib/training'
 import { cn } from '@/lib/utils'
 
@@ -121,6 +122,19 @@ export function MeuTreino() {
           </div>
         )}
       </section>
+
+      <Section
+        title="Sua evolução"
+        description="Carga no supino reto, em kg"
+        className="mt-6"
+        action={
+          <Pill tone="success" icon={<TrendingUp />}>
+            +{loadHistory[loadHistory.length - 1].kg - loadHistory[0].kg} kg em 5 semanas
+          </Pill>
+        }
+      >
+        <TrendChart data={loadHistory} xKey="data" series={[{ key: 'kg', label: 'Supino reto', color: 'var(--chart-1)' }]} format={(v) => `${v.toLocaleString('pt-BR')} kg`} yDomain={['dataMin - 5', 'dataMax + 5'] as unknown as ['auto', 'auto']} height="h-48" />
+      </Section>
 
       <Section title="Últimos treinos" className="mt-6">
         <ul className="divide-y">

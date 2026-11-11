@@ -35,7 +35,7 @@ npm run dev
 - Exercícios: biblioteca em cartões, detalhe e formulário de criar/editar (`#/treinos/exercicios/e01`, `#/treinos/exercicios/novo`)
 - Meu treino (perfil aluno): semana programada e treino de cada dia (`#/treino`)
 - Executar treino (perfil aluno): carga e repetições por série, descanso cronometrado e resumo ao finalizar (`#/treino/executar`)
-- Acompanhar: alertas, treinos feitos e questionários em abas (`#/acompanhamento`)
+- Acompanhar: alertas, frequência, relatórios, treinos feitos e questionários em abas (`#/acompanhamento`)
 - Mensagens (`#/mensagens`)
 - Sugerir treino com IA (`#/ia`)
 - Configurações: dados, aparência, avisos, assinatura, privacidade e IA (`#/configuracoes`)
@@ -67,6 +67,16 @@ Botão flutuante com a nuvem do affectUI (`Glow Cloud`), em `src/components/assi
   Com ele ligado, a Aura ouve (Web Speech API, pt-BR) e responde em voz alta. Fechar o chat desliga o microfone.
 - As respostas são de exemplo (função `reply`); em produção, troque pela chamada ao agente.
 - Reconhecimento de voz depende do navegador (Chrome e Edge têm; Firefox não). Sem suporte, o chat segue por texto.
+
+## Gráficos
+
+Estilo único em `src/components/charts/charts.tsx` (recharts por cima do `ChartContainer` do shadcn). Use sempre estes, não recharts direto:
+
+- `BarsChart` (barras), `TrendChart` (área com degradê + linha de comparação), `Sparkline` (minigráfico em cartão de número) e `HBars` (barras horizontais, ranking).
+- **Mouse por cima**: o item sob o ponteiro fica forte e os outros esmaecem; uma dica mostra o valor.
+- **Ao aparecer na tela**: o gráfico só monta, e anima ~0,9 s, quando entra na janela (`in-view.tsx`). Com "reduzir movimento" no sistema, aparece parado.
+- Só cores `--chart-*`, grade horizontal pontilhada, eixos sem traço. Os números grandes usam o `NumberTicker`.
+- Onde aparecem: Início (barras e minigráficos), Acompanhar (aba Relatórios e Frequência) e Meu treino (evolução da carga).
 
 ## Tema
 

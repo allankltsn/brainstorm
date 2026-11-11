@@ -4,13 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
 import { SegmentedControl } from '@/components/affect/segmented-control'
-import { PageHeader, Person, Pill } from '@/components/page'
+import { PageHeader, Person, Pill, Section } from '@/components/page'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Progress } from '@/components/ui/progress'
-import { students } from '@/lib/data'
+import { BarsChart, HBars, TrendChart } from '@/components/charts/charts'
+import { NumberTicker } from '@/components/affect/number-ticker'
+import { adherenceByPlan, avgByWeekday, students, trend8 } from '@/lib/data'
 import { useTab } from '@/lib/use-tab'
 
-const TABS = ['alertas', 'frequencia', 'feitos', 'questionarios'] as const
+const TABS = ['alertas', 'frequencia', 'relatorios', 'feitos', 'questionarios'] as const
 type Tab = (typeof TABS)[number]
 
 const ALERTS = [
@@ -30,6 +31,60 @@ const FORMS = [
   { name: 'Carlos Nunes', form: 'Rotina da semana', status: 'pendente', when: 'enviado há 3 dias' },
   { name: 'Paulo Ramos', form: 'Primeira avaliação', status: 'pendente', when: 'enviado há 5 dias' },
 ] as const
+
+/* Relatórios: números do período, tendência contra o período anterior, dias fortes e adesão por plano. */
+function Relatorios() {
+  const [weeks, setWeeks] = useState<'4' | '8'>('8')
+  const data = trend8.slice(-Number(weeks))
+  const total = data.reduce((t, d) => t + d.feitos, 0)
+  const before = data.reduce((t, d) => t + d.anterior, 0)
+  const growth = Math.round(((total - before) / before) * 100)
+  const adherence = Math.round(adherenceByPlan.reduce((t, p) => t + p.pct * p.students, 0) / adherenceByPlan.reduce((t, p) => t + p.students, 0))
+  return (
+    <>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-muted-foreground">Passe o mouse sobre os gráficos para ver os valores de cada ponto.</p>
+        <SegmentedControl aria-label="Período" size="sm" value={weeks} onChange={setWeeks} options={[{ value: '4', label: '4 semanas' }, { value: '8', label: '8 semanas' }]} />
+      </div>
+      <dl className="grid gap-4 sm:grid-cols-3">
+        {[
+          ['Treinos concluídos', <NumberTicker key="t" value={total} />, <Pill key="p" tone={growth >= 0 ? 'success' : 'warning'}>{growth >= 0 ? '+' : ''}{growth}% sobre o período anterior</Pill>],
+          ['Adesão média', <NumberTicker key="a" value={adherence} format={{ style: 'unit', unit: 'percent' }} />, <span key="s">dos treinos programados</span>],
+          ['Duração média', <NumberTicker key="d" value={46} format={{ style: 'unit', unit: 'minute', unitDisplay: 'narrow' }} />, <span key="s">por sessão</span>],
+        ].map(([k, v, f]) => (
+          <div key={String(k)} className="rounded-xl border bg-card p-4 sm:p-5">
+            <dt className="text-sm text-muted-foreground">{k}</dt>
+            <dd className="mt-2 text-3xl font-semibold tracking-tight tabular-nums">{v}</dd>
+            <dd className="mt-3 text-xs text-muted-foreground">{f}</dd>
+          </div>
+        ))}
+      </dl>
+      <div className="mt-6 grid gap-6 lg:grid-cols-5">
+        <Section title="Treinos por semana" description="Semana atual contra a mesma janela do período anterior" className="min-w-0 lg:col-span-3">
+          <TrendChart
+            key={weeks}
+            data={data}
+            xKey="semana"
+            series={[
+              { key: 'feitos', label: 'Este período', color: 'var(--chart-1)' },
+              { key: 'anterior', label: 'Período anterior', color: 'var(--chart-4)', dashed: true },
+            ]}
+          />
+          <ul className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground">
+            <li className="inline-flex items-center gap-1.5"><span className="h-0.5 w-4 rounded bg-[var(--chart-1)]" /> Este período</li>
+            <li className="inline-flex items-center gap-1.5"><span className="h-0.5 w-4 rounded border-t-2 border-dashed border-[var(--chart-4)]" /> Período anterior</li>
+          </ul>
+        </Section>
+        <Section title="Dias mais fortes" description="Média de treinos por dia da semana" className="min-w-0 lg:col-span-2">
+          <BarsChart data={avgByWeekday} xKey="dia" yKey="treinos" label="Média" highlight={2} format={(v) => `${v.toLocaleString('pt-BR')} treinos`} />
+        </Section>
+      </div>
+      <Section title="Adesão por plano" description="Treinos feitos sobre os programados, nas últimas 4 semanas" className="mt-6">
+        <HBars rows={adherenceByPlan.map((p) => ({ id: p.plan, label: p.plan, sub: `${p.students} ${p.students === 1 ? 'aluno' : 'alunos'}`, value: p.pct, max: 100 }))} />
+      </Section>
+    </>
+  )
+}
 
 /* Frequência: quem mais treinou no período e quem está caindo, para agir antes de o aluno parar. */
 function Frequencia() {
@@ -62,21 +117,16 @@ function Frequencia() {
           ]}
         />
       </div>
-      <ol className="overflow-hidden rounded-xl border bg-card">
-        {rows.map((r, i) => {
-          const pct = Math.round((r.done / r.planned) * 100)
-          return (
-            <li key={r.s.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-4 py-3 last:border-b-0 sm:px-5">
-              <span className="w-5 text-sm font-medium text-muted-foreground tabular-nums">{i + 1}</span>
-              <div className="min-w-0 flex-1 basis-40">
-                <Person name={r.s.name} sub={r.s.plan} size="sm" />
-              </div>
-              <div className="flex min-w-40 flex-1 items-center gap-3">
-                <Progress value={pct} className="h-2" aria-label={`${r.done} de ${r.planned} treinos`} />
-                <span className="w-20 shrink-0 text-right text-sm tabular-nums">
-                  {r.done} de {r.planned}
-                </span>
-              </div>
+      <div className="rounded-xl border bg-card p-2 sm:p-3">
+        <HBars
+          key={period}
+          format={(v) => `${v}%`}
+          rows={rows.map((r, i) => ({
+            id: r.s.id,
+            label: <Person name={r.s.name} sub={`${r.done} de ${r.planned} treinos · ${r.s.plan}`} size="sm" />,
+            value: Math.round((r.done / r.planned) * 100),
+            max: 100,
+            right: (
               <div className="flex w-full items-center justify-end gap-2 sm:w-44">
                 {r.falling ? (
                   <>
@@ -91,10 +141,10 @@ function Frequencia() {
                   i < 3 && <Pill tone="success">Em alta</Pill>
                 )}
               </div>
-            </li>
-          )
-        })}
-      </ol>
+            ),
+          }))}
+        />
+      </div>
     </>
   )
 }
@@ -124,6 +174,7 @@ export function Acompanhamento() {
         options={[
           { value: 'alertas', label: 'Alertas', count: alerts.length, controls: 'painel-acomp' },
           { value: 'frequencia', label: 'Frequência', controls: 'painel-acomp' },
+          { value: 'relatorios', label: 'Relatórios', controls: 'painel-acomp' },
           { value: 'feitos', label: 'Treinos feitos', controls: 'painel-acomp' },
           { value: 'questionarios', label: 'Questionários', controls: 'painel-acomp' },
         ]}
@@ -172,6 +223,7 @@ export function Acompanhamento() {
             </ul>
           ))}
         {tab === 'frequencia' && <Frequencia />}
+        {tab === 'relatorios' && <Relatorios />}
         {tab === 'feitos' && (
           <div className="overflow-hidden rounded-xl border bg-card">
             <Table>

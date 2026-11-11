@@ -1,7 +1,6 @@
 import { CalendarDays, Check, MessageSquare, Monitor, Moon, Play, Plus, Timer, User, Users } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
 import { Checkbox } from '@/components/affect/checkbox'
@@ -10,13 +9,14 @@ import { ProgressTracker } from '@/components/affect/progress-tracker'
 import { TextArea } from '@/components/affect/text-area'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { PageHeader, Person, Pill, Section } from '@/components/page'
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
+import { BarsChart, Sparkline } from '@/components/charts/charts'
 import { Progress } from '@/components/ui/progress'
 import {
   activeStudents,
   agendaToday,
   firstName,
   revenueMonth,
+  sparks,
   sessions,
   STUDENT_LIMIT,
   students,
@@ -28,17 +28,17 @@ import { useRole } from '@/lib/role'
 import { findExercise, findWorkout, myWeek, TODAY_INDEX, workoutMinutes } from '@/lib/training'
 import { cn } from '@/lib/utils'
 
-function Kpi({ label, children, foot }: { label: string; children: React.ReactNode; foot?: React.ReactNode }) {
+function Kpi({ label, children, foot, spark }: { label: string; children: React.ReactNode; foot?: React.ReactNode; spark?: React.ReactNode }) {
   return (
     <div className="min-w-0 rounded-xl border bg-card p-4 sm:p-5">
       <p className="text-sm text-muted-foreground">{label}</p>
       <p className="mt-2 text-2xl sm:text-3xl font-semibold tracking-tight tabular-nums">{children}</p>
+      {spark && <div className="mt-2 -mb-1">{spark}</div>}
       {foot && <div className="mt-3 text-xs text-muted-foreground">{foot}</div>}
     </div>
   )
 }
 
-const chartConfig = { treinos: { label: 'Treinos', color: 'var(--chart-1)' } } satisfies ChartConfig
 
 type Pending = {
   id: string
@@ -176,7 +176,7 @@ function HomePersonal() {
         >
           <NumberTicker value={active} /> <span className="text-base font-normal text-muted-foreground">de {STUDENT_LIMIT}</span>
         </Kpi>
-        <Kpi label="Treinos na semana" foot="6 a mais que na semana passada">
+        <Kpi label="Treinos na semana" foot="6 a mais que na semana passada" spark={<Sparkline data={sparks.treinos} label="Treinos" />}>
           <NumberTicker value={28} />
         </Kpi>
         <Kpi
@@ -189,21 +189,14 @@ function HomePersonal() {
         >
           <NumberTicker value={late} />
         </Kpi>
-        <Kpi label="Receita de outubro" foot="Exemplo. O financeiro chega em breve.">
+        <Kpi label="Receita de outubro" foot="Exemplo. O financeiro chega em breve." spark={<Sparkline data={sparks.receita} label="Receita" format={(v) => `R$ ${v.toLocaleString('pt-BR')}`} />}>
           <NumberTicker value={revenueMonth} locale="pt-BR" format={{ style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }} />
         </Kpi>
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <Section title="Treinos concluídos" description="Últimos 7 dias, todos os alunos" className="min-w-0 lg:col-span-2">
-          <ChartContainer config={chartConfig} className="h-52 w-full">
-            <BarChart data={workoutsWeek} margin={{ top: 8, left: 0, right: 0 }}>
-              <CartesianGrid vertical={false} />
-              <XAxis dataKey="dia" tickLine={false} axisLine={false} tickMargin={8} />
-              <ChartTooltip cursor={false} content={<ChartTooltipContent hideIndicator />} />
-              <Bar dataKey="treinos" fill="var(--color-treinos)" radius={6} maxBarSize={44} />
-            </BarChart>
-          </ChartContainer>
+          <BarsChart data={workoutsWeek} xKey="dia" yKey="treinos" label="Treinos" height="h-52" format={(v) => `${v} ${v === 1 ? 'treino' : 'treinos'}`} />
         </Section>
         <div className="grid min-w-0 grid-cols-1 content-start gap-6">
           <ProgressTracker

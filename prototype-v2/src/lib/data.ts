@@ -132,3 +132,45 @@ export const week: { d: string; state: 'feito' | 'descanso' | 'hoje' | 'livre' }
   { d: 'Sáb', state: 'livre' },
   { d: 'Dom', state: 'livre' },
 ]
+
+/* Séries fictícias para gráficos e relatórios. */
+export const trend8 = [
+  { semana: '31/08', feitos: 31, anterior: 27 },
+  { semana: '07/09', feitos: 34, anterior: 29 },
+  { semana: '14/09', feitos: 33, anterior: 31 },
+  { semana: '21/09', feitos: 38, anterior: 30 },
+  { semana: '28/09', feitos: 36, anterior: 34 },
+  { semana: '05/10', feitos: 41, anterior: 33 },
+  { semana: '12/10', feitos: 39, anterior: 36 },
+  { semana: '19/10', feitos: 46, anterior: 38 },
+]
+export const avgByWeekday = [
+  { dia: 'Seg', treinos: 6.2 },
+  { dia: 'Ter', treinos: 5.1 },
+  { dia: 'Qua', treinos: 6.8 },
+  { dia: 'Qui', treinos: 4.6 },
+  { dia: 'Sex', treinos: 3.9 },
+  { dia: 'Sáb', treinos: 2.4 },
+  { dia: 'Dom', treinos: 1.1 },
+]
+export const adherenceByPlan = [
+  { plan: 'Hipertrofia A/B', pct: 88, students: 5 },
+  { plan: 'Força base', pct: 81, students: 4 },
+  { plan: 'Full body', pct: 74, students: 6 },
+  { plan: 'Condicionamento 3x', pct: 67, students: 3 },
+  { plan: 'Adaptação 2x', pct: 52, students: 2 },
+]
+export const sparks = {
+  alunos: [22, 23, 23, 25, 26, 27, 28],
+  treinos: [18, 22, 25, 21, 27, 24, 28],
+  semTreinar: [2, 3, 2, 4, 3, 4, 4],
+  receita: [3200, 3400, 3350, 3700, 3900, 4100, 4250],
+}
+export const loadHistory = [
+  { data: '05/09', kg: 30 },
+  { data: '12/09', kg: 32.5 },
+  { data: '19/09', kg: 32.5 },
+  { data: '26/09', kg: 35 },
+  { data: '03/10', kg: 37.5 },
+  { data: '09/10', kg: 40 },
+]
