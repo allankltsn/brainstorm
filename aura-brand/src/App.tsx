@@ -10,6 +10,7 @@ import { Conteudo } from '@/pages/conteudo'
 import { Inicio } from '@/pages/inicio'
 import { Leads } from '@/pages/leads'
 import { Marca } from '@/pages/marca'
+import { Mensagens } from '@/pages/mensagens'
 import { Placeholder } from '@/pages/placeholder'
 
 /* HashRouter: o build é estático e abre em qualquer hospedagem, sem configurar rotas no servidor. */
@@ -34,6 +35,7 @@ export default function App() {
                 <Route path="/marca" element={<Marca />} />
                 <Route path="/conteudo" element={<Conteudo />} />
                 <Route path="/leads" element={<Leads />} />
+                <Route path="/mensagens" element={<Mensagens />} />
                 <Route path="*" element={<Placeholder />} />
               </Route>
             </Routes>
