@@ -5,7 +5,7 @@ Substitui visualmente o protótipo em `../prototipo-landing` (HTML/CSS/JS puro),
 (`conteudo.md`) e a marca: paleta (`#141414` → `#f5f5f5`, vermelho `#b1111b` / `#d0202b` / `#ff6f78`),
 tipografia Inter e o logo anel + ponto.
 
-Status: DEMONSTRATIVO. Preços, limites, números e depoimentos seguem marcados com `[MOCK]` / `[a confirmar]`.
+Preços, limites, números e depoimentos ainda são de exemplo; as marcações `[MOCK]` / `[a confirmar]` foram retiradas da página a pedido.
 
 ## Rodar
 
@@ -65,7 +65,7 @@ As capturas em `public/img/` vêm de `../_evidence/` (testes Cypress, 390×844):
 ## IA ilustrada e login
 
 - `src/sections/AiUses.tsx`: quatro SVGs animados (SMIL) dos usos da IA: dúvidas de treino, análise de vídeo do movimento, relatos de dor e exames, treino preenchido a partir de um documento.
-- `src/sections/Login.tsx`: tela "Entrar" em `#/login`, para onde vão os botões "Começar grátis" do topo e do hero. É demonstração: o formulário não envia nada. Quando o app estiver no ar, aponte esses botões para a URL real.
+- Os botões de cadastro ("Começar grátis" e afins) levam para `https://aura.teotonio.xyz/login`.
 
 ## Fotos e referências de movimento
 

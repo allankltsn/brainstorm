@@ -61,7 +61,7 @@ export function Depoimentos() {
         </div>
       </Container>
       <Container className="mt-10">
-        <Btn href="#cta-final" title="Cadastro em breve">Quero ganhar tempo <ArrowRight size={18} /></Btn>
+        <Btn href="https://aura.teotonio.xyz/login">Quero ganhar tempo <ArrowRight size={18} /></Btn>
       </Container>
     </section>
   )
@@ -76,8 +76,8 @@ const periodos: { k: Periodo; l: string; suf: string; meses: number }[] = [
 ]
 const planos = [
   { n: "Starter", f: "Para começar com poucos alunos, sem custo.", p: { mensal: 0, trimestral: 0, anual: 0 }, itens: [["Alunos", "Até 5"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "Não inclui"], ["Suporte", "Central de ajuda"]], cta: "Começar grátis", pro: false },
-  { n: "Pro", f: "Para personais em crescimento.", p: { mensal: 49.9, trimestral: 134.7, anual: 479 }, itens: [["Alunos", "Até 30"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "50 por mês"], ["Suporte", "E-mail"]], cta: "Quero o Pro (em breve)", pro: true },
-  { n: "Premium", f: "Sem limite de alunos e com IA ampla.", p: { mensal: 99.9, trimestral: 269.7, anual: 959 }, itens: [["Alunos", "Ilimitados"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "IA ampla (uso justo)"], ["Suporte", "Prioritário"]], cta: "Quero o Premium (em breve)", pro: false },
+  { n: "Pro", f: "Para personais em crescimento.", p: { mensal: 49.9, trimestral: 134.7, anual: 479 }, itens: [["Alunos", "Até 30"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "50 por mês"], ["Suporte", "E-mail"]], cta: "Quero o Pro", pro: true },
+  { n: "Premium", f: "Sem limite de alunos e com IA ampla.", p: { mensal: 99.9, trimestral: 269.7, anual: 959 }, itens: [["Alunos", "Ilimitados"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "IA ampla (uso justo)"], ["Suporte", "Prioritário"]], cta: "Quero o Premium", pro: false },
 ]
 const money = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
@@ -152,7 +152,7 @@ export function Planos() {
                         </div>
                       ))}
                     </dl>
-                    <Btn href="#cta-final" variant={pl.pro ? "primary" : "ghost"} className="mt-7 w-full" title="Cadastro e contratação em breve">{pl.cta}</Btn>
+                    <Btn href="https://aura.teotonio.xyz/login" variant={pl.pro ? "primary" : "ghost"} className="mt-7 w-full">{pl.cta}</Btn>
                   </motion.article>
                 </BlurFade>
               </li>
