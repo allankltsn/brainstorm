@@ -211,7 +211,7 @@ const beneficios = [
   { il: <IlAval />, t: "Você decide, sempre", d: "A IA sugere e organiza. Nada chega ao aluno sem o seu aval, e a responsabilidade profissional continua sua." },
   { il: <IlSequencia />, t: "Aluno mais perto", d: "O aluno vê o treino do dia e a própria sequência. Quando o ritmo cai, você fica sabendo antes do cancelamento." },
   { il: <IlCobranca />, t: "Cobrança sem desgaste", d: "Lembrete e link de pagamento saem sozinhos. Você para de cobrar por mensagem e preserva a relação." },
-  { il: <IlCamadas />, t: "Cresce com a sua carteira", d: "Comece no Starter sem custo [MOCK] e mude de plano quando tiver mais alunos. Sem cartão para começar [MOCK]." },
+  { il: <IlCamadas />, t: "Cresce com a sua carteira", d: "Comece no Starter sem custo e mude de plano quando tiver mais alunos. Sem cartão para começar." },
 ]
 
 export function Porque() {

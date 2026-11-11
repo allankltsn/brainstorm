@@ -203,7 +203,7 @@ export function Demo() {
           id="h-telas"
           eyebrow="Experimente"
           title={<>Clique e veja o treino <span className="text-grad">nascer e chegar ao aluno.</span></>}
-          lead="Capturas reais do app em desenvolvimento, com dados de exemplo [MOCK]. Passe o mouse pelas áreas marcadas e clique nos pontos vermelhos para seguir o fluxo."
+          lead="Capturas reais do app. Passe o mouse pelas áreas marcadas e clique nos pontos vermelhos para seguir o fluxo."
         />
 
         <div className="grid items-center gap-12 lg:grid-cols-[1fr_1fr]">
@@ -302,7 +302,7 @@ export function Demo() {
               </div>
             </motion.div>
             <p className="absolute -bottom-2 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap text-xs text-faint">
-              <MousePointerClick size={14} /> Tela {idx + 1} de {flow.screens.length} · demonstração, nada é gravado
+              <MousePointerClick size={14} /> Tela {idx + 1} de {flow.screens.length}
             </p>
           </div>
         </div>
