@@ -7,7 +7,7 @@ Atualizado em 11/11/2026, conferido no código do `prototype-v2`.
 Todas as telas do plano P0 a P2 existem no protótipo. O que resta é publicar a última rodada na `main`, fechar seis ajustes pequenos e construir o backend, que não existe para nenhuma tela.
 
 - **Na `main` (commit `05af13b`):** as telas das rodadas anteriores, incluindo evolução do aluno, check-in, linha do tempo, cobranças, créditos de IA, suporte, primeiros passos, aniversários e frase do dia.
-- **Na branch `prototipo-landing` (commit `b0b7ee0`), ainda não publicado:** modelos prontos, restaurar do modelo, retirar liberações, acesso negado por perfil, entradas de "em breve" e estados de carregando, erro, vazio e limite nas listas antigas.
+- **Na branch `prototipo-landing` (commit `a96f4d4`), ainda não publicado:** modelos prontos, restaurar do modelo, retirar liberações, acesso negado por perfil, entradas de "em breve" e estados de carregando, erro, vazio e limite nas listas antigas.
 
 A versão anterior deste mapa listava oito telas como faltando. Estava errada: ela se baseou num relatório feito antes de essas telas entrarem.
 
