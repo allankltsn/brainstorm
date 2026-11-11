@@ -39,4 +39,4 @@ Planos e assinatura (Stripe), cupons, fila "Precisa de você", chat e notificaç
 Treino, alunos, exercícios, recrutamento e "Pensamento do dia".
 
 ## Próximo passo
-Montar o app em `aura-brand/` a partir do kit de `prototype-v2` (shell, tokens, componentes affect/lightswind), trocando o vermelho pelo roxo e começando pelo brand kit.
+O app em `aura-brand/` já tem a base (shell, tokens em roxo, kits) e as telas Início e Brand kit, com dados fictícios. Para rodar: `npm ci && npm run dev`. Próxima tela: gerador de conteúdo, com a fila de aprovação.
