@@ -15,5 +15,6 @@ export function currentNav(path: string) {
   return NAV.find((i) => path === i.to || path.startsWith(i.to + '/'))
 }
 export function pageTitle(path: string) {
+  if (path.startsWith('/configuracoes')) return 'Configurações'
   return currentNav(path)?.label ?? 'aura-brand'
 }

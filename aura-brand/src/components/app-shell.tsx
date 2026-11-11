@@ -1,4 +1,4 @@
-import { Bell, ChevronsUpDown, FileText, LogOut, Moon, Palette, Plus, Settings, Sparkles, Sun } from 'lucide-react'
+import { Bell, ChevronsUpDown, CreditCard, FileText, LogOut, Moon, Palette, Plus, Settings, Sparkles, Sun } from 'lucide-react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -147,6 +147,9 @@ function UserMenu() {
         <DropdownMenuGroup>
           <DropdownMenuItem onSelect={() => navigate('/configuracoes')}>
             <Settings /> Configurações
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => navigate('/configuracoes?aba=plano')}>
+            <CreditCard /> Plano e créditos
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

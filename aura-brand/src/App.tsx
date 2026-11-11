@@ -6,6 +6,7 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import { ContentProvider } from '@/lib/content'
 import { CrmProvider } from '@/lib/crm'
 import { ThemeProvider } from '@/lib/theme'
+import { Configuracoes } from '@/pages/configuracoes'
 import { Conteudo } from '@/pages/conteudo'
 import { Inicio } from '@/pages/inicio'
 import { Leads } from '@/pages/leads'
@@ -36,6 +37,7 @@ export default function App() {
                 <Route path="/conteudo" element={<Conteudo />} />
                 <Route path="/leads" element={<Leads />} />
                 <Route path="/mensagens" element={<Mensagens />} />
+                <Route path="/configuracoes" element={<Configuracoes />} />
                 <Route path="*" element={<Placeholder />} />
               </Route>
             </Routes>

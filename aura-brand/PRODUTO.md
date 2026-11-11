@@ -38,5 +38,17 @@ Planos e assinatura (Stripe), cupons, fila "Precisa de você", chat e notificaç
 ## Fora do escopo
 Treino, alunos, exercícios, recrutamento e "Pensamento do dia".
 
+## Estado do protótipo
+O app em `aura-brand/` tem todas as telas do MVP, com dados fictícios e sem servidor. Para rodar: `npm ci && npm run dev`.
+
+| Tela | O que tem |
+|---|---|
+| Início | KPIs, fila "Precisa de você", leads dos últimos 7 dias, progresso do brand kit, créditos |
+| Marca | Brand kit: identidade, paleta, tipografia, logo e tom de voz |
+| Conteúdo | Gerador (simulado), fila de aprovação, ajustes e agendamento |
+| Leads | Funil por etapa, formulários de captação, consentimento por lead |
+| Mensagens | Caixa de entrada unificada e campanhas (salvas como rascunho) |
+| Configurações | Conta, avisos, plano, cupom e privacidade (LGPD) |
+
 ## Próximo passo
-O app em `aura-brand/` já tem a base (shell, tokens em roxo, kits) e as telas Início, Brand kit e Conteúdo, com dados fictícios. Para rodar: `npm ci && npm run dev`. Próxima tela: captação de leads (formulários), seguida do CRM.
+Ligar um backend: login, gravação dos dados, IA real no gerador e nas respostas, publicação nas redes, envio de campanhas e cobrança (Stripe).
