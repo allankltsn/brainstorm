@@ -1,7 +1,6 @@
 import { CalendarDays, Check, ChevronRight, ListChecks, MessageSquare, Monitor, Moon, Play, Plus, Timer, User, Users } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
 import { Checkbox } from '@/components/affect/checkbox'
@@ -12,7 +11,9 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Birthdays } from '@/components/birthdays'
 import { DailyQuote } from '@/components/daily-quote'
 import { PageHeader, Person, Pill, Section } from '@/components/page'
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
+import { BarsChart } from '@/components/charts/bars-chart'
+import { ChartCard } from '@/components/charts/chart-card'
+import { MiniBars } from '@/components/charts/mini-bars'
 import { Progress } from '@/components/ui/progress'
 import {
   activeStudents,
@@ -28,20 +29,25 @@ import {
   workoutsWeek,
 } from '@/lib/data'
 import { studentOnboarding } from '@/lib/engagement'
+import { homeSparks } from '@/lib/reports'
 import { useRole } from '@/lib/role'
 import { cn } from '@/lib/utils'
 
-function Kpi({ label, children, foot }: { label: string; children: React.ReactNode; foot?: React.ReactNode }) {
+function Kpi({ label, children, foot, spark }: { label: string; children: React.ReactNode; foot?: React.ReactNode; spark?: React.ReactNode }) {
   return (
     <div className="min-w-0 rounded-xl border bg-card p-4 sm:p-5">
       <p className="text-sm text-muted-foreground">{label}</p>
-      <p className="mt-2 text-2xl sm:text-3xl font-semibold tracking-tight tabular-nums">{children}</p>
+      <div className="mt-2 flex items-end justify-between gap-3">
+        <p className="text-2xl sm:text-3xl font-semibold tracking-tight tabular-nums">{children}</p>
+        {spark}
+      </div>
       {foot && <div className="mt-3 text-xs text-muted-foreground">{foot}</div>}
     </div>
   )
 }
 
-const chartConfig = { treinos: { label: 'Treinos', color: 'var(--chart-1)' } } satisfies ChartConfig
+const WEEKDAY: Record<string, string> = { Seg: 'Segunda-feira', Ter: 'Terça-feira', Qua: 'Quarta-feira', Qui: 'Quinta-feira', Sex: 'Sexta-feira', Sáb: 'Sábado', Dom: 'Domingo' }
+const brl0 = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
 
 type Pending = {
   id: string
@@ -179,7 +185,7 @@ function HomePersonal() {
         >
           <NumberTicker value={active} /> <span className="text-base font-normal text-muted-foreground">de {STUDENT_LIMIT}</span>
         </Kpi>
-        <Kpi label="Treinos na semana" foot="6 a mais que na semana passada">
+        <Kpi label="Treinos na semana" foot="6 a mais que na semana passada" spark={<MiniBars data={homeSparks.treinos} label="Treinos por semana" className="hidden sm:flex" />}>
           <NumberTicker value={28} />
         </Kpi>
         <Kpi
@@ -194,6 +200,7 @@ function HomePersonal() {
         </Kpi>
         <Kpi
           label="Receita de outubro"
+          spark={<MiniBars data={homeSparks.receita} label="Receita por mês" format={brl0} className="hidden sm:flex" />}
           foot={
             <Link to="/cobrancas" className="font-medium text-brand-text hover:underline">
               Ver cobranças
@@ -205,16 +212,19 @@ function HomePersonal() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <Section title="Treinos concluídos" description="Últimos 7 dias, todos os alunos" className="min-w-0 lg:col-span-2">
-          <ChartContainer config={chartConfig} className="h-52 w-full">
-            <BarChart data={workoutsWeek} margin={{ top: 8, left: 0, right: 0 }}>
-              <CartesianGrid vertical={false} />
-              <XAxis dataKey="dia" tickLine={false} axisLine={false} tickMargin={8} />
-              <ChartTooltip cursor={false} content={<ChartTooltipContent hideIndicator />} />
-              <Bar dataKey="treinos" fill="var(--color-treinos)" radius={6} maxBarSize={44} />
-            </BarChart>
-          </ChartContainer>
-        </Section>
+        <ChartCard
+          label="Treinos concluídos"
+          value={<NumberTicker value={28} />}
+          delta={{ text: '+6', tone: 'good' }}
+          footer={
+            <Link to="/acompanhamento?aba=relatorios" className="font-medium text-brand-text hover:underline">
+              Ver relatórios
+            </Link>
+          }
+          className="lg:col-span-2"
+        >
+          <BarsChart data={workoutsWeek} xKey="dia" yKey="treinos" label="Treinos" tipTitle={(l) => WEEKDAY[l] ?? l} highlight={workoutsWeek.length - 1} height="h-72" />
+        </ChartCard>
         <div className="grid min-w-0 grid-cols-1 content-start gap-6">
           <Birthdays />
           <ProgressTracker

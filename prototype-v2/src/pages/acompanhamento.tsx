@@ -5,13 +5,14 @@ import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
 import { SegmentedControl } from '@/components/affect/segmented-control'
 import { PageHeader, Person, Pill } from '@/components/page'
+import { Reports } from '@/components/reports'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Progress } from '@/components/ui/progress'
 import { students } from '@/lib/data'
 import { doneSessions } from '@/lib/tracking'
 import { useTab } from '@/lib/use-tab'
 
-const TABS = ['alertas', 'frequencia', 'feitos', 'questionarios'] as const
+const TABS = ['alertas', 'frequencia', 'relatorios', 'feitos', 'questionarios'] as const
 type Tab = (typeof TABS)[number]
 
 const ALERTS = [
@@ -118,6 +119,7 @@ export function Acompanhamento() {
         options={[
           { value: 'alertas', label: 'Alertas', count: alerts.length, controls: 'painel-acomp' },
           { value: 'frequencia', label: 'Frequência', controls: 'painel-acomp' },
+          { value: 'relatorios', label: 'Relatórios', controls: 'painel-acomp' },
           { value: 'feitos', label: 'Treinos feitos', controls: 'painel-acomp' },
           { value: 'questionarios', label: 'Questionários', controls: 'painel-acomp' },
         ]}
@@ -166,6 +168,7 @@ export function Acompanhamento() {
             </ul>
           ))}
         {tab === 'frequencia' && <Frequencia />}
+        {tab === 'relatorios' && <Reports />}
         {tab === 'feitos' && (
           <div className="overflow-hidden rounded-xl border bg-card">
             <Table>
