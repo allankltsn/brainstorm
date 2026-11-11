@@ -32,7 +32,7 @@ npm run dev
 - Treinos: meus treinos, exercícios e importar planilha em abas (`#/treinos`)
 - Criar e editar treino: seções, adicionar exercício, séries, repetições, descanso e ordem (`#/treinos/novo`, `#/treinos/t1`)
 - Exercícios: biblioteca em cartões, detalhe e formulário de criar/editar (`#/treinos/exercicios/e01`, `#/treinos/exercicios/novo`)
-- Acompanhar: alertas, treinos feitos e questionários em abas (`#/acompanhamento`)
+- Acompanhar: alertas, frequência, relatórios, treinos feitos e questionários em abas (`#/acompanhamento`)
 - Mensagens (`#/mensagens`)
 - Sugerir treino com IA (`#/ia`)
 - Configurações: dados, aparência, avisos, assinatura, privacidade e IA (`#/configuracoes`)
@@ -64,6 +64,17 @@ Ainda faltam, do protótipo antigo: histórico de versões do treino, atribuir t
 responsáveis do aluno, excluir conta e exportar dados, e as variantes de erro de cada tela.
 
 Nas listas novas, acrescente `?estado=erro` ou `?estado=vazio` ao endereço para ver os estados de erro e vazio (`src/lib/use-load.ts`).
+
+## Gráficos e relatórios
+
+Estilo único, baseado nas telas do affectUI (affectui.com/screens), em `src/components/charts/`. Use sempre estes componentes, não o recharts direto:
+
+- `ChartCard`: a moldura. Rótulo discreto, número grande com a variação ao lado, o gráfico e uma linha de rodapé.
+- `TrendChart` (linhas, com área opcional e linha de meta), `BarsChart` (barras), `HBars` (barras horizontais), `MiniBars` (minibarras de cartão de número) e `Sparkline` (tendência em linha de tabela).
+- **Mouse por cima:** nas linhas, uma linha vertical segue o ponteiro, cada série ganha um ponto e a dica (`ChartTip`) mostra os valores; nas barras, a coluna sob o ponteiro fica forte e as outras esmaecem.
+- **Ao aparecer na tela:** o gráfico só monta quando entra na janela (`Reveal`, `useInView`), e então as linhas se desenham e as barras crescem. Com "reduzir movimento" ligado no sistema, aparece parado.
+- Linhas finas e retas, grade só horizontal, poucos rótulos no eixo e cores apenas dos tokens `--chart-*`.
+- Onde aparecem: Início, Acompanhar > Relatórios (`#/acompanhamento?aba=relatorios`) e Evolução do aluno.
 
 ## Como o menu é organizado
 

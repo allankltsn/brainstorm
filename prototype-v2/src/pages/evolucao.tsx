@@ -1,14 +1,15 @@
 import { ArrowLeft, Camera, ClipboardList, Dumbbell, Ruler, TriangleAlert } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Bar, BarChart, CartesianGrid, Line, LineChart, ReferenceLine, XAxis, YAxis } from 'recharts'
 import { Button } from '@/components/affect/button'
 import { NumberTicker } from '@/components/affect/number-ticker'
 import { SegmentedControl } from '@/components/affect/segmented-control'
 import { Select } from '@/components/affect/select'
-import { PageHeader, Pill, Section } from '@/components/page'
+import { BarsChart } from '@/components/charts/bars-chart'
+import { ChartCard } from '@/components/charts/chart-card'
+import { TrendChart } from '@/components/charts/trend-chart'
+import { PageHeader, Pill } from '@/components/page'
 import { EmptyState, ErrorState, ListSkeleton } from '@/components/states'
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { firstName, sessions, students } from '@/lib/data'
 import { cm, dateDayMonth, dateLong, dateShort, decimal, kg } from '@/lib/format'
@@ -20,10 +21,6 @@ import { NaoEncontrada } from '@/pages/nao-encontrada'
 
 const TABS = ['resumo', 'treinos', 'medidas'] as const
 type Tab = (typeof TABS)[number]
-
-const loadConfig = { carga: { label: 'Carga (kg)', color: 'var(--chart-1)' } } satisfies ChartConfig
-const freqConfig = { treinos: { label: 'Treinos', color: 'var(--chart-1)' } } satisfies ChartConfig
-const weightConfig = { peso: { label: 'Peso (kg)', color: 'var(--chart-1)' } } satisfies ChartConfig
 
 const EFFORT_TONE = { Leve: 'neutral', Moderado: 'info', Intenso: 'warning' } as const
 
@@ -134,34 +131,37 @@ export function Evolucao() {
                   </Stat>
                 </div>
 
-                <Section
-                  title="Evolução de carga"
-                  description={`${gain > 0 ? `+${decimal(gain, 0)} kg` : 'Sem mudança'} em 8 semanas · maior carga de cada semana`}
+                <ChartCard
+                  label="Evolução de carga"
+                  value={kg(series.series[series.series.length - 1].carga)}
+                  delta={gain > 0 ? { text: `+${decimal(gain, 0)} kg`, tone: 'good' } : { text: 'Sem mudança', tone: 'neutral' }}
                   action={<Select aria-label="Exercício" size="sm" className="w-56 max-w-full" value={exercise} onChange={setExercise} options={loadByExercise.map((e) => ({ value: e.id, label: e.name }))} />}
-                  className="min-w-0 [&>header]:flex-wrap"
+                  footer="Maior carga de cada semana, nas últimas 8 semanas"
                 >
-                  <ChartContainer config={loadConfig} className="h-56 w-full">
-                    <LineChart data={series.series} margin={{ top: 8, left: 0, right: 12 }}>
-                      <CartesianGrid vertical={false} />
-                      <XAxis dataKey="semana" tickLine={false} axisLine={false} tickMargin={8} />
-                      <YAxis width={36} tickLine={false} axisLine={false} domain={['dataMin - 4', 'dataMax + 4']} />
-                      <ChartTooltip content={<ChartTooltipContent hideIndicator />} />
-                      <Line dataKey="carga" type="monotone" stroke="var(--color-carga)" strokeWidth={2} dot={{ r: 3, fill: 'var(--color-carga)' }} activeDot={{ r: 5 }} />
-                    </LineChart>
-                  </ChartContainer>
-                </Section>
+                  <TrendChart
+                    key={exercise}
+                    area
+                    data={series.series}
+                    xKey="semana"
+                    format={kg}
+                    axisFormat={(v) => decimal(v, 0)}
+                    tipTitle={(l) => `Semana de ${l}`}
+                    yDomain={['dataMin - 4', 'dataMax + 4']}
+                    series={[{ key: 'carga', label: 'Carga' }]}
+                  />
+                </ChartCard>
 
-                <Section title="Frequência por semana" description={`A linha marca a meta de ${WEEKLY_GOAL} treinos`} className="min-w-0">
-                  <ChartContainer config={freqConfig} className="h-48 w-full">
-                    <BarChart data={weeklyFrequency} margin={{ top: 8, left: 0, right: 0 }}>
-                      <CartesianGrid vertical={false} />
-                      <XAxis dataKey="semana" tickLine={false} axisLine={false} tickMargin={8} />
-                      <ChartTooltip cursor={false} content={<ChartTooltipContent hideIndicator />} />
-                      <ReferenceLine y={WEEKLY_GOAL} stroke="var(--muted-foreground)" strokeDasharray="4 4" />
-                      <Bar dataKey="treinos" fill="var(--color-treinos)" radius={6} maxBarSize={40} />
-                    </BarChart>
-                  </ChartContainer>
-                </Section>
+                <ChartCard label="Frequência por semana" value={`${hitWeeks} de ${weeklyFrequency.length}`} hint="semanas na meta" footer={`A linha tracejada marca a meta de ${WEEKLY_GOAL} treinos`}>
+                  <BarsChart
+                    data={weeklyFrequency}
+                    xKey="semana"
+                    yKey="treinos"
+                    label="Treinos"
+                    tipTitle={(l) => `Semana de ${l}`}
+                    reference={{ y: WEEKLY_GOAL, label: 'Meta' }}
+                    height="h-48"
+                  />
+                </ChartCard>
               </div>
             )}
 
@@ -191,17 +191,14 @@ export function Evolucao() {
                 <EmptyState icon={<ClipboardList />} title="Nenhum check-in ainda" text="Registre peso e medidas a cada 15 dias para ver a mudança no gráfico." />
               ) : (
                 <div className="grid gap-6">
-                  <Section title="Peso" description={`De ${kg(entries[entries.length - 1].weight)} para ${kg(entries[0].weight)}`} className="min-w-0">
-                    <ChartContainer config={weightConfig} className="h-48 w-full">
-                      <LineChart data={weightSeries} margin={{ top: 8, left: 0, right: 12 }}>
-                        <CartesianGrid vertical={false} />
-                        <XAxis dataKey="dia" tickLine={false} axisLine={false} tickMargin={8} />
-                        <YAxis width={36} tickLine={false} axisLine={false} domain={['dataMin - 1', 'dataMax + 1']} tickFormatter={(v: number) => decimal(v, 0)} />
-                        <ChartTooltip content={<ChartTooltipContent hideIndicator />} />
-                        <Line dataKey="peso" type="monotone" stroke="var(--color-peso)" strokeWidth={2} dot={{ r: 3, fill: 'var(--color-peso)' }} activeDot={{ r: 5 }} />
-                      </LineChart>
-                    </ChartContainer>
-                  </Section>
+                  <ChartCard
+                    label="Peso"
+                    value={kg(entries[0].weight)}
+                    delta={weightDelta ? { text: `${weightDelta < 0 ? '-' : '+'}${decimal(Math.abs(weightDelta))} kg`, tone: 'neutral' } : undefined}
+                    footer={`Desde o primeiro check-in, em ${dateShort(entries[entries.length - 1].date)}`}
+                  >
+                    <TrendChart area data={weightSeries} xKey="dia" format={kg} axisFormat={(v) => decimal(v, 0)} yDomain={['dataMin - 1', 'dataMax + 1']} series={[{ key: 'peso', label: 'Peso' }]} height="h-48" />
+                  </ChartCard>
 
                   <div className="hidden overflow-hidden rounded-xl border bg-card md:block">
                     <Table>
