@@ -5,6 +5,8 @@ import { Button } from '@/components/affect/button'
 import { OtpInput, type OtpStatus } from '@/components/affect/otp-input'
 import { TextField } from '@/components/affect/text-field'
 import { Brand } from '@/components/app-shell'
+import { maskEmail, sessions, type Role } from '@/lib/data'
+import { useRole } from '@/lib/role'
 
 function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -38,8 +40,11 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
   )
 }
 
+const ROLE_LABEL: Record<Role, string> = { personal: 'Personal', aluno: 'Aluno', admin: 'Admin' }
+
 export function Login() {
   const navigate = useNavigate()
+  const { setRole } = useRole()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
@@ -50,10 +55,15 @@ export function Login() {
     const next: typeof errors = {}
     if (!/^\S+@\S+\.\S+$/.test(email)) next.email = 'Digite um e-mail válido, como nome@exemplo.com.br.'
     if (!password) next.password = 'Digite sua senha.'
+    const account = (Object.keys(sessions) as Role[]).find((r) => sessions[r].email === email.trim().toLowerCase() && sessions[r].password === password)
+    if (!next.email && !next.password && !account) next.password = 'E-mail ou senha incorretos. Use uma das contas de demonstração abaixo.'
     setErrors(next)
-    if (Object.keys(next).length) return
+    if (Object.keys(next).length || !account) return
     setLoading(true)
-    setTimeout(() => navigate('/inicio'), 900)
+    setTimeout(() => {
+      setRole(account)
+      navigate('/inicio')
+    }, 900)
   }
 
   return (
@@ -88,17 +98,25 @@ export function Login() {
         <Button type="submit" size="lg" loading={loading} className="w-full">
           {loading ? 'Entrando' : 'Entrar'}
         </Button>
-        <button
-          type="button"
-          className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-          onClick={() => {
-            setEmail('carla.mendes@exemplo.com.br')
-            setPassword('aurafit123')
-            setErrors({})
-          }}
-        >
-          Preencher com a conta de teste
-        </button>
+        <div className="grid gap-2 rounded-lg border border-dashed p-3">
+          <p className="text-xs text-muted-foreground">Contas de demonstração: toque para preencher.</p>
+          <div className="flex flex-wrap gap-2">
+            {(Object.keys(sessions) as Role[]).map((r) => (
+              <Button
+                key={r}
+                size="sm"
+                variant="secondary"
+                onClick={() => {
+                  setEmail(sessions[r].email)
+                  setPassword(sessions[r].password)
+                  setErrors({})
+                }}
+              >
+                {ROLE_LABEL[r]}
+              </Button>
+            ))}
+          </div>
+        </div>
       </form>
       <p className="mt-8 border-t pt-6 text-sm text-muted-foreground">
         Ainda não tem conta?{' '}
@@ -117,7 +135,7 @@ export function VerifyEmail() {
     <AuthLayout>
       <h1 className="text-2xl font-semibold tracking-tight">Confirme seu e-mail</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Enviamos um código de 6 números para <strong className="font-medium text-foreground">ca***@exemplo.com.br</strong>.
+        Enviamos um código de 6 números para <strong className="font-medium text-foreground">{maskEmail(sessions.personal.email)}</strong>.
       </p>
       <div className="mt-8">
         <OtpInput

@@ -4,10 +4,11 @@ export type Role = 'personal' | 'aluno' | 'admin'
 
 export const TODAY_LABEL = 'sexta-feira, 16 de outubro'
 
-export const sessions: Record<Role, { name: string; email: string; title: string }> = {
-  personal: { name: 'Carla Mendes', email: 'carla.mendes@exemplo.com.br', title: 'Personal trainer' },
-  aluno: { name: 'Jorge Batista', email: 'jorge.batista@exemplo.com.br', title: 'Aluno' },
-  admin: { name: 'Ana Ribeiro', email: 'ana.ribeiro@exemplo.com.br', title: 'Administradora' },
+/* Contas de demonstração (fictícias). O login do protótipo só aceita estas três. */
+export const sessions: Record<Role, { name: string; email: string; password: string; title: string }> = {
+  personal: { name: 'Carla Mendes', email: 'personal@aura.demo', password: 'Personal@123', title: 'Personal trainer' },
+  aluno: { name: 'Jorge Batista', email: 'aluno@aura.demo', password: 'Aluno@123', title: 'Aluno' },
+  admin: { name: 'Ana Ribeiro', email: 'admin@aura.demo', password: 'Admin@123', title: 'Administradora' },
 }
 
 export const initials = (name: string) => {
