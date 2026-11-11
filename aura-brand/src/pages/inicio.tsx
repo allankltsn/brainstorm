@@ -1,18 +1,23 @@
 import { ArrowRight, CheckCircle2, Circle, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 import { ApprovalList } from '@/components/approval-list'
 import { PageHeader, Section } from '@/components/page'
 import { Button } from '@/components/ui/button'
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useContent } from '@/lib/content'
+import { useCrm } from '@/lib/crm'
+import { brl, leadsByDay } from '@/lib/crm-data'
 import { brandKit, brandKitChecklist, credits, firstName, kpis, numberFmt, session, todayLabel } from '@/lib/data'
 import { useLoaded } from '@/lib/use-loaded'
 
 function KpiGrid({ loaded }: { loaded: boolean }) {
   const { items } = useContent()
+  const { leads } = useCrm()
   const count = (status: string) => items.filter((i) => i.status === status).length
-  const live: Record<string, number> = { agendados: count('agendado'), producao: count('ajuste'), aprovacao: count('aprovacao') }
+  const live: Record<string, number> = { leads: leads.filter((l) => l.stage !== 'ganho' && l.stage !== 'perdido').length, agendados: count('agendado'), producao: count('ajuste'), aprovacao: count('aprovacao') }
   return (
     <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       {kpis.map((k) => (
@@ -60,6 +65,34 @@ function BrandKitProgress() {
   )
 }
 
+const chartConfig = { leads: { label: 'Leads', color: 'var(--chart-1)' } } satisfies ChartConfig
+
+function LeadsReport() {
+  const { leads } = useCrm()
+  const won = leads.filter((l) => l.stage === 'ganho')
+  const total = leadsByDay.reduce((sum, d) => sum + d.leads, 0)
+  return (
+    <Section
+      title="Leads nos últimos 7 dias"
+      description={`${total} novos leads · ${won.length} ${won.length === 1 ? 'negócio ganho' : 'negócios ganhos'}, somando ${brl.format(won.reduce((s, l) => s + l.value, 0))}`}
+      action={
+        <Button asChild variant="outline" className="min-h-11">
+          <Link to="/leads">Ver funil</Link>
+        </Button>
+      }
+    >
+      <ChartContainer config={chartConfig} className="h-48 w-full">
+        <BarChart data={leadsByDay} margin={{ top: 8, left: 0, right: 0 }} accessibilityLayer>
+          <CartesianGrid vertical={false} />
+          <XAxis dataKey="dia" tickLine={false} axisLine={false} tickMargin={8} />
+          <ChartTooltip cursor={false} content={<ChartTooltipContent hideIndicator />} />
+          <Bar dataKey="leads" fill="var(--color-leads)" radius={6} maxBarSize={44} />
+        </BarChart>
+      </ChartContainer>
+    </Section>
+  )
+}
+
 function Credits() {
   const { creditsLeft: left, creditsTotal: total } = useContent()
   return (
@@ -90,13 +123,14 @@ export function Inicio() {
           </Button>
         }
       />
-      <div className="grid gap-4">
+      <div className="grid grid-cols-1 gap-4">
         <KpiGrid loaded={loaded} />
-        <div className="grid gap-4 lg:grid-cols-3">
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div className="grid min-w-0 grid-cols-1 content-start gap-4 lg:col-span-2">
             <ApprovalQueue loaded={loaded} />
+            <LeadsReport />
           </div>
-          <div className="grid content-start gap-4">
+          <div className="grid min-w-0 grid-cols-1 content-start gap-4">
             <BrandKitProgress />
             <Credits />
           </div>

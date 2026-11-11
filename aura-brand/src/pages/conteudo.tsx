@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { SegmentedControl } from '@/components/affect/segmented-control'
 import { TextArea } from '@/components/affect/text-area'
+import { TextField } from '@/components/affect/text-field'
 import { ApprovalList } from '@/components/approval-list'
 import { PageHeader, Pill, Section } from '@/components/page'
 import { Button } from '@/components/ui/button'
@@ -87,11 +88,45 @@ function Generator() {
   )
 }
 
-function ItemList({ items, empty }: { items: ContentItem[]; empty: string }) {
+/* Item aprovado ainda sem horário: pede data e hora antes de entrar na agenda. */
+function ScheduleForm({ item }: { item: ContentItem }) {
+  const { schedule } = useContent()
+  const [value, setValue] = useState('')
+  const [error, setError] = useState('')
+  const submit = (e: FormEvent) => {
+    e.preventDefault()
+    const at = new Date(value)
+    if (!value || Number.isNaN(at.getTime())) return setError('Escolha a data e a hora.')
+    if (at.getTime() <= Date.now()) return setError('Escolha um horário no futuro.')
+    schedule(item.id, at)
+    toast.success('Horário definido', { description: 'O conteúdo será publicado nesse horário.' })
+  }
+  return (
+    <form onSubmit={submit} noValidate className="flex w-full flex-wrap items-end gap-2">
+      <TextField
+        label="Publicar em"
+        type="datetime-local"
+        value={value}
+        onChange={(e) => {
+          setValue(e.target.value)
+          setError('')
+        }}
+        error={error}
+        size="lg"
+        className="min-w-0 flex-1 basis-56"
+      />
+      <Button type="submit" variant="secondary" className="min-h-11">
+        Definir horário
+      </Button>
+    </form>
+  )
+}
+
+function ItemList({ items, empty, schedulable = false }: { items: ContentItem[]; empty: string; schedulable?: boolean }) {
   const { remove } = useContent()
   if (items.length === 0) return <p className="py-8 text-center text-sm text-muted-foreground">{empty}</p>
   return (
-    <ul className="grid gap-3">
+    <ul className="grid grid-cols-1 gap-3">
       {items.map((i) => (
         <li key={i.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3">
           <div className="min-w-0 flex-1 basis-64">
@@ -99,10 +134,12 @@ function ItemList({ items, empty }: { items: ContentItem[]; empty: string }) {
               <p className="text-sm font-medium">{i.title}</p>
               <Pill>{KIND_LABEL[i.kind]}</Pill>
               <Pill>{i.channel}</Pill>
-              {i.when && (
+              {i.when ? (
                 <Pill tone="info" icon={<CalendarClock aria-hidden="true" />}>
                   {i.when}
                 </Pill>
+              ) : (
+                schedulable && <Pill tone="warning">Sem horário</Pill>
               )}
             </div>
             <p className="mt-0.5 text-sm text-muted-foreground">{i.caption}</p>
@@ -119,6 +156,7 @@ function ItemList({ items, empty }: { items: ContentItem[]; empty: string }) {
           >
             <Trash2 />
           </Button>
+          {schedulable && !i.when && <ScheduleForm item={i} />}
         </li>
       ))}
     </ul>
@@ -167,7 +205,7 @@ export function Conteudo() {
                 <ItemList items={by('ajuste')} empty="Nenhum conteúdo em ajuste. Os que você devolver aparecem aqui." />
               </TabsContent>
               <TabsContent value="agendado" className="mt-4">
-                <ItemList items={by('agendado')} empty="Nada agendado ainda. Aprove uma sugestão para ela entrar aqui." />
+                <ItemList schedulable items={by('agendado')} empty="Nada agendado ainda. Aprove uma sugestão para ela entrar aqui." />
               </TabsContent>
             </Tabs>
           )}

@@ -22,11 +22,11 @@ export const notifications = [
   { id: 'n3', title: 'Seu brand kit foi atualizado', when: 'ontem', unread: false },
 ]
 
-/* Os três KPIs de conteúdo são calculados a partir da lista de conteúdos; o valor aqui é só o inicial. */
+/* Os valores são calculados nas telas, a partir dos leads e dos conteúdos; o valor aqui é só o inicial. */
 export type Kpi = { id: string; label: string; value: number; hint: string }
 export const kpis: Kpi[] = [
-  { id: 'leads', label: 'Leads na semana', value: 18, hint: '5 a mais que na semana passada' },
-  { id: 'agendados', label: 'Posts agendados', value: 0, hint: 'próximo: amanhã, 9h' },
+  { id: 'leads', label: 'Leads em aberto', value: 0, hint: 'fora ganhos e perdidos' },
+  { id: 'agendados', label: 'Posts agendados', value: 0, hint: 'aprovados por você' },
   { id: 'producao', label: 'Em ajuste', value: 0, hint: 'devolvidos para nova versão' },
   { id: 'aprovacao', label: 'Aguardando aprovação', value: 0, hint: 'a IA só publica com seu aval' },
 ]
@@ -41,7 +41,7 @@ export type ContentItem = {
   title: string
   caption: string
   status: ContentStatus
-  /** Só para itens agendados */
+  /** Horário de publicação, já formatado. Item agendado sem horário ainda precisa de um. */
   when?: string
 }
 

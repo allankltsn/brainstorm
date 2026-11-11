@@ -9,10 +9,13 @@ type ContentStore = {
   /** Cria um rascunho e desconta os créditos. Devolve null se o saldo não cobre o custo. */
   generate: (draft: Draft) => ContentItem | null
   approve: (id: string) => void
+  /** Define o horário de publicação de um item aprovado. */
+  schedule: (id: string, at: Date) => void
   requestChange: (id: string) => void
   remove: (id: string) => void
 }
 
+const whenFmt = new Intl.DateTimeFormat('pt-BR', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
 const Ctx = createContext<ContentStore | null>(null)
 
 /* Protótipo: o "gerador" monta a legenda com o tema e as palavras do brand kit. Não há IA ligada. */
@@ -41,7 +44,8 @@ export function ContentProvider({ children }: { children: ReactNode }) {
         setUsed((u) => u + cost)
         return item
       },
-      approve: (id) => setStatus(id, { status: 'agendado', when: 'horário a definir' }),
+      approve: (id) => setStatus(id, { status: 'agendado', when: undefined }),
+      schedule: (id, at) => setStatus(id, { when: whenFmt.format(at) }),
       requestChange: (id) => setStatus(id, { status: 'ajuste' }),
       remove: (id) => setItems((list) => list.filter((i) => i.id !== id)),
     }

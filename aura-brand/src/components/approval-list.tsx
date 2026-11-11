@@ -47,7 +47,7 @@ export function ApprovalList() {
               className="min-h-11"
               onClick={() => {
                 approve(a.id)
-                toast.success('Aprovado', { description: 'O conteúdo entrou na lista de agendados.' })
+                toast.success('Aprovado', { description: 'Defina o horário na aba Agendados.' })
               }}
             >
               <Check /> Aprovar
