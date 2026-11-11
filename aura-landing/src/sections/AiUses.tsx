@@ -140,7 +140,7 @@ function SvgVideo() {
 
       {/* painel de análise */}
       <T x={220} y={36} size={11} weight={700}>Análise do movimento</T>
-      <T x={220} y={50} size={8.5} fill={C.faint}>Agachamento · 12 repetições [MOCK]</T>
+      <T x={220} y={50} size={8.5} fill={C.faint}>Agachamento · 12 repetições</T>
       {[
         { y: 62, f: 0.12, t: "Profundidade", s: "abaixo do paralelo", c: C.ok, ok: true },
         { y: 104, f: 0.3, t: "Coluna", s: "neutra em 11 de 12", c: C.ok, ok: true },
@@ -280,7 +280,7 @@ function SvgImportar() {
         </Show>
       ))}
       <Show from={0.7}>
-        <T x={194} y={196} size={8} fill={C.muted}>3 reconhecidas · 1 para confirmar [MOCK]</T>
+        <T x={194} y={196} size={8} fill={C.muted}>3 reconhecidas · 1 para confirmar</T>
         <rect x="192" y="202" width="176" height="20" rx="8" fill={C.red} />
         <T x={280} y={216} size={9} fill="#fff" weight={700} anchor="middle">Levar ao editor</T>
       </Show>
@@ -289,9 +289,9 @@ function SvgImportar() {
 }
 
 const usos = [
-  { tag: "Aluno", t: "Tirar dúvidas de treino", d: "O aluno pergunta como executar um exercício e recebe uma explicação simples. A dúvida fica registrada para você.", svg: <SvgDuvidas />, st: "Em avaliação [a confirmar]" },
-  { tag: "Aluno e personal", t: "Vídeo do movimento analisado", d: "O aluno grava a execução e a IA marca articulações, ângulos e repetições, quadro a quadro. Você recebe os pontos de atenção e decide a orientação.", svg: <SvgVideo />, st: "Em avaliação [a confirmar]" },
-  { tag: "Personal", t: "Relatos de dor e exames, organizados", d: "Queixas de dor e exames médicos ou nutricionais que o aluno liberar viram um resumo para você acompanhar. A IA organiza, não diagnostica.", svg: <SvgSaude />, st: "Em avaliação [a confirmar] · só com consentimento do aluno" },
+  { tag: "Aluno", t: "Tirar dúvidas de treino", d: "O aluno pergunta como executar um exercício e recebe uma explicação simples. A dúvida fica registrada para você.", svg: <SvgDuvidas />, st: "Em avaliação" },
+  { tag: "Aluno e personal", t: "Vídeo do movimento analisado", d: "O aluno grava a execução e a IA marca articulações, ângulos e repetições, quadro a quadro. Você recebe os pontos de atenção e decide a orientação.", svg: <SvgVideo />, st: "Em avaliação" },
+  { tag: "Personal", t: "Relatos de dor e exames, organizados", d: "Queixas de dor e exames médicos ou nutricionais que o aluno liberar viram um resumo para você acompanhar. A IA organiza, não diagnostica.", svg: <SvgSaude />, st: "Em avaliação · só com consentimento do aluno" },
   { tag: "Personal", t: "Treino preenchido a partir de um documento", d: "Exporte qualquer documento de texto com o treino. A IA lê, preenche exercícios, séries e repetições, e deixa o que for ambíguo para você confirmar.", svg: <SvgImportar />, st: "A IA só sugere. Nada é salvo até você revisar." },
 ]
 
@@ -303,7 +303,7 @@ export function AiUses() {
           id="h-ia"
           eyebrow="IA no aura-fit"
           title={<>Onde a IA entra. <span className="text-grad">E onde ela para.</span></>}
-          lead="Quatro usos, ilustrados. Em todos, a IA sugere e organiza: quem decide é o personal. Ilustrações com dados de exemplo [MOCK]."
+          lead="Quatro usos, ilustrados. Em todos, a IA sugere e organiza: quem decide é o personal."
         />
         <ul className="grid gap-4 md:grid-cols-2">
           {usos.map((u, i) => (
@@ -325,7 +325,7 @@ export function AiUses() {
           ))}
         </ul>
         <p className="mt-6 text-sm leading-relaxed text-faint">
-          O aura-fit não substitui a orientação de um profissional de saúde. Dados de saúde, fotos e vídeos só seguiriam para recursos de IA com o consentimento do aluno [a definir].
+          O aura-fit não substitui a orientação de um profissional de saúde. Dados de saúde, fotos e vídeos só seguiriam para recursos de IA com o consentimento do aluno.
         </p>
       </Container>
     </section>

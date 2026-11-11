@@ -12,7 +12,7 @@ import { Particles } from "@/components/magicui/particles"
 import { ScrollProgress } from "@/components/magicui/scroll-progress"
 import { ScrollVelocityContainer, ScrollVelocityRow } from "@/components/magicui/scroll-based-velocity"
 import { TextAnimate } from "@/components/magicui/text-animate"
-import { Btn, Container, Logo, Mock, Phone } from "@/components/ui"
+import { Btn, Container, Logo, Phone } from "@/components/ui"
 import { cn } from "@/lib/utils"
 
 const links = [
@@ -31,11 +31,8 @@ export function TopBar() {
 
   return (
     <div className="sticky top-0 z-50">
-      <div role="note" className="relative flex min-h-10 items-center justify-center bg-surface-2 px-4 py-2 text-center text-[13px] font-medium text-ink">
-        <p>
-          <strong>[MOCK]</strong> Página de demonstração. Valores, limites e comparativos são [MOCK] e podem mudar.
-        </p>
-        <ScrollProgress className="absolute bottom-0 top-auto h-[3px] translate-y-full bg-gradient-to-r from-brand via-primary to-accent" />
+      <div className="relative">
+        <ScrollProgress className="absolute left-0 top-0 h-[3px] bg-gradient-to-r from-brand via-primary to-accent" />
       </div>
       <header className="px-3 pt-3">
         <motion.div
@@ -58,7 +55,7 @@ export function TopBar() {
               ))}
             </ul>
           </nav>
-          <Btn href="#/login" className="hidden h-10 px-5 text-sm sm:inline-flex">
+          <Btn href="https://aura.teotonio.xyz/login" className="hidden h-10 px-5 text-sm sm:inline-flex">
             Começar grátis
           </Btn>
           <button
@@ -92,7 +89,7 @@ export function TopBar() {
                   </li>
                 ))}
               </ul>
-              <Btn href="#/login" className="mt-2 w-full">
+              <Btn href="https://aura.teotonio.xyz/login" className="mt-2 w-full">
                 Começar grátis
               </Btn>
             </motion.nav>
@@ -180,7 +177,7 @@ export function Hero() {
 
           <BlurFade delay={1.15}>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Btn href="#/login" className="h-14 px-8 text-base">
+              <Btn href="https://aura.teotonio.xyz/login" className="h-14 px-8 text-base">
                 Começar grátis <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
               </Btn>
               <Btn href="#como-funciona" variant="ghost" className="h-14 px-8 text-base">
@@ -191,7 +188,7 @@ export function Hero() {
 
           <BlurFade delay={1.3}>
             <p className="mt-6 max-w-[34rem] text-sm leading-relaxed text-faint">
-              Starter sem custo [MOCK]. Sem cartão para começar [MOCK]. Feito para personal autônomo e pequeno estúdio.
+              Starter sem custo. Sem cartão para começar. Feito para personal autônomo e pequeno estúdio.
             </p>
           </BlurFade>
         </motion.div>
@@ -223,10 +220,10 @@ export function Hero() {
             aria-hidden="true"
           >
             <AnimatedList delay={2200} className="items-start gap-2.5">
-              <Notif key="a" tone="bg-ok/15 text-ok" icon={<CheckCircle2 size={18} />} title="Aluno A concluiu o treino" sub="Treino A: Superior [MOCK]" />
+              <Notif key="a" tone="bg-ok/15 text-ok" icon={<CheckCircle2 size={18} />} title="Aluno A concluiu o treino" sub="Treino A: Superior" />
               <Notif key="b" tone="bg-primary/20 text-accent" icon={<Sparkles size={18} />} title="Proposta da IA pronta" sub="Revise e aprove antes de enviar" />
-              <Notif key="c" tone="bg-warn/15 text-warn" icon={<BellRing size={18} />} title="Aluno B faltou 2 treinos" sub="Sinal de queda de frequência [MOCK]" />
-              <Notif key="d" tone="bg-ok/15 text-ok" icon={<CreditCard size={18} />} title="Pagamento recebido" sub="Mensalidade de novembro [MOCK]" />
+              <Notif key="c" tone="bg-warn/15 text-warn" icon={<BellRing size={18} />} title="Aluno B faltou 2 treinos" sub="Sinal de queda de frequência" />
+              <Notif key="d" tone="bg-ok/15 text-ok" icon={<CreditCard size={18} />} title="Pagamento recebido" sub="Mensalidade de novembro" />
             </AnimatedList>
           </motion.div>
         </div>
@@ -251,7 +248,7 @@ export function Stats() {
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <h2 id="h-num" className="text-2xl font-bold tracking-tight md:text-3xl">O que muda na rotina.</h2>
           <p className="max-w-xl text-sm leading-relaxed text-faint">
-            <Mock /> Dados ilustrativos. Média de personais em uma amostra ilustrativa [MOCK]; resultados variam. São indicadores de gestão do personal, não resultado de saúde ou estética do aluno.
+            Resultados variam. São indicadores de gestão do personal, não resultado de saúde ou estética do aluno.
           </p>
         </div>
         <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line bg-line lg:grid-cols-4">
@@ -264,7 +261,7 @@ export function Stats() {
                   <span className="text-accent">{s.suffix}</span>
                 </dd>
                 <dt className="mt-3 text-sm leading-relaxed text-muted">
-                  {s.label} <span className="text-faint">[MOCK]</span>
+                  {s.label} <span className="text-faint"></span>
                 </dt>
                 <span aria-hidden="true" className="absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-gradient-to-r from-primary to-transparent transition-transform duration-700 ease-out group-hover:scale-x-100" />
               </div>

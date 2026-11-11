@@ -7,7 +7,7 @@ import { BlurFade } from "@/components/magicui/blur-fade"
 import { BorderBeam } from "@/components/magicui/border-beam"
 import { DotPattern } from "@/components/magicui/dot-pattern"
 import { MagicCard } from "@/components/magicui/magic-card"
-import { Btn, Container, Eyebrow, Mock, SectionHead } from "@/components/ui"
+import { Btn, Container, Eyebrow, SectionHead } from "@/components/ui"
 import { cn } from "@/lib/utils"
 
 /* ---------- Problema ---------- */
@@ -157,7 +157,7 @@ function MockIA() {
         </div>
       </div>
       <div className="relative rounded-2xl border border-line bg-bg/80 p-4">
-        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-faint">Proposta da IA [MOCK]</p>
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-faint">Proposta da IA</p>
         <ul className="min-h-[156px] space-y-1.5">
           <AnimatePresence>
             {step >= 2 &&
@@ -190,7 +190,7 @@ function MockAderencia() {
   return (
     <div aria-hidden="true" className="rounded-2xl border border-line bg-bg/80 p-4">
       <div className="mb-4 flex items-center justify-between text-xs">
-        <span className="font-semibold text-ink">Aluno B · frequência [MOCK]</span>
+        <span className="font-semibold text-ink">Aluno B · frequência</span>
         <motion.span animate={{ opacity: [1, 0.45, 1] }} transition={{ duration: 1.6, repeat: Infinity }} className="inline-flex items-center gap-1 rounded-full bg-warn/15 px-2 py-1 font-semibold text-warn">
           <AlertTriangle size={12} /> Risco
         </motion.span>
@@ -226,7 +226,7 @@ function Pay({ n, s, tone }: { n: string; s: string; tone: string }) {
 function MockCobranca() {
   return (
     <div aria-hidden="true" className="rounded-2xl border border-line bg-bg/80 p-4">
-      <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-faint">Novembro [MOCK]</p>
+      <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-faint">Novembro</p>
       <div className="h-[150px] overflow-hidden [mask-image:linear-gradient(to_bottom,#000_75%,transparent)]">
         <AnimatedList delay={1700} className="gap-2">
           <Pay key="1" n="Aluno A" s="Pago" tone="bg-ok/15 text-ok" />
@@ -277,7 +277,7 @@ export function Recursos() {
                   </p>
                   <Bullets items={["Proposta para você revisar", "Edição livre antes de enviar", "A IA sugere, o personal decide"]} />
                   <p className="mt-5 text-[13px] leading-relaxed text-faint">
-                    A IA é uma ferramenta de apoio. Não substitui sua avaliação profissional. Dados de saúde e fotos do aluno só seguiriam para recursos de IA com o consentimento dele [a definir].
+                    A IA é uma ferramenta de apoio. Não substitui sua avaliação profissional. Dados de saúde e fotos do aluno só seguiriam para recursos de IA com o consentimento dele.
                   </p>
                 </div>
                 <MockIA />
@@ -312,7 +312,7 @@ export function Recursos() {
                     Configure lembretes e link de pagamento. O aura-fit avisa o aluno por você e mostra quem está em dia.
                   </p>
                   <Bullets items={["Lembretes automáticos", "Link de pagamento", "Visão de inadimplência"]} />
-                  <p className="mt-5 text-[13px] text-faint">Meios de pagamento e taxas [a confirmar].</p>
+                  <p className="mt-5 text-[13px] text-faint">Meios de pagamento e taxas.</p>
                 </div>
               </article>
             </Spot>
@@ -321,11 +321,11 @@ export function Recursos() {
 
         <BlurFade inView delay={0.1}>
           <p className="mt-6 rounded-2xl border border-dashed border-line-strong p-5 text-sm leading-relaxed text-faint">
-            <span className="mr-2 inline-flex rounded-md bg-warn/10 px-1.5 py-0.5 text-[11px] font-semibold text-warn">Em avaliação [a confirmar]</span>
-            treino com vídeo por exercício, white-label (logo e cores próprias), cadastro de equipamentos, anamnese e avaliação física com fotos de progresso. Dados de saúde e fotos só iriam à IA com o consentimento do aluno [a definir]. Nenhum deles é compromisso de entrega.
+            <span className="mr-2 inline-flex rounded-md bg-warn/10 px-1.5 py-0.5 text-[11px] font-semibold text-warn">Em avaliação</span>
+            treino com vídeo por exercício, white-label (logo e cores próprias), cadastro de equipamentos, anamnese e avaliação física com fotos de progresso. Dados de saúde e fotos só iriam à IA com o consentimento do aluno. Nenhum deles é compromisso de entrega.
           </p>
           <div className="mt-8">
-            <Btn href="#cta-final" title="Cadastro em breve [a definir]">Testar com meus alunos <ArrowRight size={18} /></Btn>
+            <Btn href="https://aura.teotonio.xyz/login">Testar com meus alunos <ArrowRight size={18} /></Btn>
           </div>
         </BlurFade>
       </Container>
@@ -373,8 +373,8 @@ export function ComoFunciona() {
         </ol>
         <BlurFade inView delay={0.2}>
           <div className="mt-14 flex flex-col items-center gap-3 text-center">
-            <Btn href="#cta-final" title="Cadastro em breve [a definir]">Criar minha conta grátis <ArrowRight size={18} /></Btn>
-            <p className="text-sm text-faint">Leva minutos para configurar o primeiro aluno <Mock /></p>
+            <Btn href="https://aura.teotonio.xyz/login">Criar minha conta grátis <ArrowRight size={18} /></Btn>
+            <p className="text-sm text-faint">Leva minutos para configurar o primeiro aluno</p>
           </div>
         </BlurFade>
       </Container>

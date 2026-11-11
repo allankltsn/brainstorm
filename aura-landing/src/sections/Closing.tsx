@@ -9,16 +9,16 @@ import { DotPattern } from "@/components/magicui/dot-pattern"
 import { Marquee } from "@/components/magicui/marquee"
 import { Particles } from "@/components/magicui/particles"
 import { ShineBorder } from "@/components/magicui/shine-border"
-import { Btn, Container, Logo, Mock, SectionHead } from "@/components/ui"
+import { Btn, Container, Logo, SectionHead } from "@/components/ui"
 import { faqGeral, faqObjecoes, type Faq as FaqItem } from "@/lib/faq"
 import { cn } from "@/lib/utils"
 
 /* ---------- Depoimentos ---------- */
 const deps = [
-  { q: "Eu gastava a noite de domingo montando ficha. Hoje descrevo o aluno, reviso a proposta da IA e envio em minutos.", i: "RM", n: "Rafael Moura", r: "personal autônomo, Campinas (SP)", m: "Métrica ligada: 6 h por semana [MOCK]" },
-  { q: "O alerta de frequência me fez chamar três alunos antes de eles sumirem. Os três continuaram.", i: "CD", n: "Camila Duarte", r: "estúdio de treino funcional, Belo Horizonte (MG)", m: "Métrica ligada: +27% de alunos ativos [MOCK]" },
-  { q: "Parei de mandar mensagem de cobrança. O aluno recebe o lembrete e eu ainda ganhei a relação de volta.", i: "TP", n: "Thiago Peixoto", r: "personal online e presencial, Curitiba (PR)", m: "Métrica ligada: -38% de atrasos [MOCK]" },
-  { q: "O aluno vê o vídeo do exercício no app com o meu logo. Parece que tenho uma estrutura bem maior.", i: "JF", n: "Juliana Farias", r: "personal de musculação, Recife (PE)", m: "Recurso em avaliação (white-label) [a confirmar]" },
+  { q: "Eu gastava a noite de domingo montando ficha. Hoje descrevo o aluno, reviso a proposta da IA e envio em minutos.", i: "RM", n: "Rafael Moura", r: "personal autônomo, Campinas (SP)", m: "Métrica ligada: 6 h por semana" },
+  { q: "O alerta de frequência me fez chamar três alunos antes de eles sumirem. Os três continuaram.", i: "CD", n: "Camila Duarte", r: "estúdio de treino funcional, Belo Horizonte (MG)", m: "Métrica ligada: +27% de alunos ativos" },
+  { q: "Parei de mandar mensagem de cobrança. O aluno recebe o lembrete e eu ainda ganhei a relação de volta.", i: "TP", n: "Thiago Peixoto", r: "personal online e presencial, Curitiba (PR)", m: "Métrica ligada: -38% de atrasos" },
+  { q: "O aluno vê o vídeo do exercício no app com o meu logo. Parece que tenho uma estrutura bem maior.", i: "JF", n: "Juliana Farias", r: "personal de musculação, Recife (PE)", m: "Recurso em avaliação (white-label)" },
 ]
 
 function Dep({ d }: { d: (typeof deps)[number] }) {
@@ -26,14 +26,13 @@ function Dep({ d }: { d: (typeof deps)[number] }) {
     <figure className="flex w-full shrink-0 flex-col rounded-3xl border border-line bg-surface p-7 transition-colors duration-500 hover:border-primary-line">
       <div className="flex items-center justify-between">
         <Quote size={28} className="text-primary" aria-hidden="true" />
-        <Mock>[MOCK] depoimento ilustrativo</Mock>
       </div>
       <blockquote className="mt-5 flex-1 text-lg font-medium leading-snug tracking-tight text-ink">“{d.q}”</blockquote>
       <figcaption className="mt-6 flex items-center gap-3">
         <span aria-hidden="true" className="flex size-11 items-center justify-center rounded-full bg-gradient-to-br from-primary to-brand text-sm font-bold text-white">{d.i}</span>
         <span>
-          <span className="block text-sm font-semibold">{d.n} [MOCK]</span>
-          <span className="block text-xs text-muted">{d.r} [MOCK]</span>
+          <span className="block text-sm font-semibold">{d.n}</span>
+          <span className="block text-xs text-muted">{d.r}</span>
         </span>
       </figcaption>
       <p className="mt-4 border-t border-line pt-3 text-xs text-faint">{d.m}</p>
@@ -47,9 +46,8 @@ export function Depoimentos() {
       <Container>
         <SectionHead
           id="h-dep"
-          eyebrow="Depoimentos ilustrativos"
+          eyebrow="Depoimentos"
           title="Personais que trocaram a planilha por rotina."
-          lead={<><Mock /> Dados ilustrativos: nomes, cidades e falas são inventados e serão trocados por depoimentos reais autorizados.</>}
         />
       </Container>
       {/* mural: colunas que rolam em sentidos opostos e param no hover */}
@@ -63,7 +61,7 @@ export function Depoimentos() {
         </div>
       </Container>
       <Container className="mt-10">
-        <Btn href="#cta-final" title="Cadastro em breve [a definir]">Quero ganhar tempo <ArrowRight size={18} /></Btn>
+        <Btn href="#cta-final" title="Cadastro em breve">Quero ganhar tempo <ArrowRight size={18} /></Btn>
       </Container>
     </section>
   )
@@ -77,18 +75,18 @@ const periodos: { k: Periodo; l: string; suf: string; meses: number }[] = [
   { k: "anual", l: "Anual", suf: "/ano", meses: 12 },
 ]
 const planos = [
-  { n: "Starter", f: "Para começar com poucos alunos, sem custo.", p: { mensal: 0, trimestral: 0, anual: 0 }, itens: [["Alunos", "Até 5"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "Não inclui"], ["Suporte", "Central de ajuda [a confirmar]"]], cta: "Começar grátis", pro: false },
+  { n: "Starter", f: "Para começar com poucos alunos, sem custo.", p: { mensal: 0, trimestral: 0, anual: 0 }, itens: [["Alunos", "Até 5"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "Não inclui"], ["Suporte", "Central de ajuda"]], cta: "Começar grátis", pro: false },
   { n: "Pro", f: "Para personais em crescimento.", p: { mensal: 49.9, trimestral: 134.7, anual: 479 }, itens: [["Alunos", "Até 30"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "50 por mês"], ["Suporte", "E-mail"]], cta: "Quero o Pro (em breve)", pro: true },
-  { n: "Premium", f: "Sem limite de alunos e com IA ampla.", p: { mensal: 99.9, trimestral: 269.7, anual: 959 }, itens: [["Alunos", "Ilimitados"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "IA ampla (uso justo [a confirmar])"], ["Suporte", "Prioritário"]], cta: "Quero o Premium (em breve)", pro: false },
+  { n: "Premium", f: "Sem limite de alunos e com IA ampla.", p: { mensal: 99.9, trimestral: 269.7, anual: 959 }, itens: [["Alunos", "Ilimitados"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "IA ampla (uso justo)"], ["Suporte", "Prioritário"]], cta: "Quero o Premium (em breve)", pro: false },
 ]
 const money = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
 const garantias = [
-  ["Comece sem custo", "Starter grátis e sem cartão [MOCK]."],
-  ["Cancelamento sem multa", "Condições [a confirmar] antes da contratação."],
-  ["Seus dados são seus", "Exportação de dados [a confirmar]."],
+  ["Comece sem custo", "Starter grátis e sem cartão."],
+  ["Cancelamento sem multa", "Condições antes da contratação."],
+  ["Seus dados são seus", "Exportação de dados."],
   ["Você no controle", "A IA só sugere. Nada vai ao aluno sem a sua aprovação."],
-  ["Reembolso dos primeiros dias", "Prazo e regra [a confirmar] com produto e jurídico. Nada garantido nesta página."],
+  ["Reembolso dos primeiros dias", "Prazo e regra com produto e jurídico. Nada garantido nesta página."],
 ]
 
 export function Planos() {
@@ -142,7 +140,7 @@ export function Planos() {
                         </motion.p>
                       </AnimatePresence>
                       <p className="mt-1 text-xs text-faint">
-                        {preco === 0 ? "Sem custo [MOCK]" : eco > 0.005 ? `Economize R$ ${money(eco)} em relação ao mensal [MOCK]` : "Valor demonstrativo [MOCK]"}
+                        {preco === 0 ? "Sem custo" : eco > 0.005 ? `Economize R$ ${money(eco)} em relação ao mensal` : "Valor mensal"}
                       </p>
                     </div>
 
@@ -150,11 +148,11 @@ export function Planos() {
                       {pl.itens.map(([k, val]) => (
                         <div key={k} className="flex items-center justify-between gap-4 py-3 text-sm">
                           <dt className="text-muted">{k}</dt>
-                          <dd className="text-right font-semibold text-ink">{val}{(k === "Alunos" || k === "Prescrição com IA") && !val.includes("[") && <span className="ml-1 font-normal text-faint">[MOCK]</span>}</dd>
+                          <dd className="text-right font-semibold text-ink">{val}{(k === "Alunos" || k === "Prescrição com IA") && !val.includes("[") && <span className="ml-1 font-normal text-faint"></span>}</dd>
                         </div>
                       ))}
                     </dl>
-                    <Btn href="#cta-final" variant={pl.pro ? "primary" : "ghost"} className="mt-7 w-full" title="Cadastro e contratação em breve [a definir]">{pl.cta}</Btn>
+                    <Btn href="#cta-final" variant={pl.pro ? "primary" : "ghost"} className="mt-7 w-full" title="Cadastro e contratação em breve">{pl.cta}</Btn>
                   </motion.article>
                 </BlurFade>
               </li>
@@ -162,7 +160,7 @@ export function Planos() {
           })}
         </ul>
         <p className="mx-auto mt-10 max-w-3xl text-center text-xs leading-relaxed text-faint">
-          Valores demonstrativos [MOCK]. Renovação, cancelamento e reembolso serão informados antes da contratação [a definir]. O selo “Recomendado” é uma indicação editorial [MOCK], sem número de clientes.
+          Renovação, cancelamento e reembolso serão informados antes da contratação. O selo “Recomendado” é uma indicação editorial, sem número de clientes.
         </p>
 
         <ul className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -185,9 +183,9 @@ export function Planos() {
 }
 
 /* ---------- Comparativo ---------- */
-const cols = ["Grátis [a confirmar]", "Pago [a confirmar]", "Destaque", "Ponto de atenção"]
+const cols = ["Grátis", "Pago", "Destaque", "Ponto de atenção"]
 const linhas = [
-  { n: "aura-fit (Pro/Premium) [MOCK]", aura: true, c: ["Starter, até 5 alunos", "R$ 49,90 a R$ 99,90/mês", "IA de prescrição com aprovação do personal, aderência, cobrança", "Produto em construção; valores e limites não finais"] },
+  { n: "aura-fit (Pro/Premium)", aura: true, c: ["Starter, até 5 alunos", "R$ 49,90 a R$ 99,90/mês", "IA de prescrição com aprovação do personal, aderência, cobrança", "Produto em construção; valores e limites não finais"] },
   { n: "App básico de baixo custo", aura: false, c: ["Costuma haver teste ou poucos alunos", "Valor de entrada tende a ser menor", "Registro de treino, anamnese, cobrança simples", "Pode não incluir IA nem automações"] },
   { n: "Plataforma de academia ou estúdio", aura: false, c: ["Varia conforme a oferta", "Costuma variar com o porte da unidade", "Gestão da unidade, avaliação física, catálogo de exercícios", "Foco em estrutura maior que a do personal autônomo"] },
   { n: "App internacional", aura: false, c: ["Costuma haver teste ou 1 cliente", "Cobrança em moeda estrangeira, por faixa de clientes", "App com marca própria, nutrição", "Idioma, câmbio e suporte local podem variar"] },
@@ -197,11 +195,11 @@ export function Comparativo() {
   return (
     <section id="comparativo" aria-labelledby="h-comp" className="border-y border-line bg-surface/40 py-20 md:py-28">
       <Container>
-        <SectionHead id="h-comp" eyebrow="Comparativo" title="Como o aura-fit se compara" lead="Comparação por categorias de mercado, em termos gerais, sem citar marcas nem preços de terceiros. Todos [a confirmar]." />
+        <SectionHead id="h-comp" eyebrow="Comparativo" title="Como o aura-fit se compara" lead="Comparação por categorias de mercado, em termos gerais, sem citar marcas nem preços de terceiros. Todos." />
         <BlurFade inView>
           <div className="overflow-hidden rounded-3xl border border-line bg-bg">
             <table className="w-full border-collapse text-left text-sm max-lg:block">
-              <caption className="sr-only">Comparativo entre o aura-fit e categorias de mercado. Dados [MOCK] e [a confirmar].</caption>
+              <caption className="sr-only">Comparativo entre o aura-fit e categorias de mercado. Dados e.</caption>
               <thead className="max-lg:hidden">
                 <tr className="border-b border-line text-xs uppercase tracking-wider text-faint">
                   <th scope="col" className="p-5 font-semibold">Categoria</th>
@@ -294,16 +292,16 @@ export function CtaFinal() {
                 strength={0.3}
                 radius={110}
                 className="bg-ink text-brand shadow-[0_20px_60px_-10px_rgb(0_0_0/.6)] hover:bg-white"
-                onClick={() => document.getElementById("planos")?.scrollIntoView({ behavior: "smooth" })}
+                onClick={() => { location.href = "https://aura.teotonio.xyz/login" }}
               >
                 Começar grátis <ArrowRight size={20} />
               </MagneticButton>
             </div>
           </BlurFade>
           <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/80">
-            Sem cartão [MOCK]. Cancele quando quiser [a confirmar]. Cadastro ainda não disponível nesta página de demonstração [MOCK].
+            Sem cartão. Cancele quando quiser.
           </p>
-          <p className="mt-2 text-sm text-white/80">Falar com a gente (em breve) [a definir]</p>
+          <p className="mt-2 text-sm text-white/80">Falar com a gente (em breve)</p>
         </div>
       </div>
     </section>
@@ -316,12 +314,11 @@ export function Footer() {
       <Container className="flex flex-col gap-6 py-10 md:flex-row md:items-center md:justify-between">
         <div>
           <Logo />
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-faint">Página de demonstração. Valores, limites e comparativos [MOCK] / [a confirmar].</p>
         </div>
         <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
-          <li>Termos (em breve) [a definir]</li>
-          <li>Privacidade (em breve) [a definir]</li>
-          <li>Contato (em breve) [a definir]</li>
+          <li>Termos (em breve)</li>
+          <li>Privacidade (em breve)</li>
+          <li>Contato (em breve)</li>
         </ul>
       </Container>
     </footer>

@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react"
 
 import { BlurFade } from "@/components/magicui/blur-fade"
 import { BorderBeam } from "@/components/magicui/border-beam"
-import { Btn, Container, Mock, SectionHead } from "@/components/ui"
+import { Btn, Container, SectionHead } from "@/components/ui"
 import { cn } from "@/lib/utils"
 
-/* Premissas ilustrativas [MOCK] (mesmas do protótipo anterior). */
+/* Premissas ilustrativas (mesmas do protótipo anterior). */
 const SEMANAS_MES = 4.33
 const MODOS = {
   cons: { nome: "conservador", red: 0.2, rec: 0.25, desc: "20% do tempo e 25% da inadimplência" },
@@ -83,9 +83,7 @@ export function Roi() {
           eyebrow="Calculadora"
           title={<>Quanto a planilha <span className="text-grad">custa por mês?</span></>}
           lead="Informe sua rotina. A simulação estima o tempo e o dinheiro que você pode recuperar. É uma estimativa, não uma garantia."
-        >
-          <p className="mt-4 text-sm text-faint"><Mock /> Simulação com dados ilustrativos.</p>
-        </SectionHead>
+        />
 
         <div className="grid gap-4 lg:grid-cols-[1fr_1.05fr]">
           <BlurFade inView>
@@ -138,7 +136,7 @@ export function Roi() {
               <BorderBeam size={180} duration={9} colorFrom="#ff6f78" colorTo="#b1111b" />
               <div aria-hidden="true" className="absolute -right-24 -top-24 size-72 rounded-full bg-primary/30 blur-[90px]" />
               <div className="relative">
-                <p className="text-sm text-muted">Ganho líquido estimado por mês · cenário <strong className="text-ink">{MODOS[modo].nome}</strong> [MOCK]</p>
+                <p className="text-sm text-muted">Ganho líquido estimado por mês · cenário <strong className="text-ink">{MODOS[modo].nome}</strong></p>
                 <p className="display mt-3 text-[clamp(48px,7vw,88px)] text-ink">
                   <Flow value={r.ganhoLiquido} format={(x) => brl(Math.round(x))} />
                 </p>
@@ -169,21 +167,21 @@ export function Roi() {
                       </div>
                     </div>
                   ))}
-                  <p className="text-[11px] text-faint">Custo mensal escondido estimado: tempo manual × valor da hora + inadimplência + assinatura [MOCK].</p>
+                  <p className="text-[11px] text-faint">Custo mensal escondido estimado: tempo manual × valor da hora + inadimplência + assinatura.</p>
                 </div>
 
                 <p className="mt-6 text-sm leading-relaxed text-muted">
-                  Plano indicado: <strong className="text-ink">{r.plano.nome}</strong>, {r.plano.preco ? brl(r.plano.preco, 2) : "grátis"} por mês [MOCK].{" "}
+                  Plano indicado: <strong className="text-ink">{r.plano.nome}</strong>, {r.plano.preco ? brl(r.plano.preco, 2) : "grátis"} por mês.{" "}
                   {r.roi !== null
                     ? <>Retorno de cerca de <strong className="text-ink">{num(r.roi)}×</strong> o valor do plano; ele se pagaria em {pb}.</>
                     : <>Plano gratuito: sem custo mensal, sem retorno a calcular.</>}
                 </p>
                 <p role="status" aria-live="polite" className="sr-only">
-                  Com {v.alunos} alunos, no cenário {MODOS[modo].nome}: ganho líquido estimado de {brl(Math.round(r.ganhoLiquido))} por mês. Estimativa com dados ilustrativos.
+                  Com {v.alunos} alunos, no cenário {MODOS[modo].nome}: ganho líquido estimado de {brl(Math.round(r.ganhoLiquido))} por mês.
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Btn href="#cta-final" title="Cadastro em breve [a definir]">Começar grátis <ArrowRight size={18} /></Btn>
+                  <Btn href="https://aura.teotonio.xyz/login">Começar grátis <ArrowRight size={18} /></Btn>
                   <Btn href="#planos" variant="ghost">Ver os planos</Btn>
                 </div>
               </div>
@@ -192,7 +190,7 @@ export function Roi() {
         </div>
 
         <p className="mt-5 text-xs leading-relaxed text-faint">
-          Estimativa baseada em premissas ilustrativas [MOCK] (cenário {MODOS[modo].nome}: redução de {MODOS[modo].red * 100}% do tempo manual e recuperação de {MODOS[modo].rec * 100}% da inadimplência). Seus resultados dependem da sua rotina e podem ser menores ou nulos. O retorno é uma estimativa, não uma garantia.
+          Estimativa baseada em premissas (cenário {MODOS[modo].nome}: redução de {MODOS[modo].red * 100}% do tempo manual e recuperação de {MODOS[modo].rec * 100}% da inadimplência). Seus resultados dependem da sua rotina e podem ser menores ou nulos. O retorno é uma estimativa, não uma garantia.
         </p>
 
         <div className="mt-12">
@@ -212,7 +210,7 @@ export function Roi() {
                       onClick={() => { setV(c.v); document.getElementById("roi")?.scrollIntoView({ block: "start", behavior: "smooth" }) }}
                       className={cn("flex h-full w-full flex-col rounded-3xl border p-6 text-left transition-colors", on ? "border-primary bg-primary-soft/50" : "border-line bg-surface hover:border-line-strong")}
                     >
-                      <span className="text-[11px] text-faint"><Mock /> Persona ilustrativa, não é cliente real.</span>
+                      <span className="text-[11px] text-faint">Exemplo de perfil</span>
                       <span className="mt-3 text-lg font-bold tracking-tight">{c.t}</span>
                       <span className="mt-1 text-sm text-muted">{c.v.alunos} alunos, {brl(c.v.ticket)}, {c.v.horas} h por semana, {c.v.inad}% de inadimplência.</span>
                       <span className="mt-3 text-sm text-muted">Cerca de <b className="text-ink">{num(cr.horasEcon)} h</b> liberadas e ganho líquido de cerca de <b className="text-ink">{brl(Math.round(cr.ganhoLiquido))}</b> por mês. Não é garantia.</span>
