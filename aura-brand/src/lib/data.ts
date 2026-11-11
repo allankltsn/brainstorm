@@ -16,35 +16,11 @@ export const notifications = [
   { id: 'n3', title: 'Sua assinatura renova em 03/12', when: 'ontem', unread: false },
 ]
 
-/* Fila "Precisa de você": a IA só sugere, nunca publica sem aprovação. */
-export type Draft = {
-  id: string
-  kind: 'Post' | 'Carrossel' | 'Resposta' | 'E-mail'
-  channel: string
-  title: string
-  text: string
-  when: string
-}
-export const drafts: Draft[] = [
+/* Respostas sugeridas pela Aura para conversas. Os posts ficam em lib/content.tsx. */
+export type ReplyDraft = { id: string; channel: string; title: string; text: string; when: string }
+export const replyDrafts: ReplyDraft[] = [
   {
-    id: 'd1',
-    kind: 'Post',
-    channel: 'Instagram',
-    title: 'Novo blend de inverno',
-    text: 'Chegou o blend que a gente torrou pensando nas manhãs frias: notas de cacau, mel e um final de laranja. Disponível a partir de sexta, no balcão e no site.',
-    when: 'Sugerido para sexta, 09:00',
-  },
-  {
-    id: 'd2',
-    kind: 'Carrossel',
-    channel: 'Instagram',
-    title: '5 erros ao passar café coado',
-    text: 'Carrossel com 6 telas: água fervendo demais, moagem errada, filtro sem escaldar, proporção no olho e café velho. Fecha com convite para a oficina de sábado.',
-    when: 'Sugerido para segunda, 18:30',
-  },
-  {
-    id: 'd3',
-    kind: 'Resposta',
+    id: 'r1',
     channel: 'WhatsApp',
     title: 'Resposta para Marcos Teixeira',
     text: 'Oi, Marcos! Temos sim o kit presente com dois cafés e a caneca. Sai por R$ 129 e entregamos em até 2 dias úteis na sua região. Quer que eu separe um para você?',

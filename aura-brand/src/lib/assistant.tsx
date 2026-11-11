@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { toast } from 'sonner'
 import type { GlowCloudMood } from '@/components/affect/glow-cloud'
-import { drafts, leadSources } from './data'
+import { leadSources } from './data'
 
 /* Assistente "Aura": estado, voz e respostas de exemplo (sem servidor: tudo simulado no protótipo). */
 
@@ -40,14 +40,14 @@ function reply(q: string): Omit<AssistantMessage, 'id' | 'from'> {
   const t = norm(q)
   if (/(precisa de mim|pendent|aprovar|aprovac|fila|hoje)/.test(t))
     return {
-      text: `Há ${drafts.length} rascunhos esperando você: ${drafts.map((d) => `${d.kind.toLowerCase()} "${d.title}"`).join(', ')}. Nada é publicado sem a sua aprovação.`,
-      actions: [{ label: 'Ver o início', to: '/inicio' }],
+      text: 'Os rascunhos de posts e a resposta sugerida no WhatsApp esperam a sua revisão. Nada é publicado ou enviado sem a sua aprovação.',
+      actions: [{ label: 'Abrir a fila de aprovação', to: '/conteudo?aba=fila' }],
     }
   if (/(lead|origem|captac|de onde)/.test(t)) {
     const total = leadSources.reduce((n, s) => n + s.leads, 0)
     return { text: `Foram ${total} leads nos últimos 7 dias. A maior origem é ${leadSources[0].source}, com ${leadSources[0].leads}.`, actions: [{ label: 'Abrir clientes', to: '/clientes' }] }
   }
-  if (/(post|carrossel|conteudo|legenda|imagem)/.test(t)) return { text: 'Vou preparar um rascunho usando o seu brand kit. Ele entra na fila de aprovação e só é publicado depois que você aprovar.', actions: [{ label: 'Abrir conteúdo', to: '/conteudo' }] }
+  if (/(post|carrossel|conteudo|legenda|imagem)/.test(t)) return { text: 'Vou preparar um rascunho usando o seu brand kit. Ele entra na fila de aprovação e só é publicado depois que você aprovar.', actions: [{ label: 'Criar rascunho', to: '/conteudo' }] }
   if (/(marca|brand|logo|paleta|cor|fonte|tipografia|tom de voz|briefing)/.test(t)) return { text: 'O brand kit reúne logo, paleta, tipografia e tom de voz. Responda o briefing e eu sugiro tudo para você revisar.', actions: [{ label: 'Abrir a marca', to: '/marca' }] }
   if (/(mensag|conversa|whatsapp|instagram|e-?mail)/.test(t)) return { text: 'Há 1 conversa nova no WhatsApp. Deixei uma resposta sugerida para você revisar.', actions: [{ label: 'Abrir conversas', to: '/conversas' }] }
   if (/(assinatura|plano|pagamento|cobranca|credito)/.test(t)) return { text: 'Seu plano é o Pro. Você usou 340 de 1.000 créditos de IA neste mês e a próxima cobrança é em 03/12.', actions: [{ label: 'Ver assinatura', to: '/configuracoes?aba=assinatura' }] }

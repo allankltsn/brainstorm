@@ -35,6 +35,7 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { AssistantProvider } from '@/lib/assistant'
+import { useContent } from '@/lib/content'
 import { initials, notifications, session } from '@/lib/data'
 import { currentNav, NAV, pageTitle, type NavItem } from '@/lib/nav'
 import { useTheme } from '@/lib/theme'
@@ -73,7 +74,7 @@ function NavEntry({ item }: { item: NavItem }) {
       {item.badge ? (
         <SidebarMenuBadge className="top-2.5 rounded-full bg-primary px-1.5 text-primary-foreground peer-data-[active=true]/menu-button:text-primary-foreground">
           {item.badge}
-          <span className="sr-only"> novos</span>
+          <span className="sr-only"> esperando você</span>
         </SidebarMenuBadge>
       ) : null}
     </SidebarMenuItem>
@@ -99,7 +100,7 @@ function NewButton() {
       <DropdownMenuContent align="start" className="w-60">
         <DropdownMenuLabel className="text-xs text-muted-foreground">O que você quer fazer?</DropdownMenuLabel>
         <DropdownMenuItem onSelect={go('/conteudo')}>
-          <PenLine /> Criar post
+          <PenLine /> Criar rascunho de post
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={go('/marca?aba=briefing')}>
           <Sparkles /> Gerar brand kit com IA
@@ -209,7 +210,7 @@ function ThemeToggle() {
 
 function BottomNav() {
   const { pathname } = useLocation()
-  const items = NAV
+  const items = useNav()
   const current = currentNav(pathname)?.to
   return (
     <nav aria-label="Principal" className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
@@ -237,9 +238,16 @@ function BottomNav() {
   )
 }
 
+/* O menu é fixo; o número ao lado de Conteúdo vem da fila de aprovação. */
+function useNav(): NavItem[] {
+  const { queue } = useContent()
+  return NAV.map((i) => (i.to === '/conteudo' ? { ...i, badge: queue.length || undefined } : i))
+}
+
 export function AppShell() {
   const { pathname } = useLocation()
   const [search, setSearch] = useState(false)
+  const nav = useNav()
   return (
     <AssistantProvider>
       <SidebarProvider>
@@ -258,7 +266,7 @@ export function AppShell() {
             <SidebarGroup>
               <SidebarGroupContent>
                 <SidebarMenu className="gap-1">
-                  {NAV.map((it) => (
+                  {nav.map((it) => (
                     <NavEntry key={it.to} item={it} />
                   ))}
                 </SidebarMenu>

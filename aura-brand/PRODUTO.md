@@ -40,7 +40,10 @@ Planos e assinatura (Stripe), cupons, fila "Precisa de você", chat e notificaç
 Treino, alunos, exercícios, recrutamento e "Pensamento do dia".
 
 ## Estado do app
-O app está montado em `aura-brand/` (ver `README.md`): shell, tema roxo, Início com a fila "Precisa de você" e o módulo 1, **Brand kit**, completo no protótipo (briefing, logo, paleta, tipografia, tom de voz e aprovação por parte).
+O app está em `aura-brand/` (ver `README.md`). Prontos no protótipo:
+- shell, tema roxo e Início com a fila "Precisa de você";
+- módulo 1, **Brand kit**: briefing, logo, paleta, tipografia, tom de voz e aprovação por parte;
+- módulo 2, **Gerador de conteúdo**: criar rascunho de post ou carrossel, fila de aprovação com edição e prévia, e agendados.
 
 ## Próximo passo
-Módulo 2, **Gerador de conteúdo** (`#/conteudo`): criar posts e carrosséis a partir do brand kit aprovado, com a fila de aprovação.
+Módulo 3, **Agendamento e publicação**: calendário dos agendados, conexão das redes e estado de cada publicação.

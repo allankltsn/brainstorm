@@ -11,7 +11,8 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } f
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Progress } from '@/components/ui/progress'
 import { SECTIONS, useBrand } from '@/lib/brand'
-import { AI_CREDITS, drafts as DRAFTS, firstName, leadSources, leadsWeek, session, TODAY_LABEL, type Draft } from '@/lib/data'
+import { channelOf, formatOf, useContent, whenLabel } from '@/lib/content'
+import { AI_CREDITS, firstName, leadSources, leadsWeek, replyDrafts, session, TODAY_LABEL, type ReplyDraft } from '@/lib/data'
 
 function Kpi({ label, children, foot }: { label: string; children: React.ReactNode; foot?: React.ReactNode }) {
   return (
@@ -31,16 +32,18 @@ const STATUS_TONE = { vazio: 'neutral', sugerido: 'warning', aprovado: 'success'
 export function Inicio() {
   const navigate = useNavigate()
   const { kit, approved } = useBrand()
-  const [pending, setPending] = useState(DRAFTS)
-  const [open, setOpen] = useState<Draft | null>(null)
+  const { queue, scheduled, remove, restore } = useContent()
+  const [replies, setReplies] = useState(replyDrafts)
+  const [open, setOpen] = useState<ReplyDraft | null>(null)
+  const pendingCount = queue.length + replies.length
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
   const totalLeads = leadSources.reduce((n, s) => n + s.leads, 0)
   const topSource = Math.max(...leadSources.map((s) => s.leads))
 
-  const done = (d: Draft, message: string) => {
-    setPending((l) => l.filter((x) => x.id !== d.id))
-    toast.success(message, { action: { label: 'Desfazer', onClick: () => setPending((l) => [d, ...l.filter((x) => x.id !== d.id)]) } })
+  const done = (d: ReplyDraft, message: string) => {
+    setReplies((l) => l.filter((x) => x.id !== d.id))
+    toast.success(message, { action: { label: 'Desfazer', onClick: () => setReplies((l) => [d, ...l.filter((x) => x.id !== d.id)]) } })
   }
 
   return (
@@ -51,21 +54,21 @@ export function Inicio() {
           <>
             Hoje é {TODAY_LABEL}.{' '}
             <strong className="font-medium text-foreground">
-              {pending.length === 0 ? 'Nada pendente' : `${pending.length} ${pending.length === 1 ? 'rascunho espera' : 'rascunhos esperam'} a sua aprovação`}
+              {pendingCount === 0 ? 'Nada pendente' : `${pendingCount} ${pendingCount === 1 ? 'rascunho espera' : 'rascunhos esperam'} a sua aprovação`}
             </strong>
             .
           </>
         }
         actions={
           <Button icon={<Sparkles />} onClick={() => navigate('/conteudo')}>
-            Criar post
+            Criar rascunho
           </Button>
         }
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Section title="Precisa de você" description="A Aura só sugere. Nada é publicado ou enviado sem a sua aprovação." className="min-w-0 lg:col-span-2">
-          {pending.length === 0 ? (
+          {pendingCount === 0 ? (
             <div className="flex flex-col items-center gap-1.5 py-8 text-center">
               <span className="flex size-10 items-center justify-center rounded-full bg-success-soft text-success">
                 <Check className="size-5" />
@@ -75,19 +78,45 @@ export function Inicio() {
             </div>
           ) : (
             <ul className="-mx-2 divide-y">
-              {pending.map((d) => (
+              {queue.map((c) => (
+                <li key={c.id} className="flex flex-wrap items-center gap-x-4 gap-y-2.5 px-2 py-3.5">
+                  <div className="min-w-0 flex-1 basis-64">
+                    <p className="flex flex-wrap items-center gap-2 text-sm font-medium">
+                      {c.headline}
+                      <Pill tone="brand">
+                        {formatOf(c.format).label} para {channelOf(c.channel).label}
+                      </Pill>
+                    </p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">Sugerido para {whenLabel(c.when)}</p>
+                  </div>
+                  <div className="flex gap-1">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        remove(c.id)
+                        toast(`"${c.headline}" foi descartado`, { action: { label: 'Desfazer', onClick: () => restore(c) } })
+                      }}
+                    >
+                      Descartar
+                    </Button>
+                    <Button size="sm" variant="secondary" onClick={() => navigate(`/conteudo?aba=fila&id=${c.id}`)}>
+                      Revisar
+                    </Button>
+                  </div>
+                </li>
+              ))}
+              {replies.map((d) => (
                 <li key={d.id} className="flex flex-wrap items-center gap-x-4 gap-y-2.5 px-2 py-3.5">
                   <div className="min-w-0 flex-1 basis-64">
                     <p className="flex flex-wrap items-center gap-2 text-sm font-medium">
                       {d.title}
-                      <Pill tone="brand">
-                        {d.kind} · {d.channel}
-                      </Pill>
+                      <Pill tone="info">Resposta no {d.channel}</Pill>
                     </p>
                     <p className="mt-0.5 text-xs text-muted-foreground">{d.when}</p>
                   </div>
                   <div className="flex gap-1">
-                    <Button size="sm" variant="ghost" onClick={() => done(d, `"${d.title}" foi descartado`)}>
+                    <Button size="sm" variant="ghost" onClick={() => done(d, `"${d.title}" foi descartada`)}>
                       Descartar
                     </Button>
                     <Button
@@ -135,7 +164,7 @@ export function Inicio() {
         <Kpi label="Leads em 7 dias" foot="12 a mais que na semana passada">
           <NumberTicker value={totalLeads} />
         </Kpi>
-        <Kpi label="Posts publicados no mês" foot="3 agendados para esta semana">
+        <Kpi label="Posts publicados no mês" foot={`${scheduled.length} ${scheduled.length === 1 ? 'agendado' : 'agendados'} para os próximos dias`}>
           <NumberTicker value={14} />
         </Kpi>
         <Kpi label="Conversas sem resposta" foot="A mais antiga chegou há 40 min">
@@ -185,7 +214,7 @@ export function Inicio() {
           <DialogHeader>
             <DialogTitle>{open?.title}</DialogTitle>
             <DialogDescription>
-              {open?.kind} para {open?.channel}. A Aura escreveu no tom de voz da sua marca. Ajuste o que quiser antes de aprovar.
+Resposta no {open?.channel}. A Aura escreveu no tom de voz da sua marca. Ajuste o que quiser antes de enviar.
             </DialogDescription>
           </DialogHeader>
           <TextArea aria-label="Texto do rascunho" minRows={4} maxRows={10} maxLength={600} counter value={text} onChange={(e) => setText(e.target.value)} />
@@ -200,12 +229,12 @@ export function Inicio() {
                 setSending(true)
                 setTimeout(() => {
                   setSending(false)
-                  if (open) done(open, open.kind === 'Resposta' ? 'Resposta enviada' : `"${open.title}" foi aprovado e agendado`)
+                  if (open) done(open, 'Resposta enviada')
                   setOpen(null)
                 }, 800)
               }}
             >
-              {sending ? 'Salvando' : open?.kind === 'Resposta' ? 'Aprovar e enviar' : 'Aprovar e agendar'}
+              {sending ? 'Enviando' : 'Aprovar e enviar'}
             </Button>
           </DialogFooter>
         </DialogContent>

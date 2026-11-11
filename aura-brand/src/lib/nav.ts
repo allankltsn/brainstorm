@@ -11,7 +11,7 @@ export type NavItem = { to: string; label: string; icon: LucideIcon; badge?: num
 export const NAV: NavItem[] = [
   { to: '/inicio', label: 'Início', icon: Home },
   { to: '/marca', label: 'Marca', icon: SwatchBook },
-  { to: '/conteudo', label: 'Conteúdo', icon: PenLine, badge: 2 },
+  { to: '/conteudo', label: 'Conteúdo', icon: PenLine },
   { to: '/clientes', label: 'Clientes', icon: Users },
   { to: '/conversas', label: 'Conversas', icon: Inbox, badge: 1 },
 ]

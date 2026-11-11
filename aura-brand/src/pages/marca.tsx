@@ -8,6 +8,7 @@ import { TagInput } from '@/components/affect/tag-input'
 import { TextArea } from '@/components/affect/text-area'
 import { TextField } from '@/components/affect/text-field'
 import { ThinkingLoader } from '@/components/affect/thinking-loader'
+import { brandName, LogoMark, PostPreview } from '@/components/brand-preview'
 import { PageHeader, Pill, Section } from '@/components/page'
 import { Progress } from '@/components/ui/progress'
 import {
@@ -21,13 +22,11 @@ import {
   SECTIONS,
   useBrand,
   type Briefing,
-  type BrandKit,
   type LogoStyle,
   type Palette,
   type SectionId,
   type Voice,
 } from '@/lib/brand'
-import { initials } from '@/lib/data'
 import { useTab } from '@/lib/use-tab'
 import { cn } from '@/lib/utils'
 
@@ -47,71 +46,6 @@ const SEGMENTS = [
   { value: 'tecnologia', label: 'Tecnologia' },
   { value: 'outro', label: 'Outro' },
 ]
-
-const brandName = (kit: BrandKit) => kit.briefing.name.trim() || 'Sua marca'
-
-/* Logo de exemplo, desenhado a partir do nome e da paleta. Em produção, a IA gera as opções. */
-function LogoMark({ kit, style = kit.logo.style, className }: { kit: BrandKit; style?: LogoStyle; className?: string }) {
-  const { palette } = kit
-  const name = brandName(kit)
-  const font = fontPair(kit.fontId).heading
-  if (kit.logo.upload && style === kit.logo.style) return <img src={kit.logo.upload} alt={`Logo de ${name}`} className={cn('object-contain', className)} />
-  const label = `Logo de ${name}, estilo ${style}`
-  if (style === 'palavra')
-    return (
-      <svg viewBox="0 0 200 80" role="img" aria-label={label} className={className}>
-        <text x="100" y="46" textAnchor="middle" fontFamily={font} fontSize={name.length > 12 ? 20 : 26} fontWeight="700" letterSpacing="-0.5" fill={palette.primary}>
-          {name}
-        </text>
-        <rect x="80" y="58" width="40" height="4" rx="2" fill={palette.accent} />
-      </svg>
-    )
-  if (style === 'selo')
-    return (
-      <svg viewBox="0 0 200 80" role="img" aria-label={label} className={className}>
-        <circle cx="100" cy="40" r="34" fill="none" stroke={palette.primary} strokeWidth="3" />
-        <circle cx="100" cy="40" r="27" fill={palette.secondary} />
-        <text x="100" y="48" textAnchor="middle" fontFamily={font} fontSize="22" fontWeight="700" fill={palette.primary}>
-          {initials(name)}
-        </text>
-      </svg>
-    )
-  return (
-    <svg viewBox="0 0 200 80" role="img" aria-label={label} className={className}>
-      <rect x="68" y="8" width="64" height="64" rx="16" fill={palette.primary} />
-      <text x="100" y="50" textAnchor="middle" fontFamily={font} fontSize="28" fontWeight="700" fill={onColor(palette.primary)}>
-        {initials(name)}
-      </text>
-      <circle cx="124" cy="18" r="6" fill={palette.accent} />
-    </svg>
-  )
-}
-
-/* Como a marca fica num post: junta logo, cores, fontes e tom de voz. */
-function PostPreview({ kit }: { kit: BrandKit }) {
-  const { palette } = kit
-  const font = fontPair(kit.fontId)
-  const name = brandName(kit)
-  return (
-    <figure className="overflow-hidden rounded-xl border" style={{ background: palette.surface, color: palette.ink }}>
-      <div className="flex items-center gap-2.5 px-4 py-3" style={{ fontFamily: font.body }}>
-        <span className="flex size-9 items-center justify-center rounded-full text-xs font-semibold" style={{ background: palette.primary, color: onColor(palette.primary) }}>
-          {initials(name)}
-        </span>
-        <span className="text-sm font-semibold">{name}</span>
-      </div>
-      <div className="flex aspect-[4/3] flex-col justify-end p-5" style={{ background: palette.primary, color: onColor(palette.primary) }}>
-        <span className="mb-2 h-1 w-10 rounded-full" style={{ background: palette.accent }} />
-        <p className="text-2xl leading-tight font-bold text-balance" style={{ fontFamily: font.heading }}>
-          {kit.briefing.offer.trim() || 'O título do seu próximo post aparece aqui'}
-        </p>
-      </div>
-      <figcaption className="px-4 py-3 text-sm leading-relaxed" style={{ fontFamily: font.body }}>
-        {kit.voice.sample || 'A legenda segue o tom de voz que você aprovar.'}
-      </figcaption>
-    </figure>
-  )
-}
 
 /* Rodapé de cada parte do kit: estado em texto e a ação de aprovar. */
 function Approval({ section }: { section: SectionId }) {
