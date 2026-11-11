@@ -1,4 +1,4 @@
-import { Activity, Dumbbell, Home, LayoutGrid, MessageSquare, Users, type LucideIcon } from 'lucide-react'
+import { Activity, Dumbbell, Home, LayoutGrid, MessageSquare, TrendingUp, Users, type LucideIcon } from 'lucide-react'
 import type { Role } from './data'
 
 export type NavItem = { to: string; label: string; icon: LucideIcon; badge?: number }
@@ -20,6 +20,7 @@ export const NAV: Record<Role, NavItem[]> = {
   aluno: [
     { to: '/inicio', label: 'Início', icon: Home },
     { to: '/treino', label: 'Meu treino', icon: Dumbbell },
+    { to: '/evolucao', label: 'Evolução', icon: TrendingUp },
     { to: '/mensagens', label: 'Mensagens', icon: MessageSquare },
   ],
   admin: [
@@ -37,6 +38,11 @@ const TITLES: Record<string, string> = {
   '/planos': 'Planos',
   '/assinatura': 'Assinatura',
   '/avisos': 'Avisos',
+  '/check-in': 'Check-in',
+  '/primeiros-passos': 'Primeiros passos',
+  '/pagamentos': 'Pagamentos',
+  '/cobrancas': 'Cobranças',
+  '/suporte': 'Ajuda e suporte',
 }
 
 export function currentNav(role: Role, path: string) {

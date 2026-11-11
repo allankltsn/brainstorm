@@ -40,6 +40,14 @@ import { Usuarios } from '@/pages/usuarios'
 import { ExercicioDetalhe, ExercicioForm } from '@/pages/exercicio'
 import { TreinoEditor } from '@/pages/treino-editor'
 import { Treinos } from '@/pages/treinos'
+import { AlunoLinhaDoTempo } from '@/pages/aluno-linha-do-tempo'
+import { CheckIn } from '@/pages/check-in'
+import { Cobrancas } from '@/pages/cobrancas'
+import { CreditosIA } from '@/pages/creditos-ia'
+import { Evolucao } from '@/pages/evolucao'
+import { Pagamentos } from '@/pages/pagamentos'
+import { PrimeirosPassos } from '@/pages/primeiros-passos'
+import { Suporte } from '@/pages/suporte'
 
 function PlanosPorPerfil() {
   return useRole().role === 'admin' ? <AdminPlanos /> : <Planos />
@@ -70,7 +78,16 @@ export default function App() {
                 <Route path="/alunos" element={<Alunos />} />
                 <Route path="/alunos/:id" element={<AlunoDetalhe />} />
                 <Route path="/alunos/:id/vinculo" element={<AlunoVinculo />} />
+                <Route path="/alunos/:id/evolucao" element={<Evolucao />} />
+                <Route path="/alunos/:id/linha-do-tempo" element={<AlunoLinhaDoTempo />} />
                 <Route path="/convidar-aluno" element={<ConvidarAluno />} />
+                <Route path="/evolucao" element={<Evolucao />} />
+                <Route path="/check-in" element={<CheckIn />} />
+                <Route path="/primeiros-passos" element={<PrimeirosPassos />} />
+                <Route path="/pagamentos" element={<Pagamentos />} />
+                <Route path="/cobrancas" element={<Cobrancas />} />
+                <Route path="/suporte" element={<Suporte />} />
+                <Route path="/ia/creditos" element={<CreditosIA />} />
                 <Route path="/treino" element={<MeuTreino />} />
                 <Route path="/usuarios" element={<Usuarios />} />
                 <Route path="/usuarios/permissoes" element={<Permissoes />} />

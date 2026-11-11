@@ -50,10 +50,20 @@ npm run dev
 - Importar planilha com revisão (`#/treinos/importar`) e dados usados pela IA (`#/ia/dados`)
 - Admin: detalhe do usuário (`#/usuarios/u1`), permissões por perfil (`#/usuarios/permissoes`) e relatório de cupom (`#/planos/cupons/PRO20`)
 - Página não encontrada (qualquer rota inexistente)
+- Evolução do aluno: resumo, treinos feitos, peso e medidas (`#/evolucao` no perfil aluno; `#/alunos/s03/evolucao` no personal)
+- Check-in do aluno: peso, medidas, fotos e observação (`#/check-in`)
+- Linha do tempo do aluno, com anotações (`#/alunos/s03/linha-do-tempo`)
+- Primeiros passos do aluno (`#/primeiros-passos`)
+- Cobranças do personal ao aluno (`#/cobrancas`) e pagamentos na visão do aluno (`#/pagamentos`)
+- Créditos de IA (`#/ia/creditos`)
+- Ajuda e suporte (`#/suporte`)
+- Aniversários (início do personal) e frase do dia (início do aluno)
 - Kit de interface: cores e componentes dos dois kits lado a lado (`#/design-system`)
 
 Ainda faltam, do protótipo antigo: histórico de versões do treino, atribuir treino a aluno, visibilidade e personalização de exercício,
 responsáveis do aluno, excluir conta e exportar dados, e as variantes de erro de cada tela.
+
+Nas listas novas, acrescente `?estado=erro` ou `?estado=vazio` ao endereço para ver os estados de erro e vazio (`src/lib/use-load.ts`).
 
 ## Como o menu é organizado
 

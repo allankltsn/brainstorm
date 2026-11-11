@@ -12,6 +12,7 @@ import { TextArea } from '@/components/affect/text-area'
 import { ThinkingLoader } from '@/components/affect/thinking-loader'
 import { PageHeader, Pill, Section } from '@/components/page'
 import { students } from '@/lib/data'
+import { aiCredits } from '@/lib/finance'
 
 type Goal = 'hipertrofia' | 'emagrecimento' | 'condicionamento'
 
@@ -43,9 +44,14 @@ export function IA() {
         title="Sugerir treino com IA"
         description="A IA monta um rascunho. Você revisa e decide o que vai para o aluno."
         actions={
+          <>
+          <Link to="/ia/creditos" className="text-sm font-medium text-brand-text underline-offset-4 hover:underline">
+            {aiCredits.monthly - aiCredits.used + aiCredits.extra} créditos
+          </Link>
           <Link to="/ia/dados" className="text-sm font-medium text-brand-text underline-offset-4 hover:underline">
             Quais dados a IA usa
           </Link>
+          </>
         }
       />
       <div className="grid gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
