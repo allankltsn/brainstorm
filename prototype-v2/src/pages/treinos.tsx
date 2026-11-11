@@ -80,7 +80,7 @@ export function Treinos() {
                   <Button size="sm" variant="ghost" onClick={() => navigate(`/treinos/${m.id}`)}>
                     Editar
                   </Button>
-                  <Button size="sm" variant="secondary" className="flex-1" onClick={() => navigate('/alunos')}>
+                  <Button size="sm" variant="secondary" className="flex-1" onClick={() => navigate(`/treinos/${m.id}/atribuir`)}>
                     Usar com um aluno
                   </Button>
                 </div>

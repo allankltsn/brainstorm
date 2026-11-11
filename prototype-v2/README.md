@@ -49,6 +49,13 @@ npm run dev
 - Enviar questionário e criar modelo (`#/acompanhamento/questionarios/enviar`, `.../modelo`)
 - Importar planilha com revisão (`#/treinos/importar`) e dados usados pela IA (`#/ia/dados`)
 - Admin: detalhe do usuário (`#/usuarios/u1`), permissões por perfil (`#/usuarios/permissoes`) e relatório de cupom (`#/planos/cupons/PRO20`)
+- Treino: histórico de versões (`#/treinos/t1/versoes`) e usar com alunos (`#/treinos/t1/atribuir`)
+- Exercício: quem pode ver (`#/treinos/exercicios/e01/visibilidade`) e criar minha versão (`.../personalizar`)
+- Aluno: modo de acompanhamento e responsáveis (`#/alunos/s01/responsaveis`)
+- Conta: cópia dos dados e excluir conta (`#/configuracoes?aba=privacidade`, `#/configuracoes/excluir-conta`)
+- Planos: pagamento não concluído (cartão começando com 4000 simula a recusa)
+- Admin: criar e editar cupom (`#/planos/cupons/novo`), novo plano e perfis de acesso (`#/usuarios/perfis`)
+- Acesso negado (`#/acesso-negado`) e em breve (`#/em-breve/agenda`)
 - Página não encontrada (qualquer rota inexistente)
 - Evolução do aluno: resumo, treinos feitos, peso e medidas (`#/evolucao` no perfil aluno; `#/alunos/s03/evolucao` no personal)
 - Check-in do aluno: peso, medidas, fotos e observação (`#/check-in`)
@@ -60,8 +67,7 @@ npm run dev
 - Aniversários (início do personal) e frase do dia (início do aluno)
 - Kit de interface: cores e componentes dos dois kits lado a lado (`#/design-system`)
 
-Ainda faltam, do protótipo antigo: histórico de versões do treino, atribuir treino a aluno, visibilidade e personalização de exercício,
-responsáveis do aluno, excluir conta e exportar dados, e as variantes de erro de cada tela.
+Do protótipo antigo ainda faltam as variantes de erro e de limite de cada tela.
 
 Nas listas novas, acrescente `?estado=erro` ou `?estado=vazio` ao endereço para ver os estados de erro e vazio (`src/lib/use-load.ts`).
 

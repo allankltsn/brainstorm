@@ -1,4 +1,4 @@
-import { Check, CreditCard, Lock, PartyPopper, Tag } from 'lucide-react'
+import { Check, CircleX, CreditCard, Lock, PartyPopper, Tag } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -11,7 +11,7 @@ import { brl } from '@/lib/data'
 import { cn } from '@/lib/utils'
 
 type Cycle = 'mensal' | 'anual'
-type Step = 'escolher' | 'pagamento' | 'confirmado'
+type Step = 'escolher' | 'pagamento' | 'confirmado' | 'recusado'
 const CURRENT = 'pro'
 
 const price = (p: Plan, c: Cycle) => (c === 'anual' ? p.monthly * (1 - ANNUAL_DISCOUNT) : p.monthly)
@@ -76,7 +76,22 @@ export function Planos() {
           </ul>
         </>
       )}
-      {step === 'pagamento' && chosen && <Pagamento plan={chosen} cycle={cycle} onBack={() => setStep('escolher')} onDone={() => setStep('confirmado')} />}
+      {step === 'pagamento' && chosen && <Pagamento plan={chosen} cycle={cycle} onBack={() => setStep('escolher')} onDone={(ok) => setStep(ok ? 'confirmado' : 'recusado')} />}
+      {step === 'recusado' && (
+        <div className="mx-auto flex max-w-md flex-col items-center gap-3 py-16 text-center">
+          <span className="flex size-14 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+            <CircleX className="size-7" />
+          </span>
+          <h1 className="text-xl font-semibold tracking-tight">Pagamento não concluído</h1>
+          <p className="text-sm text-muted-foreground">O banco recusou o cartão. Nada foi cobrado e seu plano continua o mesmo. Confira os dados ou tente outro cartão.</p>
+          <div className="mt-2 flex flex-wrap justify-center gap-2">
+            <Button variant="secondary" onClick={() => setStep('escolher')}>
+              Voltar aos planos
+            </Button>
+            <Button onClick={() => setStep('pagamento')}>Tentar de novo</Button>
+          </div>
+        </div>
+      )}
       {step === 'confirmado' && chosen && (
         <div className="mx-auto flex max-w-md flex-col items-center gap-3 py-16 text-center">
           <span className="flex size-14 items-center justify-center rounded-full bg-success-soft text-success">
@@ -93,7 +108,7 @@ export function Planos() {
   )
 }
 
-function Pagamento({ plan, cycle, onBack, onDone }: { plan: Plan; cycle: Cycle; onBack: () => void; onDone: () => void }) {
+function Pagamento({ plan, cycle, onBack, onDone }: { plan: Plan; cycle: Cycle; onBack: () => void; onDone: (ok: boolean) => void }) {
   const [code, setCode] = useState('')
   const [applied, setApplied] = useState<(typeof coupons)[number]>()
   const [codeError, setCodeError] = useState<string>()
@@ -125,7 +140,7 @@ function Pagamento({ plan, cycle, onBack, onDone }: { plan: Plan; cycle: Cycle; 
               </Button>
             </div>
           </Section>
-          <Section title="Cartão" description="Pagamento simulado: nada será cobrado.">
+          <Section title="Cartão" description="Pagamento simulado: nada será cobrado. Um cartão começando com 4000 simula a recusa.">
             <div className="grid gap-4">
               <TextField label="Número do cartão" inputMode="numeric" placeholder="0000 0000 0000 0000" prefix={<CreditCard className="size-4" />} value={card} onChange={(e) => setCard(e.target.value.replace(/[^\d ]/g, ''))} />
               <div className="grid grid-cols-2 gap-4">
@@ -161,7 +176,7 @@ function Pagamento({ plan, cycle, onBack, onDone }: { plan: Plan; cycle: Cycle; 
             onClick={() => {
               if (card.replace(/\s/g, '').length < 13) return toast.error('Informe o número do cartão')
               setPaying(true)
-              setTimeout(onDone, 1000)
+              setTimeout(() => onDone(!card.trim().startsWith('4000')), 1000)
             }}
           >
             {paying ? 'Processando' : 'Pagar'}
