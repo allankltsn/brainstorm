@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, MessageSquare, Send, TriangleAlert } from 'lucide-react'
+import { CheckCircle2, Clock, MessageSquare, Send, TrendingDown, TriangleAlert } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -6,9 +6,11 @@ import { Button } from '@/components/affect/button'
 import { SegmentedControl } from '@/components/affect/segmented-control'
 import { PageHeader, Person, Pill } from '@/components/page'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Progress } from '@/components/ui/progress'
+import { students } from '@/lib/data'
 import { useTab } from '@/lib/use-tab'
 
-const TABS = ['alertas', 'feitos', 'questionarios'] as const
+const TABS = ['alertas', 'frequencia', 'feitos', 'questionarios'] as const
 type Tab = (typeof TABS)[number]
 
 const ALERTS = [
@@ -28,6 +30,74 @@ const FORMS = [
   { name: 'Carlos Nunes', form: 'Rotina da semana', status: 'pendente', when: 'enviado há 3 dias' },
   { name: 'Paulo Ramos', form: 'Primeira avaliação', status: 'pendente', when: 'enviado há 5 dias' },
 ] as const
+
+/* Frequência: quem mais treinou no período e quem está caindo, para agir antes de o aluno parar. */
+function Frequencia() {
+  const navigate = useNavigate()
+  const [period, setPeriod] = useState<'semana' | 'mes'>('semana')
+  const k = period === 'semana' ? 1 : 4
+  const rows = students
+    .filter((s) => s.status === 'ativo' && s.plan)
+    .map((s, i) => {
+      const planned = (3 + (i % 3)) * k
+      const missed = Math.min(planned, Math.round(((s.lastSessionDays ?? 0) / 7) * (planned / k)) + (period === 'mes' ? i % 3 : 0))
+      return { s, planned, done: planned - missed, falling: (s.lastSessionDays ?? 0) >= 7 }
+    })
+    .sort((a, b) => b.done / b.planned - a.done / a.planned)
+  const falling = rows.filter((r) => r.falling)
+  return (
+    <>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-muted-foreground">
+          {falling.length} de {rows.length} alunos estão com a frequência caindo.
+        </p>
+        <SegmentedControl
+          aria-label="Período"
+          size="sm"
+          value={period}
+          onChange={setPeriod}
+          options={[
+            { value: 'semana', label: 'Esta semana' },
+            { value: 'mes', label: 'Este mês' },
+          ]}
+        />
+      </div>
+      <ol className="overflow-hidden rounded-xl border bg-card">
+        {rows.map((r, i) => {
+          const pct = Math.round((r.done / r.planned) * 100)
+          return (
+            <li key={r.s.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-4 py-3 last:border-b-0 sm:px-5">
+              <span className="w-5 text-sm font-medium text-muted-foreground tabular-nums">{i + 1}</span>
+              <div className="min-w-0 flex-1 basis-40">
+                <Person name={r.s.name} sub={r.s.plan} size="sm" />
+              </div>
+              <div className="flex min-w-40 flex-1 items-center gap-3">
+                <Progress value={pct} className="h-2" aria-label={`${r.done} de ${r.planned} treinos`} />
+                <span className="w-20 shrink-0 text-right text-sm tabular-nums">
+                  {r.done} de {r.planned}
+                </span>
+              </div>
+              <div className="flex w-full items-center justify-end gap-2 sm:w-44">
+                {r.falling ? (
+                  <>
+                    <Pill tone="warning" icon={<TrendingDown />}>
+                      Caindo
+                    </Pill>
+                    <Button size="sm" variant="secondary" onClick={() => navigate('/mensagens')}>
+                      Conversar
+                    </Button>
+                  </>
+                ) : (
+                  i < 3 && <Pill tone="success">Em alta</Pill>
+                )}
+              </div>
+            </li>
+          )
+        })}
+      </ol>
+    </>
+  )
+}
 
 export function Acompanhamento() {
   const navigate = useNavigate()
@@ -53,6 +123,7 @@ export function Acompanhamento() {
         className="mb-6"
         options={[
           { value: 'alertas', label: 'Alertas', count: alerts.length, controls: 'painel-acomp' },
+          { value: 'frequencia', label: 'Frequência', controls: 'painel-acomp' },
           { value: 'feitos', label: 'Treinos feitos', controls: 'painel-acomp' },
           { value: 'questionarios', label: 'Questionários', controls: 'painel-acomp' },
         ]}
@@ -100,6 +171,7 @@ export function Acompanhamento() {
               ))}
             </ul>
           ))}
+        {tab === 'frequencia' && <Frequencia />}
         {tab === 'feitos' && (
           <div className="overflow-hidden rounded-xl border bg-card">
             <Table>
