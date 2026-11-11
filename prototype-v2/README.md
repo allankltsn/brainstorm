@@ -30,6 +30,8 @@ npm run dev
 - Início do personal, do aluno e do admin (`#/inicio`; troque o perfil no menu do usuário, no rodapé do menu lateral)
 - Alunos: lista com busca e filtros, e detalhe do aluno (`#/alunos`)
 - Treinos: meus treinos, exercícios e importar planilha em abas (`#/treinos`)
+- Criar e editar treino: seções, adicionar exercício, séries, repetições, descanso e ordem (`#/treinos/novo`, `#/treinos/t1`)
+- Exercícios: biblioteca em cartões, detalhe e formulário de criar/editar (`#/treinos/exercicios/e01`, `#/treinos/exercicios/novo`)
 - Acompanhar: alertas, treinos feitos e questionários em abas (`#/acompanhamento`)
 - Mensagens (`#/mensagens`)
 - Sugerir treino com IA (`#/ia`)

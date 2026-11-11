@@ -105,7 +105,7 @@ function NewButton() {
         <DropdownMenuItem onSelect={() => toast.success('Convite enviado', { description: 'Você será avisado quando a pessoa aceitar.' })}>
           <UserPlus /> Convidar aluno
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={go('/treinos')}>
+        <DropdownMenuItem onSelect={go('/treinos/novo')}>
           <Dumbbell /> Criar treino
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={go('/ia')}>
@@ -328,7 +328,7 @@ export function AppShell() {
               <Notifications />
             </div>
           </header>
-          <main id="conteudo" className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-28 md:px-8 md:pt-8 md:pb-16">
+          <main id="conteudo" className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-44 md:px-8 md:pt-8 md:pb-24">
             <Outlet />
           </main>
         </SidebarInset>

@@ -68,7 +68,7 @@ export function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenCh
               toast.success('Convite enviado', { description: 'Você será avisado quando a pessoa aceitar.' })
             },
           },
-          { key: 'criar', label: 'Criar treino', words: 'novo modelo', icon: <Dumbbell />, run: go('/treinos') },
+          { key: 'criar', label: 'Criar treino', words: 'novo modelo', icon: <Dumbbell />, run: go('/treinos/novo') },
           { key: 'ia', label: 'Sugerir treino com IA', words: 'inteligência artificial', icon: <Sparkles />, run: go('/ia') },
           {
             key: 'aura',
