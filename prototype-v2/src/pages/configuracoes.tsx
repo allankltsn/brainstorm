@@ -9,14 +9,18 @@ import { PageHeader, Section } from '@/components/page'
 import { sessions } from '@/lib/data'
 import { useRole } from '@/lib/role'
 import { useTheme, type Theme } from '@/lib/theme'
+import { useTab } from '@/lib/use-tab'
+import { Progress } from '@/components/ui/progress'
+import { Pill } from '@/components/page'
 
-type Tab = 'dados' | 'aparencia' | 'avisos'
+const TABS = ['dados', 'aparencia', 'avisos', 'assinatura', 'privacidade'] as const
+type Tab = (typeof TABS)[number]
 
 export function Configuracoes() {
   const { role } = useRole()
   const me = sessions[role]
   const { theme, setTheme } = useTheme()
-  const [tab, setTab] = useState<Tab>('dados')
+  const [tab, setTab] = useTab<Tab>(TABS)
   const [saving, setSaving] = useState(false)
   return (
     <div className="mx-auto max-w-2xl">
@@ -32,6 +36,8 @@ export function Configuracoes() {
           { value: 'dados', label: 'Meus dados', controls: 'painel-config' },
           { value: 'aparencia', label: 'Aparência', controls: 'painel-config' },
           { value: 'avisos', label: 'Avisos', controls: 'painel-config' },
+          ...(role === 'personal' ? [{ value: 'assinatura' as const, label: 'Assinatura', controls: 'painel-config' }] : []),
+          { value: 'privacidade', label: 'Privacidade e IA', controls: 'painel-config' },
         ]}
       />
       <div id="painel-config" role="tabpanel">
@@ -81,6 +87,33 @@ export function Configuracoes() {
               <Switch placement="end" defaultChecked label="Treinos" description="Quando um aluno conclui ou deixa de fazer um treino." />
               <Switch placement="end" label="Novidades" description="Dicas e novos recursos do aura-fit." />
               <Switch placement="end" checked disabled readOnly label="Segurança" description="Protegem sua conta, por isso não dá para desligar." />
+            </div>
+          </Section>
+        )}
+        {tab === 'assinatura' && (
+          <Section title="Plano Pro" description="Próxima cobrança em 03/11/2026, de R$ 49,90." action={<Pill tone="success">Ativa</Pill>}>
+            <div className="mb-1.5 flex justify-between text-sm">
+              <span>Alunos ativos</span>
+              <span className="text-muted-foreground">18 de 30</span>
+            </div>
+            <Progress value={60} className="h-2" aria-label="18 de 30 vagas usadas" />
+            <div className="mt-5 flex flex-wrap justify-end gap-2">
+              <Button variant="ghost" onClick={() => toast('Abrindo cancelamento')}>
+                Cancelar assinatura
+              </Button>
+              <Button variant="secondary" onClick={() => toast('Abrindo formas de pagamento')}>
+                Trocar cartão
+              </Button>
+              <Button onClick={() => toast('Abrindo os planos')}>Mudar de plano</Button>
+            </div>
+          </Section>
+        )}
+        {tab === 'privacidade' && (
+          <Section title="Privacidade e inteligência artificial" description="Você decide o que a Aura pode usar.">
+            <div className="grid gap-5">
+              <Switch placement="end" defaultChecked label="Sugestões de treino com IA" description="A Aura monta rascunhos. Nada vai para o aluno sem você aprovar." />
+              <Switch placement="end" defaultChecked label="Usar histórico de treinos" description="Séries, cargas e frequência dos alunos que liberaram os dados." />
+              <Switch placement="end" label="Conversa por voz" description="O microfone só liga quando você toca no botão, a cada conversa." />
             </div>
           </Section>
         )}

@@ -134,7 +134,7 @@ export function Alunos() {
                   <TableHead>Última sessão</TableHead>
                   <TableHead>Alertas</TableHead>
                   <TableHead>Dados de saúde</TableHead>
-                  <TableHead className="w-10 pr-5" />
+                  <TableHead className="w-24 pr-5" />
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -159,8 +159,10 @@ export function Alunos() {
                     <TableCell>
                       <HealthPill s={s} />
                     </TableCell>
-                    <TableCell className="pr-5 text-muted-foreground">
-                      <ChevronRight className="size-4" aria-hidden="true" />
+                    <TableCell className="pr-5 text-right">
+                      <Button size="sm" variant="secondary" iconRight={<ChevronRight />} tabIndex={-1} aria-hidden="true">
+                        Abrir
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

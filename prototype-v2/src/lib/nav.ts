@@ -1,98 +1,44 @@
-import {
-  Bell,
-  ClipboardList,
-  CreditCard,
-  Dumbbell,
-  FileSpreadsheet,
-  Home,
-  LayoutGrid,
-  ListChecks,
-  MessageSquare,
-  Palette,
-  Settings,
-  ShieldCheck,
-  Sparkles,
-  Ticket,
-  TriangleAlert,
-  User,
-  Users,
-  type LucideIcon,
-} from 'lucide-react'
+import { Activity, Dumbbell, Home, LayoutGrid, MessageSquare, Users, type LucideIcon } from 'lucide-react'
 import type { Role } from './data'
 
-export type NavItem = { to: string; label: string; icon: LucideIcon; badge?: number; mobile?: boolean }
-export type NavGroup = { label?: string; items: NavItem[] }
+export type NavItem = { to: string; label: string; icon: LucideIcon; badge?: number }
 
-/* Menu por perfil. Poucos grupos, nomes do dia a dia; "mobile" marca o que entra na barra inferior. */
-export const NAV: Record<Role, NavGroup[]> = {
+/*
+ * Menu por tarefa, não por recurso. Regras:
+ * - no máximo 5 destinos por perfil, os mesmos no menu lateral e na barra do celular;
+ * - o que é "criar" fica no botão Novo; o que é da conta fica no menu do usuário;
+ * - subdivisões (exercícios, alertas, questionários…) viram abas dentro da página.
+ */
+export const NAV: Record<Role, NavItem[]> = {
   personal: [
-    {
-      items: [
-        { to: '/inicio', label: 'Início', icon: Home, mobile: true },
-        { to: '/alunos', label: 'Alunos', icon: Users, mobile: true },
-        { to: '/treinos', label: 'Treinos', icon: Dumbbell, mobile: true },
-        { to: '/exercicios', label: 'Exercícios', icon: ClipboardList },
-      ],
-    },
-    {
-      label: 'Acompanhamento',
-      items: [
-        { to: '/alertas', label: 'Alertas', icon: TriangleAlert, badge: 2 },
-        { to: '/execucoes', label: 'Treinos feitos', icon: ListChecks },
-        { to: '/questionarios', label: 'Questionários', icon: ClipboardList },
-        { to: '/mensagens', label: 'Mensagens', icon: MessageSquare },
-      ],
-    },
-    {
-      label: 'Inteligência artificial',
-      items: [
-        { to: '/ia', label: 'Sugerir treino', icon: Sparkles, mobile: true },
-        { to: '/ia/importar', label: 'Importar planilha', icon: FileSpreadsheet },
-        { to: '/ia/dados', label: 'Dados usados pela IA', icon: ShieldCheck },
-      ],
-    },
-    {
-      label: 'Conta',
-      items: [
-        { to: '/assinatura', label: 'Minha assinatura', icon: CreditCard },
-        { to: '/configuracoes', label: 'Configurações', icon: Settings },
-      ],
-    },
+    { to: '/inicio', label: 'Início', icon: Home },
+    { to: '/alunos', label: 'Alunos', icon: Users },
+    { to: '/treinos', label: 'Treinos', icon: Dumbbell },
+    { to: '/acompanhamento', label: 'Acompanhar', icon: Activity, badge: 2 },
+    { to: '/mensagens', label: 'Mensagens', icon: MessageSquare, badge: 1 },
   ],
   aluno: [
-    {
-      items: [
-        { to: '/inicio', label: 'Início', icon: Home, mobile: true },
-        { to: '/treino', label: 'Meu treino', icon: Dumbbell, mobile: true },
-        { to: '/avisos', label: 'Avisos', icon: Bell, mobile: true },
-        { to: '/configuracoes', label: 'Meu perfil', icon: User, mobile: true },
-      ],
-    },
+    { to: '/inicio', label: 'Início', icon: Home },
+    { to: '/treino', label: 'Meu treino', icon: Dumbbell },
+    { to: '/mensagens', label: 'Mensagens', icon: MessageSquare },
   ],
   admin: [
-    {
-      items: [
-        { to: '/inicio', label: 'Início', icon: Home, mobile: true },
-        { to: '/usuarios', label: 'Usuários', icon: Users, mobile: true },
-        { to: '/perfis', label: 'Perfis e permissões', icon: ShieldCheck },
-      ],
-    },
-    {
-      label: 'Comercial',
-      items: [
-        { to: '/planos', label: 'Planos', icon: LayoutGrid, mobile: true },
-        { to: '/cupons', label: 'Cupons', icon: Ticket },
-      ],
-    },
-    { label: 'Conta', items: [{ to: '/configuracoes', label: 'Configurações', icon: Settings, mobile: true }] },
+    { to: '/inicio', label: 'Início', icon: Home },
+    { to: '/usuarios', label: 'Usuários', icon: Users },
+    { to: '/planos', label: 'Planos e cupons', icon: LayoutGrid },
   ],
 }
 
-export const DESIGN_ITEM: NavItem = { to: '/design-system', label: 'Kit de interface', icon: Palette }
+const TITLES: Record<string, string> = {
+  '/configuracoes': 'Configurações',
+  '/design-system': 'Kit de interface',
+  '/ia': 'Sugerir treino',
+}
 
-export function findNav(role: Role, path: string) {
-  const all = [...NAV[role].flatMap((g) => g.items), DESIGN_ITEM]
-  return all
-    .filter((i) => path === i.to || path.startsWith(i.to + '/'))
-    .sort((a, b) => b.to.length - a.to.length)[0]
+export function currentNav(role: Role, path: string) {
+  return NAV[role].filter((i) => path === i.to || path.startsWith(i.to + '/')).sort((a, b) => b.to.length - a.to.length)[0]
+}
+export function pageTitle(role: Role, path: string) {
+  const extra = Object.keys(TITLES).find((k) => path === k || path.startsWith(k + '/'))
+  return currentNav(role, path)?.label ?? (extra ? TITLES[extra] : 'aura-fit')
 }

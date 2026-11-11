@@ -1,12 +1,13 @@
 import { Link, useLocation } from 'react-router-dom'
 import { EmptyCalendar } from '@/components/affect/empty-calendar'
-import { findNav } from '@/lib/nav'
+import { pageTitle } from '@/lib/nav'
 import { useRole } from '@/lib/role'
 
 export function Placeholder() {
   const { role } = useRole()
   const { pathname } = useLocation()
-  const label = findNav(role, pathname)?.label ?? 'Esta tela'
+  const t = pageTitle(role, pathname)
+  const label = t === 'aura-fit' ? 'Esta tela' : t
   return (
     <div className="flex flex-col items-center gap-3 py-16 text-center">
       <EmptyCalendar label="Ilustração de calendário vazio" className="mb-2" />

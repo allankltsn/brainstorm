@@ -10,7 +10,10 @@ import { DesignSystem } from '@/pages/design-system'
 import { Home } from '@/pages/home'
 import { IA } from '@/pages/ia'
 import { Login, VerifyEmail } from '@/pages/login'
+import { Acompanhamento } from '@/pages/acompanhamento'
+import { Mensagens } from '@/pages/mensagens'
 import { Placeholder } from '@/pages/placeholder'
+import { Treinos } from '@/pages/treinos'
 
 /* HashRouter: o build é estático e abre em qualquer hospedagem, sem configurar rotas no servidor. */
 export default function App() {
@@ -27,6 +30,9 @@ export default function App() {
                 <Route path="/inicio" element={<Home />} />
                 <Route path="/alunos" element={<Alunos />} />
                 <Route path="/alunos/:id" element={<AlunoDetalhe />} />
+                <Route path="/treinos" element={<Treinos />} />
+                <Route path="/acompanhamento" element={<Acompanhamento />} />
+                <Route path="/mensagens" element={<Mensagens />} />
                 <Route path="/ia" element={<IA />} />
                 <Route path="/configuracoes" element={<Configuracoes />} />
                 <Route path="/design-system" element={<DesignSystem />} />

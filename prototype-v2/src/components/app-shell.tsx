@@ -1,5 +1,9 @@
-import { Bell, ChevronsUpDown, LogOut, Moon, Search, Sun, UserCog } from 'lucide-react'
+import { Bell, ChevronsUpDown, ClipboardList, CreditCard, Dumbbell, LogOut, Moon, Palette, Plus, Search, Settings, Sparkles, Sun, UserPlus } from 'lucide-react'
+import { useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { AssistantWidget } from '@/components/assistant'
+import { CommandPalette } from '@/components/command-palette'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -19,7 +23,6 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
@@ -32,8 +35,10 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { AssistantProvider } from '@/lib/assistant'
 import { initials, notifications, sessions, type Role } from '@/lib/data'
-import { DESIGN_ITEM, findNav, NAV, type NavItem } from '@/lib/nav'
+import { currentNav, NAV, pageTitle, type NavItem } from '@/lib/nav'
 import { useRole } from '@/lib/role'
 import { useTheme } from '@/lib/theme'
 import { cn } from '@/lib/utils'
@@ -60,27 +65,63 @@ function NavEntry({ item }: { item: NavItem }) {
   const { pathname } = useLocation()
   const { role } = useRole()
   const { setOpenMobile } = useSidebar()
-  const active = findNav(role, pathname)?.to === item.to
+  const active = currentNav(role, pathname)?.to === item.to
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={active} tooltip={item.label} className="h-9">
+      <SidebarMenuButton asChild isActive={active} tooltip={item.label} className="h-10 gap-3 text-[0.9375rem] data-[active=true]:bg-background data-[active=true]:shadow-xs">
         <NavLink to={item.to} onClick={() => setOpenMobile(false)}>
-          <item.icon />
+          <item.icon className={cn(active && 'text-primary')} />
           <span>{item.label}</span>
         </NavLink>
       </SidebarMenuButton>
       {item.badge ? (
-        <SidebarMenuBadge className="rounded-full bg-warning-soft px-1.5 text-warning">
+        <SidebarMenuBadge className="top-2.5 rounded-full bg-primary px-1.5 text-primary-foreground peer-data-[active=true]/menu-button:text-primary-foreground">
           {item.badge}
-          <span className="sr-only"> em aberto</span>
+          <span className="sr-only"> novos</span>
         </SidebarMenuBadge>
       ) : null}
     </SidebarMenuItem>
   )
 }
 
+/* Um só lugar para tudo o que é "criar". */
+function NewButton() {
+  const navigate = useNavigate()
+  const { setOpenMobile } = useSidebar()
+  const go = (to: string) => () => {
+    setOpenMobile(false)
+    navigate(to)
+  }
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button className="h-10 w-full justify-start gap-2 px-3 text-[0.9375rem] group-data-[collapsible=icon]:size-8 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0" aria-label="Novo: criar ou convidar">
+          <Plus />
+          <span className="group-data-[collapsible=icon]:hidden">Novo</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" className="w-60">
+        <DropdownMenuLabel className="text-xs text-muted-foreground">O que você quer fazer?</DropdownMenuLabel>
+        <DropdownMenuItem onSelect={() => toast.success('Convite enviado', { description: 'Você será avisado quando a pessoa aceitar.' })}>
+          <UserPlus /> Convidar aluno
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={go('/treinos')}>
+          <Dumbbell /> Criar treino
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={go('/ia')}>
+          <Sparkles /> Sugerir treino com IA
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={go('/acompanhamento?aba=questionarios')}>
+          <ClipboardList /> Enviar questionário
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
 const ROLE_LABEL: Record<Role, string> = { personal: 'Personal', aluno: 'Aluno', admin: 'Admin' }
 
+/* Tudo o que é da conta mora aqui: configurações, assinatura, sair. */
 function UserMenu() {
   const { role, setRole } = useRole()
   const navigate = useNavigate()
@@ -88,7 +129,7 @@ function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent">
+        <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent" aria-label={`Conta de ${me.name}`}>
           <Avatar className="size-8 rounded-lg">
             <AvatarFallback className="rounded-lg bg-brand-soft text-xs font-semibold text-brand-text">{initials(me.name)}</AvatarFallback>
           </Avatar>
@@ -105,7 +146,18 @@ function UserMenu() {
           <div className="text-xs text-muted-foreground">{me.email}</div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuLabel className="text-xs text-muted-foreground">Ver o protótipo como</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuItem onSelect={() => navigate('/configuracoes')}>
+            <Settings /> Configurações
+          </DropdownMenuItem>
+          {role === 'personal' && (
+            <DropdownMenuItem onSelect={() => navigate('/configuracoes?aba=assinatura')}>
+              <CreditCard /> Minha assinatura
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel className="text-xs text-muted-foreground">Protótipo: ver como</DropdownMenuLabel>
         <DropdownMenuRadioGroup
           value={role}
           onValueChange={(r) => {
@@ -119,17 +171,24 @@ function UserMenu() {
             </DropdownMenuRadioItem>
           ))}
         </DropdownMenuRadioGroup>
+        <DropdownMenuItem onSelect={() => navigate('/design-system')}>
+          <Palette /> Kit de interface
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem onSelect={() => navigate('/configuracoes')}>
-            <UserCog /> Configurações
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => navigate('/login')}>
-            <LogOut /> Sair
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+        <DropdownMenuItem onSelect={() => navigate('/login')}>
+          <LogOut /> Sair
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  )
+}
+
+function Tip({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipContent>{label}</TooltipContent>
+    </Tooltip>
   )
 }
 
@@ -137,12 +196,14 @@ function Notifications() {
   const unread = notifications.filter((n) => n.unread).length
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative" aria-label={`Avisos, ${unread} não lido`}>
-          <Bell />
-          {unread > 0 && <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-primary ring-2 ring-background" />}
-        </Button>
-      </DropdownMenuTrigger>
+      <Tip label="Avisos">
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="relative" aria-label={`Avisos, ${unread} não lido`}>
+            <Bell />
+            {unread > 0 && <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-primary ring-2 ring-background" />}
+          </Button>
+        </DropdownMenuTrigger>
+      </Tip>
       <DropdownMenuContent align="end" className="w-80">
         <DropdownMenuLabel>Avisos</DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -162,27 +223,24 @@ function Notifications() {
 
 function ThemeToggle() {
   const { isDark, setTheme } = useTheme()
+  const label = isDark ? 'Usar tema claro' : 'Usar tema escuro'
   return (
-    <Button variant="ghost" size="icon" onClick={() => setTheme(isDark ? 'light' : 'dark')} aria-label={isDark ? 'Usar tema claro' : 'Usar tema escuro'}>
-      {isDark ? <Sun /> : <Moon />}
-    </Button>
+    <Tip label={label}>
+      <Button variant="ghost" size="icon" onClick={() => setTheme(isDark ? 'light' : 'dark')} aria-label={label}>
+        {isDark ? <Sun /> : <Moon />}
+      </Button>
+    </Tip>
   )
-}
-
-const SEARCH: Record<Role, string> = {
-  personal: 'Buscar alunos ou treinos',
-  aluno: 'Buscar treino',
-  admin: 'Buscar usuários, planos ou cupons',
 }
 
 function BottomNav() {
   const { role } = useRole()
   const { pathname } = useLocation()
-  const items = NAV[role].flatMap((g) => g.items).filter((i) => i.mobile).slice(0, 4)
-  const current = findNav(role, pathname)?.to
+  const items = NAV[role]
+  const current = currentNav(role, pathname)?.to
   return (
     <nav aria-label="Principal" className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
-      <ul className="grid grid-cols-4">
+      <ul className="grid" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
         {items.map((i) => {
           const active = current === i.to
           return (
@@ -190,9 +248,12 @@ function BottomNav() {
               <Link
                 to={i.to}
                 aria-current={active ? 'page' : undefined}
-                className={cn('flex h-14 flex-col items-center justify-center gap-0.5 text-[11px] font-medium text-muted-foreground', active && 'text-primary')}
+                className={cn('relative flex h-14 flex-col items-center justify-center gap-0.5 text-[11px] font-medium text-muted-foreground', active && 'text-primary')}
               >
-                <i.icon className="size-5" strokeWidth={active ? 2.4 : 2} />
+                <span className="relative">
+                  <i.icon className="size-5" strokeWidth={active ? 2.4 : 2} />
+                  {i.badge ? <span className="absolute -top-1 -right-1.5 size-2 rounded-full bg-primary ring-2 ring-background" /> : null}
+                </span>
                 {i.label}
               </Link>
             </li>
@@ -206,74 +267,75 @@ function BottomNav() {
 export function AppShell() {
   const { role } = useRole()
   const { pathname } = useLocation()
-  const current = findNav(role, pathname)
+  const [search, setSearch] = useState(false)
   return (
-    <SidebarProvider>
-      <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:shadow">
-        Ir para o conteúdo
-      </a>
-      <Sidebar collapsible="icon">
-        <SidebarHeader>
-          <Link to="/inicio" className="flex h-10 items-center gap-2.5 px-1 group-data-[collapsible=icon]:px-0">
-            <BrandMark />
-            <Brand className="group-data-[collapsible=icon]:hidden" />
-          </Link>
-        </SidebarHeader>
-        <SidebarContent>
-          {NAV[role].map((g, i) => (
-            <SidebarGroup key={i}>
-              {g.label && <SidebarGroupLabel>{g.label}</SidebarGroupLabel>}
+    <AssistantProvider>
+      <SidebarProvider>
+        <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:shadow">
+          Ir para o conteúdo
+        </a>
+        <Sidebar variant="inset" collapsible="icon">
+          <SidebarHeader className="gap-3">
+            <Link to="/inicio" className="flex h-9 items-center gap-2.5 px-1 group-data-[collapsible=icon]:px-0">
+              <BrandMark />
+              <Brand className="group-data-[collapsible=icon]:hidden" />
+            </Link>
+            {role === 'personal' && <NewButton />}
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup>
               <SidebarGroupContent>
-                <SidebarMenu>
-                  {g.items.map((it) => (
+                <SidebarMenu className="gap-1">
+                  {NAV[role].map((it) => (
                     <NavEntry key={it.to} item={it} />
                   ))}
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
-          ))}
-          <SidebarGroup className="mt-auto">
-            <SidebarGroupLabel>Protótipo</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <NavEntry item={DESIGN_ITEM} />
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <UserMenu />
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-        <SidebarRail />
-      </Sidebar>
-      <SidebarInset className="min-w-0">
-        <header className="sticky top-0 z-20 flex h-14 items-center gap-2 border-b bg-background/85 px-3 backdrop-blur md:px-5">
-          <SidebarTrigger aria-label="Abrir ou fechar o menu" />
-          <Separator orientation="vertical" className="mr-1 h-5! self-center!" />
-          <span className="truncate text-sm font-medium">{current?.label ?? 'aura-fit'}</span>
-          <div className="ml-auto flex items-center gap-1">
-            <label className="relative mr-1 hidden lg:block">
-              <span className="sr-only">{SEARCH[role]}</span>
-              <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="search"
-                placeholder={SEARCH[role]}
-                className="h-8 w-64 rounded-lg border bg-card pr-3 pl-8 text-sm outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20"
-              />
-            </label>
-            <ThemeToggle />
-            <Notifications />
-          </div>
-        </header>
-        <main id="conteudo" className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-24 md:px-8 md:pt-8 md:pb-12">
-          <Outlet />
-        </main>
-      </SidebarInset>
-      <BottomNav />
-    </SidebarProvider>
+          </SidebarContent>
+          <SidebarFooter>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <UserMenu />
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarFooter>
+          <SidebarRail />
+        </Sidebar>
+        <SidebarInset className="min-w-0">
+          <header className="sticky top-0 z-20 flex h-14 items-center gap-2 rounded-t-xl border-b bg-background/90 px-3 backdrop-blur md:px-5">
+            <Tip label="Abrir ou recolher o menu">
+              <SidebarTrigger aria-label="Abrir ou recolher o menu" />
+            </Tip>
+            <Separator orientation="vertical" className="mr-1 h-5! self-center!" />
+            <span className="truncate text-sm font-medium">{pageTitle(role, pathname)}</span>
+            <div className="ml-auto flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => setSearch(true)}
+                className="mr-1 hidden h-8 w-56 items-center gap-2 rounded-lg border bg-muted/50 px-2.5 text-sm text-muted-foreground outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring md:flex"
+              >
+                <Search className="size-4" />
+                Buscar
+                <kbd className="ml-auto rounded border bg-background px-1.5 text-[11px] font-medium">Ctrl K</kbd>
+              </button>
+              <Tip label="Buscar">
+                <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setSearch(true)} aria-label="Buscar">
+                  <Search />
+                </Button>
+              </Tip>
+              <ThemeToggle />
+              <Notifications />
+            </div>
+          </header>
+          <main id="conteudo" className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-28 md:px-8 md:pt-8 md:pb-16">
+            <Outlet />
+          </main>
+        </SidebarInset>
+        <BottomNav />
+        <CommandPalette open={search} onOpenChange={setSearch} />
+        <AssistantWidget />
+      </SidebarProvider>
+    </AssistantProvider>
   )
 }

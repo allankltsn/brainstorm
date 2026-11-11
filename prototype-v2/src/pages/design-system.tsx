@@ -11,6 +11,9 @@ import { Switch } from '@/components/affect/switch'
 import { TextField } from '@/components/affect/text-field'
 import { ThinkingLoader } from '@/components/affect/thinking-loader'
 import { TipsPanel } from '@/components/affect/tips-panel'
+import { Cloud, type GlowCloudMood } from '@/components/affect/glow-cloud'
+import { AiPrompt } from '@/components/lightswind/ai-prompt'
+import { ShinyText } from '@/components/lightswind/shiny-text'
 import { PageHeader, Pill, Section } from '@/components/page'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
@@ -48,6 +51,8 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 
 export function DesignSystem() {
   const [loading, setLoading] = useState(false)
+  const [prompt, setPrompt] = useState('')
+  const [mic, setMic] = useState(false)
   return (
     <>
       <PageHeader
@@ -65,6 +70,44 @@ export function DesignSystem() {
             </li>
           ))}
         </ul>
+      </Section>
+
+      <Section title="Aura, a assistente" description="Nuvem do affectUI (Glow Cloud) com expressões por estado. Os olhos seguem o ponteiro pela janela." className="mb-6">
+        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-5">
+          {(
+            [
+              ['idle', 'Disponível', 'Olha em volta e pisca'],
+              ['sleepy', 'Sem uso', 'Olhos pesados, quase parada'],
+              ['listening', 'Ouvindo', 'Olhos abertos, pulsa'],
+              ['thinking', 'Trabalhando', 'Olha para cima, de um lado ao outro'],
+              ['happy', 'Terminou', 'Sorri e dá um pulinho'],
+            ] as [GlowCloudMood, string, string][]
+          ).map(([mood, name, text]) => (
+            <li key={mood} className="flex flex-col items-center text-center">
+              <Cloud mood={mood} followWindow={mood === 'idle'} className="size-28" label={`Aura: ${name}`} />
+              <span className="text-sm font-medium">{name}</span>
+              <span className="text-xs text-muted-foreground">{text}</span>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section title="Lightswind UI" description="Em src/components/lightswind. Campo de conversa com microfone, busca geral (Ctrl K) e texto com brilho." className="mb-6">
+        <Row label="Campo de conversa">
+          <div className="w-full max-w-md">
+            <AiPrompt value={prompt} onChange={setPrompt} onSubmit={() => setPrompt('')} placeholder="Pergunte ou peça algo" mic={mic} onMicChange={setMic} />
+          </div>
+        </Row>
+        <Row label="Texto com brilho">
+          <ShinyText size="base" weight="medium">
+            Montando a sugestão de treino
+          </ShinyText>
+        </Row>
+        <Row label="Busca geral">
+          <span className="text-sm text-muted-foreground">
+            Aperte <kbd className="rounded border bg-muted px-1.5 text-xs">Ctrl K</kbd> ou use o botão Buscar no topo.
+          </span>
+        </Row>
       </Section>
 
       <div className="grid gap-6 xl:grid-cols-2">
