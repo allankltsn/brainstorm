@@ -12,6 +12,7 @@ import { IA } from '@/pages/ia'
 import { Login, VerifyEmail } from '@/pages/login'
 import { Acompanhamento } from '@/pages/acompanhamento'
 import { Mensagens } from '@/pages/mensagens'
+import { ExecutarTreino, MeuTreino } from '@/pages/meu-treino'
 import { Placeholder } from '@/pages/placeholder'
 import { ExercicioDetalhe, ExercicioForm } from '@/pages/exercicio'
 import { TreinoEditor } from '@/pages/treino-editor'
@@ -38,6 +39,8 @@ export default function App() {
                 <Route path="/treinos/exercicios/:id" element={<ExercicioDetalhe />} />
                 <Route path="/treinos/exercicios/:id/editar" element={<ExercicioForm />} />
                 <Route path="/treinos/:id" element={<TreinoEditor />} />
+                <Route path="/treino" element={<MeuTreino />} />
+                <Route path="/treino/executar" element={<ExecutarTreino />} />
                 <Route path="/acompanhamento" element={<Acompanhamento />} />
                 <Route path="/mensagens" element={<Mensagens />} />
                 <Route path="/ia" element={<IA />} />

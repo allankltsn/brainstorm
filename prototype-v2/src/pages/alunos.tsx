@@ -10,6 +10,7 @@ import { TextField } from '@/components/affect/text-field'
 import { PageHeader, Person, Pill, Section } from '@/components/page'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Programacao } from '@/pages/programacao'
 import { activeStudents, initials, maskEmail, STUDENT_LIMIT, students, type Student } from '@/lib/data'
 
 type Tab = 'ativos' | 'pendentes' | 'historico'
@@ -195,7 +196,7 @@ export function Alunos() {
   )
 }
 
-type DetailTab = 'resumo' | 'saude' | 'anotacoes'
+type DetailTab = 'resumo' | 'programacao' | 'saude' | 'anotacoes'
 
 export function AlunoDetalhe() {
   const { id } = useParams()
@@ -250,6 +251,7 @@ export function AlunoDetalhe() {
         className="mb-6"
         options={[
           { value: 'resumo', label: 'Resumo', controls: 'painel-aluno' },
+          { value: 'programacao', label: 'Programação', controls: 'painel-aluno' },
           { value: 'saude', label: 'Saúde', controls: 'painel-aluno' },
           { value: 'anotacoes', label: 'Anotações', controls: 'painel-aluno' },
         ]}
@@ -293,6 +295,16 @@ export function AlunoDetalhe() {
             </Section>
           </div>
         )}
+        {tab === 'programacao' &&
+          (canSee ? (
+            <Programacao student={s} />
+          ) : (
+            <Section title="Semana de treinos">
+              <p className="text-sm text-muted-foreground">
+                {s.status === 'encerrado' ? 'Este aluno encerrou o acompanhamento, então não há semana para programar.' : 'A programação fica disponível quando o aluno liberar os dados de saúde.'}
+              </p>
+            </Section>
+          ))}
         {tab === 'saude' && (
           <Section title="O que o aluno liberou" description="Só o aluno pode mudar estas autorizações.">
             <ul className="divide-y">

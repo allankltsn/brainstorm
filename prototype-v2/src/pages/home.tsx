@@ -21,11 +21,11 @@ import {
   STUDENT_LIMIT,
   students,
   TODAY_LABEL,
-  todayWorkout,
   week,
   workoutsWeek,
 } from '@/lib/data'
 import { useRole } from '@/lib/role'
+import { findExercise, findWorkout, myWeek, TODAY_INDEX, workoutMinutes } from '@/lib/training'
 import { cn } from '@/lib/utils'
 
 function Kpi({ label, children, foot }: { label: string; children: React.ReactNode; foot?: React.ReactNode }) {
@@ -250,9 +250,19 @@ function HomePersonal() {
   )
 }
 
+/* O mesmo treino que o aluno abre em "Meu treino", para os números baterem entre as telas. */
+const today = findWorkout(myWeek[TODAY_INDEX])!
+const todayWorkout = {
+  name: today.name,
+  minutes: workoutMinutes(today),
+  by: sessions.personal.name,
+  exercises: today.sections.flatMap((s) => s.items).map((it) => ({ id: it.key, name: findExercise(it.exerciseId)!.name, detail: `${it.sets} séries · ${it.reps} repetições · ${it.rest} s de descanso` })),
+}
+
 function HomeAluno() {
+  const navigate = useNavigate()
   const me = sessions.aluno
-  const [done, setDone] = useState<string[]>(['e1'])
+  const [done, setDone] = useState<string[]>([])
   const total = todayWorkout.exercises.length
   const pct = Math.round((done.length / total) * 100)
   return (
@@ -273,7 +283,7 @@ function HomeAluno() {
               </span>
             </p>
           </div>
-          <Button size="lg" icon={<Play />} onClick={() => toast('Treino iniciado. Bom treino!')}>
+          <Button size="lg" icon={<Play />} onClick={() => navigate('/treino/executar')}>
             {done.length ? 'Continuar treino' : 'Começar treino'}
           </Button>
         </div>
@@ -300,7 +310,15 @@ function HomeAluno() {
         </div>
       </section>
 
-      <Section title="Sua semana" className="mt-6">
+      <Section
+        title="Sua semana"
+        className="mt-6"
+        action={
+          <Link to="/treino" className="text-sm font-medium text-brand-text underline-offset-4 hover:underline">
+            Ver semana
+          </Link>
+        }
+      >
         <ol className="grid grid-cols-7 gap-1.5 sm:gap-2">
           {week.map((w) => (
             <li

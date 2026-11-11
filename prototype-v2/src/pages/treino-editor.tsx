@@ -11,7 +11,7 @@ import { Pill, Section } from '@/components/page'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { exercises, findExercise, GROUPS, item, workouts, type Group, type WorkoutItem, type WorkoutSection } from '@/lib/training'
+import { estimateMinutes, exercises, findExercise, GROUPS, item, workouts, type Group, type WorkoutItem, type WorkoutSection } from '@/lib/training'
 
 const GOALS = ['Ganhar massa', 'Emagrecer', 'Condicionamento', 'Força', 'Iniciantes'].map((g) => ({ value: g, label: g }))
 
@@ -108,8 +108,7 @@ export function TreinoEditor() {
     })
 
   const all = sections.flatMap((s) => s.items)
-  // estimativa simples: 40 s por série mais o descanso
-  const minutes = Math.round(all.reduce((t, i) => t + i.sets * (40 + i.rest), 0) / 60)
+  const minutes = estimateMinutes(all)
 
   function save() {
     if (!name.trim()) return setError('Dê um nome ao treino.')
