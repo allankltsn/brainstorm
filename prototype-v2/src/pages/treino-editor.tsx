@@ -251,6 +251,11 @@ export function TreinoEditor() {
               <Button loading={saving} onClick={save} className="w-full">
                 {saving ? 'Salvando' : 'Salvar treino'}
               </Button>
+              {base && (
+                <Button variant="secondary" onClick={() => navigate(`/treinos/${base.id}/versoes`)} className="w-full">
+                  Ver histórico de versões
+                </Button>
+              )}
               <Button variant="ghost" onClick={() => navigate('/treinos')} className="w-full">
                 Cancelar
               </Button>

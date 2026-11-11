@@ -14,6 +14,15 @@ import { Acompanhamento } from '@/pages/acompanhamento'
 import { Mensagens } from '@/pages/mensagens'
 import { AceitarConvite } from '@/pages/aceitar-convite'
 import { AdminPlanos } from '@/pages/admin-planos'
+import { AlunoResponsaveis } from '@/pages/aluno-responsaveis'
+import { CupomForm } from '@/pages/cupom-form'
+import { EmBreve } from '@/pages/em-breve'
+import { ExcluirConta } from '@/pages/excluir-conta'
+import { ExercicioPersonalizar } from '@/pages/exercicio-personalizar'
+import { ExercicioVisibilidade } from '@/pages/exercicio-visibilidade'
+import { Perfis } from '@/pages/perfis'
+import { TreinoAtribuir } from '@/pages/treino-atribuir'
+import { TreinoVersoes } from '@/pages/treino-versoes'
 import { AlunoVinculo } from '@/pages/aluno-vinculo'
 import { CupomRelatorio } from '@/pages/cupom-relatorio'
 import { DadosIA } from '@/pages/dados-ia'
@@ -31,7 +40,7 @@ import { CancelarAssinatura } from '@/pages/cancelar-assinatura'
 import { ConvidarAluno } from '@/pages/convidar-aluno'
 import { EsqueciSenha } from '@/pages/esqueci-senha'
 import { MeuTreino } from '@/pages/meu-treino'
-import { NaoEncontrada } from '@/pages/nao-encontrada'
+import { AcessoNegado, NaoEncontrada } from '@/pages/nao-encontrada'
 import { Notificacoes } from '@/pages/notificacoes'
 import { Planos } from '@/pages/planos'
 import { RedefinirSenha } from '@/pages/redefinir-senha'
@@ -78,6 +87,7 @@ export default function App() {
                 <Route path="/alunos" element={<Alunos />} />
                 <Route path="/alunos/:id" element={<AlunoDetalhe />} />
                 <Route path="/alunos/:id/vinculo" element={<AlunoVinculo />} />
+                <Route path="/alunos/:id/responsaveis" element={<AlunoResponsaveis />} />
                 <Route path="/alunos/:id/evolucao" element={<Evolucao />} />
                 <Route path="/alunos/:id/linha-do-tempo" element={<AlunoLinhaDoTempo />} />
                 <Route path="/convidar-aluno" element={<ConvidarAluno />} />
@@ -91,8 +101,11 @@ export default function App() {
                 <Route path="/treino" element={<MeuTreino />} />
                 <Route path="/usuarios" element={<Usuarios />} />
                 <Route path="/usuarios/permissoes" element={<Permissoes />} />
+                <Route path="/usuarios/perfis" element={<Perfis />} />
                 <Route path="/usuarios/:id" element={<UsuarioDetalhe />} />
+                <Route path="/planos/cupons/novo" element={<CupomForm />} />
                 <Route path="/planos/cupons/:code" element={<CupomRelatorio />} />
+                <Route path="/planos/cupons/:code/editar" element={<CupomForm />} />
                 <Route path="/treinos/importar" element={<ImportarTreino />} />
                 <Route path="/ia/dados" element={<DadosIA />} />
                 <Route path="/acompanhamento/treinos/:id" element={<TreinoFeito />} />
@@ -106,12 +119,19 @@ export default function App() {
                 <Route path="/treinos/exercicios/novo" element={<ExercicioForm />} />
                 <Route path="/treinos/exercicios/:id" element={<ExercicioDetalhe />} />
                 <Route path="/treinos/exercicios/:id/editar" element={<ExercicioForm />} />
+                <Route path="/treinos/exercicios/:id/visibilidade" element={<ExercicioVisibilidade />} />
+                <Route path="/treinos/exercicios/:id/personalizar" element={<ExercicioPersonalizar />} />
                 <Route path="/treinos/:id" element={<TreinoEditor />} />
+                <Route path="/treinos/:id/versoes" element={<TreinoVersoes />} />
+                <Route path="/treinos/:id/atribuir" element={<TreinoAtribuir />} />
                 <Route path="/acompanhamento" element={<Acompanhamento />} />
                 <Route path="/acompanhamento/respostas/:id" element={<RespostaQuestionario />} />
                 <Route path="/mensagens" element={<Mensagens />} />
                 <Route path="/ia" element={<IA />} />
                 <Route path="/configuracoes" element={<Configuracoes />} />
+                <Route path="/configuracoes/excluir-conta" element={<ExcluirConta />} />
+                <Route path="/acesso-negado" element={<AcessoNegado />} />
+                <Route path="/em-breve/:modulo" element={<EmBreve />} />
                 <Route path="/design-system" element={<DesignSystem />} />
                 <Route path="*" element={<NaoEncontrada />} />
               </Route>

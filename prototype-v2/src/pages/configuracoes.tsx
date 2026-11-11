@@ -121,6 +121,30 @@ export function Configuracoes() {
             </div>
           </Section>
         )}
+        {tab === 'privacidade' && (
+          <Section title="Seus dados" description="Direitos garantidos pela LGPD." className="mt-6">
+            <ul className="divide-y">
+              <li className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0">
+                <span className="grid text-sm">
+                  <span className="font-medium">Baixar uma cópia dos meus dados</span>
+                  <span className="text-muted-foreground">Enviamos um arquivo para o seu e-mail em até 24 horas.</span>
+                </span>
+                <Button variant="secondary" onClick={() => toast.success('Pedido recebido', { description: 'Você recebe o arquivo por e-mail.' })}>
+                  Pedir cópia
+                </Button>
+              </li>
+              <li className="flex flex-wrap items-center justify-between gap-3 py-3 last:pb-0">
+                <span className="grid text-sm">
+                  <span className="font-medium">Excluir minha conta</span>
+                  <span className="text-muted-foreground">Apaga seus dados depois de 7 dias.</span>
+                </span>
+                <Button variant="ghost" onClick={() => navigate('/configuracoes/excluir-conta')}>
+                  Excluir conta
+                </Button>
+              </li>
+            </ul>
+          </Section>
+        )}
       </div>
     </div>
   )

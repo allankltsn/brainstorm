@@ -48,6 +48,12 @@ export function ExercicioDetalhe() {
           <Button variant="ghost" icon={<Star className={fav ? 'fill-current' : ''} />} aria-pressed={fav} onClick={() => setFav((f) => !f)}>
             {fav ? 'Favorito' : 'Favoritar'}
           </Button>
+          <Button variant="ghost" onClick={() => navigate(`/treinos/exercicios/${e.id}/visibilidade`)}>
+            Quem pode ver
+          </Button>
+          <Button variant="ghost" onClick={() => navigate(`/treinos/exercicios/${e.id}/personalizar`)}>
+            Criar minha versão
+          </Button>
           <Button variant="secondary" icon={<Pencil />} onClick={() => navigate(`/treinos/exercicios/${e.id}/editar`)}>
             Editar
           </Button>

@@ -247,6 +247,9 @@ export function AlunoDetalhe() {
               {s.status === 'pausado' ? 'Retomar' : 'Pausar ou encerrar'}
             </Button>
           )}
+          <Button variant="ghost" onClick={() => navigate(`/alunos/${s.id}/responsaveis`)}>
+            Responsáveis
+          </Button>
           <Button variant="secondary" onClick={() => navigate('/mensagens')}>
             Enviar mensagem
           </Button>

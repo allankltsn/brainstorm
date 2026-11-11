@@ -36,7 +36,7 @@ export function Usuarios() {
 
   return (
     <>
-      <PageHeader title="Usuários" description={`${list.length} contas na plataforma.`} actions={<><Button variant="secondary" onClick={() => navigate('/usuarios/permissoes')}>Permissões</Button><Button icon={<MailPlus />} onClick={() => setInviting(true)}>Convidar usuário</Button></>} />
+      <PageHeader title="Usuários" description={`${list.length} contas na plataforma.`} actions={<><Button variant="secondary" onClick={() => navigate('/usuarios/perfis')}>Perfis e permissões</Button><Button icon={<MailPlus />} onClick={() => setInviting(true)}>Convidar usuário</Button></>} />
       <div className="mb-4 flex flex-wrap items-start gap-3">
         <TextField aria-label="Buscar por nome ou e-mail" placeholder="Buscar por nome ou e-mail" prefix={<Search className="size-4" />} clearable value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ('')} className="min-w-52 flex-1 sm:max-w-sm" />
         <Select

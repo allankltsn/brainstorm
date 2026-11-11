@@ -1,6 +1,6 @@
 import { Plus, Users } from 'lucide-react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
 import { SegmentedControl } from '@/components/affect/segmented-control'
@@ -15,9 +15,11 @@ import { useTab } from '@/lib/use-tab'
 
 const TABS = ['planos', 'cupons'] as const
 type Tab = (typeof TABS)[number]
+const NEW_PLAN: Plan = { id: 'novo', name: '', monthly: 0, students: null, perks: [], status: 'rascunho', subscribers: 0 }
 const TONE = { publicado: 'success', rascunho: 'neutral', arquivado: 'warning' } as const
 
 export function AdminPlanos() {
+  const navigate = useNavigate()
   const [tab, setTab] = useTab<Tab>(TABS)
   const plans = seedPlans
   const [coupons, setCoupons] = useState(seedCoupons)
@@ -27,7 +29,7 @@ export function AdminPlanos() {
       <PageHeader
         title="Planos e cupons"
         description="O que os personais podem contratar e com quais descontos."
-        actions={<Button icon={<Plus />} onClick={() => toast.success(tab === 'planos' ? 'Rascunho de plano criado' : 'Rascunho de cupom criado')}>{tab === 'planos' ? 'Novo plano' : 'Novo cupom'}</Button>}
+        actions={<Button icon={<Plus />} onClick={() => (tab === 'planos' ? setEditing(NEW_PLAN) : navigate('/planos/cupons/novo'))}>{tab === 'planos' ? 'Novo plano' : 'Novo cupom'}</Button>}
       />
       <SegmentedControl<Tab>
         variant="underline"
@@ -75,7 +77,8 @@ export function AdminPlanos() {
                 <TableHead className="hidden sm:table-cell">Vale para</TableHead>
                 <TableHead>Usos</TableHead>
                 <TableHead className="hidden md:table-cell">Validade</TableHead>
-                <TableHead className="pr-5">Ativo</TableHead>
+                <TableHead>Ativo</TableHead>
+                <TableHead className="pr-5"><span className="sr-only">Ações</span></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -85,13 +88,14 @@ export function AdminPlanos() {
                   <TableCell className="hidden text-sm sm:table-cell">{c.plan}</TableCell>
                   <TableCell className="text-sm tabular-nums">{c.uses}/{c.limit}</TableCell>
                   <TableCell className="hidden text-sm text-muted-foreground md:table-cell">{c.ends}</TableCell>
-                  <TableCell className="pr-5">
+                  <TableCell>
                     <Switch
                       aria-label={`Cupom ${c.code} ativo`}
                       checked={c.active}
                       onChange={(e) => setCoupons((l) => l.map((x) => (x.code === c.code ? { ...x, active: e.target.checked } : x)))}
                     />
                   </TableCell>
+                  <TableCell className="pr-5 text-right"><Button size="sm" variant="secondary" aria-label={`Editar cupom ${c.code}`} onClick={() => navigate(`/planos/cupons/${c.code}/editar`)}>Editar</Button></TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -102,7 +106,7 @@ export function AdminPlanos() {
       <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(undefined)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Editar plano {editing?.name}</DialogTitle>
+            <DialogTitle>{editing?.id === 'novo' ? 'Novo plano' : `Editar plano ${editing?.name}`}</DialogTitle>
             <DialogDescription>
               {editing?.subscribers ? `${editing.subscribers} assinantes usam este plano. Mudanças de preço valem só para novas cobranças.` : 'Nenhum assinante ainda.'}
             </DialogDescription>
