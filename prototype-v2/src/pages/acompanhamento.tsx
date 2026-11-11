@@ -214,7 +214,7 @@ export function Acompanhamento() {
                     <Pill tone="success" icon={<CheckCircle2 />}>
                       Respondido
                     </Pill>
-                    <Button size="sm" variant="secondary" onClick={() => toast(`Abrindo respostas de ${f.name.split(' ')[0]}`)}>
+                    <Button size="sm" variant="secondary" onClick={() => navigate(`/acompanhamento/respostas/${students.find((s) => s.name === f.name)?.id}`)}>
                       Ver respostas
                     </Button>
                   </>

@@ -251,6 +251,7 @@ function HomePersonal() {
 }
 
 function HomeAluno() {
+  const navigate = useNavigate()
   const me = sessions.aluno
   const [done, setDone] = useState<string[]>(['e1'])
   const total = todayWorkout.exercises.length
@@ -273,7 +274,7 @@ function HomeAluno() {
               </span>
             </p>
           </div>
-          <Button size="lg" icon={<Play />} onClick={() => toast('Treino iniciado. Bom treino!')}>
+          <Button size="lg" icon={<Play />} onClick={() => navigate('/treino')}>
             {done.length ? 'Continuar treino' : 'Começar treino'}
           </Button>
         </div>
@@ -344,9 +345,6 @@ function HomeAdmin() {
           <NumberTicker value={1} />
         </Kpi>
       </div>
-      <p className="mt-6 rounded-xl border border-dashed p-5 text-sm text-muted-foreground">
-        As demais telas do admin (usuários, planos, cupons) ainda estão no protótipo antigo e serão migradas para este kit.
-      </p>
     </>
   )
 }

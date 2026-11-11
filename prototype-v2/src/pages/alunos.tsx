@@ -58,7 +58,7 @@ export function Alunos() {
         title="Alunos"
         description={`${used} de ${STUDENT_LIMIT} vagas do seu plano em uso. Restam ${STUDENT_LIMIT - used}.`}
         actions={
-          <Button icon={<Plus />} onClick={() => toast.success('Convite enviado', { description: 'Você será avisado quando a pessoa aceitar.' })}>
+          <Button icon={<Plus />} onClick={() => navigate('/convidar-aluno')}>
             Convidar aluno
           </Button>
         }

@@ -36,9 +36,17 @@ npm run dev
 - Mensagens (`#/mensagens`)
 - Sugerir treino com IA (`#/ia`)
 - Configurações: dados, aparência, avisos, assinatura, privacidade e IA (`#/configuracoes`)
+- Recuperar senha (`#/esqueci-senha`, `#/redefinir-senha`) e criar conta de personal (`#/cadastro`)
+- Convidar aluno (`#/convidar-aluno`), com vagas do plano e link copiável
+- Planos do personal: escolher, cupom e pagamento simulado (`#/planos`); cancelar assinatura (`#/assinatura/cancelar`)
+- Meu treino do aluno: execução exercício a exercício, descanso e esforço percebido (`#/treino`)
+- Avisos (`#/avisos`) e resposta de questionário (`#/acompanhamento/respostas/s01`)
+- Admin: usuários com bloqueio e convite (`#/usuarios`), planos e cupons (`#/planos` no perfil admin)
+- Página não encontrada (qualquer rota inexistente)
 - Kit de interface: cores e componentes dos dois kits lado a lado (`#/design-system`)
 
-As telas ainda não migradas mostram um aviso de "ainda não migrada".
+Ainda faltam, do protótipo antigo: aceitar convite, selecionar perfil, termos e privacidade, saúde/vínculo do aluno,
+detalhe da execução, modelos e envio de questionário, importar planilha, dados da IA, detalhe do usuário, matriz de permissões e relatório de cupom.
 
 ## Como o menu é organizado
 

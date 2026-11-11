@@ -1,5 +1,6 @@
 import { Monitor, Moon, Sun } from 'lucide-react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
 import { SegmentedControl } from '@/components/affect/segmented-control'
@@ -18,6 +19,7 @@ type Tab = (typeof TABS)[number]
 
 export function Configuracoes() {
   const { role } = useRole()
+  const navigate = useNavigate()
   const me = sessions[role]
   const { theme, setTheme } = useTheme()
   const [tab, setTab] = useTab<Tab>(TABS)
@@ -98,13 +100,13 @@ export function Configuracoes() {
             </div>
             <Progress value={60} className="h-2" aria-label="18 de 30 vagas usadas" />
             <div className="mt-5 flex flex-wrap justify-end gap-2">
-              <Button variant="ghost" onClick={() => toast('Abrindo cancelamento')}>
+              <Button variant="ghost" onClick={() => navigate('/assinatura/cancelar')}>
                 Cancelar assinatura
               </Button>
-              <Button variant="secondary" onClick={() => toast('Abrindo formas de pagamento')}>
-                Trocar cartão
+              <Button variant="secondary" onClick={() => navigate('/planos')}>
+                Ver planos e cartão
               </Button>
-              <Button onClick={() => toast('Abrindo os planos')}>Mudar de plano</Button>
+              <Button onClick={() => navigate('/planos')}>Mudar de plano</Button>
             </div>
           </Section>
         )}
