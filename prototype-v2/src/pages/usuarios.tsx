@@ -1,5 +1,6 @@
 import { Ban, MailPlus, Search, ShieldCheck, UserX } from 'lucide-react'
 import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
 import { Select } from '@/components/affect/select'
@@ -17,6 +18,7 @@ const STATUS: Record<Account['status'], { label: string; tone: 'success' | 'dang
 }
 
 export function Usuarios() {
+  const navigate = useNavigate()
   const [list, setList] = useState(seed)
   const [q, setQ] = useState('')
   const [role, setRole] = useState<string | null>('todos')
@@ -34,7 +36,7 @@ export function Usuarios() {
 
   return (
     <>
-      <PageHeader title="Usuários" description={`${list.length} contas na plataforma.`} actions={<Button icon={<MailPlus />} onClick={() => setInviting(true)}>Convidar usuário</Button>} />
+      <PageHeader title="Usuários" description={`${list.length} contas na plataforma.`} actions={<><Button variant="secondary" onClick={() => navigate('/usuarios/permissoes')}>Permissões</Button><Button icon={<MailPlus />} onClick={() => setInviting(true)}>Convidar usuário</Button></>} />
       <div className="mb-4 flex flex-wrap items-start gap-3">
         <TextField aria-label="Buscar por nome ou e-mail" placeholder="Buscar por nome ou e-mail" prefix={<Search className="size-4" />} clearable value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ('')} className="min-w-52 flex-1 sm:max-w-sm" />
         <Select
@@ -66,7 +68,11 @@ export function Usuarios() {
             <TableBody>
               {rows.map((a) => (
                 <TableRow key={a.id}>
-                  <TableCell className="py-3 pl-5"><Person name={a.name} sub={a.email} size="sm" /></TableCell>
+                  <TableCell className="py-3 pl-5">
+                    <Link to={`/usuarios/${a.id}`} className="rounded-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none">
+                      <Person name={a.name} sub={a.email} size="sm" />
+                    </Link>
+                  </TableCell>
                   <TableCell className="text-sm">{ROLES[a.role]}</TableCell>
                   <TableCell className="hidden text-sm text-muted-foreground md:table-cell">{a.plan ?? '—'}</TableCell>
                   <TableCell><Pill tone={STATUS[a.status].tone}>{STATUS[a.status].label}</Pill></TableCell>

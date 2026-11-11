@@ -1,5 +1,6 @@
 import { Plus, Users } from 'lucide-react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
 import { SegmentedControl } from '@/components/affect/segmented-control'
@@ -80,7 +81,7 @@ export function AdminPlanos() {
             <TableBody>
               {coupons.map((c) => (
                 <TableRow key={c.code}>
-                  <TableCell className="py-3 pl-5"><span className="block font-mono text-sm font-medium">{c.code}</span><span className="text-xs text-muted-foreground">{c.label}</span></TableCell>
+                  <TableCell className="py-3 pl-5"><Link to={`/planos/cupons/${c.code}`} className="block font-mono text-sm font-medium underline-offset-4 hover:underline">{c.code}</Link><span className="text-xs text-muted-foreground">{c.label}</span></TableCell>
                   <TableCell className="hidden text-sm sm:table-cell">{c.plan}</TableCell>
                   <TableCell className="text-sm tabular-nums">{c.uses}/{c.limit}</TableCell>
                   <TableCell className="hidden text-sm text-muted-foreground md:table-cell">{c.ends}</TableCell>

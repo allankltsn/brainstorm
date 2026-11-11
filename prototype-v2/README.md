@@ -42,11 +42,18 @@ npm run dev
 - Meu treino do aluno: execução exercício a exercício, descanso e esforço percebido (`#/treino`)
 - Avisos (`#/avisos`) e resposta de questionário (`#/acompanhamento/respostas/s01`)
 - Admin: usuários com bloqueio e convite (`#/usuarios`), planos e cupons (`#/planos` no perfil admin)
+- Aceitar convite (`#/convite`), selecionar perfil (`#/selecionar-perfil`), termos (`#/termos`) e privacidade (`#/privacidade`)
+- Sessão expirada (`#/sessao-expirada`) e manutenção (`#/manutencao`)
+- Pausar ou encerrar acompanhamento do aluno (`#/alunos/s01/vinculo`)
+- Detalhe do treino feito com retorno (`#/acompanhamento/treinos/x3`)
+- Enviar questionário e criar modelo (`#/acompanhamento/questionarios/enviar`, `.../modelo`)
+- Importar planilha com revisão (`#/treinos/importar`) e dados usados pela IA (`#/ia/dados`)
+- Admin: detalhe do usuário (`#/usuarios/u1`), permissões por perfil (`#/usuarios/permissoes`) e relatório de cupom (`#/planos/cupons/PRO20`)
 - Página não encontrada (qualquer rota inexistente)
 - Kit de interface: cores e componentes dos dois kits lado a lado (`#/design-system`)
 
-Ainda faltam, do protótipo antigo: aceitar convite, selecionar perfil, termos e privacidade, saúde/vínculo do aluno,
-detalhe da execução, modelos e envio de questionário, importar planilha, dados da IA, detalhe do usuário, matriz de permissões e relatório de cupom.
+Ainda faltam, do protótipo antigo: histórico de versões do treino, atribuir treino a aluno, visibilidade e personalização de exercício,
+responsáveis do aluno, excluir conta e exportar dados, e as variantes de erro de cada tela.
 
 ## Como o menu é organizado
 

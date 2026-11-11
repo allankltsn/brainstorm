@@ -40,7 +40,19 @@ export function Cadastro() {
           checked={f.terms}
           onChange={(e) => setF({ ...f, terms: e.target.checked })}
           error={errors.terms}
-          label="Li e aceito os termos de uso e a política de privacidade."
+          label={
+            <>
+              Li e aceito os{' '}
+              <Link to="/termos" className="underline underline-offset-4">
+                termos de uso
+              </Link>{' '}
+              e a{' '}
+              <Link to="/privacidade" className="underline underline-offset-4">
+                política de privacidade
+              </Link>
+              .
+            </>
+          }
         />
         <Button type="submit" size="lg" loading={loading} className="w-full">
           {loading ? 'Criando conta' : 'Criar conta'}

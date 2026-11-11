@@ -1,7 +1,6 @@
 import { CalendarDays, ChevronRight, FileSpreadsheet, Plus, Search, Sparkles, Upload, Users } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
 import { SegmentedControl } from '@/components/affect/segmented-control'
 import { TextField } from '@/components/affect/text-field'
@@ -126,7 +125,7 @@ export function Treinos() {
             <FileSpreadsheet className="size-9 text-muted-foreground" />
             <p className="font-medium">Traga seus treinos de uma planilha</p>
             <p className="max-w-sm text-sm text-muted-foreground">Envie um arquivo Excel ou CSV. A IA organiza os exercícios e você confere tudo antes de salvar.</p>
-            <Button className="mt-3" icon={<Upload />} onClick={() => toast('Escolha um arquivo .xlsx ou .csv')}>
+            <Button className="mt-3" icon={<Upload />} onClick={() => navigate('/treinos/importar')}>
               Escolher arquivo
             </Button>
           </div>

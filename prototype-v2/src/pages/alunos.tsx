@@ -231,7 +231,12 @@ export function AlunoDetalhe() {
             <span>Aluno desde {s.since}</span>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          {s.status !== 'encerrado' && s.status !== 'pendente' && (
+            <Button variant="ghost" onClick={() => navigate(`/alunos/${s.id}/vinculo`)}>
+              {s.status === 'pausado' ? 'Retomar' : 'Pausar ou encerrar'}
+            </Button>
+          )}
           <Button variant="secondary" onClick={() => navigate('/mensagens')}>
             Enviar mensagem
           </Button>

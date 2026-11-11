@@ -1,4 +1,5 @@
 import { Sparkles } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
@@ -41,6 +42,11 @@ export function IA() {
       <PageHeader
         title="Sugerir treino com IA"
         description="A IA monta um rascunho. Você revisa e decide o que vai para o aluno."
+        actions={
+          <Link to="/ia/dados" className="text-sm font-medium text-brand-text underline-offset-4 hover:underline">
+            Quais dados a IA usa
+          </Link>
+        }
       />
       <div className="grid gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
         <Section title="1. Conte o que você precisa" className="self-start">

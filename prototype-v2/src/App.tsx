@@ -12,7 +12,20 @@ import { IA } from '@/pages/ia'
 import { Login, VerifyEmail } from '@/pages/login'
 import { Acompanhamento } from '@/pages/acompanhamento'
 import { Mensagens } from '@/pages/mensagens'
+import { AceitarConvite } from '@/pages/aceitar-convite'
 import { AdminPlanos } from '@/pages/admin-planos'
+import { AlunoVinculo } from '@/pages/aluno-vinculo'
+import { CupomRelatorio } from '@/pages/cupom-relatorio'
+import { DadosIA } from '@/pages/dados-ia'
+import { EnviarQuestionario } from '@/pages/enviar-questionario'
+import { ImportarTreino } from '@/pages/importar-treino'
+import { Legal } from '@/pages/legal'
+import { ModeloQuestionario } from '@/pages/modelo-questionario'
+import { Permissoes } from '@/pages/permissoes'
+import { SelecionarPerfil } from '@/pages/selecionar-perfil'
+import { Manutencao, SessaoExpirada } from '@/pages/sessao-expirada'
+import { TreinoFeito } from '@/pages/treino-feito'
+import { UsuarioDetalhe } from '@/pages/usuario-detalhe'
 import { Cadastro } from '@/pages/cadastro'
 import { CancelarAssinatura } from '@/pages/cancelar-assinatura'
 import { ConvidarAluno } from '@/pages/convidar-aluno'
@@ -43,6 +56,12 @@ export default function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/verificar-email" element={<VerifyEmail />} />
               <Route path="/cadastro" element={<Cadastro />} />
+              <Route path="/convite" element={<AceitarConvite />} />
+              <Route path="/selecionar-perfil" element={<SelecionarPerfil />} />
+              <Route path="/sessao-expirada" element={<SessaoExpirada />} />
+              <Route path="/manutencao" element={<Manutencao />} />
+              <Route path="/termos" element={<Legal doc="termos" />} />
+              <Route path="/privacidade" element={<Legal doc="privacidade" />} />
               <Route path="/esqueci-senha" element={<EsqueciSenha />} />
               <Route path="/redefinir-senha" element={<RedefinirSenha />} />
               <Route element={<AppShell />}>
@@ -50,9 +69,18 @@ export default function App() {
                 <Route path="/inicio" element={<Home />} />
                 <Route path="/alunos" element={<Alunos />} />
                 <Route path="/alunos/:id" element={<AlunoDetalhe />} />
+                <Route path="/alunos/:id/vinculo" element={<AlunoVinculo />} />
                 <Route path="/convidar-aluno" element={<ConvidarAluno />} />
                 <Route path="/treino" element={<MeuTreino />} />
                 <Route path="/usuarios" element={<Usuarios />} />
+                <Route path="/usuarios/permissoes" element={<Permissoes />} />
+                <Route path="/usuarios/:id" element={<UsuarioDetalhe />} />
+                <Route path="/planos/cupons/:code" element={<CupomRelatorio />} />
+                <Route path="/treinos/importar" element={<ImportarTreino />} />
+                <Route path="/ia/dados" element={<DadosIA />} />
+                <Route path="/acompanhamento/treinos/:id" element={<TreinoFeito />} />
+                <Route path="/acompanhamento/questionarios/enviar" element={<EnviarQuestionario />} />
+                <Route path="/acompanhamento/questionarios/modelo" element={<ModeloQuestionario />} />
                 <Route path="/planos" element={<PlanosPorPerfil />} />
                 <Route path="/assinatura/cancelar" element={<CancelarAssinatura />} />
                 <Route path="/avisos" element={<Notificacoes />} />

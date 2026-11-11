@@ -110,7 +110,7 @@ function NewButton() {
         <DropdownMenuItem onSelect={go('/ia')}>
           <Sparkles /> Sugerir treino com IA
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={go('/acompanhamento?aba=questionarios')}>
+        <DropdownMenuItem onSelect={go('/acompanhamento/questionarios/enviar')}>
           <ClipboardList /> Enviar questionário
         </DropdownMenuItem>
       </DropdownMenuContent>
