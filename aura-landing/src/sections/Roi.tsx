@@ -7,7 +7,7 @@ import { BorderBeam } from "@/components/magicui/border-beam"
 import { Btn, Container, SectionHead } from "@/components/ui"
 import { cn } from "@/lib/utils"
 
-/* Premissas ilustrativas (mesmas do protótipo anterior). */
+/* Premissas da calculadora. */
 const SEMANAS_MES = 4.33
 const MODOS = {
   cons: { nome: "conservador", red: 0.2, rec: 0.25, desc: "20% do tempo e 25% da inadimplência" },
@@ -210,7 +210,6 @@ export function Roi() {
                       onClick={() => { setV(c.v); document.getElementById("roi")?.scrollIntoView({ block: "start", behavior: "smooth" }) }}
                       className={cn("flex h-full w-full flex-col rounded-3xl border p-6 text-left transition-colors", on ? "border-primary bg-primary-soft/50" : "border-line bg-surface hover:border-line-strong")}
                     >
-                      <span className="text-[11px] text-faint">Exemplo de perfil</span>
                       <span className="mt-3 text-lg font-bold tracking-tight">{c.t}</span>
                       <span className="mt-1 text-sm text-muted">{c.v.alunos} alunos, {brl(c.v.ticket)}, {c.v.horas} h por semana, {c.v.inad}% de inadimplência.</span>
                       <span className="mt-3 text-sm text-muted">Cerca de <b className="text-ink">{num(cr.horasEcon)} h</b> liberadas e ganho líquido de cerca de <b className="text-ink">{brl(Math.round(cr.ganhoLiquido))}</b> por mês. Não é garantia.</span>

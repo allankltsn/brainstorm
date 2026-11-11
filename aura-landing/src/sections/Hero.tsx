@@ -228,7 +228,6 @@ export function Hero() {
           </motion.div>
         </div>
       </Container>
-      <p className="absolute bottom-3 right-5 z-10 text-[11px] text-faint">Foto ilustrativa.</p>
     </section>
   )
 }

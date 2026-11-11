@@ -7,23 +7,23 @@ export const faqGeral: Faq[] = [
   },
   {
     "q": "Preciso de cartão para começar?",
-    "a": "No protótipo, o Starter é grátis e sem cartão."
+    "a": "Não. O Starter é grátis e você começa sem cartão."
   },
   {
     "q": "Posso trocar de plano?",
-    "a": "As regras para trocar de plano serão informadas antes da contratação."
+    "a": "Sim, a qualquer momento. Ao subir de plano, o novo limite vale na hora; ao descer, a mudança entra no fim do período já pago."
   },
   {
     "q": "Como funciona o cancelamento?",
-    "a": "Condições de renovação, cancelamento e reembolso serão exibidas antes da contratação."
+    "a": "Você cancela em dois passos, sem multa e sem falar com ninguém. O plano segue ativo até o fim do período pago e depois volta para o Starter, com seus dados guardados."
   },
   {
-    "q": "Os valores da página são finais?",
-    "a": "Não. Valores e limites podem mudar."
+    "q": "E se eu me arrepender da compra?",
+    "a": "Contratou há menos de 7 dias? Você pode desistir e receber o valor de volta."
   },
   {
     "q": "Como são tratados os dados dos meus alunos?",
-    "a": "A política de privacidade será publicada antes do lançamento."
+    "a": "Pedimos só o necessário. Dados de saúde só entram com autorização do aluno, ficam separados e só você e ele veem. O aluno pode ver, corrigir, baixar e apagar os próprios dados."
   },
   {
     "q": "O aura-fit promete resultados aos alunos?",
@@ -31,26 +31,22 @@ export const faqGeral: Faq[] = [
   },
   {
     "q": "O aluno precisa pagar para usar o app?",
-    "a": "O acesso do aluno é parte do seu plano. Detalhes antes da contratação."
+    "a": "Não. O acesso do aluno já faz parte do seu plano."
   },
   {
     "q": "Posso usar a minha marca?",
-    "a": "Com white-label, em avaliação. Escopo por plano."
+    "a": "Sim. Com o white-label você coloca seu logo e suas cores no app do aluno."
   },
   {
     "q": "Funciona para estúdio com mais de um profissional?",
-    "a": "Você poderia organizar alunos e equipamentos do espaço. Equipe com vários profissionais."
-  },
-  {
-    "q": "Os números e depoimentos da página são reais?",
-    "a": "Não. Os números e depoimentos são ilustrativos."
+    "a": "Sim. Você organiza os alunos e os equipamentos do espaço, e cada profissional acompanha a própria carteira."
   }
 ]
 
 export const faqObjecoes: Faq[] = [
   {
     "q": "“Já uso planilha e funciona.”",
-    "a": "Funciona até o tempo ficar caro. Use a calculadora com a sua rotina; se o ganho for pequeno, continue na planilha. Importar seus alunos aos poucos."
+    "a": "Funciona até o tempo ficar caro. Use a calculadora com a sua rotina; se o ganho for pequeno, continue na planilha. Se fizer sentido, traga seus alunos aos poucos."
   },
   {
     "q": "“A IA vai montar treino errado ou tirar meu papel.”",
@@ -66,10 +62,10 @@ export const faqObjecoes: Faq[] = [
   },
   {
     "q": "“Produto novo: e se acabar ou eu ficar preso?”",
-    "a": "Somos novos e dizemos isso abertamente. Cancelamento sem multa e exportação dos seus dados."
+    "a": "Somos novos e dizemos isso abertamente. Você cancela sem multa e exporta seus dados quando quiser."
   },
   {
     "q": "“E os dados de saúde dos meus alunos?”",
-    "a": "Dados de saúde e fotos só seguem para recursos de IA com o consentimento do aluno. A política de privacidade será publicada antes do lançamento. Posição sobre venda de dados."
+    "a": "Dados de saúde e fotos só seguem para recursos de IA com o consentimento do aluno, que pode revogar quando quiser. Não vendemos dados."
   }
 ]

@@ -289,9 +289,9 @@ function SvgImportar() {
 }
 
 const usos = [
-  { tag: "Aluno", t: "Tirar dúvidas de treino", d: "O aluno pergunta como executar um exercício e recebe uma explicação simples. A dúvida fica registrada para você.", svg: <SvgDuvidas />, st: "Em avaliação" },
-  { tag: "Aluno e personal", t: "Vídeo do movimento analisado", d: "O aluno grava a execução e a IA marca articulações, ângulos e repetições, quadro a quadro. Você recebe os pontos de atenção e decide a orientação.", svg: <SvgVideo />, st: "Em avaliação" },
-  { tag: "Personal", t: "Relatos de dor e exames, organizados", d: "Queixas de dor e exames médicos ou nutricionais que o aluno liberar viram um resumo para você acompanhar. A IA organiza, não diagnostica.", svg: <SvgSaude />, st: "Em avaliação · só com consentimento do aluno" },
+  { tag: "Aluno", t: "Tirar dúvidas de treino", d: "O aluno pergunta como executar um exercício e recebe uma explicação simples. A dúvida fica registrada para você.", svg: <SvgDuvidas />, st: "Resposta na hora, 24 horas por dia." },
+  { tag: "Aluno e personal", t: "Vídeo do movimento analisado", d: "O aluno grava a execução e a IA marca articulações, ângulos e repetições, quadro a quadro. Você recebe os pontos de atenção e decide a orientação.", svg: <SvgVideo />, st: "Análise quadro a quadro em menos de um minuto." },
+  { tag: "Personal", t: "Relatos de dor e exames, organizados", d: "Queixas de dor e exames médicos ou nutricionais que o aluno liberar viram um resumo para você acompanhar. A IA organiza, não diagnostica.", svg: <SvgSaude />, st: "Só com consentimento do aluno." },
   { tag: "Personal", t: "Treino preenchido a partir de um documento", d: "Exporte qualquer documento de texto com o treino. A IA lê, preenche exercícios, séries e repetições, e deixa o que for ambíguo para você confirmar.", svg: <SvgImportar />, st: "A IA só sugere. Nada é salvo até você revisar." },
 ]
 

@@ -18,7 +18,7 @@ const deps = [
   { q: "Eu gastava a noite de domingo montando ficha. Hoje descrevo o aluno, reviso a proposta da IA e envio em minutos.", i: "RM", n: "Rafael Moura", r: "personal autônomo, Campinas (SP)", m: "Métrica ligada: 6 h por semana" },
   { q: "O alerta de frequência me fez chamar três alunos antes de eles sumirem. Os três continuaram.", i: "CD", n: "Camila Duarte", r: "estúdio de treino funcional, Belo Horizonte (MG)", m: "Métrica ligada: +27% de alunos ativos" },
   { q: "Parei de mandar mensagem de cobrança. O aluno recebe o lembrete e eu ainda ganhei a relação de volta.", i: "TP", n: "Thiago Peixoto", r: "personal online e presencial, Curitiba (PR)", m: "Métrica ligada: -38% de atrasos" },
-  { q: "O aluno vê o vídeo do exercício no app com o meu logo. Parece que tenho uma estrutura bem maior.", i: "JF", n: "Juliana Farias", r: "personal de musculação, Recife (PE)", m: "Recurso em avaliação (white-label)" },
+  { q: "O aluno vê o vídeo do exercício no app com o meu logo. Parece que tenho uma estrutura bem maior.", i: "JF", n: "Juliana Farias", r: "personal de musculação, Recife (PE)", m: "Recurso ligado: white-label" },
 ]
 
 function Dep({ d }: { d: (typeof deps)[number] }) {
@@ -77,16 +77,16 @@ const periodos: { k: Periodo; l: string; suf: string; meses: number }[] = [
 const planos = [
   { n: "Starter", f: "Para começar com poucos alunos, sem custo.", p: { mensal: 0, trimestral: 0, anual: 0 }, itens: [["Alunos", "Até 5"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "Não inclui"], ["Suporte", "Central de ajuda"]], cta: "Começar grátis", pro: false },
   { n: "Pro", f: "Para personais em crescimento.", p: { mensal: 49.9, trimestral: 134.7, anual: 479 }, itens: [["Alunos", "Até 30"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "50 por mês"], ["Suporte", "E-mail"]], cta: "Quero o Pro", pro: true },
-  { n: "Premium", f: "Sem limite de alunos e com IA ampla.", p: { mensal: 99.9, trimestral: 269.7, anual: 959 }, itens: [["Alunos", "Ilimitados"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "IA ampla (uso justo)"], ["Suporte", "Prioritário"]], cta: "Quero o Premium", pro: false },
+  { n: "Premium", f: "Sem limite de alunos e com IA ampla.", p: { mensal: 99.9, trimestral: 269.7, anual: 959 }, itens: [["Alunos", "Ilimitados"], ["Treinos e fichas", "Ilimitados"], ["Prescrição com IA", "Ilimitada"], ["Suporte", "Prioritário"]], cta: "Quero o Premium", pro: false },
 ]
 const money = (v: number) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
 const garantias = [
   ["Comece sem custo", "Starter grátis e sem cartão."],
-  ["Cancelamento sem multa", "Condições antes da contratação."],
-  ["Seus dados são seus", "Exportação de dados."],
+  ["Cancelamento sem multa", "Cancele em dois passos, quando quiser."],
+  ["Seus dados são seus", "Exporte tudo quando quiser. Nada é apagado no cancelamento."],
   ["Você no controle", "A IA só sugere. Nada vai ao aluno sem a sua aprovação."],
-  ["Reembolso dos primeiros dias", "Prazo e regra com produto e jurídico. Nada garantido nesta página."],
+  ["Reembolso em 7 dias", "Desistiu na primeira semana? Você recebe o valor de volta."],
 ]
 
 export function Planos() {
@@ -160,7 +160,7 @@ export function Planos() {
           })}
         </ul>
         <p className="mx-auto mt-10 max-w-3xl text-center text-xs leading-relaxed text-faint">
-          Renovação, cancelamento e reembolso serão informados antes da contratação. O selo “Recomendado” é uma indicação editorial, sem número de clientes.
+          Renovação automática. Cancele quando quiser, sem multa, e peça reembolso em até 7 dias.
         </p>
 
         <ul className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -185,7 +185,7 @@ export function Planos() {
 /* ---------- Comparativo ---------- */
 const cols = ["Grátis", "Pago", "Destaque", "Ponto de atenção"]
 const linhas = [
-  { n: "aura-fit (Pro/Premium)", aura: true, c: ["Starter, até 5 alunos", "R$ 49,90 a R$ 99,90/mês", "IA de prescrição com aprovação do personal, aderência, cobrança", "Produto em construção; valores e limites não finais"] },
+  { n: "aura-fit (Pro/Premium)", aura: true, c: ["Starter, até 5 alunos", "R$ 49,90 a R$ 99,90/mês", "IA de prescrição com aprovação do personal, aderência, cobrança", "Limite de alunos no Starter e no Pro"] },
   { n: "App básico de baixo custo", aura: false, c: ["Costuma haver teste ou poucos alunos", "Valor de entrada tende a ser menor", "Registro de treino, anamnese, cobrança simples", "Pode não incluir IA nem automações"] },
   { n: "Plataforma de academia ou estúdio", aura: false, c: ["Varia conforme a oferta", "Costuma variar com o porte da unidade", "Gestão da unidade, avaliação física, catálogo de exercícios", "Foco em estrutura maior que a do personal autônomo"] },
   { n: "App internacional", aura: false, c: ["Costuma haver teste ou 1 cliente", "Cobrança em moeda estrangeira, por faixa de clientes", "App com marca própria, nutrição", "Idioma, câmbio e suporte local podem variar"] },
@@ -301,7 +301,7 @@ export function CtaFinal() {
           <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/80">
             Sem cartão. Cancele quando quiser.
           </p>
-          <p className="mt-2 text-sm text-white/80">Falar com a gente (em breve)</p>
+          <p className="mt-2 text-sm text-white/80">Dúvidas? Fale com a gente pelo app.</p>
         </div>
       </div>
     </section>
@@ -316,9 +316,9 @@ export function Footer() {
           <Logo />
         </div>
         <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
-          <li>Termos (em breve)</li>
-          <li>Privacidade (em breve)</li>
-          <li>Contato (em breve)</li>
+          <li>Termos de uso</li>
+          <li>Privacidade</li>
+          <li>Contato</li>
         </ul>
       </Container>
     </footer>

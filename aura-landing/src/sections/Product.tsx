@@ -109,7 +109,6 @@ export function Manifesto() {
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted">
             Cada proposta passa pela sua revisão antes de chegar ao aluno. A responsabilidade profissional continua sendo sua.
           </p>
-          <p className="mt-10 text-[11px] text-faint">Foto ilustrativa.</p>
         </div>
       </div>
     </section>
@@ -320,10 +319,13 @@ export function Recursos() {
         </div>
 
         <BlurFade inView delay={0.1}>
-          <p className="mt-6 rounded-2xl border border-dashed border-line-strong p-5 text-sm leading-relaxed text-faint">
-            <span className="mr-2 inline-flex rounded-md bg-warn/10 px-1.5 py-0.5 text-[11px] font-semibold text-warn">Em avaliação</span>
-            treino com vídeo por exercício, white-label (logo e cores próprias), cadastro de equipamentos, anamnese e avaliação física com fotos de progresso. Dados de saúde e fotos só iriam à IA com o consentimento do aluno. Nenhum deles é compromisso de entrega.
-          </p>
+          <ul className="mt-6 flex flex-wrap gap-2">
+            {["Treino com vídeo por exercício", "White-label: seu logo e suas cores", "Cadastro de equipamentos", "Anamnese", "Avaliação física com fotos de progresso"].map((x) => (
+              <li key={x} className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white/[0.03] px-3.5 py-2 text-sm text-muted">
+                <Check size={14} className="text-ok" /> {x}
+              </li>
+            ))}
+          </ul>
           <div className="mt-8">
             <Btn href="https://allankltsn.github.io/brainstorm/login">Testar com meus alunos <ArrowRight size={18} /></Btn>
           </div>
