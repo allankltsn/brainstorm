@@ -10,7 +10,9 @@ import { TextField } from '@/components/affect/text-field'
 import { PageHeader, Person, Pill, Section } from '@/components/page'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { EmptyState, ErrorState, ListSkeleton } from '@/components/states'
 import { activeStudents, initials, maskEmail, STUDENT_LIMIT, students, type Student } from '@/lib/data'
+import { useLoad } from '@/lib/use-load'
 
 type Tab = 'ativos' | 'pendentes' | 'historico'
 
@@ -37,32 +39,43 @@ export function Alunos() {
   const [tab, setTab] = useState<Tab>('ativos')
   const [q, setQ] = useState('')
   const [mode, setMode] = useState('todos')
+  const { state, empty, limit, retry } = useLoad()
 
   const groups = useMemo(
     () => ({
-      ativos: activeStudents(),
-      pendentes: students.filter((s) => s.status === 'pendente'),
-      historico: students.filter((s) => s.status === 'encerrado'),
+      ativos: empty ? [] : activeStudents(),
+      pendentes: empty ? [] : students.filter((s) => s.status === 'pendente'),
+      historico: empty ? [] : students.filter((s) => s.status === 'encerrado'),
     }),
-    [],
+    [empty],
   )
   const list = groups[tab]
     .filter((s) => s.name.toLowerCase().includes(q.trim().toLowerCase()))
     .filter((s) => mode === 'todos' || s.mode === mode)
     .sort((a, b) => b.alerts - a.alerts || a.name.localeCompare(b.name, 'pt-BR'))
-  const used = groups.ativos.length
+  const used = limit ? STUDENT_LIMIT : groups.ativos.length
+  const none = empty && state === 'pronto'
 
   return (
     <>
       <PageHeader
         title="Alunos"
-        description={`${used} de ${STUDENT_LIMIT} vagas do seu plano em uso. Restam ${STUDENT_LIMIT - used}.`}
+        description={used >= STUDENT_LIMIT ? `As ${STUDENT_LIMIT} vagas do seu plano estão em uso.` : `${used} de ${STUDENT_LIMIT} vagas do seu plano em uso. Restam ${STUDENT_LIMIT - used}.`}
         actions={
           <Button icon={<Plus />} onClick={() => navigate('/convidar-aluno')}>
             Convidar aluno
           </Button>
         }
       />
+
+      {used >= STUDENT_LIMIT && (
+        <div role="alert" className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-warning-soft p-4 text-sm text-warning">
+          <p>Você chegou ao limite de alunos do plano. Para convidar mais gente, mude de plano ou encerre um acompanhamento.</p>
+          <Button size="sm" variant="secondary" onClick={() => navigate('/planos')}>
+            Mudar de plano
+          </Button>
+        </div>
+      )}
 
       <div className="mb-4 flex flex-wrap items-end gap-3">
         <SegmentedControl<Tab>
@@ -104,7 +117,22 @@ export function Alunos() {
         {list.length} alunos encontrados
       </p>
 
-      {list.length === 0 ? (
+      {state === 'carregando' ? (
+        <ListSkeleton rows={5} label="Carregando seus alunos" />
+      ) : state === 'erro' ? (
+        <ErrorState what="seus alunos" onRetry={retry} />
+      ) : none ? (
+        <EmptyState
+          icon={<UserX />}
+          title="Você ainda não tem alunos"
+          text="Convide o primeiro aluno por e-mail. Ele recebe um link e escolhe o que liberar para você."
+          action={
+            <Button variant="secondary" onClick={() => navigate('/convidar-aluno')}>
+              Convidar aluno
+            </Button>
+          }
+        />
+      ) : list.length === 0 ? (
         <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed px-6 py-16 text-center">
           <UserX className="size-8 text-muted-foreground" />
           <p className="font-medium">Nenhum aluno encontrado</p>

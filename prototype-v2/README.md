@@ -55,7 +55,11 @@ npm run dev
 - Conta: cópia dos dados e excluir conta (`#/configuracoes?aba=privacidade`, `#/configuracoes/excluir-conta`)
 - Planos: pagamento não concluído (cartão começando com 4000 simula a recusa)
 - Admin: criar e editar cupom (`#/planos/cupons/novo`), novo plano e perfis de acesso (`#/usuarios/perfis`)
-- Acesso negado (`#/acesso-negado`) e em breve (`#/em-breve/agenda`)
+- Acesso negado: aparece ao abrir, pelo endereço, uma tela de outro perfil (ex.: `#/usuarios` no perfil personal). A regra fica em `src/App.tsx` (`Only`)
+- Em breve (`#/em-breve/agenda`, `#/em-breve/nutricao`): abre pela busca (Ctrl K), no perfil personal
+- Treinos: modelos prontos do aura-fit (`#/treinos?aba=prontos`); "Usar este modelo" abre o editor com uma cópia (`#/treinos/novo?modelo=m1`)
+- Treino: restaurar do modelo, no histórico de versões de um treino que veio de modelo pronto (`#/treinos/t3/versoes`)
+- Conta: retirar e devolver liberações (`#/configuracoes?aba=privacidade`), com lista própria por perfil
 - Página não encontrada (qualquer rota inexistente)
 - Evolução do aluno: resumo, treinos feitos, peso e medidas (`#/evolucao` no perfil aluno; `#/alunos/s03/evolucao` no personal)
 - Check-in do aluno: peso, medidas, fotos e observação (`#/check-in`)
@@ -67,9 +71,17 @@ npm run dev
 - Aniversários (início do personal) e frase do dia (início do aluno)
 - Kit de interface: cores e componentes dos dois kits lado a lado (`#/design-system`)
 
-Do protótipo antigo ainda faltam as variantes de erro e de limite de cada tela.
+## Estados de erro, vazio e limite
 
-Nas listas novas, acrescente `?estado=erro` ou `?estado=vazio` ao endereço para ver os estados de erro e vazio (`src/lib/use-load.ts`).
+Acrescente `?estado=` ao endereço para ver cada variante (`src/lib/use-load.ts`). Toda lista também mostra o estado de carregando por um instante.
+
+| Estado | Onde vale |
+| --- | --- |
+| `?estado=erro` | Alunos, Treinos, Acompanhar, Mensagens, Avisos, Usuários, Planos e cupons, Evolução, Linha do tempo, Cobranças, Pagamentos, Suporte e Créditos de IA |
+| `?estado=vazio` | As mesmas listas, menos Planos e cupons |
+| `?estado=limite` | Alunos e Convidar aluno (vagas do plano esgotadas) e Sugerir treino com IA (créditos zerados) |
+
+Ainda sem variante de erro: formulários (salvar treino, exercício, cupom, questionário) e as telas de entrar e criar conta.
 
 ## Gráficos e relatórios
 

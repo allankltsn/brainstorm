@@ -1,4 +1,4 @@
-import { Dumbbell, LifeBuoy, ListChecks, Palette, Receipt, Ruler, Settings, Sparkles, UserPlus } from 'lucide-react'
+import { CalendarClock, Dumbbell, LifeBuoy, ListChecks, Palette, Receipt, Ruler, Salad, Settings, Sparkles, UserPlus } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -54,6 +54,8 @@ export function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenCh
           ? [
               { key: 'cobrancas', label: 'Cobranças dos alunos', words: 'mensalidade financeiro pagamento pix', icon: <Receipt />, run: go('/cobrancas') },
               { key: 'creditos', label: 'Créditos de IA', words: 'saldo inteligência artificial', icon: <Sparkles />, run: go('/ia/creditos') },
+              { key: 'agenda', label: 'Agenda', words: 'sessões horário marcar calendário', hint: 'Em breve', icon: <CalendarClock />, run: go('/em-breve/agenda') },
+              { key: 'nutricao', label: 'Nutrição', words: 'alimentação dieta', hint: 'Em breve', icon: <Salad />, run: go('/em-breve/nutricao') },
             ]
           : []),
         ...(role === 'aluno'

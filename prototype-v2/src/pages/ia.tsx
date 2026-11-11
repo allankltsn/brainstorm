@@ -13,6 +13,7 @@ import { ThinkingLoader } from '@/components/affect/thinking-loader'
 import { PageHeader, Pill, Section } from '@/components/page'
 import { students } from '@/lib/data'
 import { aiCredits } from '@/lib/finance'
+import { useLoad } from '@/lib/use-load'
 
 type Goal = 'hipertrofia' | 'emagrecimento' | 'condicionamento'
 
@@ -30,6 +31,9 @@ export function IA() {
   const [version, setVersion] = useState(0)
   const [regenerating, setRegenerating] = useState(false)
   const [error, setError] = useState<string>()
+  // ?estado=limite simula o saldo de créditos zerado
+  const { limit } = useLoad(0)
+  const credits = limit ? 0 : aiCredits.monthly - aiCredits.used + aiCredits.extra
 
   function generate() {
     if (!student) return setError('Escolha um aluno para continuar.')
@@ -46,7 +50,7 @@ export function IA() {
         actions={
           <>
           <Link to="/ia/creditos" className="text-sm font-medium text-brand-text underline-offset-4 hover:underline">
-            {aiCredits.monthly - aiCredits.used + aiCredits.extra} créditos
+            {credits === 0 ? 'Sem créditos' : `${credits} créditos`}
           </Link>
           <Link to="/ia/dados" className="text-sm font-medium text-brand-text underline-offset-4 hover:underline">
             Quais dados a IA usa
@@ -88,7 +92,15 @@ export function IA() {
             </div>
             <TagInput label="Restrições" optional placeholder="Ex.: joelho, ombro" hint="Aperte Enter depois de cada uma." defaultValue={['joelho direito']} />
             <TextArea label="Observações" optional placeholder="Ex.: treina em casa, tem halteres e elástico" minRows={2} maxRows={6} />
-            <Button icon={<Sparkles />} loading={phase === 'thinking'} onClick={generate} className="w-full">
+            {credits === 0 && (
+              <div role="alert" className="grid gap-2 rounded-lg bg-warning-soft p-3 text-sm text-warning">
+                <p>Seus créditos de IA acabaram. Eles voltam na renovação do plano, ou você pode comprar um pacote agora.</p>
+                <Link to="/ia/creditos" className="font-medium underline underline-offset-4">
+                  Ver créditos e pacotes
+                </Link>
+              </div>
+            )}
+            <Button icon={<Sparkles />} loading={phase === 'thinking'} disabled={credits === 0} onClick={generate} className="w-full">
               {phase === 'thinking' ? 'Montando' : phase === 'done' ? 'Gerar de novo' : 'Gerar sugestão'}
             </Button>
           </div>

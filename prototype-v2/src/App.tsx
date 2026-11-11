@@ -1,7 +1,8 @@
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { HashRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { AppShell } from '@/components/app-shell'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import type { Role } from '@/lib/data'
 import { RoleProvider, useRole } from '@/lib/role'
 import { ThemeProvider } from '@/lib/theme'
 import { AlunoDetalhe, Alunos } from '@/pages/alunos'
@@ -62,6 +63,11 @@ function PlanosPorPerfil() {
   return useRole().role === 'admin' ? <AdminPlanos /> : <Planos />
 }
 
+/* Telas de um perfil só: quem entra pelo endereço com outro perfil vê "acesso negado". */
+function Only({ roles }: { roles: Role[] }) {
+  return roles.includes(useRole().role) ? <Outlet /> : <AcessoNegado />
+}
+
 /* HashRouter: o build é estático e abre em qualquer hospedagem, sem configurar rotas no servidor. */
 export default function App() {
   return (
@@ -84,50 +90,60 @@ export default function App() {
               <Route element={<AppShell />}>
                 <Route index element={<Navigate to="/inicio" replace />} />
                 <Route path="/inicio" element={<Home />} />
-                <Route path="/alunos" element={<Alunos />} />
-                <Route path="/alunos/:id" element={<AlunoDetalhe />} />
-                <Route path="/alunos/:id/vinculo" element={<AlunoVinculo />} />
-                <Route path="/alunos/:id/responsaveis" element={<AlunoResponsaveis />} />
-                <Route path="/alunos/:id/evolucao" element={<Evolucao />} />
-                <Route path="/alunos/:id/linha-do-tempo" element={<AlunoLinhaDoTempo />} />
-                <Route path="/convidar-aluno" element={<ConvidarAluno />} />
-                <Route path="/evolucao" element={<Evolucao />} />
-                <Route path="/check-in" element={<CheckIn />} />
-                <Route path="/primeiros-passos" element={<PrimeirosPassos />} />
-                <Route path="/pagamentos" element={<Pagamentos />} />
-                <Route path="/cobrancas" element={<Cobrancas />} />
+                <Route element={<Only roles={['personal']} />}>
+                  <Route path="/alunos" element={<Alunos />} />
+                  <Route path="/alunos/:id" element={<AlunoDetalhe />} />
+                  <Route path="/alunos/:id/vinculo" element={<AlunoVinculo />} />
+                  <Route path="/alunos/:id/responsaveis" element={<AlunoResponsaveis />} />
+                  <Route path="/alunos/:id/evolucao" element={<Evolucao />} />
+                  <Route path="/alunos/:id/linha-do-tempo" element={<AlunoLinhaDoTempo />} />
+                  <Route path="/convidar-aluno" element={<ConvidarAluno />} />
+                  <Route path="/cobrancas" element={<Cobrancas />} />
+                  <Route path="/ia/creditos" element={<CreditosIA />} />
+                  <Route path="/treinos/importar" element={<ImportarTreino />} />
+                  <Route path="/ia/dados" element={<DadosIA />} />
+                  <Route path="/acompanhamento/treinos/:id" element={<TreinoFeito />} />
+                  <Route path="/acompanhamento/questionarios/enviar" element={<EnviarQuestionario />} />
+                  <Route path="/acompanhamento/questionarios/modelo" element={<ModeloQuestionario />} />
+                  <Route path="/assinatura/cancelar" element={<CancelarAssinatura />} />
+                  <Route path="/treinos" element={<Treinos />} />
+                  <Route path="/treinos/novo" element={<TreinoEditor />} />
+                  <Route path="/treinos/exercicios/novo" element={<ExercicioForm />} />
+                  <Route path="/treinos/exercicios/:id" element={<ExercicioDetalhe />} />
+                  <Route path="/treinos/exercicios/:id/editar" element={<ExercicioForm />} />
+                  <Route path="/treinos/exercicios/:id/visibilidade" element={<ExercicioVisibilidade />} />
+                  <Route path="/treinos/exercicios/:id/personalizar" element={<ExercicioPersonalizar />} />
+                  <Route path="/treinos/:id" element={<TreinoEditor />} />
+                  <Route path="/treinos/:id/versoes" element={<TreinoVersoes />} />
+                  <Route path="/treinos/:id/atribuir" element={<TreinoAtribuir />} />
+                  <Route path="/acompanhamento" element={<Acompanhamento />} />
+                  <Route path="/acompanhamento/respostas/:id" element={<RespostaQuestionario />} />
+                  <Route path="/ia" element={<IA />} />
+                </Route>
+                <Route element={<Only roles={['aluno']} />}>
+                  <Route path="/evolucao" element={<Evolucao />} />
+                  <Route path="/check-in" element={<CheckIn />} />
+                  <Route path="/primeiros-passos" element={<PrimeirosPassos />} />
+                  <Route path="/pagamentos" element={<Pagamentos />} />
+                  <Route path="/treino" element={<MeuTreino />} />
+                </Route>
+                <Route element={<Only roles={['admin']} />}>
+                  <Route path="/usuarios" element={<Usuarios />} />
+                  <Route path="/usuarios/permissoes" element={<Permissoes />} />
+                  <Route path="/usuarios/perfis" element={<Perfis />} />
+                  <Route path="/usuarios/:id" element={<UsuarioDetalhe />} />
+                  <Route path="/planos/cupons/novo" element={<CupomForm />} />
+                  <Route path="/planos/cupons/:code" element={<CupomRelatorio />} />
+                  <Route path="/planos/cupons/:code/editar" element={<CupomForm />} />
+                </Route>
+                <Route element={<Only roles={['personal', 'admin']} />}>
+                  <Route path="/planos" element={<PlanosPorPerfil />} />
+                </Route>
+                <Route element={<Only roles={['personal', 'aluno']} />}>
+                  <Route path="/mensagens" element={<Mensagens />} />
+                </Route>
                 <Route path="/suporte" element={<Suporte />} />
-                <Route path="/ia/creditos" element={<CreditosIA />} />
-                <Route path="/treino" element={<MeuTreino />} />
-                <Route path="/usuarios" element={<Usuarios />} />
-                <Route path="/usuarios/permissoes" element={<Permissoes />} />
-                <Route path="/usuarios/perfis" element={<Perfis />} />
-                <Route path="/usuarios/:id" element={<UsuarioDetalhe />} />
-                <Route path="/planos/cupons/novo" element={<CupomForm />} />
-                <Route path="/planos/cupons/:code" element={<CupomRelatorio />} />
-                <Route path="/planos/cupons/:code/editar" element={<CupomForm />} />
-                <Route path="/treinos/importar" element={<ImportarTreino />} />
-                <Route path="/ia/dados" element={<DadosIA />} />
-                <Route path="/acompanhamento/treinos/:id" element={<TreinoFeito />} />
-                <Route path="/acompanhamento/questionarios/enviar" element={<EnviarQuestionario />} />
-                <Route path="/acompanhamento/questionarios/modelo" element={<ModeloQuestionario />} />
-                <Route path="/planos" element={<PlanosPorPerfil />} />
-                <Route path="/assinatura/cancelar" element={<CancelarAssinatura />} />
                 <Route path="/avisos" element={<Notificacoes />} />
-                <Route path="/treinos" element={<Treinos />} />
-                <Route path="/treinos/novo" element={<TreinoEditor />} />
-                <Route path="/treinos/exercicios/novo" element={<ExercicioForm />} />
-                <Route path="/treinos/exercicios/:id" element={<ExercicioDetalhe />} />
-                <Route path="/treinos/exercicios/:id/editar" element={<ExercicioForm />} />
-                <Route path="/treinos/exercicios/:id/visibilidade" element={<ExercicioVisibilidade />} />
-                <Route path="/treinos/exercicios/:id/personalizar" element={<ExercicioPersonalizar />} />
-                <Route path="/treinos/:id" element={<TreinoEditor />} />
-                <Route path="/treinos/:id/versoes" element={<TreinoVersoes />} />
-                <Route path="/treinos/:id/atribuir" element={<TreinoAtribuir />} />
-                <Route path="/acompanhamento" element={<Acompanhamento />} />
-                <Route path="/acompanhamento/respostas/:id" element={<RespostaQuestionario />} />
-                <Route path="/mensagens" element={<Mensagens />} />
-                <Route path="/ia" element={<IA />} />
                 <Route path="/configuracoes" element={<Configuracoes />} />
                 <Route path="/configuracoes/excluir-conta" element={<ExcluirConta />} />
                 <Route path="/acesso-negado" element={<AcessoNegado />} />

@@ -48,7 +48,8 @@ export const findExercise = (id?: string) => exercises.find((e) => e.id === id)
 
 export type WorkoutItem = { key: string; exerciseId: string; sets: number; reps: string; rest: number; note?: string }
 export type WorkoutSection = { id: string; title: string; items: WorkoutItem[] }
-export type Workout = { id: string; name: string; goal: string; days: number; students: number; sections: WorkoutSection[] }
+/* from: id do modelo pronto de onde o treino foi copiado (permite restaurar do modelo). */
+export type Workout = { id: string; name: string; goal: string; days: number; students: number; sections: WorkoutSection[]; from?: string }
 
 let n = 0
 export const item = (exerciseId: string, sets = 3, reps = '10 a 12', rest = 60): WorkoutItem => ({ key: `i${++n}`, exerciseId, sets, reps, rest })
@@ -68,10 +69,20 @@ const w = (id: string, name: string, goal: string, days: number, students: numbe
 export const workouts: Workout[] = [
   w('t1', 'Treino A · Superior', 'Ganhar massa', 4, 5, ['e01', 'e05', 'e10', 'e11']),
   w('t2', 'Treino B · Inferior', 'Ganhar massa', 4, 5, ['e07', 'e08', 'e09']),
-  w('t3', 'Full body', 'Condicionamento', 3, 6, ['e07', 'e01', 'e04', 'e13']),
+  { ...w('t3', 'Full body', 'Condicionamento', 3, 6, ['e07', 'e01', 'e04', 'e13']), from: 'm1' },
   w('t4', 'Força base', 'Força', 3, 4, ['e07', 'e01', 'e06']),
   w('t5', 'Adaptação 2x', 'Iniciantes', 2, 1, ['e08', 'e04', 'e02', 'e13']),
   w('t6', 'Emagrecimento', 'Emagrecer', 4, 1, ['e09', 'e05', 'e10', 'e13']),
 ]
+
+/* Modelos prontos do aura-fit: ninguém edita o original; "usar" cria uma cópia em Meus treinos. */
+export const systemTemplates: (Workout & { level: string; text: string })[] = [
+  { ...w('m1', 'Full body 3x', 'Condicionamento', 3, 0, ['e07', 'e01', 'e04', 'e10', 'e13']), level: 'Iniciante', text: 'O corpo todo em três dias, com um dia de descanso entre eles.' },
+  { ...w('m2', 'Superior e inferior 4x', 'Ganhar massa', 4, 0, ['e01', 'e05', 'e10', 'e11', 'e12']), level: 'Intermediário', text: 'Dois dias de membros superiores e dois de inferiores.' },
+  { ...w('m3', 'Força 5x5', 'Força', 3, 0, ['e07', 'e01', 'e06']), level: 'Intermediário', text: 'Poucos exercícios, cargas altas e progressão a cada semana.' },
+  { ...w('m4', 'Adaptação para iniciantes', 'Iniciantes', 2, 0, ['e08', 'e04', 'e02', 'e13']), level: 'Iniciante', text: 'Máquinas e peso do corpo para aprender os movimentos.' },
+  { ...w('m5', 'Emagrecimento em circuito', 'Emagrecer', 4, 0, ['e09', 'e05', 'e10', 'e13']), level: 'Todos os níveis', text: 'Circuito com pouco descanso, para gastar mais em menos tempo.' },
+]
+export const findTemplate = (id?: string | null) => systemTemplates.find((t) => t.id === id)
 
 export const countItems = (wk: Workout) => wk.sections.reduce((t, s) => t + s.items.length, 0)

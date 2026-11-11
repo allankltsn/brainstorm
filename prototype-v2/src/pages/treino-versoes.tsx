@@ -6,7 +6,7 @@ import { Button } from '@/components/affect/button'
 import { PageHeader, Pill } from '@/components/page'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { workoutVersions } from '@/lib/extras'
-import { workouts } from '@/lib/training'
+import { findTemplate, workouts } from '@/lib/training'
 import { NaoEncontrada } from '@/pages/nao-encontrada'
 
 export function TreinoVersoes() {
@@ -14,13 +14,26 @@ export function TreinoVersoes() {
   const navigate = useNavigate()
   const wk = workouts.find((w) => w.id === id)
   const [restore, setRestore] = useState<number>()
+  const [fromTpl, setFromTpl] = useState(false)
   if (!wk) return <NaoEncontrada />
+  const tpl = findTemplate(wk.from)
   return (
     <div className="mx-auto max-w-2xl">
       <Link to={`/treinos/${wk.id}`} className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-4" /> {wk.name}
       </Link>
       <PageHeader title="Histórico de versões" description="Cada vez que você salva o treino, guardamos como ele estava." />
+      {tpl && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border bg-card p-4">
+          <p className="grid text-sm">
+            <span className="font-medium">Criado a partir do modelo pronto "{tpl.name}"</span>
+            <span className="text-muted-foreground">Dá para desfazer todas as mudanças e voltar ao modelo original.</span>
+          </p>
+          <Button size="sm" variant="secondary" icon={<RotateCcw />} onClick={() => setFromTpl(true)}>
+            Restaurar do modelo
+          </Button>
+        </div>
+      )}
       <ol className="grid gap-3">
         {workoutVersions.map((v) => (
           <li key={v.v} className="rounded-xl border bg-card p-4">
@@ -63,6 +76,29 @@ export function TreinoVersoes() {
               }}
             >
               Voltar para a versão {restore}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={fromTpl} onOpenChange={setFromTpl}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Restaurar do modelo "{tpl?.name}"?</DialogTitle>
+            <DialogDescription>
+              O treino volta a ter os exercícios, as séries e os descansos do modelo. Como ele está hoje fica guardado no histórico. {wk.students} {wk.students === 1 ? 'aluno passa' : 'alunos passam'} a ver o treino restaurado.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="secondary" onClick={() => setFromTpl(false)}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={() => {
+                toast.success('Treino restaurado do modelo')
+                navigate(`/treinos/${wk.id}`)
+              }}
+            >
+              Restaurar do modelo
             </Button>
           </DialogFooter>
         </DialogContent>

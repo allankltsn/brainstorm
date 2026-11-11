@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowLeft, ArrowUp, Clock, Dumbbell, Plus, Search, Sparkles, Trash2 } from 'lucide-react'
 import { useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Button } from '@/components/affect/button'
 import { SegmentedControl } from '@/components/affect/segmented-control'
@@ -11,7 +11,7 @@ import { Pill, Section } from '@/components/page'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { exercises, findExercise, GROUPS, item, workouts, type Group, type WorkoutItem, type WorkoutSection } from '@/lib/training'
+import { exercises, findExercise, findTemplate, GROUPS, item, workouts, type Group, type WorkoutItem, type WorkoutSection } from '@/lib/training'
 
 const GOALS = ['Ganhar massa', 'Emagrecer', 'Condicionamento', 'Força', 'Iniciantes'].map((g) => ({ value: g, label: g }))
 
@@ -84,11 +84,15 @@ export function TreinoEditor() {
   const { id } = useParams()
   const navigate = useNavigate()
   const base = workouts.find((w) => w.id === id)
-  const [name, setName] = useState(base?.name ?? '')
-  const [goal, setGoal] = useState(base?.goal ?? 'Ganhar massa')
-  const [days, setDays] = useState(String(base?.days ?? 3))
+  // ?modelo=m1 começa um treino novo a partir de um modelo pronto; o modelo original não muda
+  const [params] = useSearchParams()
+  const tpl = base ? undefined : findTemplate(params.get('modelo'))
+  const start = base ?? tpl
+  const [name, setName] = useState(start?.name ?? '')
+  const [goal, setGoal] = useState(start?.goal ?? 'Ganhar massa')
+  const [days, setDays] = useState(String(start?.days ?? 3))
   const [sections, setSections] = useState<WorkoutSection[]>(
-    base?.sections ?? [
+    start?.sections ?? [
       { id: 'aquecimento', title: 'Aquecimento', items: [] },
       { id: 'principal', title: 'Exercícios principais', items: [] },
     ],
@@ -127,6 +131,11 @@ export function TreinoEditor() {
         <ArrowLeft className="size-4" /> Treinos
       </Link>
       <h1 className="mb-6 text-2xl font-semibold tracking-tight">{base ? 'Editar treino' : 'Criar treino'}</h1>
+      {tpl && (
+        <p className="mb-6 rounded-xl bg-info-soft p-4 text-sm text-info">
+          Cópia do modelo pronto "{tpl.name}". Ajuste o que quiser: o modelo original continua igual e você pode voltar a ele depois.
+        </p>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <div className="grid min-w-0 content-start gap-6">

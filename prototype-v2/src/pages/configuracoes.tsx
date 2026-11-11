@@ -7,7 +7,9 @@ import { SegmentedControl } from '@/components/affect/segmented-control'
 import { Switch } from '@/components/affect/switch'
 import { TextField } from '@/components/affect/text-field'
 import { PageHeader, Section } from '@/components/page'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { sessions } from '@/lib/data'
+import { grants, type Grant } from '@/lib/extras'
 import { useRole } from '@/lib/role'
 import { useTheme, type Theme } from '@/lib/theme'
 import { useTab } from '@/lib/use-tab'
@@ -24,6 +26,8 @@ export function Configuracoes() {
   const { theme, setTheme } = useTheme()
   const [tab, setTab] = useTab<Tab>(TABS)
   const [saving, setSaving] = useState(false)
+  const [revoked, setRevoked] = useState<string[]>([])
+  const [revoking, setRevoking] = useState<Grant>()
   return (
     <div className="mx-auto max-w-2xl">
       <PageHeader title="Configurações" description="Seus dados, a aparência do app e os avisos que você recebe." />
@@ -122,6 +126,42 @@ export function Configuracoes() {
           </Section>
         )}
         {tab === 'privacidade' && (
+          <Section title="O que você liberou" description="Você pode retirar uma liberação quando quiser. Vale na hora." className="mt-6">
+            <ul className="divide-y">
+              {grants[role].map((g) => {
+                const off = revoked.includes(g.id)
+                return (
+                  <li key={g.id} className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0">
+                    <span className="grid min-w-0 flex-1 text-sm">
+                      <span className="font-medium">{g.label}</span>
+                      <span className="text-muted-foreground">{off ? 'Liberação retirada hoje.' : g.text}</span>
+                    </span>
+                    {g.fixed ? (
+                      <Pill>Necessário para usar o app</Pill>
+                    ) : off ? (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        aria-label={`Liberar de novo: ${g.label}`}
+                        onClick={() => {
+                          setRevoked((l) => l.filter((x) => x !== g.id))
+                          toast.success('Liberado de novo')
+                        }}
+                      >
+                        Liberar de novo
+                      </Button>
+                    ) : (
+                      <Button size="sm" variant="ghost" aria-label={`Retirar liberação: ${g.label}`} onClick={() => setRevoking(g)}>
+                        Retirar
+                      </Button>
+                    )}
+                  </li>
+                )
+              })}
+            </ul>
+          </Section>
+        )}
+        {tab === 'privacidade' && (
           <Section title="Seus dados" description="Direitos garantidos pela LGPD." className="mt-6">
             <ul className="divide-y">
               <li className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0">
@@ -146,6 +186,31 @@ export function Configuracoes() {
           </Section>
         )}
       </div>
+      <Dialog open={!!revoking} onOpenChange={(o) => !o && setRevoking(undefined)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Retirar esta liberação?</DialogTitle>
+            <DialogDescription>
+              {revoking?.label}. {revoking?.effect} Você pode liberar de novo quando quiser.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="secondary" onClick={() => setRevoking(undefined)}>
+              Cancelar
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                if (revoking) setRevoked((l) => [...l, revoking.id])
+                toast.success('Liberação retirada')
+                setRevoking(undefined)
+              }}
+            >
+              Retirar liberação
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

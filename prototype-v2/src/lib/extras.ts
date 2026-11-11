@@ -22,8 +22,7 @@ export const accessProfiles = [
 
 export const comingSoon: Record<string, { title: string; text: string }> = {
   agenda: { title: 'Agenda', text: 'Marque sessões presenciais e receba lembretes.' },
-  financeiro: { title: 'Financeiro', text: 'Controle o que cada aluno paga a você.' },
-  relatorios: { title: 'Relatórios', text: 'Veja a evolução dos alunos em gráficos para compartilhar.' },
+  nutricao: { title: 'Nutrição', text: 'Acompanhe a alimentação dos alunos junto com o treino.' },
 }
 
 export const deleteEffects = {
@@ -31,3 +30,24 @@ export const deleteEffects = {
   aluno: ['Seu histórico de treinos é apagado.', 'Seu personal deixa de ver seus dados na hora.'],
   admin: ['Você perde o acesso de administração.', 'Se você for a única pessoa admin, indique outra antes de excluir.'],
 } as const
+
+/* O que cada perfil liberou e pode retirar a qualquer hora (LGPD). fixed: necessário para a conta existir. */
+export type Grant = { id: string; label: string; text: string; effect: string; fixed?: boolean }
+export const grants: Record<'personal' | 'aluno' | 'admin', Grant[]> = {
+  aluno: [
+    { id: 'saude', label: 'Dados de saúde para a personal', text: 'Lesões, dores e respostas dos questionários.', effect: 'Sua personal deixa de ver seus dados de saúde na hora e não pode mais pedir sugestões de treino à IA para você.' },
+    { id: 'historico', label: 'Histórico de treinos para a personal', text: 'Séries, cargas e frequência.', effect: 'Sua personal deixa de ver o que você treinou. Você continua vendo o seu histórico.' },
+    { id: 'fotos', label: 'Fotos do check-in', text: 'As fotos que você envia junto com peso e medidas.', effect: 'Sua personal deixa de ver as fotos. Peso e medidas continuam liberados.' },
+    { id: 'ia', label: 'Uso dos meus dados pela IA', text: 'A Aura lê seu histórico para sugerir ajustes à personal.', effect: 'A Aura para de usar seus dados. Os treinos passam a ser montados só pela personal.' },
+    { id: 'termos', label: 'Termos de uso e privacidade', text: 'Aceitos em 02/09/2026.', effect: '', fixed: true },
+  ],
+  personal: [
+    { id: 'novidades', label: 'Comunicações do aura-fit', text: 'Dicas e novidades por e-mail.', effect: 'Você deixa de receber e-mails de novidades. Avisos da conta e de segurança continuam.' },
+    { id: 'melhoria', label: 'Uso das minhas prescrições para melhorar a IA', text: 'Treinos sem o nome dos alunos ajudam a Aura a sugerir melhor.', effect: 'Seus treinos deixam de ser usados para melhorar as sugestões. Nada muda no que você já criou.' },
+    { id: 'termos', label: 'Termos de uso e privacidade', text: 'Aceitos em 14/03/2026.', effect: '', fixed: true },
+  ],
+  admin: [
+    { id: 'novidades', label: 'Comunicações do aura-fit', text: 'Dicas e novidades por e-mail.', effect: 'Você deixa de receber e-mails de novidades. Avisos da conta e de segurança continuam.' },
+    { id: 'termos', label: 'Termos de uso e privacidade', text: 'Aceitos em 05/01/2026.', effect: '', fixed: true },
+  ],
+}
