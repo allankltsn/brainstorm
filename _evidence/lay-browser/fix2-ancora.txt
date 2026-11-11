@@ -1,0 +1,9 @@
+Titulo: Privacidade e meus direitos
+Endereco: screens/config/privacidade.html?role=aluno#compartilho
+Tela: 390x844, tema escuro (sem --theme: segue o aparelho), rolada 996 de 3652px
+Mensagens visiveis: nenhuma
+Botoes: Aparência: Sistema. Alterar tema; Notificações, 1 não lidas; Menu da conta de Lucas Ferreira; Pedir meus dados (mais abaixo); Lista completa dos seus direitos (art. 18 da LGPD) (mais abaixo)
+Links: Ir para o conteúdo (mais acima); aura-fit, ir para o início; Voltar ao Perfil (mais acima); Quem vê meus dados Veja com quem compartilhamos (mais acima); Meus consentimentos Dê ou retire cada autorização (mais acima); Baixar meus dados Uma cópia de tudo que guardamos (mais acima); Corrigir meus dados Nome, e-mail, telefone (mais acima); Excluir minha conta Apaga seus dados, com prazo para desistir (mais acima); Ir para Meus dados (mais abaixo); Começar a exclusão (mais abaixo); privacidade@exemplo.com.br (mais abaixo); ler em linguagem simples (mais abaixo); Início; Treino; Perfil
+Campos: Dados de saúde (peso, medidas, fotos, anamnese): Desligado (desmarcado); Compartilhar treinos e registros com seu personal: Ligado (marcado); Receber novidades por e-mail: Desligado (desmarcado); Medir o uso do app para melhorar: Desligado (desmarcado)
+rolagem horizontal: nao
+Captura: E:\allan\aura\internal\aura-projects\prototype\_evidence\lay-browser\fix2-ancora.png
