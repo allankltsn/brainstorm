@@ -12,14 +12,13 @@ Plataforma para empresas construírem a marca e se venderem ao público: brand k
 | Fonte | Geist (`@fontsource-variable/geist`) |
 | Kits | shadcn/ui (radix-nova), affectUI e lightswind, nessa ordem |
 | Animação | `framer-motion` (imports de `framer-motion`, não de `motion/react`) |
-| Cor principal | Roxo (tokens em `src/index.css`; valores a definir, ver abaixo) |
+| Cor principal | Roxo `#6A0DAD` (token `primary` em `src/index.css`) |
 | Stack, rotas, ícones, gráficos | Iguais ao padrão aura-fit (Vite, React 19, TS strict, Tailwind v4, HashRouter, lucide-react, recharts, sonner) |
 
-### Tokens de cor a validar
-O roxo substitui o vermelho do aura-fit como `primary`. Sugestão inicial, para o time aprovar:
-- `primary`: roxo médio, com contraste AA sobre branco
-- `primary-hover`: um tom mais escuro
-- `primary-accent-dark`: um tom mais claro, para o dark mode
+### Tokens de cor
+O roxo substitui o vermelho do aura-fit como `primary`.
+- `primary`: `#6A0DAD` (definido; contraste de cerca de 9:1 sobre `#ffffff`, acima do AA)
+- hover e variante do dark mode: tons derivados do `#6A0DAD`, a definir na montagem do app (mais escuro para hover, mais claro para o dark mode)
 
 Os valores hex ficam só no `index.css`; os componentes usam apenas tokens.
 
