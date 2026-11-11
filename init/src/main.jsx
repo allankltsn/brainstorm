@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Landing, Prototype } from './App.jsx'
+import { Brand, Landing, Prototype } from './App.jsx'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -15,6 +15,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Prototype />} />
+        <Route path="/brand" element={<Brand />} />
         <Route path="*" element={<Landing />} />
       </Routes>
     </BrowserRouter>

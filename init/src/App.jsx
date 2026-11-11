@@ -31,3 +31,9 @@ export function Landing() {
 export function Prototype() {
   return <iframe title="aura-fit · protótipo" src={`${BASE}proto/#/login`} style={frame} />
 }
+
+// "/brand" → aura-brand (também usa HashRouter). index.html explícito: em desenvolvimento,
+// o Vite não resolve a pasta public/brand/ sozinho e devolveria o próprio host.
+export function Brand() {
+  return <iframe title="aura-brand · protótipo" src={`${BASE}brand/index.html`} style={frame} />
+}

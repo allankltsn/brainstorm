@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Instalar e compilar (host + aura-landing + prototype-v2)
+      - name: Instalar e compilar (host + aura-landing + prototype-v2 + aura-brand)
         working-directory: init
         env:
           VITE_BASE: /${{ github.event.repository.name }}/
