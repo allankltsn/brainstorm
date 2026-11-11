@@ -7,6 +7,7 @@ import { Hero, Stats, Ticker, TopBar } from "@/sections/Hero"
 import { AiUses } from "@/sections/AiUses"
 import { Demo } from "@/sections/Demo"
 import { Login } from "@/sections/Login"
+import { Porque } from "@/sections/Porque"
 import { ComoFunciona, Manifesto, Problema, Recursos } from "@/sections/Product"
 import { Roi } from "@/sections/Roi"
 
@@ -66,6 +67,7 @@ export default function App() {
         <Depoimentos />
         <Planos />
         <Comparativo />
+        <Porque />
         <Faq />
         <CtaFinal />
       </main>

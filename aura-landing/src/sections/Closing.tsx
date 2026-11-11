@@ -23,7 +23,7 @@ const deps = [
 
 function Dep({ d }: { d: (typeof deps)[number] }) {
   return (
-    <figure className="flex w-[min(86vw,400px)] shrink-0 flex-col rounded-3xl border border-line bg-surface p-7 transition-colors duration-500 hover:border-primary-line">
+    <figure className="flex w-full shrink-0 flex-col rounded-3xl border border-line bg-surface p-7 transition-colors duration-500 hover:border-primary-line">
       <div className="flex items-center justify-between">
         <Quote size={28} className="text-primary" aria-hidden="true" />
         <Mock>[MOCK] depoimento ilustrativo</Mock>
@@ -52,13 +52,16 @@ export function Depoimentos() {
           lead={<><Mock /> Dados ilustrativos: nomes, cidades e falas são inventados e serão trocados por depoimentos reais autorizados.</>}
         />
       </Container>
-      <div className="relative">
-        <Marquee pauseOnHover repeat={3} className="[--duration:48s] [--gap:1rem]">
-          {deps.map((d) => <Dep key={d.i} d={d} />)}
-        </Marquee>
-        <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 hidden w-40 bg-gradient-to-r from-[#191919] to-transparent sm:block" />
-        <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 hidden w-40 bg-gradient-to-l from-[#191919] to-transparent sm:block" />
-      </div>
+      {/* mural: colunas que rolam em sentidos opostos e param no hover */}
+      <Container>
+        <div className="relative grid h-[620px] gap-4 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,#000_14%,#000_86%,transparent)] md:grid-cols-2 lg:grid-cols-3">
+          {[0, 1, 2].map((col) => (
+            <Marquee key={col} vertical pauseOnHover reverse={col === 1} repeat={3} className={cn("p-0 [--gap:1rem]", col === 0 && "[--duration:38s]", col === 1 && "hidden [--duration:46s] md:flex", col === 2 && "hidden [--duration:42s] lg:flex")}>
+              {[...deps.slice(col), ...deps.slice(0, col)].map((d) => <Dep key={d.i} d={d} />)}
+            </Marquee>
+          ))}
+        </div>
+      </Container>
       <Container className="mt-10">
         <Btn href="#cta-final" title="Cadastro em breve [a definir]">Quero ganhar tempo <ArrowRight size={18} /></Btn>
       </Container>
@@ -228,24 +231,6 @@ export function Comparativo() {
             </table>
           </div>
         </BlurFade>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <BlurFade inView>
-            <div className="h-full rounded-3xl border border-line bg-bg p-6">
-              <h3 className="flex items-center gap-2 font-bold"><span className="flex size-7 items-center justify-center rounded-full bg-ok/15 text-ok"><Plus size={16} /></span> Prós</h3>
-              <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
-                {["IA de prescrição com aprovação do personal", "Painel de aderência e risco de abandono", "Cobrança integrada ao acompanhamento do aluno", "Plano gratuito para começar [MOCK]"].map((x) => <li key={x} className="flex gap-2"><Check size={16} className="mt-0.5 shrink-0 text-ok" />{x}</li>)}
-              </ul>
-            </div>
-          </BlurFade>
-          <BlurFade inView delay={0.08}>
-            <div className="h-full rounded-3xl border border-line bg-bg p-6">
-              <h3 className="flex items-center gap-2 font-bold"><span className="flex size-7 items-center justify-center rounded-full bg-bad/15 text-bad"><Minus size={16} /></span> Contras, com franqueza</h3>
-              <ul className="mt-4 space-y-2 text-sm leading-relaxed text-muted">
-                {["Preço Pro/Premium [MOCK] pode ficar acima de apps básicos", "Starter [MOCK] com 5 alunos e sem IA", "Limites de alunos, enquanto parte do mercado anuncia plano único ilimitado [a confirmar]", "Produto novo, sem base ampla de vídeos nem app com marca própria", "Anamnese e avaliação física ainda em avaliação"].map((x) => <li key={x} className="flex gap-2"><Minus size={16} className="mt-0.5 shrink-0 text-bad" />{x}</li>)}
-              </ul>
-            </div>
-          </BlurFade>
-        </div>
       </Container>
     </section>
   )
@@ -289,6 +274,7 @@ export function CtaFinal() {
   return (
     <section id="cta-final" aria-labelledby="h-cta" className="px-3 pb-6 md:px-6">
       <div className="noise relative mx-auto max-w-[1400px] overflow-hidden rounded-[28px] bg-gradient-to-br from-primary via-brand to-[#5d090e] md:rounded-[40px]">
+        <img src="./img/foto-flexao.webp" alt="" aria-hidden="true" loading="lazy" className="absolute inset-0 size-full object-cover object-[50%_30%] opacity-45 mix-blend-multiply" />
         <DotPattern width={22} height={22} cr={1.1} className="text-white/25 [mask-image:radial-gradient(70%_80%_at_50%_0%,#000,transparent)]" />
         <Particles className="absolute inset-0" quantity={60} color="#ffffff" size={0.6} staticity={30} />
         <motion.div aria-hidden="true" animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} className="absolute -bottom-40 left-1/2 size-[640px] -translate-x-1/2 rounded-full bg-accent/40 blur-[120px]" />

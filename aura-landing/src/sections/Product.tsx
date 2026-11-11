@@ -95,7 +95,7 @@ export function Manifesto() {
   return (
     <section ref={ref} id="manifesto" aria-labelledby="h-man" className="px-3 md:px-6">
       <div className="noise relative mx-auto max-w-[1400px] overflow-hidden rounded-[28px] border border-line md:rounded-[40px]">
-        <motion.img style={{ y: imgY }} src="./img/foto-faixa.jpg" alt="" aria-hidden="true" className="absolute inset-0 h-[116%] w-full object-cover object-[60%_20%]" />
+        <motion.img style={{ y: imgY }} src="./img/foto-atleta-retrato.webp" alt="" aria-hidden="true" className="absolute inset-y-0 right-0 h-[116%] w-full object-cover object-[50%_10%] md:w-[60%]" />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-bg from-25% via-bg/85 via-55% to-bg/20 max-md:bg-bg/85" />
         <div className="relative px-6 py-24 md:px-16 md:py-40">
           <Eyebrow>Manifesto</Eyebrow>

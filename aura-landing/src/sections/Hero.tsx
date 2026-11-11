@@ -128,10 +128,11 @@ export function Hero() {
     <section ref={ref} id="topo" className="noise relative -mt-[68px] overflow-hidden pt-[68px]">
       {/* foto + luz */}
       <div className="absolute inset-0" aria-hidden="true">
-        <motion.div style={{ y: photoY, scale: photoScale }} className="absolute inset-y-0 right-0 w-full md:w-[62%]">
-          <img src="./img/foto-hero.jpg" alt="" className="size-full object-cover object-[50%_18%] opacity-70 md:opacity-90" />
+        <motion.div style={{ y: photoY, scale: photoScale }} className="absolute inset-y-0 right-0 w-full md:left-[26%] md:w-[58%]">
+          <img src="./img/foto-atleta-faixa.webp" alt="" className="size-full object-cover object-[50%_12%] opacity-70 md:opacity-100 md:[mask-image:linear-gradient(to_right,transparent,#000_30%,#000_72%,transparent)]" />
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-r from-bg via-bg/90 to-bg/10 max-md:bg-gradient-to-t max-md:from-bg max-md:via-bg/85 max-md:to-bg/45" />
+        <div className="absolute inset-0 bg-gradient-to-r from-bg from-[28%] via-bg/45 via-[50%] to-transparent max-md:bg-gradient-to-t max-md:from-bg max-md:via-bg/85 max-md:to-bg/45" />
+        <div className="glow-floor" />
         <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-bg to-transparent" />
         <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bg/90 to-transparent" />
         <LightRays count={6} color="rgba(208, 32, 43, 0.28)" blur={42} speed={13} length="85vh" />
@@ -218,7 +219,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.6 }}
-            className="absolute -left-28 top-6 z-20 h-[230px] overflow-hidden [mask-image:linear-gradient(to_bottom,#000_70%,transparent)]"
+            className="absolute -left-36 bottom-2 z-20 h-[230px] overflow-hidden [mask-image:linear-gradient(to_bottom,#000_70%,transparent)]"
             aria-hidden="true"
           >
             <AnimatedList delay={2200} className="items-start gap-2.5">
@@ -244,8 +245,9 @@ const stats = [
 
 export function Stats() {
   return (
-    <section id="numeros" aria-labelledby="h-num" className="relative border-y border-line bg-surface/40">
-      <Container className="py-14 md:py-16">
+    <section id="numeros" aria-labelledby="h-num" className="relative overflow-hidden border-y border-line bg-surface/40">
+      <img src="./img/foto-halteres.webp" alt="" aria-hidden="true" loading="lazy" className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[46%] object-cover object-[50%_32%] opacity-40 [mask-image:linear-gradient(to_left,#000,transparent)] lg:block" />
+      <Container className="relative py-14 md:py-16">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <h2 id="h-num" className="text-2xl font-bold tracking-tight md:text-3xl">O que muda na rotina.</h2>
           <p className="max-w-xl text-sm leading-relaxed text-faint">

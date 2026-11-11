@@ -15,7 +15,7 @@ export function Login() {
   return (
     <main className="noise relative flex min-h-svh items-center justify-center overflow-hidden px-5 py-10">
       <div aria-hidden="true" className="absolute inset-0">
-        <img src="./img/foto-hero.jpg" alt="" className="size-full object-cover object-[50%_18%] opacity-25" />
+        <img src="./img/foto-halteres.webp" alt="" className="size-full object-cover object-[60%_30%] opacity-45" />
         <div className="absolute inset-0 bg-gradient-to-b from-bg/80 via-bg/90 to-bg" />
         <LightRays count={5} color="rgba(208, 32, 43, 0.25)" blur={42} speed={13} length="80vh" />
         <Particles className="absolute inset-0" quantity={50} color="#ff6f78" size={0.5} />

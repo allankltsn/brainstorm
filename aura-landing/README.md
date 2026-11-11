@@ -43,7 +43,8 @@ Os componentes dos kits são código-fonte copiado para o projeto (modelo shadcn
 - `src/sections/Hero.tsx`: barra superior, hero, faixa de números, letreiro.
 - `src/sections/Product.tsx`: problema, manifesto, recursos (bento), como funciona.
 - `src/sections/Roi.tsx`: calculadora (mesmas premissas do protótipo).
-- `src/sections/Closing.tsx`: depoimentos, planos, comparativo, FAQ, CTA final, rodapé.
+- `src/sections/Closing.tsx`: depoimentos (mural em colunas), planos, comparativo, FAQ, CTA final, rodapé.
+- `src/sections/Porque.tsx`: "Por que o aura-fit", seis benefícios em cartões que inclinam com o ponteiro, cada um com uma mini-ilustração animada.
 - `src/components/ui.tsx`: logo, botões e blocos comuns.
 
 ## Telas do app e fluxo interativo
@@ -65,6 +66,12 @@ As capturas em `public/img/` vêm de `../_evidence/` (testes Cypress, 390×844):
 
 - `src/sections/AiUses.tsx`: quatro SVGs animados (SMIL) dos usos da IA: dúvidas de treino, análise de vídeo do movimento, relatos de dor e exames, treino preenchido a partir de um documento.
 - `src/sections/Login.tsx`: tela "Entrar" em `#/login`, para onde vão os botões "Começar grátis" do topo e do hero. É demonstração: o formulário não envia nada. Quando o app estiver no ar, aponte esses botões para a URL real.
+
+## Fotos e referências de movimento
+
+Fotos em `public/img/foto-*.webp`: `foto-atleta-faixa` (hero), `foto-atleta-retrato` (manifesto), `foto-halteres` (faixa de números e login), `foto-halter-torso` (por que o aura-fit), `foto-flexao` (CTA final).
+
+Alguns padrões foram inspirados no [affectUI](https://www.affectui.com) (Gradient Floor, Gradient Text, Grid Background, Tilt Card, Testimonial Wall e as card illustrations) e reescritos aqui com a marca do aura-fit; nenhum código do affectUI foi copiado.
 
 ## Acessibilidade e movimento
 
