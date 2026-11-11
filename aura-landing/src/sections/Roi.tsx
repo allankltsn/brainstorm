@@ -85,9 +85,9 @@ export function Roi() {
           lead="Informe sua rotina. A simulação estima o tempo e o dinheiro que você pode recuperar. É uma estimativa, não uma garantia."
         />
 
-        <div className="grid gap-4 lg:grid-cols-[1fr_1.05fr]">
-          <BlurFade inView>
-            <fieldset className="rounded-3xl border border-line bg-surface p-6 md:p-8">
+        <div className="grid items-stretch gap-4 lg:grid-cols-2">
+          <BlurFade inView className="h-full">
+            <fieldset className="flex h-full min-w-0 flex-col rounded-3xl border border-line bg-surface p-6 md:p-8">
               <legend className="sr-only">Sua rotina</legend>
               <div role="radiogroup" aria-label="Premissas da estimativa" className="relative mb-8 grid grid-cols-2 rounded-2xl bg-bg p-1">
                 {(Object.keys(MODOS) as Modo[]).map((m) => (
@@ -106,7 +106,7 @@ export function Roi() {
                 ))}
               </div>
 
-              <div className="space-y-6">
+              <div className="flex flex-1 flex-col justify-between gap-6">
                 {campos.map((c) => (
                   <div key={c.k}>
                     <div className="flex items-baseline justify-between gap-4">
@@ -131,8 +131,8 @@ export function Roi() {
             </fieldset>
           </BlurFade>
 
-          <BlurFade inView delay={0.1}>
-            <div className="relative h-full overflow-hidden rounded-3xl border border-primary-line bg-gradient-to-b from-primary-soft/70 to-surface p-6 md:p-8 lg:sticky lg:top-32">
+          <BlurFade inView delay={0.1} className="h-full">
+            <div className="relative h-full overflow-hidden rounded-3xl border border-primary-line bg-gradient-to-b from-primary-soft/70 to-surface p-6 md:p-8">
               <BorderBeam size={180} duration={9} colorFrom="#ff6f78" colorTo="#b1111b" />
               <div aria-hidden="true" className="absolute -right-24 -top-24 size-72 rounded-full bg-primary/30 blur-[90px]" />
               <div className="relative">
