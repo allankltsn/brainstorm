@@ -1,0 +1,8 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>aura-fit</title>
+<script>
+  // GitHub Pages: devolve /<repo>/login para o index com ?p=/login
+  var base = location.pathname.split('/').slice(0, 2).join('/') + '/'
+  var rest = location.pathname.slice(base.length - 1)
+  location.replace(base + '?p=' + encodeURIComponent(rest) + location.hash)
+</script></head><body></body></html>

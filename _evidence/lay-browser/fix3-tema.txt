@@ -1,7 +1,0 @@
-Titulo: Criar conta de personal
-Endereco: screens/auth/cadastro-personal.html
-Tela: 390x844, tema escuro, rolada 0 de 193px
-Mensagens visiveis: nenhuma
-Botoes: Tema: Escuro. Tocar para trocar para igual ao aparelho; Mostrar senha; Criar conta
-exit 0
-====
