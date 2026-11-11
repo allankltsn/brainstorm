@@ -18,7 +18,8 @@ Plataforma para empresas construírem a marca e se venderem ao público: brand k
 ### Tokens de cor
 O roxo substitui o vermelho do aura-fit como `primary`.
 - `primary`: `#6A0DAD` (definido; contraste de cerca de 9:1 sobre `#ffffff`, acima do AA)
-- hover e variante do dark mode: tons derivados do `#6A0DAD`, a definir na montagem do app (mais escuro para hover, mais claro para o dark mode)
+- hover: `#5b0b95`; dark mode: `primary` `#8436cc`, com `ring` `#b98af0`
+- `brand-soft` `#f5edfb` e `brand-text` `#5b0b95` (dark: `#2a1640` e `#d3a8f5`)
 
 Os valores hex ficam só no `index.css`; os componentes usam apenas tokens.
 
@@ -38,5 +39,8 @@ Planos e assinatura (Stripe), cupons, fila "Precisa de você", chat e notificaç
 ## Fora do escopo
 Treino, alunos, exercícios, recrutamento e "Pensamento do dia".
 
+## Estado do app
+O app está montado em `aura-brand/` (ver `README.md`): shell, tema roxo, Início com a fila "Precisa de você" e o módulo 1, **Brand kit**, completo no protótipo (briefing, logo, paleta, tipografia, tom de voz e aprovação por parte).
+
 ## Próximo passo
-Montar o app em `aura-brand/` a partir do kit de `prototype-v2` (shell, tokens, componentes affect/lightswind), trocando o vermelho pelo roxo e começando pelo brand kit.
+Módulo 2, **Gerador de conteúdo** (`#/conteudo`): criar posts e carrosséis a partir do brand kit aprovado, com a fila de aprovação.
