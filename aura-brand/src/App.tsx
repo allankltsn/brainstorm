@@ -3,7 +3,9 @@ import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppShell } from '@/components/app-shell'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { ContentProvider } from '@/lib/content'
 import { ThemeProvider } from '@/lib/theme'
+import { Conteudo } from '@/pages/conteudo'
 import { Inicio } from '@/pages/inicio'
 import { Marca } from '@/pages/marca'
 import { Placeholder } from '@/pages/placeholder'
@@ -16,10 +18,17 @@ export default function App() {
         <TooltipProvider>
           <HashRouter>
             <Routes>
-              <Route element={<AppShell />}>
+              <Route
+                element={
+                  <ContentProvider>
+                    <AppShell />
+                  </ContentProvider>
+                }
+              >
                 <Route index element={<Navigate to="/inicio" replace />} />
                 <Route path="/inicio" element={<Inicio />} />
                 <Route path="/marca" element={<Marca />} />
+                <Route path="/conteudo" element={<Conteudo />} />
                 <Route path="*" element={<Placeholder />} />
               </Route>
             </Routes>

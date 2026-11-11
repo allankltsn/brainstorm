@@ -39,4 +39,4 @@ Planos e assinatura (Stripe), cupons, fila "Precisa de você", chat e notificaç
 Treino, alunos, exercícios, recrutamento e "Pensamento do dia".
 
 ## Próximo passo
-O app em `aura-brand/` já tem a base (shell, tokens em roxo, kits) e as telas Início e Brand kit, com dados fictícios. Para rodar: `npm ci && npm run dev`. Próxima tela: gerador de conteúdo, com a fila de aprovação.
+O app em `aura-brand/` já tem a base (shell, tokens em roxo, kits) e as telas Início, Brand kit e Conteúdo, com dados fictícios. Para rodar: `npm ci && npm run dev`. Próxima tela: captação de leads (formulários), seguida do CRM.

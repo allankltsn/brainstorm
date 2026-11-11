@@ -22,19 +22,40 @@ export const notifications = [
   { id: 'n3', title: 'Seu brand kit foi atualizado', when: 'ontem', unread: false },
 ]
 
+/* Os três KPIs de conteúdo são calculados a partir da lista de conteúdos; o valor aqui é só o inicial. */
 export type Kpi = { id: string; label: string; value: number; hint: string }
 export const kpis: Kpi[] = [
   { id: 'leads', label: 'Leads na semana', value: 18, hint: '5 a mais que na semana passada' },
-  { id: 'agendados', label: 'Posts agendados', value: 7, hint: 'próximo: amanhã, 9h' },
-  { id: 'producao', label: 'Em produção', value: 4, hint: '2 carrosséis e 2 vídeos' },
-  { id: 'aprovacao', label: 'Aguardando aprovação', value: 3, hint: 'a IA só publica com seu aval' },
+  { id: 'agendados', label: 'Posts agendados', value: 0, hint: 'próximo: amanhã, 9h' },
+  { id: 'producao', label: 'Em ajuste', value: 0, hint: 'devolvidos para nova versão' },
+  { id: 'aprovacao', label: 'Aguardando aprovação', value: 0, hint: 'a IA só publica com seu aval' },
 ]
 
-export type Approval = { id: string; title: string; detail: string; channel: string }
-export const approvals: Approval[] = [
-  { id: 'a1', title: 'Carrossel: 5 motivos para assinar café fresco', detail: 'Gerado a partir do brand kit. 6 imagens e legenda.', channel: 'Instagram' },
-  { id: 'a2', title: 'Post: bastidores da torra de sábado', detail: 'Texto e 1 imagem. Sugestão de horário: sexta, 18h.', channel: 'Instagram' },
-  { id: 'a3', title: 'Artigo curto: como escolher a moagem', detail: 'Cerca de 180 palavras, tom didático.', channel: 'LinkedIn' },
+export type ContentKind = 'post' | 'carrossel' | 'video'
+export type Channel = 'Instagram' | 'LinkedIn' | 'TikTok'
+export type ContentStatus = 'aprovacao' | 'ajuste' | 'agendado'
+export type ContentItem = {
+  id: string
+  kind: ContentKind
+  channel: Channel
+  title: string
+  caption: string
+  status: ContentStatus
+  /** Só para itens agendados */
+  when?: string
+}
+
+export const KIND_LABEL: Record<ContentKind, string> = { post: 'Post', carrossel: 'Carrossel', video: 'Vídeo curto' }
+/* Custo fictício em créditos: imagem e vídeo custam mais que texto. */
+export const KIND_COST: Record<ContentKind, number> = { post: 5, carrossel: 20, video: 60 }
+export const CHANNELS: Channel[] = ['Instagram', 'LinkedIn', 'TikTok']
+
+export const contentItems: ContentItem[] = [
+  { id: 'a1', kind: 'carrossel', channel: 'Instagram', title: '5 motivos para assinar café fresco', caption: 'Café bom é café fresco. Veja 5 motivos para receber o seu em casa todo mês.', status: 'aprovacao' },
+  { id: 'a2', kind: 'post', channel: 'Instagram', title: 'Bastidores da torra de sábado', caption: 'Sábado é dia de torra. Vem ver como o seu café ganha aroma antes de chegar na xícara.', status: 'aprovacao' },
+  { id: 'a3', kind: 'post', channel: 'LinkedIn', title: 'Como escolher a moagem', caption: 'Moagem fina, média ou grossa? Depende do seu método. Um guia rápido para acertar.', status: 'aprovacao' },
+  { id: 's1', kind: 'post', channel: 'Instagram', title: 'Novo lote da Mantiqueira', caption: 'Chegou o lote novo, com notas de caramelo e frutas amarelas.', status: 'agendado', when: 'amanhã, 9h' },
+  { id: 's2', kind: 'video', channel: 'TikTok', title: 'Coado em 30 segundos', caption: 'O passo a passo do coado perfeito, sem complicar.', status: 'agendado', when: 'sexta, 18h' },
 ]
 
 export const credits = { used: 340, total: 1000, renewsOn: '1º de dezembro' }

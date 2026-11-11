@@ -6,7 +6,7 @@ export type NavItem = { to: string; label: string; icon: LucideIcon; badge?: num
 export const NAV: NavItem[] = [
   { to: '/inicio', label: 'Início', icon: Home },
   { to: '/marca', label: 'Marca', icon: Palette },
-  { to: '/conteudo', label: 'Conteúdo', icon: CalendarDays, badge: 3 },
+  { to: '/conteudo', label: 'Conteúdo', icon: CalendarDays },
   { to: '/leads', label: 'Leads', icon: Users },
   { to: '/mensagens', label: 'Mensagens', icon: MessageSquare, badge: 2 },
 ]

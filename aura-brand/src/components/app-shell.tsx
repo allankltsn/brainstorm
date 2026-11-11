@@ -31,6 +31,7 @@ import {
 } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { useContent } from '@/lib/content'
 import { initials, notifications, session } from '@/lib/data'
 import { currentNav, NAV, pageTitle, type NavItem } from '@/lib/nav'
 import { useTheme } from '@/lib/theme'
@@ -54,10 +55,17 @@ function BrandMark() {
   )
 }
 
+/* O selo de Conteúdo mostra quantos itens esperam aprovação. */
+function useBadge(item: NavItem) {
+  const { items } = useContent()
+  return item.to === '/conteudo' ? items.filter((i) => i.status === 'aprovacao').length : item.badge
+}
+
 function NavEntry({ item }: { item: NavItem }) {
   const { pathname } = useLocation()
   const { setOpenMobile } = useSidebar()
   const active = currentNav(pathname)?.to === item.to
+  const badge = useBadge(item)
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild isActive={active} tooltip={item.label} className="h-10 gap-3 text-sm data-[active=true]:bg-background data-[active=true]:shadow-xs">
@@ -66,9 +74,9 @@ function NavEntry({ item }: { item: NavItem }) {
           <span>{item.label}</span>
         </NavLink>
       </SidebarMenuButton>
-      {item.badge ? (
+      {badge ? (
         <SidebarMenuBadge className="top-2.5 rounded-full bg-primary px-1.5 text-primary-foreground peer-data-[active=true]/menu-button:text-primary-foreground">
-          {item.badge}
+          {badge}
           <span className="sr-only"> novos</span>
         </SidebarMenuBadge>
       ) : null}
@@ -94,7 +102,7 @@ function NewButton() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-60">
         <DropdownMenuLabel className="text-xs text-muted-foreground">O que você quer fazer?</DropdownMenuLabel>
-        <DropdownMenuItem onSelect={() => toast.info('O gerador de conteúdo é a próxima etapa', { description: 'Por enquanto, complete o brand kit.' })}>
+        <DropdownMenuItem onSelect={go('/conteudo')}>
           <Sparkles /> Gerar post com IA
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={go('/marca')}>
@@ -196,6 +204,25 @@ function ThemeToggle() {
   )
 }
 
+function BottomNavItem({ item: i, active }: { item: NavItem; active: boolean }) {
+  const badge = useBadge(i)
+  return (
+    <li>
+      <Link
+        to={i.to}
+        aria-current={active ? 'page' : undefined}
+        className={cn('relative flex h-14 flex-col items-center justify-center gap-0.5 text-xs font-medium text-muted-foreground', active && 'text-primary')}
+      >
+        <span className="relative">
+          <i.icon className="size-5" strokeWidth={active ? 2.4 : 2} />
+          {badge ? <span className="absolute -top-1 -right-1.5 size-2 rounded-full bg-primary ring-2 ring-background" /> : null}
+        </span>
+        {i.label}
+      </Link>
+    </li>
+  )
+}
+
 function BottomNav() {
   const { pathname } = useLocation()
   const items = NAV
@@ -203,24 +230,9 @@ function BottomNav() {
   return (
     <nav aria-label="Principal" className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
       <ul className="grid" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
-        {items.map((i) => {
-          const active = current === i.to
-          return (
-            <li key={i.to}>
-              <Link
-                to={i.to}
-                aria-current={active ? 'page' : undefined}
-                className={cn('relative flex h-14 flex-col items-center justify-center gap-0.5 text-xs font-medium text-muted-foreground', active && 'text-primary')}
-              >
-                <span className="relative">
-                  <i.icon className="size-5" strokeWidth={active ? 2.4 : 2} />
-                  {i.badge ? <span className="absolute -top-1 -right-1.5 size-2 rounded-full bg-primary ring-2 ring-background" /> : null}
-                </span>
-                {i.label}
-              </Link>
-            </li>
-          )
-        })}
+        {items.map((i) => (
+          <BottomNavItem key={i.to} item={i} active={current === i.to} />
+        ))}
       </ul>
     </nav>
   )
