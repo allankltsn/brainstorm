@@ -154,7 +154,7 @@ export function Planos() {
                         </div>
                       ))}
                     </dl>
-                    <Btn href="#cta-final" variant={pl.pro ? "primary" : "ghost"} className="mt-7 w-full" title="Cadastro e contratação em breve [a definir]">{pl.cta}</Btn>
+                    <Btn href={pl.pro || pl.n === "Premium" ? "#cta-final" : "#/login"} variant={pl.pro ? "primary" : "ghost"} className="mt-7 w-full" title={pl.n === "Starter" ? undefined : "Contratação em breve [a definir]"}>{pl.cta}</Btn>
                   </motion.article>
                 </BlurFade>
               </li>
@@ -294,7 +294,8 @@ export function CtaFinal() {
                 strength={0.3}
                 radius={110}
                 className="bg-ink text-brand shadow-[0_20px_60px_-10px_rgb(0_0_0/.6)] hover:bg-white"
-                onClick={() => document.getElementById("planos")?.scrollIntoView({ behavior: "smooth" })}
+                // Contrato com o host: data-aura-login leva ao login; fora do host, o hash abre a tela Entrar.
+                login
               >
                 Começar grátis <ArrowRight size={20} />
               </MagneticButton>

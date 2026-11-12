@@ -17,6 +17,8 @@ interface MagneticButtonProps {
   size?: "sm" | "md" | "lg";
   /** onClick handler */
   onClick?: () => void;
+  /** CTA de login: marca data-aura-login (contrato com o host) e abre #/login fora do host */
+  login?: boolean;
   /** Additional classes */
   className?: string;
 }
@@ -28,6 +30,7 @@ export function MagneticButton({
   variant = "primary",
   size = "md",
   onClick,
+  login,
   className,
 }: MagneticButtonProps) {
   const buttonRef = useRef<HTMLDivElement>(null);
@@ -97,7 +100,8 @@ export function MagneticButton({
     >
       <motion.button
         type="button"
-        onClick={onClick}
+        onClick={login ? () => { location.hash = "#/login"; } : onClick}
+        data-aura-login={login ? "" : undefined}
         style={{ x: rawX, y: rawY }}
         animate={{ scale: isHovered ? 1.04 : 1 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}

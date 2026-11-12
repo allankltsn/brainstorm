@@ -38,9 +38,7 @@ export function Login() {
       if (DEMO && (email !== DEMO_EMAIL || password !== DEMO_PASSWORD)) {
         setLoading(false)
         setFormError(
-          DEMO
-            ? `E-mail ou senha incorretos. Esta é uma versão de demonstração: use a conta de teste ${DEMO_EMAIL} (botão "Preencher com a conta de teste").`
-            : 'E-mail ou senha incorretos. Confira os dados e tente de novo.',
+          `E-mail ou senha incorretos. Esta é uma versão de demonstração: use a conta de teste ${DEMO_EMAIL} (botão "Preencher com a conta de teste").`,
         )
         return
       }

@@ -183,7 +183,7 @@ export function Roi() {
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Btn href="#cta-final" title="Cadastro em breve [a definir]">Começar grátis <ArrowRight size={18} /></Btn>
+                  <Btn href="#/login">Começar grátis <ArrowRight size={18} /></Btn>
                   <Btn href="#planos" variant="ghost">Ver os planos</Btn>
                 </div>
               </div>
