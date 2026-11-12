@@ -50,11 +50,11 @@ export function Cadastro() {
             <>
               Li e aceito os{' '}
               <Link to="/termos" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
-                termos de uso
+                termos de uso<span className="sr-only"> (abre em nova aba)</span>
               </Link>{' '}
               e a{' '}
               <Link to="/privacidade" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
-                política de privacidade
+                política de privacidade<span className="sr-only"> (abre em nova aba)</span>
               </Link>
               .
             </>

@@ -37,7 +37,11 @@ export function Login() {
       // Na demonstração só a conta de teste entra; qualquer outra credencial vê o estado de erro.
       if (DEMO && (email !== DEMO_EMAIL || password !== DEMO_PASSWORD)) {
         setLoading(false)
-        setFormError('E-mail ou senha incorretos. Confira os dados e tente de novo.')
+        setFormError(
+          DEMO
+            ? `E-mail ou senha incorretos. Esta é uma versão de demonstração: use a conta de teste ${DEMO_EMAIL} (botão "Preencher com a conta de teste").`
+            : 'E-mail ou senha incorretos. Confira os dados e tente de novo.',
+        )
         return
       }
       navigate('/inicio', { replace: true })
@@ -48,6 +52,12 @@ export function Login() {
     <AuthLayout>
       <h1 className="text-2xl font-semibold tracking-tight">Entrar</h1>
       <p className="mt-1 text-sm text-muted-foreground">Use o e-mail e a senha da sua conta.</p>
+      {DEMO && (
+        // Pares de cor: #855800 sobre #fdf3d3 = 5,6:1 (claro); #f1b93a sobre #3a2f12 = 7,4:1 (escuro). Ambos AA (>= 4,5:1).
+        <p className="mt-4 rounded-lg bg-warning-soft p-3 text-sm text-warning">
+          Versão de demonstração: use a conta de teste abaixo. Nenhum dado é real.
+        </p>
+      )}
       {resetDone && (
         <p role="status" className="mt-4 flex items-center gap-2 rounded-lg bg-success-soft p-3 text-sm text-success">
           <CheckCircle2 className="size-4 shrink-0" />

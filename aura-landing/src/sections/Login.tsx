@@ -37,7 +37,7 @@ export function Login() {
             data-aura-login
             className="mt-7 flex h-12 w-full items-center justify-center rounded-lg bg-primary text-[15px] font-semibold text-white shadow-[0_10px_40px_-10px_rgb(208_32_43/.7)] hover:bg-primary-hover"
           >
-            Ir para entrar
+            Continuar
           </a>
         </div>
       </motion.div>

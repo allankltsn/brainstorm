@@ -80,7 +80,7 @@ Duas pendências impedem a publicação de rodar sozinha.
 | # | Pendência | Detalhe |
 | --- | --- | --- |
 | I1 | Tarefa agendada sem o repositório anexado | O `scripts/sync.sh` foi rodado à mão. Até anexar o repositório à tarefa, cada publicação depende de execução manual |
-| I2 | Deploy do GitHub Pages não confirmado | O deploy do commit `05af13b` estava em andamento na última conferência; falta confirmar que terminou |
+| I2 | ~~Deploy do GitHub Pages não confirmado~~ | **Fechado em 12/11/2026:** deploy no ar, tag `v0.1.0` (commit `9e3f5ae`) |
 
 ## Fora da v1 e pontos a confirmar
 
@@ -93,3 +93,9 @@ Pontos em aberto neste mapa:
 - [ ] Qual a ordem de ataque: fechar telas (T1 a T8) ou começar o backend do ciclo P0 (B1, B2)?
 
 Este documento foi montado só a partir dos três relatórios; o código do protótipo não foi relido para ele.
+
+## Adiados do login (rodada 2 de gates, 12/11/2026)
+
+- [ ] **Tema 1 (só com architect):** URL do host x iframe, F5/Voltar, título, query (REV-BL-02, REV-BL-03, REV-BL-04 base/09, UX-BL-02, UX-BL-03, UX-BL-12).
+- [ ] **Tema 5:** contraste e foco medidos em navegador (UX-BL-07).
+- [ ] **Tema 6 (login real):** SEC-BL-05, SEC-BL-07, UX-BL-11, `?estado=` vindo do servidor, build de produção sem `VITE_DEMO`, teste do host (`init/src/App.jsx`, REV-BL-05) por falta de runner, validar com personal trainers reais.

@@ -74,6 +74,8 @@ export function Btn({ href, children, variant = "primary", className, title }: B
     <motion.a
       href={href}
       title={title}
+      // Contrato com o host (init/src/App.jsx): links para o login levam data-aura-login.
+      data-aura-login={href === "#/login" ? "" : undefined}
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.97 }}
       transition={{ type: "spring", stiffness: 400, damping: 22 }}

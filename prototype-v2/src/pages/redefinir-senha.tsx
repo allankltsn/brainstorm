@@ -45,7 +45,7 @@ export function RedefinirSenha() {
       <AuthLayout>
         <h1 className="text-2xl font-semibold tracking-tight">{linkState === 'expirado' ? 'Este link expirou' : 'Este link não é válido'}</h1>
         <p role="alert" className="mt-1 text-sm text-muted-foreground">
-          {linkState === 'expirado' ? 'O link para criar uma nova senha vale por 1 hora.' : 'O link está incompleto ou já foi usado.'} Peça um novo para continuar.
+          {linkState === 'expirado' ? 'O link para criar uma nova senha vale por tempo limitado.' /* [MOCK] prazo real (hoje fictício) a definir com o backend */ : 'O link está incompleto ou já foi usado.'} Peça um novo para continuar.
         </p>
         <div className="mt-8 grid gap-3">
           <Link to="/esqueci-senha" className="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground">
