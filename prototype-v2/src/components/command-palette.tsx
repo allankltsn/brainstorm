@@ -1,8 +1,9 @@
-import { Dumbbell, Palette, Settings, Sparkles, UserPlus } from 'lucide-react'
+import { CreditCard, Dumbbell, Palette, Settings, Sparkles, Ticket, UserPlus } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/lightswind/command'
+import { platformUsers, ROLE_NAME } from '@/lib/admin'
 import { useAssistant } from '@/lib/assistant'
 import { students } from '@/lib/data'
 import { NAV } from '@/lib/nav'
@@ -95,6 +96,33 @@ export function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenCh
           })),
       },
     )
+  }
+  if (role === 'admin') {
+    groups.push(
+      {
+        heading: 'Ações',
+        items: [
+          { key: 'cupom', label: 'Criar cupom', words: 'desconto novo', icon: <Ticket />, run: go('/planos?aba=cupons') },
+          { key: 'planos', label: 'Editar planos', words: 'preço assinatura', icon: <CreditCard />, run: go('/planos') },
+        ],
+      },
+      {
+        heading: 'Usuários',
+        items: platformUsers.map((u) => ({
+          key: u.id,
+          label: u.name,
+          hint: ROLE_NAME[u.role],
+          icon: <span className="flex size-6 items-center justify-center rounded-full bg-muted text-[10px] font-medium">{u.name[0]}</span>,
+          run: go(`/usuarios/${u.id}`),
+        })),
+      },
+    )
+  }
+  if (role === 'aluno') {
+    groups.push({
+      heading: 'Ações',
+      items: [{ key: 'comecar', label: 'Começar o treino de hoje', words: 'executar registrar carga', icon: <Dumbbell />, run: go('/treino/executar') }],
+    })
   }
   // O filtro fica aqui para esconder grupos vazios e só mostrar "nada encontrado" quando for verdade
   const shown = groups.map((g) => ({ ...g, items: g.items.filter((i) => match(`${i.label} ${i.words ?? ''} ${i.hint ?? ''}`)) })).filter((g) => g.items.length)

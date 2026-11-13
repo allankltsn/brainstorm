@@ -1,5 +1,5 @@
 import { Bell, ChevronsUpDown, ClipboardList, CreditCard, Dumbbell, LogOut, Moon, Palette, Plus, Search, Settings, Sparkles, Sun, UserPlus } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { AssistantWidget } from '@/components/assistant'
@@ -268,6 +268,10 @@ export function AppShell() {
   const { role } = useRole()
   const { pathname } = useLocation()
   const [search, setSearch] = useState(false)
+  // cada tela abre no topo, em vez de herdar a rolagem da anterior
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
   return (
     <AssistantProvider>
       <SidebarProvider>

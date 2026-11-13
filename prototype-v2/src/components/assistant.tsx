@@ -1,4 +1,4 @@
-import { MicOff, RotateCcw, X } from 'lucide-react'
+import { Keyboard, Mic, MicOff, RotateCcw, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/affect/button'
@@ -38,6 +38,8 @@ function Panel() {
   const { role } = useRole()
   const navigate = useNavigate()
   const [draft, setDraft] = useState('')
+  // Voz é o modo padrão. Sem suporte no navegador, abre direto em texto.
+  const [mode, setMode] = useState<'voz' | 'texto'>(a.voiceSupported ? 'voz' : 'texto')
   const end = useRef<HTMLDivElement>(null)
   useEffect(() => {
     end.current?.scrollIntoView({ block: 'end' })
@@ -77,7 +79,7 @@ function Panel() {
           <div className="flex h-full flex-col items-center justify-center text-center">
             <Cloud mood={a.mood} followWindow className="size-28" label="" />
             <p className="mt-1 text-base font-semibold">Olá, {firstName(sessions[role].name)}. Como posso ajudar?</p>
-            <p className="mt-1 max-w-64 text-sm text-muted-foreground">Fale ou escreva. Eu encontro alunos, monto treinos e abro as telas para você.</p>
+            <p className="mt-1 max-w-64 text-sm text-muted-foreground">{mode === 'voz' ? 'Ligue o microfone e fale.' : 'Escreva o que precisa.'} Eu encontro alunos, monto treinos e abro as telas para você.</p>
             <div className="mt-5 flex flex-wrap justify-center gap-2">
               {SUGGESTIONS.map((s) => (
                 <button
@@ -127,24 +129,65 @@ function Panel() {
         <div ref={end} />
       </div>
 
-      <footer className="px-3 pb-3">
-        <AiPrompt
-          value={draft}
-          onChange={setDraft}
-          onSubmit={(t) => {
-            a.ask(t)
-            setDraft('')
-          }}
-          placeholder="Pergunte ou peça algo"
-          mic={a.mic}
-          onMicChange={a.setMic}
-          micLabel={a.listening ? 'Ouvindo' : 'Microfone ligado'}
-          disabled={a.busy}
-        />
-        <p className="mt-1.5 px-2 text-center text-[11px] text-muted-foreground">
-          {a.mic ? 'Com o microfone ligado, a Aura ouve e responde em voz alta.' : 'O microfone fica desligado até você ligar.'}
-        </p>
-      </footer>
+      {mode === 'voz' ? (
+        <footer className="flex flex-col items-center gap-2 border-t px-3 pt-4 pb-3">
+          <span className="relative flex">
+            {a.mic && <span className="absolute inset-0 animate-ping rounded-full bg-primary/30 motion-reduce:hidden" aria-hidden="true" />}
+            <button
+              type="button"
+              aria-pressed={a.mic}
+              aria-label={a.mic ? 'Desligar microfone' : 'Ligar microfone'}
+              onClick={() => a.setMic(!a.mic)}
+              className={cn(
+                'relative flex size-16 items-center justify-center rounded-full border-2 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&_svg]:size-6',
+                a.mic ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground',
+              )}
+            >
+              {a.mic ? <Mic /> : <MicOff />}
+            </button>
+          </span>
+          <p className="text-sm font-medium" role="status">
+            {a.mic ? (a.busy ? 'Trabalhando nisso…' : a.listening ? 'Pode falar, estou ouvindo' : 'Microfone ligado') : 'Toque para ligar o microfone'}
+          </p>
+          <p className="max-w-72 text-center text-[11px] text-muted-foreground">{a.mic ? 'A Aura ouve e responde em voz alta. Toque de novo para desligar.' : 'O microfone fica desligado até você ligar.'}</p>
+          <Button
+            size="sm"
+            variant="ghost"
+            icon={<Keyboard />}
+            onClick={() => {
+              a.setMic(false)
+              setMode('texto')
+            }}
+          >
+            Prefiro escrever
+          </Button>
+        </footer>
+      ) : (
+        <footer className="px-3 pb-3">
+          <AiPrompt
+            value={draft}
+            onChange={setDraft}
+            onSubmit={(t) => {
+              a.ask(t)
+              setDraft('')
+            }}
+            placeholder="Pergunte ou peça algo"
+            mic={a.mic}
+            onMicChange={a.setMic}
+            micLabel={a.listening ? 'Ouvindo' : 'Microfone ligado'}
+            disabled={a.busy}
+          />
+          <div className="mt-1.5 flex items-center justify-center gap-2 px-2 text-[11px] text-muted-foreground">
+            {a.voiceSupported ? (
+              <button type="button" onClick={() => setMode('voz')} className="inline-flex items-center gap-1 font-medium underline-offset-4 outline-none hover:text-foreground hover:underline focus-visible:ring-2 focus-visible:ring-ring">
+                <Mic className="size-3" /> Voltar para a conversa por voz
+              </button>
+            ) : (
+              <span>Este navegador não tem conversa por voz, então a Aura atende por texto.</span>
+            )}
+          </div>
+        </footer>
+      )}
     </section>
   )
 }

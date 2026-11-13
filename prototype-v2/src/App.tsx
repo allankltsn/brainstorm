@@ -14,6 +14,8 @@ import { Acompanhamento } from '@/pages/acompanhamento'
 import { Mensagens } from '@/pages/mensagens'
 import { ExecutarTreino, MeuTreino } from '@/pages/meu-treino'
 import { Placeholder } from '@/pages/placeholder'
+import { PlanosCupons } from '@/pages/planos'
+import { UsuarioDetalhe, Usuarios } from '@/pages/usuarios'
 import { ExercicioDetalhe, ExercicioForm } from '@/pages/exercicio'
 import { TreinoEditor } from '@/pages/treino-editor'
 import { Treinos } from '@/pages/treinos'
@@ -41,6 +43,9 @@ export default function App() {
                 <Route path="/treinos/:id" element={<TreinoEditor />} />
                 <Route path="/treino" element={<MeuTreino />} />
                 <Route path="/treino/executar" element={<ExecutarTreino />} />
+                <Route path="/usuarios" element={<Usuarios />} />
+                <Route path="/usuarios/:id" element={<UsuarioDetalhe />} />
+                <Route path="/planos" element={<PlanosCupons />} />
                 <Route path="/acompanhamento" element={<Acompanhamento />} />
                 <Route path="/mensagens" element={<Mensagens />} />
                 <Route path="/ia" element={<IA />} />

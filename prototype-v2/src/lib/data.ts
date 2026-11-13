@@ -174,3 +174,32 @@ export const loadHistory = [
   { data: '03/10', kg: 37.5 },
   { data: '09/10', kg: 40 },
 ]
+
+/* Evolução de carga por exercício (kg), vista pelo personal no detalhe do aluno. */
+export const loadByExercise: Record<string, { data: string; kg: number }[]> = {
+  'Supino reto': loadHistory,
+  'Agachamento livre': [
+    { data: '05/09', kg: 40 },
+    { data: '12/09', kg: 42.5 },
+    { data: '19/09', kg: 45 },
+    { data: '26/09', kg: 45 },
+    { data: '03/10', kg: 47.5 },
+    { data: '09/10', kg: 50 },
+  ],
+  'Remada curvada': [
+    { data: '05/09', kg: 30 },
+    { data: '12/09', kg: 30 },
+    { data: '19/09', kg: 32.5 },
+    { data: '26/09', kg: 32.5 },
+    { data: '03/10', kg: 35 },
+    { data: '09/10', kg: 35 },
+  ],
+}
+export const weeklySessions = [
+  { semana: '07/09', treinos: 3 },
+  { semana: '14/09', treinos: 4 },
+  { semana: '21/09', treinos: 3 },
+  { semana: '28/09', treinos: 4 },
+  { semana: '05/10', treinos: 2 },
+  { semana: '12/10', treinos: 1 },
+]

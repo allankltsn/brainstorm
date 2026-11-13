@@ -37,11 +37,13 @@ npm run dev
 - Executar treino (perfil aluno): carga e repetições por série, descanso cronometrado e resumo ao finalizar (`#/treino/executar`)
 - Acompanhar: alertas, frequência, relatórios, treinos feitos e questionários em abas (`#/acompanhamento`)
 - Mensagens (`#/mensagens`)
+- Admin: início com gráficos, Usuários com detalhe, convite e bloqueio (`#/usuarios`), Planos e cupons (`#/planos`)
+- Evolução do aluno: carga por exercício e treinos por semana, na aba Evolução do detalhe (`#/alunos/s01`)
 - Sugerir treino com IA (`#/ia`)
 - Configurações: dados, aparência, avisos, assinatura, privacidade e IA (`#/configuracoes`)
 - Kit de interface: cores e componentes dos dois kits lado a lado (`#/design-system`)
 
-As telas ainda não migradas mostram um aviso de "ainda não migrada".
+Rotas que não existem mostram um aviso de "ainda não migrada".
 
 ## Como o menu é organizado
 
@@ -63,10 +65,10 @@ Botão flutuante com a nuvem do affectUI (`Glow Cloud`), em `src/components/assi
 
 - Os olhos seguem o ponteiro pela janela; a expressão muda por estado: disponível, sonolenta (sem uso),
   ouvindo, trabalhando e contente ao terminar. Isso foi acrescentado ao arquivo `glow-cloud.tsx` (`mood`, `followWindow`).
-- Clicar abre o chat. A conversa é por voz ou texto; **o microfone começa desligado** e só liga quando a pessoa toca no botão.
+- Clicar abre o chat **em modo voz**, com um botão grande de microfone; **o microfone começa desligado** e só liga quando a pessoa toca nele. "Prefiro escrever" troca para texto.
   Com ele ligado, a Aura ouve (Web Speech API, pt-BR) e responde em voz alta. Fechar o chat desliga o microfone.
 - As respostas são de exemplo (função `reply`); em produção, troque pela chamada ao agente.
-- Reconhecimento de voz depende do navegador (Chrome e Edge têm; Firefox não). Sem suporte, o chat segue por texto.
+- Reconhecimento de voz depende do navegador (Chrome e Edge têm; Firefox não). Sem suporte, o chat abre direto em texto.
 
 ## Gráficos
 

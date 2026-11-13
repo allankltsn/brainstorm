@@ -52,11 +52,13 @@ export function BarsChart({ data, xKey, yKey, label, color = 'var(--chart-1)', f
 export type Series = { key: string; label: string; color: string; dashed?: boolean }
 
 /* Tendência: a primeira série é uma área com degradê; as demais, linhas pontilhadas para comparar. */
-export function TrendChart({ data, xKey, series, format = (v) => String(v), yDomain, height = 'h-60', className }: Common & {
+export function TrendChart({ data, xKey, series, format = (v) => String(v), axisFormat, yDomain, height = 'h-60', className }: Common & {
   data: Record<string, string | number>[]
   xKey: string
   series: Series[]
   format?: (v: number) => string
+  /** rótulo curto do eixo, quando o valor completo não cabe (ex.: dinheiro) */
+  axisFormat?: (v: number) => string
   yDomain?: [number | 'auto' | 'dataMin', number | 'auto' | 'dataMax']
 }) {
   const id = useId().replace(/:/g, '')
@@ -75,7 +77,7 @@ export function TrendChart({ data, xKey, series, format = (v) => String(v), yDom
           </defs>
           <CartesianGrid vertical={false} strokeDasharray="3 4" />
           <XAxis dataKey={xKey} {...axis} minTickGap={16} />
-          <YAxis {...axis} width={32} domain={yDomain} tickFormatter={(v) => format(Number(v))} />
+          <YAxis {...axis} width={40} domain={yDomain} tickFormatter={(v) => (axisFormat ?? format)(Number(v))} />
           <ChartTooltip cursor={{ stroke: 'var(--border)', strokeDasharray: '4 4' }} content={<ChartTooltipContent indicator="line" formatter={(v, name) => <span className="flex w-full justify-between gap-4"><span className="text-muted-foreground">{config[String(name)]?.label}</span><span className="font-medium tabular-nums">{format(Number(v))}</span></span>} />} />
           {rest.map((s) => (
             <Line key={s.key} type="monotone" dataKey={s.key} stroke={`var(--color-${s.key})`} strokeWidth={2} strokeDasharray={s.dashed ? '5 5' : undefined} dot={false} activeDot={{ r: 4 }} isAnimationActive={!reduced} animationDuration={DURATION} />

@@ -10,7 +10,9 @@ import { TextField } from '@/components/affect/text-field'
 import { PageHeader, Person, Pill, Section } from '@/components/page'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { BarsChart, TrendChart } from '@/components/charts/charts'
 import { Programacao } from '@/pages/programacao'
+import { loadByExercise, weeklySessions } from '@/lib/data'
 import { activeStudents, initials, maskEmail, STUDENT_LIMIT, students, type Student } from '@/lib/data'
 
 type Tab = 'ativos' | 'pendentes' | 'historico'
@@ -196,7 +198,32 @@ export function Alunos() {
   )
 }
 
-type DetailTab = 'resumo' | 'programacao' | 'saude' | 'anotacoes'
+type DetailTab = 'resumo' | 'evolucao' | 'programacao' | 'saude' | 'anotacoes'
+
+const EXERCISES = Object.keys(loadByExercise)
+
+/* Evolução do aluno: carga por exercício e treinos por semana, com o estilo padrão de gráficos. */
+function Evolucao({ student }: { student: Student }) {
+  const [exercise, setExercise] = useState(EXERCISES[0])
+  const series = loadByExercise[exercise]
+  const gain = series[series.length - 1].kg - series[0].kg
+  const falling = (student.lastSessionDays ?? 0) >= 7
+  return (
+    <div className="grid gap-6 lg:grid-cols-5">
+      <Section
+        title="Carga por exercício"
+        description={`${gain > 0 ? `+${gain.toLocaleString('pt-BR')} kg` : 'Sem mudança'} em 5 semanas`}
+        className="min-w-0 lg:col-span-3"
+        action={<Select aria-label="Exercício" size="sm" className="w-48" value={exercise} onChange={setExercise} options={EXERCISES.map((e) => ({ value: e, label: e }))} />}
+      >
+        <TrendChart key={exercise} data={series} xKey="data" series={[{ key: 'kg', label: exercise, color: 'var(--chart-1)' }]} format={(v) => `${v.toLocaleString('pt-BR')} kg`} axisFormat={(v) => v.toLocaleString('pt-BR')} yDomain={['dataMin - 5', 'dataMax + 5'] as unknown as ['auto', 'auto']} />
+      </Section>
+      <Section title="Treinos por semana" description={falling ? 'A frequência caiu nas duas últimas semanas.' : 'Frequência estável.'} className="min-w-0 lg:col-span-2">
+        <BarsChart data={falling ? weeklySessions : weeklySessions.map((w, i) => ({ ...w, treinos: 3 + (i % 2) }))} xKey="semana" yKey="treinos" label="Treinos" height="h-60" format={(v) => `${v} ${v === 1 ? 'treino' : 'treinos'}`} />
+      </Section>
+    </div>
+  )
+}
 
 export function AlunoDetalhe() {
   const { id } = useParams()
@@ -251,6 +278,7 @@ export function AlunoDetalhe() {
         className="mb-6"
         options={[
           { value: 'resumo', label: 'Resumo', controls: 'painel-aluno' },
+          { value: 'evolucao', label: 'Evolução', controls: 'painel-aluno' },
           { value: 'programacao', label: 'Programação', controls: 'painel-aluno' },
           { value: 'saude', label: 'Saúde', controls: 'painel-aluno' },
           { value: 'anotacoes', label: 'Anotações', controls: 'painel-aluno' },
@@ -295,6 +323,14 @@ export function AlunoDetalhe() {
             </Section>
           </div>
         )}
+        {tab === 'evolucao' &&
+          (canSee && s.plan ? (
+            <Evolucao student={s} />
+          ) : (
+            <Section title="Evolução">
+              <p className="text-sm text-muted-foreground">{canSee ? 'Ainda não há treinos registrados para mostrar a evolução.' : 'A evolução fica oculta até o aluno liberar os dados de saúde.'}</p>
+            </Section>
+          ))}
         {tab === 'programacao' &&
           (canSee ? (
             <Programacao student={s} />

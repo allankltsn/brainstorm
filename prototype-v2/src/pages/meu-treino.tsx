@@ -133,7 +133,7 @@ export function MeuTreino() {
           </Pill>
         }
       >
-        <TrendChart data={loadHistory} xKey="data" series={[{ key: 'kg', label: 'Supino reto', color: 'var(--chart-1)' }]} format={(v) => `${v.toLocaleString('pt-BR')} kg`} yDomain={['dataMin - 5', 'dataMax + 5'] as unknown as ['auto', 'auto']} height="h-48" />
+        <TrendChart data={loadHistory} xKey="data" series={[{ key: 'kg', label: 'Supino reto', color: 'var(--chart-1)' }]} format={(v) => `${v.toLocaleString('pt-BR')} kg`} axisFormat={(v) => v.toLocaleString('pt-BR')} yDomain={['dataMin - 5', 'dataMax + 5'] as unknown as ['auto', 'auto']} height="h-48" />
       </Section>
 
       <Section title="Últimos treinos" className="mt-6">

@@ -9,10 +9,12 @@ import { ProgressTracker } from '@/components/affect/progress-tracker'
 import { TextArea } from '@/components/affect/text-area'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { PageHeader, Person, Pill, Section } from '@/components/page'
-import { BarsChart, Sparkline } from '@/components/charts/charts'
+import { BarsChart, HBars, Sparkline, TrendChart } from '@/components/charts/charts'
+import { adminSparks, mrrTrend, plans, platformUsers, signupsWeek } from '@/lib/admin'
 import { Progress } from '@/components/ui/progress'
 import {
   activeStudents,
+  brl,
   agendaToday,
   firstName,
   revenueMonth,
@@ -338,26 +340,75 @@ function HomeAluno() {
 }
 
 function HomeAdmin() {
+  const navigate = useNavigate()
+  const late = platformUsers.filter((u) => u.payment === 'em atraso' && u.status === 'ativo')
+  const pending = platformUsers.filter((u) => u.status === 'pendente')
+  const money = (v: number) => brl(v)
   return (
     <>
       <PageHeader title={`Olá, ${firstName(sessions.admin.name)}`} description={`Hoje é ${TODAY_LABEL}. Resumo da plataforma.`} />
       <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
-        <Kpi label="Personais ativos" foot="3 novos este mês">
+        <Kpi label="Personais ativos" foot="3 novos este mês" spark={<Sparkline data={adminSparks.personais} label="Personais" />}>
           <NumberTicker value={8} />
         </Kpi>
-        <Kpi label="Alunos na plataforma" foot="Em 8 contas">
+        <Kpi label="Alunos na plataforma" foot="Em 8 contas" spark={<Sparkline data={adminSparks.alunos} label="Alunos" />}>
           <NumberTicker value={142} />
         </Kpi>
-        <Kpi label="Receita recorrente" foot="Exemplo, mês de outubro">
+        <Kpi label="Receita recorrente" foot="Exemplo, mês de outubro" spark={<Sparkline data={adminSparks.receita} label="Receita" format={money} />}>
           <NumberTicker value={399} locale="pt-BR" format={{ style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }} />
         </Kpi>
-        <Kpi label="Pagamentos pendentes" foot="1 conta em atraso">
-          <NumberTicker value={1} />
+        <Kpi
+          label="Pagamentos em atraso"
+          foot={
+            <Link to="/usuarios" className="font-medium text-brand-text hover:underline">
+              Ver usuários
+            </Link>
+          }
+        >
+          <NumberTicker value={late.length} />
         </Kpi>
       </div>
-      <p className="mt-6 rounded-xl border border-dashed p-5 text-sm text-muted-foreground">
-        As demais telas do admin (usuários, planos, cupons) ainda estão no protótipo antigo e serão migradas para este kit.
-      </p>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-3">
+        <Section title="Precisa de você" description="Contas que pedem uma decisão sua." className="min-w-0 lg:col-span-2">
+          <ul className="divide-y">
+            {[...late.map((u) => ({ u, why: 'Assinatura em atraso há 7 dias.', act: 'Abrir conta' })), ...pending.map((u) => ({ u, why: 'Convite enviado e ainda não aceito.', act: 'Ver convite' }))].map(({ u, why, act }) => (
+              <li key={u.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3 first:pt-0 last:pb-0">
+                <div className="min-w-0 flex-1 basis-56">
+                  <Person name={u.name} sub={why} />
+                </div>
+                <Button size="sm" variant="secondary" onClick={() => navigate(`/usuarios/${u.id}`)}>
+                  {act}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </Section>
+        <Section title="Assinantes por plano" className="min-w-0">
+          <HBars format={(v) => String(v)} rows={plans.filter((p) => p.status === 'ativo').map((p) => ({ id: p.id, label: p.name, value: p.subscribers }))} />
+          <Link to="/planos" className="mt-3 inline-block text-sm font-medium text-brand-text underline-offset-4 hover:underline">
+            Ver planos e cupons
+          </Link>
+        </Section>
+      </div>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-5">
+        <Section title="Receita recorrente" description="Por mês, contra o mês anterior. Valores de exemplo." className="min-w-0 lg:col-span-3">
+          <TrendChart
+            data={mrrTrend}
+            xKey="mes"
+            format={money}
+            axisFormat={(v) => String(Math.round(v))}
+            series={[
+              { key: 'receita', label: 'Receita do mês', color: 'var(--chart-1)' },
+              { key: 'anterior', label: 'Mês anterior', color: 'var(--chart-4)', dashed: true },
+            ]}
+          />
+        </Section>
+        <Section title="Novas contas" description="Por semana, personais e alunos" className="min-w-0 lg:col-span-2">
+          <BarsChart data={signupsWeek} xKey="semana" yKey="contas" label="Novas contas" height="h-60" format={(v) => `${v} contas`} />
+        </Section>
+      </div>
     </>
   )
 }
