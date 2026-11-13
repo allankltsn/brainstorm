@@ -1,6 +1,0 @@
-node_modules
-dist
-# gerados por `npm run apps`
-public/aura
-public/proto
-public/brand-app
