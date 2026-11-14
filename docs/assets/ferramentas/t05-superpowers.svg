@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1216" height="424" viewBox="0 0 1216 424" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Superpowers: motor de fases de desenvolvimento">
+<title>Superpowers: motor de fases de desenvolvimento</title>
+<defs><marker id="ar64748b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<rect width="1216" height="424" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">Superpowers: motor de fases de desenvolvimento</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">Habilidades encadeadas do pedido até a verificação; o guilda já o prefere como motor</text>
+<path d="M228.0,167.0 L274.0,167.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M466.0,167.0 L512.0,167.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M704.0,167.0 L750.0,167.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M942.0,167.0 L988.0,167.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+
+<rect x="36" y="116" width="192" height="102" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="132.0" y="162.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">brainstorming</text>
+<text x="132.0" y="180.0" font-size="11" fill="#94a3b8" text-anchor="middle">especificação aprovada</text>
+<rect x="274" y="116" width="192" height="102" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="370.0" y="162.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">writing-plans</text>
+<text x="370.0" y="180.0" font-size="11" fill="#94a3b8" text-anchor="middle">plano em tarefas pequenas</text>
+<rect x="512" y="116" width="192" height="102" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="608.0" y="162.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">subagent-driven</text>
+<text x="608.0" y="180.0" font-size="11" fill="#94a3b8" text-anchor="middle">um subagente por tarefa</text>
+<rect x="750" y="116" width="192" height="102" rx="11" fill="#251b47" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="846.0" y="162.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Revisão em 2 etapas</text>
+<text x="846.0" y="180.0" font-size="11" fill="#94a3b8" text-anchor="middle">conformidade e qualidade</text>
+<rect x="988" y="116" width="192" height="102" rx="11" fill="#0f2f1d" stroke="#4ade80" stroke-width="1.6"/>
+<text x="1084.0" y="162.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">verification</text>
+<text x="1084.0" y="180.0" font-size="11" fill="#94a3b8" text-anchor="middle">evidência antes de concluir</text>
+<rect x="36" y="258" width="430" height="102" rx="11" fill="#0f2f1d" stroke="#4ade80" stroke-width="1.6"/>
+<text x="251.0" y="297.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Ganho</text>
+<text x="251.0" y="315.0" font-size="11" fill="#94a3b8" text-anchor="middle">TDD vermelho-verde-refatora, tarefas isoladas e verificação</text>
+<text x="251.0" y="329.0" font-size="11" fill="#94a3b8" text-anchor="middle">obrigatória. Já está no marketplace oficial.</text>
+<rect x="512" y="258" width="668" height="102" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="846.0" y="297.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Cuidado</text>
+<text x="846.0" y="315.0" font-size="11" fill="#94a3b8" text-anchor="middle">O guilda define responsabilidades e artefatos e não reimplementa o motor. Estado privado (.superpowers)</text>
+<text x="846.0" y="329.0" font-size="11" fill="#94a3b8" text-anchor="middle">não deve ser copiado sem inspecionar o produtor.</text>
+
+<rect x="36" y="385" width="12" height="12" rx="3" fill="#0e2340" stroke="#60a5fa" stroke-width="1.4"/>
+<text x="54" y="395" font-size="10.5" fill="#94a3b8">ferramenta externa</text>
+<rect x="183.73" y="385" width="12" height="12" rx="3" fill="#1b2538" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="201.73" y="395" font-size="10.5" fill="#94a3b8">dado ou artefato</text>
+<rect x="319.49" y="385" width="12" height="12" rx="3" fill="#251b47" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="337.49" y="395" font-size="10.5" fill="#94a3b8">segurança e gates</text>
+<rect x="461.235" y="385" width="12" height="12" rx="3" fill="#0f2f1d" stroke="#4ade80" stroke-width="1.4"/>
+<text x="479.235" y="395" font-size="10.5" fill="#94a3b8">resultado</text>
+
+</svg>

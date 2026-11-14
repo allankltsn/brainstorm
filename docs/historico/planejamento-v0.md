@@ -1,3 +1,5 @@
+> **Documento histórico.** Este foi o primeiro rascunho, escrito antes de analisarmos o repositório `guilda` (que já existe na v2.0.0) e os projetos do produto. Foi substituído pela documentação em [`../README.md`](../../README.md). Mantido só como registro da evolução das decisões.
+
 # Guilda — plataforma reutilizável de agentes para todo o ciclo de um produto
 
 > Rascunho de planejamento. Status: **proposta para revisão**, nada instalado ainda.

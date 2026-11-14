@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1290" height="358" viewBox="0 0 1290 358" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Roteiro em 7 marcos">
+<title>Roteiro em 7 marcos</title>
+<defs><marker id="ar64748b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<rect width="1290" height="358" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">Roteiro em 7 marcos</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">Cada marco termina com algo verificável; os marcos 4 e 5 só avançam com as lacunas decididas</text>
+<path d="M186.0,191.0 L214.0,191.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M364.0,191.0 L392.0,191.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M542.0,191.0 L570.0,191.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M720.0,191.0 L748.0,191.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M898.0,191.0 L926.0,191.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M1076.0,191.0 L1104.0,191.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+
+<rect x="36" y="116" width="150" height="150" rx="11" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="111.0" y="158.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">M0 Decisões</text>
+<text x="111.0" y="176.0" font-size="11" fill="#94a3b8" text-anchor="middle">ADRs: guilda é o</text>
+<text x="111.0" y="190.0" font-size="11" fill="#94a3b8" text-anchor="middle">núcleo, externo</text>
+<text x="111.0" y="204.0" font-size="11" fill="#94a3b8" text-anchor="middle">primeiro, stack</text>
+<text x="111.0" y="218.0" font-size="11" fill="#94a3b8" text-anchor="middle">padrão, GitHub</text>
+<text x="111.0" y="232.0" font-size="11" fill="#94a3b8" text-anchor="middle">público ou privado</text>
+<rect x="214" y="116" width="150" height="150" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="289.0" y="165.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">M1 Atualizar</text>
+<text x="289.0" y="183.0" font-size="11" fill="#94a3b8" text-anchor="middle">aura-* para o guilda</text>
+<text x="289.0" y="197.0" font-size="11" fill="#94a3b8" text-anchor="middle">2.0, CLAUDE.md</text>
+<text x="289.0" y="211.0" font-size="11" fill="#94a3b8" text-anchor="middle">corrigido, stack</text>
+<text x="289.0" y="225.0" font-size="11" fill="#94a3b8" text-anchor="middle">alinhada</text>
+<rect x="392" y="116" width="150" height="150" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="467.0" y="165.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">M2 Plugins</text>
+<text x="467.0" y="183.0" font-size="11" fill="#94a3b8" text-anchor="middle">pacote único de</text>
+<text x="467.0" y="197.0" font-size="11" fill="#94a3b8" text-anchor="middle">proposta: oficiais,</text>
+<text x="467.0" y="211.0" font-size="11" fill="#94a3b8" text-anchor="middle">VoltAgent, wshobson,</text>
+<text x="467.0" y="225.0" font-size="11" fill="#94a3b8" text-anchor="middle">BMAD</text>
+<rect x="570" y="116" width="150" height="150" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="645.0" y="165.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">M3 Papéis novos</text>
+<text x="645.0" y="183.0" font-size="11" fill="#94a3b8" text-anchor="middle">financeiro,</text>
+<text x="645.0" y="197.0" font-size="11" fill="#94a3b8" text-anchor="middle">Cloudflare, Vercel,</text>
+<text x="645.0" y="211.0" font-size="11" fill="#94a3b8" text-anchor="middle">release, fases 0 a</text>
+<text x="645.0" y="225.0" font-size="11" fill="#94a3b8" text-anchor="middle">3, NestJS+Prisma</text>
+<rect x="748" y="116" width="150" height="150" rx="11" fill="#251b47" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="823.0" y="165.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">M4 Enforcement</text>
+<text x="823.0" y="183.0" font-size="11" fill="#94a3b8" text-anchor="middle">hooks, deny rules,</text>
+<text x="823.0" y="197.0" font-size="11" fill="#94a3b8" text-anchor="middle">teto de custo,</text>
+<text x="823.0" y="211.0" font-size="11" fill="#94a3b8" text-anchor="middle">defesa contra prompt</text>
+<text x="823.0" y="225.0" font-size="11" fill="#94a3b8" text-anchor="middle">injection</text>
+<rect x="926" y="116" width="150" height="150" rx="11" fill="#0f2f1d" stroke="#4ade80" stroke-width="1.6"/>
+<text x="1001.0" y="165.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">M5 Medição</text>
+<text x="1001.0" y="183.0" font-size="11" fill="#94a3b8" text-anchor="middle">linha de base com</text>
+<text x="1001.0" y="197.0" font-size="11" fill="#94a3b8" text-anchor="middle">/cost, RTK, Serena,</text>
+<text x="1001.0" y="211.0" font-size="11" fill="#94a3b8" text-anchor="middle">depois Headroom;</text>
+<text x="1001.0" y="225.0" font-size="11" fill="#94a3b8" text-anchor="middle">piloto</text>
+<rect x="1104" y="116" width="150" height="150" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="1179.0" y="172.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">M6 Orquestração</text>
+<text x="1179.0" y="190.0" font-size="11" fill="#94a3b8" text-anchor="middle">ciclo ponta a ponta</text>
+<text x="1179.0" y="204.0" font-size="11" fill="#94a3b8" text-anchor="middle">com retrospectiva e</text>
+<text x="1179.0" y="218.0" font-size="11" fill="#94a3b8" text-anchor="middle">Task Observer</text>
+
+<rect x="36" y="291" width="12" height="12" rx="3" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="54" y="301" font-size="10.5" fill="#94a3b8">guilda (núcleo)</text>
+<rect x="165.77499999999998" y="291" width="12" height="12" rx="3" fill="#0e2340" stroke="#60a5fa" stroke-width="1.4"/>
+<text x="183.77499999999998" y="301" font-size="10.5" fill="#94a3b8">ferramenta externa</text>
+<rect x="313.505" y="291" width="12" height="12" rx="3" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="331.505" y="301" font-size="10.5" fill="#94a3b8">decisão humana</text>
+<rect x="437.29499999999996" y="291" width="12" height="12" rx="3" fill="#251b47" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="455.29499999999996" y="301" font-size="10.5" fill="#94a3b8">segurança e gates</text>
+<rect x="579.04" y="291" width="12" height="12" rx="3" fill="#0f2f1d" stroke="#4ade80" stroke-width="1.4"/>
+<text x="597.04" y="301" font-size="10.5" fill="#94a3b8">resultado</text>
+<text x="36" y="324" font-size="11" fill="#94a3b8">Datas ficam em aberto até você priorizar. A ordem proposta reduz risco: primeiro decisões e atualização, depois plugins, papéis, enforcement, medição e orquestração completa.</text>
+</svg>

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1112" height="758" viewBox="0 0 1112 758" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Economia de tokens: problema, remédio e cuidado">
+<title>Economia de tokens: problema, remédio e cuidado</title>
+<defs><marker id="ar64748b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<rect width="1112" height="758" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">Economia de tokens: problema, remédio e cuidado</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">Cada camada ataca um ponto de desperdício; meça com /cost antes e depois de ligar cada uma</text>
+<path d="M336.0,151.0 L406.0,151.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M706.0,151.0 L776.0,151.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M336.0,247.0 L406.0,247.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M706.0,247.0 L776.0,247.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M336.0,343.0 L406.0,343.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M706.0,343.0 L776.0,343.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M336.0,439.0 L406.0,439.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M706.0,439.0 L776.0,439.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M336.0,535.0 L406.0,535.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M706.0,535.0 L776.0,535.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M336.0,631.0 L406.0,631.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M706.0,631.0 L776.0,631.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+
+<rect x="36" y="116" width="300" height="70" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="186.0" y="155.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Saída longa de comandos de shell</text>
+<rect x="406" y="116" width="300" height="70" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="556.0" y="155.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">RTK (hook PreToolUse em Bash)</text>
+<rect x="776" y="116" width="300" height="70" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="926.0" y="155.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Não cobre Read, Grep e Glob</text>
+<rect x="36" y="212" width="300" height="70" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="186.0" y="243.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Ler arquivos inteiros para achar</text>
+<text x="186.0" y="260.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">um símbolo</text>
+<rect x="406" y="212" width="300" height="70" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="556.0" y="243.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Serena (busca e edição por</text>
+<text x="556.0" y="260.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">símbolo via LSP)</text>
+<rect x="776" y="212" width="300" height="70" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="926.0" y="251.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Ganho maior em código grande</text>
+<rect x="36" y="308" width="300" height="70" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="186.0" y="339.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Contexto longo reenviado a cada</text>
+<text x="186.0" y="356.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">turno</text>
+<rect x="406" y="308" width="300" height="70" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="556.0" y="339.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Headroom (proxy ou MCP) por</text>
+<text x="556.0" y="356.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">último</text>
+<rect x="776" y="308" width="300" height="70" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="926.0" y="339.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Confirmar compatibilidade e</text>
+<text x="926.0" y="356.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">canônico</text>
+<rect x="36" y="404" width="300" height="70" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="186.0" y="435.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Reexplicar o projeto a cada</text>
+<text x="186.0" y="452.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">sessão</text>
+<rect x="406" y="404" width="300" height="70" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="556.0" y="435.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Handoffs em arquivo; claude-mem</text>
+<text x="556.0" y="452.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">opcional</text>
+<rect x="776" y="404" width="300" height="70" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="926.0" y="435.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Memória automática também gasta</text>
+<text x="926.0" y="452.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">tokens</text>
+<rect x="36" y="500" width="300" height="70" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="186.0" y="531.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Agentes pesados retomados e</text>
+<text x="186.0" y="548.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">briefings enormes</text>
+<rect x="406" y="500" width="300" height="70" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="556.0" y="531.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Briefing por referência; novo</text>
+<text x="556.0" y="548.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">agente em vez de retomar</text>
+<rect x="776" y="500" width="300" height="70" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="926.0" y="531.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Regra do guilda: não retomar</text>
+<text x="926.0" y="548.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">acima de ~150 mil</text>
+<rect x="36" y="596" width="300" height="70" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="186.0" y="635.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Modelo caro em tarefa mecânica</text>
+<rect x="406" y="596" width="300" height="70" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="556.0" y="627.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Tiers deep / standard / light por</text>
+<text x="556.0" y="644.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">papel</text>
+<rect x="776" y="596" width="300" height="70" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="926.0" y="635.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Gate nunca abaixo de standard</text>
+
+<rect x="36" y="691" width="12" height="12" rx="3" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="54" y="701" font-size="10.5" fill="#94a3b8">guilda (núcleo)</text>
+<rect x="165.77499999999998" y="691" width="12" height="12" rx="3" fill="#0e2340" stroke="#60a5fa" stroke-width="1.4"/>
+<text x="183.77499999999998" y="701" font-size="10.5" fill="#94a3b8">ferramenta externa</text>
+<rect x="313.505" y="691" width="12" height="12" rx="3" fill="#3b1414" stroke="#f87171" stroke-width="1.4"/>
+<text x="331.505" y="701" font-size="10.5" fill="#94a3b8">lacuna ou risco</text>
+<rect x="443.28" y="691" width="12" height="12" rx="3" fill="#1b2538" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="461.28" y="701" font-size="10.5" fill="#94a3b8">dado ou artefato</text>
+<text x="36" y="724" font-size="11" fill="#94a3b8">Percentuais de economia citados pelos projetos (RTK, Headroom) são alegações deles, medidas em cenários próprios.</text>
+</svg>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1042" height="732" viewBox="0 0 1042 732" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Para onde o dado pode ir">
+<title>Para onde o dado pode ir</title>
+<defs><marker id="arf87171" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker><marker id="ar64748b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<rect width="1042" height="732" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">Para onde o dado pode ir</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">Cada seta que cruza uma fronteira precisa de aprovação, retenção definida e nenhum segredo</text>
+<rect x="14" y="86" width="294" height="576" rx="14" fill="#0f1a2e" stroke="#2dd4bf" stroke-width="1.2" stroke-dasharray="6 5" opacity="0.95"/>
+<text x="28" y="106" font-size="12" font-weight="700" fill="#2dd4bf">Sua máquina ou container</text>
+<rect x="374" y="86" width="294" height="208" rx="14" fill="#0f1a2e" stroke="#60a5fa" stroke-width="1.2" stroke-dasharray="6 5" opacity="0.95"/>
+<text x="388" y="106" font-size="12" font-weight="700" fill="#60a5fa">Confiança contratual</text>
+<rect x="734" y="270" width="294" height="300" rx="14" fill="#0f1a2e" stroke="#f87171" stroke-width="1.2" stroke-dasharray="6 5" opacity="0.95"/>
+<text x="748" y="290" font-size="12" font-weight="700" fill="#f87171">Terceiros (só com aprovação)</text>
+<path d="M286.0,148.0 L396.0,148.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M286.0,240.0 L396.0,240.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M286.0,332.0 L756.0,332.0" fill="none" stroke="#f87171" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#arf87171)"/>
+<path d="M286.0,424.0 L756.0,424.0" fill="none" stroke="#f87171" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#arf87171)"/>
+<path d="M286.0,516.0 L756.0,516.0" fill="none" stroke="#f87171" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#arf87171)"/>
+<path d="M286.0,608.0 L396.0,608.0" fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#ar64748b)"/>
+
+<rect x="36" y="116" width="250" height="64" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="161.0" y="143.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Claude Code</text>
+<text x="161.0" y="161.0" font-size="11" fill="#94a3b8" text-anchor="middle">sessão, subagentes, hooks</text>
+<rect x="396" y="116" width="250" height="64" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="521.0" y="143.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">API do modelo</text>
+<text x="521.0" y="161.0" font-size="11" fill="#94a3b8" text-anchor="middle">recebe prompts e código</text>
+<rect x="36" y="208" width="250" height="64" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="161.0" y="235.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Repositório local</text>
+<text x="161.0" y="253.0" font-size="11" fill="#94a3b8" text-anchor="middle">.env protegido por regra deny</text>
+<rect x="396" y="208" width="250" height="64" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="521.0" y="235.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">GitHub</text>
+<text x="521.0" y="253.0" font-size="11" fill="#94a3b8" text-anchor="middle">repositório público ou privado</text>
+<rect x="36" y="300" width="250" height="64" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="161.0" y="327.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Ferramentas locais</text>
+<text x="161.0" y="345.0" font-size="11" fill="#94a3b8" text-anchor="middle">hooks, RTK, Serena</text>
+<rect x="756" y="300" width="250" height="64" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="881.0" y="327.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Semgrep hospedado</text>
+<text x="881.0" y="345.0" font-size="11" fill="#94a3b8" text-anchor="middle">recebe código para análise</text>
+<rect x="913.32" y="292" width="84.67999999999999" height="16" rx="8" fill="#0b1220" stroke="#f87171" stroke-width="1.2"/>
+<text x="955.66" y="303.5" font-size="9.5" font-weight="700" fill="#f87171" text-anchor="middle">envia código</text>
+<rect x="36" y="392" width="250" height="64" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="161.0" y="419.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Configuração do cliente</text>
+<text x="161.0" y="437.0" font-size="11" fill="#94a3b8" text-anchor="middle">ANTHROPIC_BASE_URL</text>
+<rect x="756" y="392" width="250" height="64" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="881.0" y="419.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Gateways de modelo</text>
+<text x="881.0" y="437.0" font-size="11" fill="#94a3b8" text-anchor="middle">OmniRoute e roteadores gratuitos</text>
+<rect x="948.66" y="384" width="49.339999999999996" height="16" rx="8" fill="#0b1220" stroke="#f87171" stroke-width="1.2"/>
+<text x="973.33" y="395.5" font-size="9.5" font-weight="700" fill="#f87171" text-anchor="middle">evitar</text>
+<rect x="36" y="484" width="250" height="64" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="161.0" y="511.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Servidores MCP</text>
+<text x="161.0" y="529.0" font-size="11" fill="#94a3b8" text-anchor="middle">permissão mínima por agente</text>
+<rect x="756" y="484" width="250" height="64" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="881.0" y="511.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">MCPs de terceiros</text>
+<text x="881.0" y="529.0" font-size="11" fill="#94a3b8" text-anchor="middle">remotos, fora do seu controle</text>
+<rect x="36" y="576" width="250" height="64" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="161.0" y="596.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Memória local</text>
+<text x="161.0" y="614.0" font-size="11" fill="#94a3b8" text-anchor="middle">claude-mem guarda trechos das</text>
+<text x="161.0" y="628.0" font-size="11" fill="#94a3b8" text-anchor="middle">sessões</text>
+<rect x="169.76" y="568" width="108.24" height="16" rx="8" fill="#0b1220" stroke="#f87171" stroke-width="1.2"/>
+<text x="223.88" y="579.5" font-size="9.5" font-weight="700" fill="#f87171" text-anchor="middle">revisar retenção</text>
+<rect x="396" y="576" width="610" height="64" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="701.0" y="603.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Fica na máquina</text>
+<text x="701.0" y="621.0" font-size="11" fill="#94a3b8" text-anchor="middle">definir retenção e revisar o que é guardado</text>
+<rect x="287.1" y="139.0" width="107.8" height="18" rx="9" fill="#0b1220" stroke="#64748b" stroke-width="0.8"/>
+<text x="341.0" y="152.0" font-size="10.5" fill="#e2e8f0" text-anchor="middle">prompts e código</text>
+<rect x="323.0" y="231.0" width="35.9" height="18" rx="9" fill="#0b1220" stroke="#64748b" stroke-width="0.8"/>
+<text x="341.0" y="244.0" font-size="10.5" fill="#e2e8f0" text-anchor="middle">push</text>
+<rect x="458.1" y="323.0" width="125.7" height="18" rx="9" fill="#0b1220" stroke="#64748b" stroke-width="0.8"/>
+<text x="521.0" y="336.0" font-size="10.5" fill="#e2e8f0" text-anchor="middle">código para análise</text>
+<rect x="467.1" y="415.0" width="107.8" height="18" rx="9" fill="#0b1220" stroke="#64748b" stroke-width="0.8"/>
+<text x="521.0" y="428.0" font-size="10.5" fill="#e2e8f0" text-anchor="middle">prompts e código</text>
+<rect x="461.1" y="507.0" width="119.7" height="18" rx="9" fill="#0b1220" stroke="#64748b" stroke-width="0.8"/>
+<text x="521.0" y="520.0" font-size="10.5" fill="#e2e8f0" text-anchor="middle">conforme permissão</text>
+<rect x="36" y="665" width="12" height="12" rx="3" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="54" y="675" font-size="10.5" fill="#94a3b8">guilda (núcleo)</text>
+<rect x="165.77499999999998" y="665" width="12" height="12" rx="3" fill="#0e2340" stroke="#60a5fa" stroke-width="1.4"/>
+<text x="183.77499999999998" y="675" font-size="10.5" fill="#94a3b8">ferramenta externa</text>
+<rect x="313.505" y="665" width="12" height="12" rx="3" fill="#3b1414" stroke="#f87171" stroke-width="1.4"/>
+<text x="331.505" y="675" font-size="10.5" fill="#94a3b8">lacuna ou risco</text>
+<rect x="443.28" y="665" width="12" height="12" rx="3" fill="#1b2538" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="461.28" y="675" font-size="10.5" fill="#94a3b8">dado ou artefato</text>
+<text x="36" y="698" font-size="11" fill="#94a3b8">Repositório público (como este) nunca recebe domínio, IP ou nome interno de projeto privado. Varredura de segredos reporta onde, nunca o quê.</text>
+</svg>

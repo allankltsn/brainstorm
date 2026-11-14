@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1052" height="642" viewBox="0 0 1052 642" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Guilda versus planejamento: o que cada um tem">
+<title>Guilda versus planejamento: o que cada um tem</title>
+<defs></defs>
+<rect width="1052" height="642" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">Guilda versus planejamento: o que cada um tem</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">O planejamento vira o roteiro da v3 do guilda, não um projeto paralelo</text>
+<rect x="22.0" y="86" width="328.0" height="426.0" rx="14" fill="#0f1a2e" stroke="#2dd4bf" stroke-width="1.2" stroke-dasharray="6 5" opacity="0.95"/>
+<text x="36.0" y="106" font-size="12" font-weight="700" fill="#2dd4bf">Só no guilda (existe e é testado)</text>
+<rect x="362.0" y="86" width="328.0" height="426.0" rx="14" fill="#0f1a2e" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6 5" opacity="0.95"/>
+<text x="376.0" y="106" font-size="12" font-weight="700" fill="#94a3b8">Nos dois</text>
+<rect x="702.0" y="86" width="328.0" height="426.0" rx="14" fill="#0f1a2e" stroke="#60a5fa" stroke-width="1.2" stroke-dasharray="6 5" opacity="0.95"/>
+<text x="716.0" y="106" font-size="12" font-weight="700" fill="#60a5fa">Só no planejamento (ainda não existe)</text>
+
+<rect x="36" y="116" width="300" height="62" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="186.0" y="143.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Gates independentes e evidência</text>
+<text x="186.0" y="160.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">por snapshot</text>
+<rect x="376" y="116" width="300" height="62" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="526.0" y="151.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Camadas de modelo por papel</text>
+<rect x="716" y="116" width="300" height="62" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="866.0" y="143.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Fases 0 a 3: descoberta,</text>
+<text x="866.0" y="160.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">requisitos, design</text>
+<rect x="36" y="196" width="300" height="62" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="186.0" y="223.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">CLI, upgrade com manifesto, 10</text>
+<text x="186.0" y="240.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">perfis</text>
+<rect x="376" y="196" width="300" height="62" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="526.0" y="231.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Economia de tokens e RTK/Serena</text>
+<rect x="716" y="196" width="300" height="62" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="866.0" y="223.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Mapa BMAD, wshobson, Semgrep,</text>
+<text x="866.0" y="240.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">marketing</text>
+<rect x="36" y="276" width="300" height="62" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="186.0" y="303.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Registro de instalação e LGPD</text>
+<text x="186.0" y="320.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">como gate</text>
+<rect x="376" y="276" width="300" height="62" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="526.0" y="311.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Superpowers como motor de fases</text>
+<rect x="716" y="276" width="300" height="62" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="866.0" y="303.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Hooks de enforcement e teto de</text>
+<text x="866.0" y="320.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">custo</text>
+<rect x="36" y="356" width="300" height="62" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="186.0" y="383.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">20 templates de handoff, brief e</text>
+<text x="186.0" y="400.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">findings</text>
+<rect x="376" y="356" width="300" height="62" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="526.0" y="391.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Hostinger como alvo</text>
+<rect x="716" y="356" width="300" height="62" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="866.0" y="391.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Cloudflare e Vercel como alvos</text>
+<rect x="36" y="436" width="300" height="62" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="186.0" y="463.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Contrato do GitHub Projects com</text>
+<text x="186.0" y="480.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">scripts</text>
+<rect x="376" y="436" width="300" height="62" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="526.0" y="471.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Perfis e catálogo de plugins</text>
+<rect x="716" y="436" width="300" height="62" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="866.0" y="463.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Medição de tokens e projeto</text>
+<text x="866.0" y="480.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">piloto</text>
+<rect x="36" y="516" width="980" height="62" rx="11" fill="#0f2f1d" stroke="#4ade80" stroke-width="1.6"/>
+<text x="526.0" y="551.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Resultado: guilda como núcleo, ecossistema como equipe, módulos do plano como v3</text>
+
+<rect x="36" y="603" width="12" height="12" rx="3" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="54" y="613" font-size="10.5" fill="#94a3b8">guilda (núcleo)</text>
+<rect x="165.77499999999998" y="603" width="12" height="12" rx="3" fill="#0e2340" stroke="#60a5fa" stroke-width="1.4"/>
+<text x="183.77499999999998" y="613" font-size="10.5" fill="#94a3b8">ferramenta externa</text>
+<rect x="313.505" y="603" width="12" height="12" rx="3" fill="#1b2538" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="331.505" y="613" font-size="10.5" fill="#94a3b8">dado ou artefato</text>
+<rect x="449.265" y="603" width="12" height="12" rx="3" fill="#0f2f1d" stroke="#4ade80" stroke-width="1.4"/>
+<text x="467.265" y="613" font-size="10.5" fill="#94a3b8">resultado</text>
+
+</svg>

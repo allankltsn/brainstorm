@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1070" height="486" viewBox="0 0 1070 486" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Marketplace oficial da Anthropic">
+<title>Marketplace oficial da Anthropic</title>
+<defs><marker id="ar64748b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<rect width="1070" height="486" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">Marketplace oficial da Anthropic</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">Catálogo curado; a Anthropic não controla o conteúdo dos plugins, então a revisão continua obrigatória</text>
+<path d="M143.5,232.0 L143.5,278.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M404.5,232.0 L404.5,278.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M665.5,232.0 L665.5,278.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M926.5,232.0 L926.5,278.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+
+<rect x="36" y="116" width="998" height="116" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="535.0" y="169.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">claude-plugins-official</text>
+<text x="535.0" y="187.0" font-size="11" fill="#94a3b8" text-anchor="middle">claude plugin marketplace add anthropics/claude-plugins-official</text>
+<rect x="36" y="278" width="215" height="116" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="143.5" y="310.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Fluxo e revisão</text>
+<text x="143.5" y="328.0" font-size="11" fill="#94a3b8" text-anchor="middle">superpowers, code-review,</text>
+<text x="143.5" y="342.0" font-size="11" fill="#94a3b8" text-anchor="middle">pr-review-toolkit,</text>
+<text x="143.5" y="356.0" font-size="11" fill="#94a3b8" text-anchor="middle">security-guidance, hookify,</text>
+<text x="143.5" y="370.0" font-size="11" fill="#94a3b8" text-anchor="middle">claude-code-setup</text>
+<rect x="297" y="278" width="215" height="116" rx="11" fill="#251b47" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="404.5" y="324.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Segurança</text>
+<text x="404.5" y="342.0" font-size="11" fill="#94a3b8" text-anchor="middle">semgrep, aikido,</text>
+<text x="404.5" y="356.0" font-size="11" fill="#94a3b8" text-anchor="middle">claude-security, sonarqube</text>
+<rect x="558" y="278" width="215" height="116" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="665.5" y="317.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Entrega e operação</text>
+<text x="665.5" y="335.0" font-size="11" fill="#94a3b8" text-anchor="middle">github, vercel, cloudflare,</text>
+<text x="665.5" y="349.0" font-size="11" fill="#94a3b8" text-anchor="middle">hostinger, sentry, stripe,</text>
+<text x="665.5" y="363.0" font-size="11" fill="#94a3b8" text-anchor="middle">supabase</text>
+<rect x="819" y="278" width="215" height="116" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="926.5" y="324.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Qualidade e design</text>
+<text x="926.5" y="342.0" font-size="11" fill="#94a3b8" text-anchor="middle">playwright, figma, serena,</text>
+<text x="926.5" y="356.0" font-size="11" fill="#94a3b8" text-anchor="middle">session-report, context7</text>
+
+<rect x="36" y="419" width="12" height="12" rx="3" fill="#0e2340" stroke="#60a5fa" stroke-width="1.4"/>
+<text x="54" y="429" font-size="10.5" fill="#94a3b8">ferramenta externa</text>
+<rect x="183.73" y="419" width="12" height="12" rx="3" fill="#251b47" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="201.73" y="429" font-size="10.5" fill="#94a3b8">segurança e gates</text>
+<text x="36" y="452" font-size="11" fill="#94a3b8">Plugins confirmados na leitura do catálogo. frontend-design e claude-mem não foram confirmados no trecho lido; claude-mem tem marketplace próprio.</text>
+</svg>

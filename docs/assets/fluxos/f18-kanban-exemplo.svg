@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="398" viewBox="0 0 1520 398" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Exemplo do quadro no GitHub Project">
+<title>Exemplo do quadro no GitHub Project</title>
+<defs></defs>
+<rect width="1520" height="398" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">Exemplo do quadro no GitHub Project</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">Ilustração: cartões fictícios para mostrar os nove estados, não dados reais</text>
+
+<rect x="36" y="108" width="152" height="236" rx="10" fill="#0f1a2e" stroke="#2dd4bf" stroke-width="1.2"/>
+<text x="112.0" y="127" font-size="12" font-weight="700" fill="#2dd4bf" text-anchor="middle">open</text>
+<rect x="43" y="136" width="138" height="82" rx="8" fill="#0b1220" stroke="#2dd4bf" stroke-width="1"/>
+<text x="50" y="153" font-size="10.5" font-weight="700" fill="#e2e8f0">[S-014] Cadastro</text>
+<text x="50" y="166" font-size="10.5" font-weight="700" fill="#e2e8f0">com e-mail</text>
+<text x="50" y="198" font-size="9.5" fill="#94a3b8">story · medium</text>
+<rect x="198" y="108" width="152" height="236" rx="10" fill="#0f1a2e" stroke="#2dd4bf" stroke-width="1.2"/>
+<text x="274.0" y="127" font-size="12" font-weight="700" fill="#2dd4bf" text-anchor="middle">pending</text>
+<rect x="205" y="136" width="138" height="82" rx="8" fill="#0b1220" stroke="#2dd4bf" stroke-width="1"/>
+<text x="212" y="153" font-size="10.5" font-weight="700" fill="#e2e8f0">[task-3] Contrato</text>
+<text x="212" y="166" font-size="10.5" font-weight="700" fill="#e2e8f0">da API</text>
+<text x="212" y="198" font-size="9.5" fill="#94a3b8">task · high · backend</text>
+<rect x="360" y="108" width="152" height="236" rx="10" fill="#0f1a2e" stroke="#60a5fa" stroke-width="1.2"/>
+<text x="436.0" y="127" font-size="12" font-weight="700" fill="#60a5fa" text-anchor="middle">in-progress</text>
+<rect x="367" y="136" width="138" height="82" rx="8" fill="#0b1220" stroke="#60a5fa" stroke-width="1"/>
+<text x="374" y="153" font-size="10.5" font-weight="700" fill="#e2e8f0">[task-4] Tela de</text>
+<text x="374" y="166" font-size="10.5" font-weight="700" fill="#e2e8f0">login</text>
+<text x="374" y="198" font-size="9.5" fill="#94a3b8">task · high · frontend</text>
+<rect x="367" y="228" width="138" height="82" rx="8" fill="#0b1220" stroke="#60a5fa" stroke-width="1"/>
+<text x="374" y="245" font-size="10.5" font-weight="700" fill="#e2e8f0">[task-5] Testes e2e</text>
+<text x="374" y="290" font-size="9.5" fill="#94a3b8">task · medium · qa</text>
+<rect x="522" y="108" width="152" height="236" rx="10" fill="#0f1a2e" stroke="#a78bfa" stroke-width="1.2"/>
+<text x="598.0" y="127" font-size="12" font-weight="700" fill="#a78bfa" text-anchor="middle">in-review</text>
+<rect x="529" y="136" width="138" height="82" rx="8" fill="#0b1220" stroke="#a78bfa" stroke-width="1"/>
+<text x="536" y="153" font-size="10.5" font-weight="700" fill="#e2e8f0">[task-2] Rate limit</text>
+<text x="536" y="198" font-size="9.5" fill="#94a3b8">task · high · security</text>
+<rect x="684" y="108" width="152" height="236" rx="10" fill="#0f1a2e" stroke="#f87171" stroke-width="1.2"/>
+<text x="760.0" y="127" font-size="12" font-weight="700" fill="#f87171" text-anchor="middle">rejected</text>
+<rect x="691" y="136" width="138" height="82" rx="8" fill="#0b1220" stroke="#f87171" stroke-width="1"/>
+<text x="698" y="153" font-size="10.5" font-weight="700" fill="#e2e8f0">[bug-7] Foco</text>
+<text x="698" y="166" font-size="10.5" font-weight="700" fill="#e2e8f0">perdido no modal</text>
+<text x="698" y="198" font-size="9.5" fill="#94a3b8">bug · low</text>
+<rect x="846" y="108" width="152" height="236" rx="10" fill="#0f1a2e" stroke="#f87171" stroke-width="1.2"/>
+<text x="922.0" y="127" font-size="12" font-weight="700" fill="#f87171" text-anchor="middle">blocked</text>
+<rect x="853" y="136" width="138" height="82" rx="8" fill="#0b1220" stroke="#f87171" stroke-width="1"/>
+<text x="860" y="153" font-size="10.5" font-weight="700" fill="#e2e8f0">[S-009] Pagamento</text>
+<text x="860" y="198" font-size="9.5" fill="#94a3b8">story · aguarda</text>
+<text x="860" y="210" font-size="9.5" fill="#94a3b8">decisão</text>
+<rect x="1008" y="108" width="152" height="236" rx="10" fill="#0f1a2e" stroke="#2dd4bf" stroke-width="1.2"/>
+<text x="1084.0" y="127" font-size="12" font-weight="700" fill="#2dd4bf" text-anchor="middle">completed</text>
+<rect x="1015" y="136" width="138" height="82" rx="8" fill="#0b1220" stroke="#2dd4bf" stroke-width="1"/>
+<text x="1022" y="153" font-size="10.5" font-weight="700" fill="#e2e8f0">[S-006] Recuperar</text>
+<text x="1022" y="166" font-size="10.5" font-weight="700" fill="#e2e8f0">senha</text>
+<text x="1022" y="198" font-size="9.5" fill="#94a3b8">story · evidência</text>
+<text x="1022" y="210" font-size="9.5" fill="#94a3b8">anexada</text>
+<rect x="1170" y="108" width="152" height="236" rx="10" fill="#0f1a2e" stroke="#fbbf24" stroke-width="1.2"/>
+<text x="1246.0" y="127" font-size="12" font-weight="700" fill="#fbbf24" text-anchor="middle">accepted</text>
+<rect x="1177" y="136" width="138" height="82" rx="8" fill="#0b1220" stroke="#fbbf24" stroke-width="1"/>
+<text x="1184" y="153" font-size="10.5" font-weight="700" fill="#e2e8f0">[S-003] Perfil do</text>
+<text x="1184" y="166" font-size="10.5" font-weight="700" fill="#e2e8f0">aluno</text>
+<text x="1184" y="198" font-size="9.5" fill="#94a3b8">story · aceito</text>
+<rect x="1332" y="108" width="152" height="236" rx="10" fill="#0f1a2e" stroke="#94a3b8" stroke-width="1.2"/>
+<text x="1408.0" y="127" font-size="12" font-weight="700" fill="#94a3b8" text-anchor="middle">closed</text>
+<rect x="1339" y="136" width="138" height="82" rx="8" fill="#0b1220" stroke="#94a3b8" stroke-width="1"/>
+<text x="1346" y="153" font-size="10.5" font-weight="700" fill="#e2e8f0">[E-01] Fundação</text>
+<text x="1346" y="198" font-size="9.5" fill="#94a3b8">epic · fechado</text>
+
+
+<rect x="36" y="359" width="12" height="12" rx="3" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="54" y="369" font-size="10.5" fill="#94a3b8">guilda (núcleo)</text>
+<rect x="165.77499999999998" y="359" width="12" height="12" rx="3" fill="#0e2340" stroke="#60a5fa" stroke-width="1.4"/>
+<text x="183.77499999999998" y="369" font-size="10.5" fill="#94a3b8">ferramenta externa</text>
+<rect x="313.505" y="359" width="12" height="12" rx="3" fill="#3b1414" stroke="#f87171" stroke-width="1.4"/>
+<text x="331.505" y="369" font-size="10.5" fill="#94a3b8">lacuna ou risco</text>
+<rect x="443.28" y="359" width="12" height="12" rx="3" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="461.28" y="369" font-size="10.5" fill="#94a3b8">decisão humana</text>
+<rect x="567.0699999999999" y="359" width="12" height="12" rx="3" fill="#251b47" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="585.0699999999999" y="369" font-size="10.5" fill="#94a3b8">segurança e gates</text>
+
+</svg>
