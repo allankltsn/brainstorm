@@ -1,0 +1,3 @@
+#!/bin/sh
+# Atalho para a CLI do núcleo.
+exec python3 "$(dirname "$0")/../plugins/nucleo/scripts/agentes.py" "$@"

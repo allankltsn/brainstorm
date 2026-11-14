@@ -1,0 +1,18 @@
+{
+  "nota": "Gerenciador de modelos: mude um tier aqui e rode 'scripts/agentes modelos aplicar' para reescrever o campo model de todos os agentes. Papéis em 'gates' nunca ficam abaixo de 'medio'.",
+  "tiers": {"alto": "opus", "medio": "sonnet", "baixo": "haiku"},
+  "gates": ["privacidade-lgpd", "arquiteto-seguranca"],
+  "papeis": {
+    "analista-financeiro": "medio",
+    "estrategista-de-marca": "medio",
+    "finops": "medio",
+    "product-owner": "medio",
+    "usuario-leigo": "baixo",
+    "backend-nestjs-prisma": "medio",
+    "cloudflare": "medio",
+    "borda-ingress": "medio",
+    "privacidade-lgpd": "alto",
+    "arquiteto-seguranca": "alto",
+    "release-manager": "medio"
+  }
+}

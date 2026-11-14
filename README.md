@@ -4,7 +4,7 @@ Este repositório documenta o plano para ter **uma equipe de agentes de IA reapr
 
 ![Arquitetura em camadas](docs/assets/fluxos/f01-arquitetura.svg)
 
-> **Estado atual: documentação e planejamento.** Nada foi instalado nem configurado nos projetos. Toda ferramenta citada precisa de proposta, revisão de segurança, sua aprovação e registro antes de entrar (veja [Segurança](docs/05-seguranca-e-privacidade.md)).
+> **Estado atual: documentação, planejamento e uma versão inicial em `v0/`.** Nada foi instalado nem configurado nos projetos. Toda ferramenta citada precisa de proposta, revisão de segurança, sua aprovação e registro antes de entrar (veja [Segurança](docs/05-seguranca-e-privacidade.md)).
 
 ## Leia nesta ordem
 
@@ -34,6 +34,10 @@ Este repositório documenta o plano para ter **uma equipe de agentes de IA reapr
 8. Hospedagem: Cloudflare na borda, Vercel para o front, Hostinger (VPS) para back e dados.
 9. O texto das regras não é controle técnico: falta escrever hooks e permissões de bloqueio.
 10. Os projetos do produto estão em uma versão antiga do template e precisam ser atualizados para a 2.0.
+
+## Versão inicial em código
+
+A pasta [`v0/`](v0/README.md) traz uma primeira versão funcional **sem o guilda**: um marketplace de plugins do Claude Code com 11 agentes, 10 skills, hooks de proteção, teto de custo e uma CLI de fases e portões.
 
 ## Como regenerar os diagramas
 

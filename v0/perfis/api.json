@@ -1,0 +1,24 @@
+{
+  "nome": "api",
+  "descricao": "Serviço de API sem interface própria",
+  "fases": [
+    1,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "plugins": [
+    "nucleo",
+    "produto",
+    "engenharia",
+    "qualidade",
+    "entrega"
+  ],
+  "dados_pessoais": true,
+  "hospedagem": [
+    "cloudflare",
+    "hostinger"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "agentes-v0",
+  "owner": {
+    "name": "allankltsn"
+  },
+  "metadata": {
+    "description": "Versão inicial da plataforma de agentes reutilizáveis (sem o guilda)",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "nucleo",
+      "source": "./plugins/nucleo",
+      "description": "Orquestração por fases com portões, hooks de proteção (segredos, comandos destrutivos, teto de custo, prompt injection) e CLI"
+    },
+    {
+      "name": "produto",
+      "source": "./plugins/produto",
+      "description": "Product Owner e skills de PRD e histórias com DoR/DoD"
+    },
+    {
+      "name": "design",
+      "source": "./plugins/design",
+      "description": "Teste de usabilidade com usuário leigo simulado"
+    },
+    {
+      "name": "engenharia",
+      "source": "./plugins/engenharia",
+      "description": "Backend NestJS + Prisma, Cloudflare, borda e ingress, e skill de ADR"
+    },
+    {
+      "name": "qualidade",
+      "source": "./plugins/qualidade",
+      "description": "Gates de privacidade (LGPD) e arquitetura de segurança com modelo de ameaças"
+    },
+    {
+      "name": "entrega",
+      "source": "./plugins/entrega",
+      "description": "Release manager e checklist de release"
+    },
+    {
+      "name": "negocio",
+      "source": "./plugins/negocio",
+      "description": "Analista financeiro de produto, estrategista de marca, FinOps e skills de modelo financeiro e lançamento"
+    }
+  ]
+}

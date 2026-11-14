@@ -1,0 +1,97 @@
+{
+  "nota": "Fonte 'externo' = papel coberto por plugin de terceiros (não instalado por este repositório; nomes de plugin a confirmar na instalação). Fonte 'proprio' = agente criado aqui, no formato plugin:agente.",
+  "fases": [
+    {
+      "id": 0, "chave": "descoberta", "nome": "Descoberta", "portao": "Vale a pena construir?",
+      "artefatos": ["docs/00-descoberta/visao.md", "docs/00-descoberta/mercado.md", "docs/00-descoberta/modelo-financeiro.md"],
+      "papeis": [
+        {"papel": "estrategia-de-produto", "fonte": "externo", "externos": ["VoltAgent: project-idea-validator", "wshobson: before-you-build"]},
+        {"papel": "analise-de-mercado", "fonte": "externo", "externos": ["VoltAgent: market-researcher", "VoltAgent: competitive-analyst"]},
+        {"papel": "analista-financeiro", "fonte": "proprio", "agente": "negocio:analista-financeiro", "skill": "negocio:modelo-financeiro"},
+        {"papel": "marca", "fonte": "proprio", "agente": "negocio:estrategista-de-marca"}
+      ]
+    },
+    {
+      "id": 1, "chave": "requisitos", "nome": "Requisitos", "portao": "PRD aceito",
+      "artefatos": ["docs/01-requisitos/prd.md"],
+      "papeis": [
+        {"papel": "analise-de-negocio", "fonte": "externo", "externos": ["VoltAgent: business-analyst"]},
+        {"papel": "gerente-de-produto", "fonte": "externo", "externos": ["VoltAgent: product-manager", "Anthropic: product-management"], "skill": "produto:escrever-prd"},
+        {"papel": "pesquisa-ux", "fonte": "externo", "externos": ["VoltAgent: ux-researcher"]}
+      ]
+    },
+    {
+      "id": 2, "chave": "design", "nome": "Design", "portao": "Protótipo aceito",
+      "artefatos": ["docs/02-design/ux.md", "docs/02-design/prototipo.md"],
+      "papeis": [
+        {"papel": "ux-ui", "fonte": "externo", "externos": ["VoltAgent: ui-designer", "Anthropic: figma", "Anthropic: superdesign"]},
+        {"papel": "usuario-leigo", "fonte": "proprio", "agente": "design:usuario-leigo"}
+      ]
+    },
+    {
+      "id": 3, "chave": "arquitetura", "nome": "Arquitetura", "portao": "Arquitetura e ADRs aceitos",
+      "artefatos": ["docs/03-arquitetura/arquitetura.md", "docs/03-arquitetura/threat-model.md", "docs/03-arquitetura/adr/*.md"],
+      "papeis": [
+        {"papel": "arquiteto", "fonte": "externo", "externos": ["VoltAgent: architect-reviewer", "VoltAgent: cloud-architect", "wshobson: c4-architecture"], "skill": "engenharia:adr"},
+        {"papel": "arquiteto-seguranca", "fonte": "proprio", "agente": "qualidade:arquiteto-seguranca", "skill": "qualidade:threat-model"},
+        {"papel": "cloudflare", "fonte": "proprio", "agente": "engenharia:cloudflare"},
+        {"papel": "borda-ingress", "fonte": "proprio", "agente": "engenharia:borda-ingress"},
+        {"papel": "finops", "fonte": "proprio", "agente": "negocio:finops"}
+      ]
+    },
+    {
+      "id": 4, "chave": "planejamento", "nome": "Planejamento", "portao": "Backlog priorizado",
+      "artefatos": ["docs/04-planejamento/backlog.md", "docs/04-planejamento/stories/*.md"],
+      "papeis": [
+        {"papel": "scrum-master", "fonte": "externo", "externos": ["VoltAgent: scrum-master", "VoltAgent: backlog-grooming"]},
+        {"papel": "product-owner", "fonte": "proprio", "agente": "produto:product-owner", "skill": "produto:escrever-story"},
+        {"papel": "plano-de-implementacao", "fonte": "externo", "externos": ["Anthropic: superpowers (writing-plans)"]}
+      ]
+    },
+    {
+      "id": 5, "chave": "construcao", "nome": "Construção", "portao": "Histórias implementadas com handoff",
+      "artefatos": ["docs/05-construcao/handoffs/*.md"],
+      "papeis": [
+        {"papel": "backend", "fonte": "proprio", "agente": "engenharia:backend-nestjs-prisma"},
+        {"papel": "frontend", "fonte": "externo", "externos": ["VoltAgent: frontend-developer", "VoltAgent: react-specialist"]},
+        {"papel": "banco-de-dados", "fonte": "externo", "externos": ["VoltAgent: postgres-pro"]},
+        {"papel": "infra", "fonte": "externo", "externos": ["VoltAgent: docker-expert", "VoltAgent: kubernetes-specialist", "VoltAgent: devops-engineer"]},
+        {"papel": "motor-de-desenvolvimento", "fonte": "externo", "externos": ["Anthropic: superpowers (subagent-driven-development, TDD)"]}
+      ]
+    },
+    {
+      "id": 6, "chave": "verificacao", "nome": "Verificação", "portao": "Gates independentes aprovados",
+      "artefatos": ["docs/06-verificacao/revisao.md", "docs/06-verificacao/seguranca.md", "docs/06-verificacao/qa.md"],
+      "artefatos_se_dados_pessoais": ["docs/06-verificacao/privacidade.md"],
+      "papeis": [
+        {"papel": "revisao-tecnica", "fonte": "externo", "externos": ["Anthropic: code-review", "VoltAgent: code-reviewer"]},
+        {"papel": "seguranca", "fonte": "externo", "externos": ["Anthropic: security-guidance", "Anthropic: semgrep", "VoltAgent: security-auditor"]},
+        {"papel": "privacidade", "fonte": "proprio", "agente": "qualidade:privacidade-lgpd"},
+        {"papel": "qa", "fonte": "externo", "externos": ["VoltAgent: qa-expert", "Anthropic: playwright"]},
+        {"papel": "usuario-leigo", "fonte": "proprio", "agente": "design:usuario-leigo"}
+      ]
+    },
+    {
+      "id": 7, "chave": "entrega", "nome": "Entrega", "portao": "Go-live",
+      "artefatos": ["docs/07-entrega/checklist-release.md", "docs/07-entrega/runbook.md"],
+      "papeis": [
+        {"papel": "release-manager", "fonte": "proprio", "agente": "entrega:release-manager", "skill": "entrega:checklist-release"},
+        {"papel": "cicd", "fonte": "externo", "externos": ["wshobson: cicd-automation", "wshobson: deployment-strategies", "VoltAgent: deployment-engineer"]},
+        {"papel": "hospedagem", "fonte": "externo", "externos": ["Anthropic: hostinger", "Anthropic: vercel", "Anthropic: cloudflare"]},
+        {"papel": "cloudflare", "fonte": "proprio", "agente": "engenharia:cloudflare"},
+        {"papel": "sre", "fonte": "externo", "externos": ["VoltAgent: sre-engineer", "wshobson: observability-monitoring", "Anthropic: sentry"]}
+      ]
+    },
+    {
+      "id": 8, "chave": "crescimento", "nome": "Crescimento", "portao": "Encerrar o ciclo",
+      "artefatos": ["docs/08-crescimento/plano-de-lancamento.md", "docs/08-crescimento/retro.md"],
+      "papeis": [
+        {"papel": "marketing", "fonte": "externo", "externos": ["Anthropic: marketing", "VoltAgent: content-marketer", "VoltAgent: seo-specialist"], "skill": "negocio:plano-de-lancamento"},
+        {"papel": "marca", "fonte": "proprio", "agente": "negocio:estrategista-de-marca"},
+        {"papel": "documentacao", "fonte": "externo", "externos": ["VoltAgent: technical-writer", "VoltAgent: documentation-engineer"]},
+        {"papel": "finops", "fonte": "proprio", "agente": "negocio:finops"},
+        {"papel": "retrospectiva", "fonte": "proprio", "skill": "nucleo:retro"}
+      ]
+    }
+  ]
+}

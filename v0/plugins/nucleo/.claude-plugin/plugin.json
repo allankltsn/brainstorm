@@ -1,0 +1,8 @@
+{
+  "name": "nucleo",
+  "description": "Orquestração por fases com portões, hooks de proteção (segredos, comandos destrutivos, teto de custo, prompt injection) e CLI",
+  "version": "0.1.0",
+  "author": {
+    "name": "allankltsn"
+  }
+}

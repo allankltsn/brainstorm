@@ -1,0 +1,8 @@
+{
+  "name": "engenharia",
+  "description": "Backend NestJS + Prisma, Cloudflare, borda e ingress, e skill de ADR",
+  "version": "0.1.0",
+  "author": {
+    "name": "allankltsn"
+  }
+}
