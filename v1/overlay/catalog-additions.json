@@ -1,0 +1,44 @@
+{
+  "roles": [
+    {
+      "id": "product-finance",
+      "description": "Use in product discovery, or when price, cost or viability change, to build the product financial model: pricing, unit economics (LTV, CAC, payback), costs, three-scenario projection, break-even, runway and sensitivity. Not accounting and not cloud cost (use finops).",
+      "mode": "author",
+      "tier": "standard"
+    },
+    {
+      "id": "cloudflare",
+      "description": "Use when designing, reviewing or diagnosing the Cloudflare edge in front of a product: DNS, proxy, TLS mode, origin protection, cache rules, WAF, rate limiting, Turnstile, R2 and Workers. Proposes reviewable changes; DNS, WAF and production changes need explicit approval. Also available via /cloudflare.",
+      "mode": "implementer",
+      "tier": "standard"
+    },
+    {
+      "id": "release",
+      "description": "Use to prepare and coordinate a release: scope, version, changelog and notes, cross-repository deploy order, go-live checklist, rollback and runbook. Prepares and checks; never tags, publishes, merges, migrates or deploys without explicit approval. Also available via /release.",
+      "mode": "implementer",
+      "tier": "standard"
+    }
+  ],
+  "actions": [
+    {
+      "id": "finance",
+      "role": "product-finance",
+      "description": "Build or revise the product financial model without going through the full feature workflow."
+    },
+    {
+      "id": "cloudflare",
+      "role": "cloudflare",
+      "description": "Get a Cloudflare edge review or proposal (DNS, TLS, cache, WAF) without going through the full feature workflow."
+    },
+    {
+      "id": "release",
+      "role": "release",
+      "description": "Assess release readiness or prepare a release package without going through the full feature workflow."
+    },
+    {
+      "id": "threat-model",
+      "role": "security",
+      "description": "Threat model a design before code exists (assets, trust boundaries, STRIDE, abuse cases, accepted risks)."
+    }
+  ]
+}

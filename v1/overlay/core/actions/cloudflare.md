@@ -1,0 +1,5 @@
+# Action: cloudflare
+Intent/scope: Cloudflare edge review or proposal: DNS records and TTL, proxy mode, TLS mode, origin protection, cache rules (API never in shared cache), WAF and rate limiting, Turnstile, Workers and R2. Without arguments review the documented edge configuration against the current architecture.
+Responsible specialist: cloudflare; principal routes, questions and consolidates. Coordinate the in-cluster entry layer with ingress and the origin host with hosting or kubernetes.
+Input: explicit focus, account plan and zone as verified, current records and rules, origin per host, environment, project profiles, permitted paths and existing authorizations.
+Output: state now, exact proposed change, reason, risk, test, undo and the steps that need approval; findings with stable IDs and common severity. Read-only probes only; no DNS, WAF, TLS, cache or Worker mutation without explicit human authorization for that action and scope. Common policies and workflow apply to standalone invocations too.

@@ -1,0 +1,8 @@
+{
+  "id": "nestjs-prisma",
+  "description": "NestJS/TypeScript/Prisma/PostgreSQL",
+  "instructions": "Explicit knowledge profile: TypeScript strict, Node 22 or later, pnpm, NestJS, Prisma, PostgreSQL, Redis, Zod validation, jose for tokens, Biome for lint, Vitest for tests. Confirm actual versions in package.json before writing: NestJS 10 and 11 and Prisma 5 and 7 differ in API and configuration, so consult the documentation of the installed version. Validate every body, query and parameter at the edge with a schema. Authorization on every protected route; never trust a client-supplied user, tenant or team identifier, derive it from the authenticated context and filter the query by it. Prisma queries parameterized, raw queries only through the tagged template, explicit select, transactions for related writes, pagination always. Migrations expand then contract and are never run against production by an agent. Webhooks and jobs are idempotent; outbox when an event and a write must be atomic. Timeouts and retries on external calls. Lockfile, schema.prisma, migrations and generated contracts have one owner at a time. No provisioning or assertion about the existing project stack.",
+  "conflicts": [
+    "nestjs-mikroorm"
+  ]
+}

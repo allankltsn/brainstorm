@@ -1,0 +1,526 @@
+{
+  "status": "recommended_not_installed",
+  "policy": "workflow/external-first.md",
+  "checked_utc": "2026-11-14",
+  "note": "Names were collected from each source's own listing on the check date and are NOT verified as installed, discoverable or safe. VoltAgent agents ship in category plugins (voltagent-*); confirm the plugin that contains each agent at installation. Nothing here is installed by the template. Applies only when the external-first profile is selected.",
+  "sources": {
+    "VoltAgent": "https://github.com/VoltAgent/awesome-claude-code-subagents",
+    "wshobson": "https://github.com/wshobson/agents",
+    "Anthropic": "https://github.com/anthropics/claude-plugins-official (marketing and product-management: anthropics/knowledge-work-plugins)",
+    "rtk-ai": "https://github.com/rtk-ai/rtk"
+  },
+  "roles": {
+    "architect": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "architect-reviewer"
+        },
+        {
+          "source": "wshobson",
+          "name": "c4-architecture"
+        }
+      ]
+    },
+    "aws": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "Anthropic",
+          "name": "aws-core"
+        },
+        {
+          "source": "Anthropic",
+          "name": "deploy-on-aws"
+        }
+      ],
+      "note": "AWS was not observed in the reference stack; resolve only when a project actually uses it."
+    },
+    "backend": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "backend-developer"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "node-specialist"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "typescript-pro"
+        }
+      ],
+      "note": "External agents are stack-generic: put the nestjs-prisma profile rules in the brief."
+    },
+    "cicd": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "wshobson",
+          "name": "cicd-automation"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "deployment-engineer"
+        }
+      ]
+    },
+    "cloud": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "cloud-architect"
+        },
+        {
+          "source": "wshobson",
+          "name": "cloud-infrastructure"
+        }
+      ]
+    },
+    "deployment": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "wshobson",
+          "name": "deployment-strategies"
+        },
+        {
+          "source": "wshobson",
+          "name": "deployment-validation"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "deployment-engineer"
+        }
+      ]
+    },
+    "devsecops-infra": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "Anthropic",
+          "name": "aikido"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "security-engineer"
+        }
+      ]
+    },
+    "docker": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "docker-expert"
+        }
+      ]
+    },
+    "finops": {
+      "prefer": "canonical",
+      "external": [],
+      "note": "No external FinOps agent found. The canonical role is AWS-centred; the edge-cloudflare-vercel profile redirects it to VPS, Cloudflare, Vercel, CI and AI usage."
+    },
+    "hosting": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "Anthropic",
+          "name": "hostinger"
+        }
+      ],
+      "note": "The plugin operates the provider; consult the canonical hosting role for conventions (TLS, DNS TTL, rollback)."
+    },
+    "ingress": {
+      "prefer": "canonical",
+      "external": [],
+      "note": "Only a generic network-engineer exists externally."
+    },
+    "kubernetes": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "kubernetes-specialist"
+        },
+        {
+          "source": "wshobson",
+          "name": "kubernetes-operations"
+        }
+      ]
+    },
+    "orchestration": {
+      "prefer": "canonical",
+      "external": [],
+      "note": "Service mesh; no external equivalent found. Low relevance for a k3s + Traefik stack."
+    },
+    "python": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "python-pro"
+        },
+        {
+          "source": "wshobson",
+          "name": "python-development"
+        }
+      ]
+    },
+    "qa": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "qa-expert"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "test-automator"
+        },
+        {
+          "source": "Anthropic",
+          "name": "playwright"
+        }
+      ]
+    },
+    "security": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "Anthropic",
+          "name": "security-guidance"
+        },
+        {
+          "source": "Anthropic",
+          "name": "semgrep"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "security-auditor"
+        }
+      ],
+      "note": "Semgrep in hosted mode sends code to the vendor: approve explicitly."
+    },
+    "sre": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "sre-engineer"
+        },
+        {
+          "source": "wshobson",
+          "name": "observability-monitoring"
+        },
+        {
+          "source": "Anthropic",
+          "name": "sentry"
+        }
+      ]
+    },
+    "reviewer": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "Anthropic",
+          "name": "code-review"
+        },
+        {
+          "source": "Anthropic",
+          "name": "pr-review-toolkit"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "code-reviewer"
+        }
+      ]
+    },
+    "product-owner": {
+      "prefer": "canonical",
+      "external": [],
+      "note": "Stories with DoR/DoD and the board contract are specific to this template. External product-manager and scrum-master agents are resolved through needs."
+    },
+    "ux-researcher": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "ux-researcher"
+        }
+      ]
+    },
+    "ux-designer": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "wshobson",
+          "name": "ui-design"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "ux-microcopy-reviewer"
+        }
+      ]
+    },
+    "ui-designer": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "ui-designer"
+        },
+        {
+          "source": "Anthropic",
+          "name": "figma"
+        },
+        {
+          "source": "Anthropic",
+          "name": "superdesign"
+        }
+      ]
+    },
+    "brand-strategist": {
+      "prefer": "canonical",
+      "external": [],
+      "note": "No brand agent exists in the external catalogs."
+    },
+    "marketing": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "Anthropic",
+          "name": "marketing"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "content-marketer"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "seo-specialist"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "growth-loops"
+        }
+      ]
+    },
+    "frontend-senior": {
+      "prefer": "external",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "frontend-developer"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "react-specialist"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "nextjs-developer"
+        }
+      ]
+    },
+    "privacy-compliance": {
+      "prefer": "canonical",
+      "external": [],
+      "note": "LGPD, minors, health data, dark patterns and LEGAL-REVIEW are specific to this template; external agents cover GDPR/CCPA and HIPAA."
+    },
+    "lay-user": {
+      "prefer": "canonical",
+      "external": [],
+      "note": "Simulated lay-user usability round; no external equivalent."
+    },
+    "scribe": {
+      "prefer": "canonical",
+      "external": [],
+      "note": "Bookkeeping in the template's formats."
+    },
+    "product-finance": {
+      "prefer": "canonical",
+      "external": [],
+      "note": "Created to fill a gap: no external product-finance agent found (wshobson startup-business-analyst may be consulted, unverified)."
+    },
+    "cloudflare": {
+      "prefer": "canonical",
+      "external": [
+        {
+          "source": "Anthropic",
+          "name": "cloudflare"
+        }
+      ],
+      "note": "Created to fill a gap: the external plugin is described as Workers-centred; consult it for Workers and Wrangler."
+    },
+    "release": {
+      "prefer": "canonical",
+      "external": [
+        {
+          "source": "wshobson",
+          "name": "operating-kit"
+        }
+      ],
+      "note": "Created to fill a gap: consult operating-kit for pre-ship checks."
+    }
+  },
+  "needs": [
+    {
+      "need": "market-research",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "market-researcher"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "competitive-analyst"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "project-idea-validator"
+        },
+        {
+          "source": "wshobson",
+          "name": "before-you-build"
+        }
+      ],
+      "fallback": "ux-researcher"
+    },
+    {
+      "need": "business-analysis",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "business-analyst"
+        }
+      ],
+      "fallback": "product-owner"
+    },
+    {
+      "need": "product-management",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "product-manager"
+        },
+        {
+          "source": "Anthropic",
+          "name": "product-management"
+        }
+      ],
+      "fallback": "product-owner"
+    },
+    {
+      "need": "scrum",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "scrum-master"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "backlog-grooming"
+        }
+      ],
+      "fallback": "product-owner"
+    },
+    {
+      "need": "database",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "postgres-pro"
+        },
+        {
+          "source": "wshobson",
+          "name": "database-migrations"
+        }
+      ],
+      "fallback": "backend"
+    },
+    {
+      "need": "documentation",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "technical-writer"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "documentation-engineer"
+        }
+      ],
+      "fallback": "scribe"
+    },
+    {
+      "need": "accessibility",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "accessibility-tester"
+        },
+        {
+          "source": "wshobson",
+          "name": "accessibility-compliance"
+        }
+      ],
+      "fallback": "qa"
+    },
+    {
+      "need": "payments",
+      "external": [
+        {
+          "source": "Anthropic",
+          "name": "stripe"
+        },
+        {
+          "source": "VoltAgent",
+          "name": "payment-integration"
+        }
+      ],
+      "fallback": "backend"
+    },
+    {
+      "need": "frontend-hosting",
+      "external": [
+        {
+          "source": "Anthropic",
+          "name": "vercel"
+        }
+      ],
+      "fallback": "hosting",
+      "note": "Conventions come from the edge-cloudflare-vercel profile."
+    },
+    {
+      "need": "development-engine",
+      "external": [
+        {
+          "source": "Anthropic",
+          "name": "superpowers"
+        }
+      ],
+      "fallback": null,
+      "note": "Without it use the manual phase equivalent in workflow/engineering.md and disclose the automation gap (policies/integrations.md)."
+    },
+    {
+      "need": "token-economy",
+      "external": [
+        {
+          "source": "Anthropic",
+          "name": "serena"
+        },
+        {
+          "source": "rtk-ai",
+          "name": "rtk"
+        }
+      ],
+      "fallback": null,
+      "note": "Measure a baseline first; enable one at a time (workflow/economy.md)."
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "id": "external-first",
+  "description": "Prefer approved external agents, canonical roles as fallback",
+  "instructions": "Apply workflow/external-first.md and integrations/plugins/resolution.json. For each role resolve in order: an external candidate that is installed AND recorded in docs/operations/registro-instalacoes.md; otherwise the canonical fallback role; otherwise a recorded gap handled per workflow/staffing.md. Roles marked prefer=canonical are never replaced. Selecting this profile is the recorded decision required before a catalog agent stands in for a canonical role. Governance is unchanged: the principal supplies the contract in the brief, external agents obey policies/, author and gates stay distinct instances on the same snapshot, and at least one gate per implementation comes from a different source than the author. Nothing is installed by this profile; uninstalled candidates are proposals under policies/installations.md."
+}

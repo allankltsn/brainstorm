@@ -39,6 +39,8 @@ Este repositório documenta o plano para ter **uma equipe de agentes de IA reapr
 
 A pasta [`v0/`](v0/README.md) traz uma primeira versão funcional **sem o guilda**: um marketplace de plugins do Claude Code com 11 agentes, 10 skills, hooks de proteção, teto de custo e uma CLI de fases e portões.
 
+A pasta [`v1/`](v1/README.md) traz a versão **com o guilda**: uma sobreposição aditiva sobre o `guilda` 2.0.0, montada e instalada pelo motor dele, com 3 papéis, 4 ações, 5 perfis, a tabela "externo primeiro" e o mod `guardrails`. As decisões aplicadas estão em [`v1/docs/decisoes.md`](v1/docs/decisoes.md).
+
 ## Como regenerar os diagramas
 
 Os 37 diagramas em `docs/assets/` são SVG gerados por script, sem dependências:
