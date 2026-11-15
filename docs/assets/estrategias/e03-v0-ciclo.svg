@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1212" height="470" viewBox="0 0 1212 470" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="v0: o ciclo de uma fase">
+<title>v0: o ciclo de uma fase</title>
+<defs><marker id="ar64748b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<rect width="1212" height="470" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">v0: o ciclo de uma fase</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">A CLI guarda o estado; a fase só avança com os artefatos presentes e uma aprovação com nome</text>
+<path d="M196.0,170.0 L232.0,170.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M392.0,170.0 L428.0,170.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M588.0,170.0 L624.0,170.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M784.0,170.0 L820.0,170.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M980.0,170.0 L1016.0,170.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M1096.0,224.0 L1096.0,270.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M1016.0,324.0 L980.0,324.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M820.0,324.0 L784.0,324.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M624.0,324.0 L588.0,324.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M428.0,324.0 L392.0,324.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+
+<rect x="36" y="116" width="160" height="108" rx="11" fill="#3a1230" stroke="#f472b6" stroke-width="1.6"/>
+<text x="116.0" y="158.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">agentes init</text>
+<text x="116.0" y="176.0" font-size="11" fill="#94a3b8" text-anchor="middle">cria .agentes/, pastas</text>
+<text x="116.0" y="190.0" font-size="11" fill="#94a3b8" text-anchor="middle">de docs/ e regras</text>
+<rect x="232" y="116" width="160" height="108" rx="11" fill="#3a1230" stroke="#f472b6" stroke-width="1.6"/>
+<text x="312.0" y="158.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">status e papeis</text>
+<text x="312.0" y="176.0" font-size="11" fill="#94a3b8" text-anchor="middle">fase atual e quem faz</text>
+<text x="312.0" y="190.0" font-size="11" fill="#94a3b8" text-anchor="middle">cada papel</text>
+<rect x="428" y="116" width="160" height="108" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="508.0" y="149.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Principal</text>
+<text x="508.0" y="166.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">despacha</text>
+<text x="508.0" y="184.5" font-size="11" fill="#94a3b8" text-anchor="middle">briefing curto; agente</text>
+<text x="508.0" y="198.5" font-size="11" fill="#94a3b8" text-anchor="middle">próprio ou externo</text>
+<rect x="624" y="116" width="160" height="108" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="704.0" y="151.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Artefatos</text>
+<text x="704.0" y="169.0" font-size="11" fill="#94a3b8" text-anchor="middle">um arquivo por</text>
+<text x="704.0" y="183.0" font-size="11" fill="#94a3b8" text-anchor="middle">entrega, mais o</text>
+<text x="704.0" y="197.0" font-size="11" fill="#94a3b8" text-anchor="middle">handoff</text>
+<rect x="820" y="116" width="160" height="108" rx="11" fill="#251b47" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="900.0" y="158.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Gates</text>
+<text x="900.0" y="176.0" font-size="11" fill="#94a3b8" text-anchor="middle">revisão, segurança,</text>
+<text x="900.0" y="190.0" font-size="11" fill="#94a3b8" text-anchor="middle">privacidade e QA</text>
+<rect x="1016" y="116" width="160" height="108" rx="11" fill="#3a1230" stroke="#f472b6" stroke-width="1.6"/>
+<text x="1096.0" y="158.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">portao verificar</text>
+<text x="1096.0" y="176.0" font-size="11" fill="#94a3b8" text-anchor="middle">confere se os</text>
+<text x="1096.0" y="190.0" font-size="11" fill="#94a3b8" text-anchor="middle">artefatos existem</text>
+<rect x="1016" y="270" width="160" height="108" rx="11" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="1096.0" y="312.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Você aprova</text>
+<text x="1096.0" y="330.0" font-size="11" fill="#94a3b8" text-anchor="middle">portao aprovar --por</text>
+<text x="1096.0" y="344.0" font-size="11" fill="#94a3b8" text-anchor="middle">NOME, com confirmação</text>
+<rect x="820" y="270" width="160" height="108" rx="11" fill="#0f2f1d" stroke="#4ade80" stroke-width="1.6"/>
+<text x="900.0" y="312.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Fase avança</text>
+<text x="900.0" y="330.0" font-size="11" fill="#94a3b8" text-anchor="middle">histórico grava quem e</text>
+<text x="900.0" y="344.0" font-size="11" fill="#94a3b8" text-anchor="middle">quando</text>
+<rect x="624" y="270" width="160" height="108" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="704.0" y="319.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Próxima fase</text>
+<text x="704.0" y="337.0" font-size="11" fill="#94a3b8" text-anchor="middle">repete até a fase 8</text>
+<rect x="428" y="270" width="160" height="108" rx="11" fill="#3a1230" stroke="#f472b6" stroke-width="1.6"/>
+<text x="508.0" y="312.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Retrospectiva</text>
+<text x="508.0" y="330.0" font-size="11" fill="#94a3b8" text-anchor="middle">skill retro propõe</text>
+<text x="508.0" y="344.0" font-size="11" fill="#94a3b8" text-anchor="middle">melhorias</text>
+<rect x="232" y="270" width="160" height="108" rx="11" fill="#0f2f1d" stroke="#4ade80" stroke-width="1.6"/>
+<text x="312.0" y="312.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Ciclo concluído</text>
+<text x="312.0" y="330.0" font-size="11" fill="#94a3b8" text-anchor="middle">todos os portões</text>
+<text x="312.0" y="344.0" font-size="11" fill="#94a3b8" text-anchor="middle">aprovados</text>
+
+<rect x="36" y="403" width="12" height="12" rx="3" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="54" y="413" font-size="10.5" fill="#94a3b8">decisão humana</text>
+<rect x="159.79" y="403" width="12" height="12" rx="3" fill="#1b2538" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="177.79" y="413" font-size="10.5" fill="#94a3b8">dado ou artefato</text>
+<rect x="295.54999999999995" y="403" width="12" height="12" rx="3" fill="#251b47" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="313.54999999999995" y="413" font-size="10.5" fill="#94a3b8">segurança e gates</text>
+<rect x="437.29499999999996" y="403" width="12" height="12" rx="3" fill="#0f2f1d" stroke="#4ade80" stroke-width="1.4"/>
+<text x="455.29499999999996" y="413" font-size="10.5" fill="#94a3b8">resultado</text>
+<rect x="531.16" y="403" width="12" height="12" rx="3" fill="#3a1230" stroke="#f472b6" stroke-width="1.4"/>
+<text x="549.16" y="413" font-size="10.5" fill="#94a3b8">criado nesta versão</text>
+<text x="36" y="436" font-size="11" fill="#94a3b8">Se você rejeitar, a fase continua aberta e o motivo fica no histórico. O agente não consegue editar .agentes/estado.json: o hook bloqueia.</text>
+</svg>

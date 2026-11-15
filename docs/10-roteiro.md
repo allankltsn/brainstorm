@@ -33,4 +33,4 @@ Refazer um dos projetos de interface (landing page ou protótipo) usando o fluxo
 3. Atualizar os projetos do produto para o `guilda` 2.0 (M1).
 4. Medir a linha de base de tokens antes de ligar qualquer ferramenta de economia.
 
-Voltar ao [início](../README.md).
+Próximo: [Como funciona cada estratégia](11-estrategias.md).

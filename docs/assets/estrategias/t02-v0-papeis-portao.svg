@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="766" height="262" viewBox="0 0 766 262" role="img" aria-label="v0: quem faz cada papel e o portão que não abre sem artefatos">
+<title>v0: quem faz cada papel e o portão que não abre sem artefatos</title>
+<rect width="766" height="262" rx="12" fill="#0b1220"/>
+<rect width="766" height="38" rx="12" fill="#16223a"/><rect y="26" width="766" height="12" fill="#16223a"/>
+<circle cx="20" cy="19" r="5.5" fill="#f87171"/><circle cx="38" cy="19" r="5.5" fill="#fbbf24"/><circle cx="56" cy="19" r="5.5" fill="#4ade80"/>
+<text x="383.0" y="23.5" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">v0: quem faz cada papel e o portão que não abre sem artefatos</text>
+<text x="22" y="62" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#e2e8f0" font-weight="700" xml:space="preserve">$ scripts/agentes papeis /caminho/projeto</text>
+<text x="22" y="81" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">Fase 0 Descoberta</text>
+<text x="22" y="100" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">  externo  estrategia-de-produto: VoltAgent: project-idea-validator; wshobson: before-you-build</text>
+<text x="22" y="119" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">  externo  analise-de-mercado: VoltAgent: market-researcher; VoltAgent: competitive-analyst</text>
+<text x="22" y="138" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#4ade80" xml:space="preserve">  próprio  analista-financeiro: negocio:analista-financeiro + skill negocio:modelo-financeiro</text>
+<text x="22" y="157" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#4ade80" xml:space="preserve">  próprio  marca: negocio:estrategista-de-marca</text>
+<text x="22" y="176" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve"></text>
+<text x="22" y="195" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#e2e8f0" font-weight="700" xml:space="preserve">$ scripts/agentes portao aprovar /caminho/projeto --por Ana</text>
+<text x="22" y="214" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#f87171" xml:space="preserve">erro: portão não pode ser aprovado; faltam artefatos: docs/00-descoberta/visao.md,</text>
+<text x="22" y="233" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#f87171" xml:space="preserve">      docs/00-descoberta/mercado.md, docs/00-descoberta/modelo-financeiro.md</text>
+</svg>

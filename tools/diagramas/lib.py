@@ -20,6 +20,7 @@ KINDS = {
     "data": ("#94a3b8", "#1b2538"),
     "sec": ("#a78bfa", "#251b47"),
     "ok": ("#4ade80", "#0f2f1d"),
+    "novo": ("#f472b6", "#3a1230"),
 }
 LEGEND = {
     "guilda": "guilda (núcleo)",
@@ -29,6 +30,7 @@ LEGEND = {
     "data": "dado ou artefato",
     "sec": "segurança e gates",
     "ok": "resultado",
+    "novo": "criado nesta versão",
 }
 BG = "#0b1220"
 CARD = "#0f1a2e"
@@ -228,3 +230,27 @@ class D:
         p = d / f"{self.name}.svg"
         p.write_text(self.render(), encoding="utf-8")
         return p
+
+
+def terminal(folder, name, title, lines, width=None):
+    """Imagem de terminal. `lines` é uma lista de (texto, tipo): cmd, err, ok, dim ou None."""
+    cores = {"cmd": "#e2e8f0", "err": "#f87171", "ok": "#4ade80", "dim": "#64748b", "ask": "#fbbf24", None: "#cbd5e1"}
+    fs, lh, mx = 12.5, 19, 22
+    largura = width or int(mx * 2 + max(len(t) for t, _ in lines) * fs * 0.602 + 8)
+    altura = 54 + len(lines) * lh + 18
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{largura}" height="{altura}" viewBox="0 0 {largura} {altura}" role="img" aria-label="{esc(title)}">',
+           f'<title>{esc(title)}</title>',
+           f'<rect width="{largura}" height="{altura}" rx="12" fill="#0b1220"/>',
+           f'<rect width="{largura}" height="38" rx="12" fill="#16223a"/><rect y="26" width="{largura}" height="12" fill="#16223a"/>',
+           '<circle cx="20" cy="19" r="5.5" fill="#f87171"/><circle cx="38" cy="19" r="5.5" fill="#fbbf24"/><circle cx="56" cy="19" r="5.5" fill="#4ade80"/>',
+           f'<text x="{largura / 2}" y="23.5" font-family="{FONT}" font-size="12" fill="#94a3b8" text-anchor="middle">{esc(title)}</text>']
+    mono = "ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace"
+    for i, (t, k) in enumerate(lines):
+        peso = ' font-weight="700"' if k == "cmd" else ""
+        out.append(f'<text x="{mx}" y="{62 + i * lh}" font-family="{mono}" font-size="{fs}" fill="{cores[k]}"{peso} xml:space="preserve">{esc(t)}</text>')
+    out.append("</svg>\n")
+    d = OUT / folder
+    d.mkdir(parents=True, exist_ok=True)
+    p = d / f"{name}.svg"
+    p.write_text("\n".join(out), encoding="utf-8")
+    return p

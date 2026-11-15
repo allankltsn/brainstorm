@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="488" height="471" viewBox="0 0 488 471" role="img" aria-label="v0: iniciar um projeto e ver o estado">
+<title>v0: iniciar um projeto e ver o estado</title>
+<rect width="488" height="471" rx="12" fill="#0b1220"/>
+<rect width="488" height="38" rx="12" fill="#16223a"/><rect y="26" width="488" height="12" fill="#16223a"/>
+<circle cx="20" cy="19" r="5.5" fill="#f87171"/><circle cx="38" cy="19" r="5.5" fill="#fbbf24"/><circle cx="56" cy="19" r="5.5" fill="#4ade80"/>
+<text x="244.0" y="23.5" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">v0: iniciar um projeto e ver o estado</text>
+<text x="22" y="62" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#e2e8f0" font-weight="700" xml:space="preserve">$ scripts/agentes init /caminho/projeto --perfil landing</text>
+<text x="22" y="81" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">Projeto inicializado em /caminho/projeto (perfil landing).</text>
+<text x="22" y="100" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#64748b" xml:space="preserve">  - estado.json criado</text>
+<text x="22" y="119" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#64748b" xml:space="preserve">  - config.json criado</text>
+<text x="22" y="138" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#64748b" xml:space="preserve">  - registro de instalações criado</text>
+<text x="22" y="157" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#64748b" xml:space="preserve">  - CLAUDE.md atualizado</text>
+<text x="22" y="176" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve"></text>
+<text x="22" y="195" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#e2e8f0" font-weight="700" xml:space="preserve">$ scripts/agentes status /caminho/projeto</text>
+<text x="22" y="214" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">Perfil: landing | autonomia: portoes | dados pessoais: não</text>
+<text x="22" y="233" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#4ade80" xml:space="preserve">  [&gt;] 0 Descoberta: Vale a pena construir?</text>
+<text x="22" y="252" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">  [ ] 1 Requisitos: PRD aceito</text>
+<text x="22" y="271" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">  [ ] 2 Design: Protótipo aceito</text>
+<text x="22" y="290" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">  [ ] 5 Construção: Histórias implementadas com handoff</text>
+<text x="22" y="309" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">  [ ] 6 Verificação: Gates independentes aprovados</text>
+<text x="22" y="328" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">  [ ] 7 Entrega: Go-live</text>
+<text x="22" y="347" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">  [ ] 8 Crescimento: Encerrar o ciclo</text>
+<text x="22" y="366" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve"></text>
+<text x="22" y="385" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">Fase atual: 0 Descoberta</text>
+<text x="22" y="404" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#fbbf24" xml:space="preserve">  falta  docs/00-descoberta/visao.md</text>
+<text x="22" y="423" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#fbbf24" xml:space="preserve">  falta  docs/00-descoberta/mercado.md</text>
+<text x="22" y="442" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#fbbf24" xml:space="preserve">  falta  docs/00-descoberta/modelo-financeiro.md</text>
+</svg>

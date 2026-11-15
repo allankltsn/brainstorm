@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1118" height="742" viewBox="0 0 1118 742" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="As duas estratégias lado a lado">
+<title>As duas estratégias lado a lado</title>
+<defs></defs>
+<rect width="1118" height="742" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">As duas estratégias lado a lado</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">Mesmo objetivo e mesmos hooks de proteção; muda quem fornece a governança e como chega ao projeto</text>
+
+
+<rect x="36" y="116" width="330" height="58" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="201.0" y="149.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Aspecto</text>
+<rect x="394" y="116" width="330" height="58" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="559.0" y="149.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">v0: sem o guilda</text>
+<rect x="752" y="116" width="330" height="58" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="917.0" y="149.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">v1: com o guilda</text>
+<rect x="36" y="188" width="330" height="58" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="201.0" y="221.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Forma</text>
+<rect x="394" y="188" width="330" height="58" rx="11" fill="#3a1230" stroke="#f472b6" stroke-width="1.6"/>
+<text x="559.0" y="213.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Marketplace de plugins do Claude</text>
+<text x="559.0" y="230.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Code</text>
+<rect x="752" y="188" width="330" height="58" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="917.0" y="213.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Sobreposição montada sobre o guilda</text>
+<text x="917.0" y="230.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">2.0.0</text>
+<rect x="36" y="260" width="330" height="58" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="201.0" y="293.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Como chega ao projeto</text>
+<rect x="394" y="260" width="330" height="58" rx="11" fill="#3a1230" stroke="#f472b6" stroke-width="1.6"/>
+<text x="559.0" y="293.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Você instala os plugins do perfil</text>
+<rect x="752" y="260" width="330" height="58" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="917.0" y="285.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">O instalador do guilda copia para o</text>
+<text x="917.0" y="302.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">projeto</text>
+<rect x="36" y="332" width="330" height="58" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="201.0" y="365.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Especialistas</text>
+<rect x="394" y="332" width="330" height="58" rx="11" fill="#3a1230" stroke="#f472b6" stroke-width="1.6"/>
+<text x="559.0" y="357.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">11 agentes próprios; externos só</text>
+<text x="559.0" y="374.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">mapeados</text>
+<rect x="752" y="332" width="330" height="58" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="917.0" y="357.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">31 papéis: 20 preferem externo, 11</text>
+<text x="917.0" y="374.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">canônicos</text>
+<rect x="36" y="404" width="330" height="58" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="201.0" y="437.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Fases e portões</text>
+<rect x="394" y="404" width="330" height="58" rx="11" fill="#3a1230" stroke="#f472b6" stroke-width="1.6"/>
+<text x="559.0" y="437.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">CLI própria, estado em .agentes/</text>
+<rect x="752" y="404" width="330" height="58" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="917.0" y="429.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Workflows do guilda e GitHub</text>
+<text x="917.0" y="446.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Projects</text>
+<rect x="36" y="476" width="330" height="58" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="201.0" y="509.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Proteção técnica</text>
+<rect x="394" y="476" width="330" height="58" rx="11" fill="#3a1230" stroke="#f472b6" stroke-width="1.6"/>
+<text x="559.0" y="509.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Hooks dentro do plugin nucleo</text>
+<rect x="752" y="476" width="330" height="58" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="917.0" y="509.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Mod guardrails (os mesmos hooks)</text>
+<rect x="36" y="548" width="330" height="58" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="201.0" y="581.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Modelos</text>
+<rect x="394" y="548" width="330" height="58" rx="11" fill="#3a1230" stroke="#f472b6" stroke-width="1.6"/>
+<text x="559.0" y="573.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">modelos.json e um comando para</text>
+<text x="559.0" y="590.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">aplicar</text>
+<rect x="752" y="548" width="330" height="58" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="917.0" y="573.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Tiers do guilda, ajustáveis por</text>
+<text x="917.0" y="590.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">projeto</text>
+<rect x="36" y="620" width="330" height="58" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="201.0" y="653.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Atualização</text>
+<rect x="394" y="620" width="330" height="58" rx="11" fill="#3a1230" stroke="#f472b6" stroke-width="1.6"/>
+<text x="559.0" y="653.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Atualizar o marketplace e os plugins</text>
+<rect x="752" y="620" width="330" height="58" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="917.0" y="653.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Remontar e reinstalar pela v1</text>
+
+<rect x="36" y="703" width="12" height="12" rx="3" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="54" y="713" font-size="10.5" fill="#94a3b8">guilda (núcleo)</text>
+<rect x="165.77499999999998" y="703" width="12" height="12" rx="3" fill="#1b2538" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="183.77499999999998" y="713" font-size="10.5" fill="#94a3b8">dado ou artefato</text>
+<rect x="301.53499999999997" y="703" width="12" height="12" rx="3" fill="#3a1230" stroke="#f472b6" stroke-width="1.4"/>
+<text x="319.53499999999997" y="713" font-size="10.5" fill="#94a3b8">criado nesta versão</text>
+
+</svg>
