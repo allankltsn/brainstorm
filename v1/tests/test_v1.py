@@ -66,8 +66,8 @@ class Montagem(unittest.TestCase):
         cat = json.loads((self.arvore / "template.json").read_text())
         self.assertEqual(cat["version"], "2.0.0+v1")
         ids = {r["id"] for r in cat["roles"]}
-        self.assertTrue({"product-finance", "cloudflare", "release"} <= ids)
-        self.assertEqual(len(ids), 31)
+        self.assertTrue({"product-finance", "cloudflare", "release", "scrum-master"} <= ids)
+        self.assertEqual(len(ids), 32)
         acoes = {a["id"]: a["role"] for a in cat["actions"]}
         self.assertEqual(acoes["threat-model"], "security")
         self.assertEqual(acoes["finance"], "product-finance")
@@ -87,16 +87,20 @@ class Montagem(unittest.TestCase):
         p = self.projeto
         agente = (p / ".claude" / "agents" / "product-finance.md").read_text()
         self.assertIn("model: sonnet", agente)
+        sm = (p / ".claude" / "agents" / "scrum-master.md").read_text()
+        self.assertIn("model: haiku", sm)
+        self.assertIn("tools: Read, Grep, Glob, Bash\n", sm)  # sem Write nem Edit
         self.assertIn("tools: Read, Write, Edit, Grep, Glob\n", agente)
         self.assertIn("policies/untrusted-content.md", agente)
-        for cmd in ("finance", "cloudflare", "release", "threat-model"):
+        for cmd in ("finance", "cloudflare", "release", "threat-model", "board"):
             self.assertTrue((p / ".claude" / "commands" / f"{cmd}.md").is_file(), cmd)
-        for perfil in ("external-first", "product-discovery", "nestjs-prisma", "edge-cloudflare-vercel", "guardrails"):
+        for perfil in ("external-first", "product-discovery", "kanban-board", "nestjs-prisma", "edge-cloudflare-vercel", "guardrails"):
             self.assertTrue((p / ".engineering" / "profiles" / f"{perfil}.json").is_file(), perfil)
         for arq in ("workflow/external-first.md", "workflow/product-discovery.md", "policies/untrusted-content.md",
                     "templates/prd.md", "templates/financial-model.md", "templates/threat-model.md",
                     "templates/release-checklist.md", "templates/launch-plan.md",
-                    "integrations/plugins/resolution.json"):
+                    "integrations/plugins/resolution.json", "workflow/kanban-board.md", "templates/kanban-card.md",
+                    "integrations/kanban/audit_board.py", "integrations/kanban/example-board.json"):
             self.assertTrue((p / ".engineering" / arq).is_file(), arq)
         projeto = json.loads((p / ".engineering" / "project.json").read_text())
         self.assertEqual(projeto["providers"], ["claude"])
@@ -127,7 +131,8 @@ class Montagem(unittest.TestCase):
         res = json.loads((self.arvore / "integrations" / "plugins" / "resolution.json").read_text())
         cat = json.loads((self.arvore / "template.json").read_text())
         self.assertEqual(set(res["roles"]), {r["id"] for r in cat["roles"]})
-        for canonico in ("privacy-compliance", "lay-user", "brand-strategist", "product-finance", "cloudflare", "release"):
+        for canonico in ("privacy-compliance", "lay-user", "brand-strategist", "product-finance", "cloudflare", "release",
+                         "scrum-master"):
             self.assertEqual(res["roles"][canonico]["prefer"], "canonical", canonico)
         self.assertEqual(res["roles"]["backend"]["prefer"], "external")
 
@@ -260,6 +265,175 @@ class Guardrails(unittest.TestCase):
         for h in ("guarda_bash.py", "guarda_arquivos.py", "orcamento.py", "conteudo_externo.py"):
             r = subprocess.run([sys.executable, str(HOOKS / h)], input="x", capture_output=True, text=True, cwd=self.p)
             self.assertEqual(r.returncode, 0, h)
+
+
+AUDITOR = V1 / "overlay" / "integrations" / "kanban" / "audit_board.py"
+EXEMPLO = V1 / "overlay" / "integrations" / "kanban" / "example-board.json"
+MODELO = V1 / "overlay" / "core" / "templates" / "kanban-card.md"
+aspec = importlib.util.spec_from_file_location("audit_board", AUDITOR)
+ab = importlib.util.module_from_spec(aspec)
+aspec.loader.exec_module(ab)
+AGORA = ab.hora("2026-11-16T00:00:00Z")
+
+
+class Kanban(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.cards = json.loads(EXEMPLO.read_text(encoding="utf-8"))["cards"]
+
+    def card(self, numero):
+        return json.loads(json.dumps(next(c for c in self.cards if c["number"] == numero)))
+
+    def regras(self, card, **kw):
+        achados, correcoes = ab.auditar([card], AGORA, **kw)
+        return {a["regra"] for a in achados}, achados, correcoes
+
+    def test_cards_corretos_passam(self):
+        for n in (14, 15):
+            regras, achados, correcoes = self.regras(self.card(n))
+            self.assertEqual(regras, set(), f"#{n}: {achados}")
+            self.assertEqual(correcoes, [])
+
+    def test_exemplo_completo(self):
+        achados, correcoes = ab.auditar(json.loads(json.dumps(self.cards)), AGORA)
+        por_card = {}
+        for a in achados:
+            por_card.setdefault(a["card"].split("#")[-1], set()).add(a["regra"])
+        self.assertEqual(por_card["16"], {"K-03", "K-05", "K-13"})
+        self.assertEqual(por_card["17"], {"K-08", "K-11", "K-12", "K-21"})
+        self.assertEqual(por_card["18"], {"K-16", "K-19", "K-22", "K-23"})
+        self.assertEqual(por_card["19"], {"K-15", "K-24"})
+        self.assertEqual(por_card["20"], {"K-02", "K-06"})
+        self.assertEqual({(c["card"], c["campo"], c["valor"]) for c in correcoes},
+                         {("exemplo/hub#16", "Etapa", "Em validação"), ("exemplo/hub#16", "Gates", "R… S… P… Q…")})
+        donos = {a["regra"]: a["responsavel"] for a in achados}
+        self.assertEqual(donos["K-08"], "product-owner")
+        self.assertEqual(donos["K-13"], "frontend-senior")
+        self.assertEqual(donos["K-16"], "principal")
+
+    def test_correcao_mecanica_nunca_toca_conteudo(self):
+        achados, correcoes = ab.auditar(json.loads(json.dumps(self.cards)), AGORA)
+        self.assertTrue({c["campo"] for c in correcoes} <= {"Etapa", "Precisa de você", "Gates"})
+
+    def test_etapa_e_precisa_derivados_do_status(self):
+        c = self.card(15)
+        c["etapa"], c["precisa"] = "A fazer", "sim"
+        regras, _, correcoes = self.regras(c)
+        self.assertEqual(regras, {"K-03", "K-04"})
+        self.assertEqual({(x["campo"], x["valor"]) for x in correcoes}, {("Etapa", "Em andamento"), ("Precisa de você", "não")})
+        self.assertEqual(set(ab.ETAPA), set(ab.STATUS))
+        self.assertEqual(len(set(ab.ETAPA.values())), 5)
+
+    def test_gates_em_snapshots_diferentes_e_autor_validando(self):
+        c = self.card(14)
+        c["body"] = c["body"].replace("| qa | qa-1 | approved | a1b2c3d |", "| qa | qa-1 | approved | fff9999 |")
+        self.assertIn("K-17", self.regras(c)[0])
+        c = self.card(14)
+        c["agent"] = "qa-1"
+        self.assertIn("K-18", self.regras(c)[0])
+
+    def test_privacidade_so_e_exigida_com_dado_pessoal(self):
+        c = self.card(14)
+        c["body"] = c["body"].replace("| privacy | pv-1 | approved | a1b2c3d |", "| privacy | pv-1 | n/a | |")
+        c["gates"] = "R✔ S✔ P– Q✔"
+        self.assertIn("K-16", self.regras(c)[0])
+        c["body"] = c["body"].replace("Personal data: yes", "Personal data: no")
+        self.assertEqual(self.regras(c)[0], set())
+
+    def test_aceite_humano(self):
+        c = self.card(14)
+        c.update(status="accepted", etapa="Concluído", precisa="não")
+        c["body"] = c["body"].replace("**Precisa de você:** sim: aceitar a entrega", "**Precisa de você:** não")
+        c["log"].append("LOG STATUS | 2026-11-15T10:00:00Z | principal | S | completed -> accepted | x")
+        self.assertEqual(self.regras(c)[0], {"K-20", "K-23"})
+        c["log"][-1] = "LOG STATUS | 2026-11-15T10:00:00Z | humano Ana | S | completed -> accepted | x"
+        c["body"] = c["body"].replace("### Human acceptance\npending", "### Human acceptance\nAna, 2026-11-15, escopo completo")
+        self.assertEqual(self.regras(c)[0], set())
+
+    def test_resumo_em_desacordo_com_o_status(self):
+        c = self.card(15)
+        c["body"] = c["body"].replace("**Precisa de você:** não", "**Precisa de você:** sim: decidir")
+        self.assertEqual(self.regras(c)[0], {"K-07"})
+
+    def test_rejeitado_precisa_de_ids_e_bloqueado_de_motivo(self):
+        c = self.card(16)
+        c.update(status="rejected", etapa="Em validação", gates="R… S… P… Q…")
+        c["log"].append("LOG STATUS | 2026-11-15T22:00:00Z | qa-1 | S | in-review -> rejected | x")
+        self.assertIn("K-14", self.regras(c)[0])
+        c["body"] = c["body"].replace("### Findings\n", "### Findings\nQA-03 high: login aceita senha vazia\n")
+        self.assertNotIn("K-14", self.regras(c)[0])
+        b = self.card(19)
+        b["body"] = b["body"].replace("Reason: <...> | Unblocks: <who or what> | Prior status: <status>",
+                                      "Reason: aguardando escolha do provedor | Unblocks: humano | Prior status: in-progress")
+        b["updated_at"] = "2026-11-15T10:00:00Z"
+        self.assertEqual(self.regras(b)[0], set())
+
+    def test_wip_e_status_invalido(self):
+        tres = []
+        for i in range(3):
+            c = self.card(15)
+            c["number"] = 100 + i
+            tres.append(c)
+        achados, _ = ab.auditar(tres, AGORA, wip=2)
+        self.assertEqual({a["regra"] for a in achados}, {"K-25"})
+        c = self.card(15)
+        c["status"] = "Done"
+        self.assertEqual(self.regras(c)[0], {"K-01"})
+
+    def test_modelo_de_card_e_reconhecido_e_nao_conta_como_preenchido(self):
+        corpo = MODELO.read_text(encoding="utf-8")
+        s = ab.secoes(corpo)
+        for nome in ("resumo", "context", "businessrules", "acceptancecriteria", "scope", "definitionofready", "staffing",
+                     "evidence", "gates", "findings", "blocked", "definitionofdone", "humanacceptance"):
+            self.assertIn(nome, s, nome)
+        card = {"repo": "x/y", "number": 1, "title": "[S-001] Novo", "status": "open", "etapa": "A fazer",
+                "precisa": "não", "agent": "", "gates": "", "updated_at": "2026-11-15T10:00:00Z", "body": corpo, "log": []}
+        self.assertEqual(self.regras(card)[0], {"K-06"})  # resumo ainda com marcadores
+        card["status"], card["etapa"] = "in-review", "Em validação"
+        regras = self.regras(card)[0]
+        self.assertTrue({"K-08", "K-10", "K-11", "K-12", "K-13", "K-21"} <= regras, regras)
+
+    def test_linha_de_comando(self):
+        r = subprocess.run([sys.executable, str(AUDITOR), "--arquivo", str(EXEMPLO), "--agora", "2026-11-16T00:00:00Z"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("Cobrar de: product-owner", r.stdout)
+        r = subprocess.run([sys.executable, str(AUDITOR), "--arquivo", str(EXEMPLO), "--json"], capture_output=True, text=True)
+        self.assertEqual(json.loads(r.stdout)["cards"], 7)
+        r = subprocess.run([sys.executable, str(AUDITOR), "--arquivo", str(EXEMPLO), "--aplicar"], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 2)  # aplicar exige leitura ao vivo
+        r = subprocess.run([sys.executable, str(AUDITOR), "--arquivo", "/nao/existe.json"], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 2)
+
+
+class Despacho(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.p = Path(self.tmp.name)
+        (self.p / ".engineering").mkdir()
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def despachar(self, prompt, tipo="backend"):
+        return hook("guarda_despacho.py", {"tool_name": "Agent", "tool_input": {"prompt": prompt, "subagent_type": tipo}}, self.p)[0]
+
+    def test_exige_card_no_briefing(self):
+        self.assertEqual(self.despachar("Implemente o login."), "negar")
+        self.assertEqual(self.despachar("Papel: backend\nCard: dono/repo#14\nObjetivo: login"), "permitir")
+        self.assertEqual(self.despachar("- **Card:** #14\nObjetivo: login"), "permitir")
+        self.assertEqual(self.despachar("fale do card: depois eu crio"), "negar")
+        self.assertEqual(self.despachar("veja a issue #14"), "negar")
+
+    def test_isentos_e_desligar(self):
+        self.assertEqual(self.despachar("procure onde está o login", "Explore"), "permitir")
+        self.assertEqual(self.despachar("audite o quadro", "scrum-master"), "permitir")
+        c = self.p / ".claude" / "guardrails" / "config.json"
+        c.parent.mkdir(parents=True)
+        c.write_text(json.dumps({"exigir_card": False}))
+        self.assertEqual(self.despachar("Implemente o login."), "permitir")
+        c.write_text(json.dumps({"card_isentos": []}))
+        self.assertEqual(self.despachar("procure", "Explore"), "negar")
 
 
 if __name__ == "__main__":

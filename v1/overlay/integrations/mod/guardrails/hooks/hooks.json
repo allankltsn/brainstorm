@@ -21,6 +21,15 @@
         ]
       },
       {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/guarda_despacho.py\""
+          }
+        ]
+      },
+      {
         "matcher": "*",
         "hooks": [
           {

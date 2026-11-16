@@ -17,6 +17,8 @@ PADRAO = {
     "producao_apos_conteudo_externo": "perguntar",
     "bash_negar": [],
     "bash_perguntar": [],
+    "exigir_card": True,
+    "card_isentos": ["Explore", "Plan", "scrum-master", "scribe", "claude-code-guide", "statusline-setup"],
 }
 
 # Arquivos cujo conteúdo não deve chegar ao modelo nem ao histórico.

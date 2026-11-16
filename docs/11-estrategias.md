@@ -11,7 +11,7 @@ As duas usam os mesmos hooks de proteção e a mesma regra de escolha de agentes
 
 ![Comparação](assets/estrategias/e01-comparacao.svg)
 
-> **O que foi verificado.** As duas versões têm testes automatizados (25 na v0, 17 na v1) e passam no validador de plugins do Claude Code. A v1 foi instalada de verdade num diretório temporário. **Nenhuma foi usada numa sessão real de trabalho**: os hooks foram testados com entradas simuladas. As imagens de terminal abaixo são saídas reais dos comandos, com os caminhos trocados por `/caminho`.
+> **O que foi verificado.** As duas versões têm testes automatizados (25 na v0, 31 na v1) e passam no validador de plugins do Claude Code. A v1 foi instalada de verdade num diretório temporário. **Nenhuma foi usada numa sessão real de trabalho**: os hooks foram testados com entradas simuladas. As imagens de terminal abaixo são saídas reais dos comandos, com os caminhos trocados por `/caminho`.
 
 ---
 
@@ -69,8 +69,8 @@ O `guilda` já tem gates independentes, regras de evidência, camadas de modelo,
 
 ![Montagem da v1](assets/estrategias/e05-v1-montagem.svg)
 
-1. **Montar.** O script copia um checkout do `guilda` 2.0.0, soma os 30 arquivos da pasta `overlay/` e gera uma árvore `2.0.0+v1`.
-2. **Três junções.** São as únicas alterações em arquivos do `guilda`: o catálogo ganha 3 papéis e 4 ações, a lista de payload ganha os arquivos novos e o registro de mods ganha o `guardrails`. Um teste compara todo o resto byte a byte.
+1. **Montar.** O script copia um checkout do `guilda` 2.0.0, soma os 40 arquivos da pasta `overlay/` e gera uma árvore `2.0.0+v1`.
+2. **Três junções.** São as únicas alterações em arquivos do `guilda`: o catálogo ganha 4 papéis e 5 ações, a lista de payload ganha os arquivos novos e o registro de mods ganha o `guardrails`. Um teste compara todo o resto byte a byte.
 3. **Validar.** A árvore montada é carregada pelo motor do `guilda`. Se ele rejeitar, a montagem falha.
 4. **Instalar.** O `install.py` do `guilda` grava os arquivos no projeto, roda a verificação dele e mantém o manifesto.
 5. **Mod.** Com `--mod guardrails`, o instalador de mods do `guilda` copia os hooks, o Claude Code instala o plugin e uma linha entra no registro de instalações.
@@ -83,13 +83,14 @@ A montagem é defensiva: se o `guilda` mudar de versão ou passar a ter um arqui
 
 | Tipo | Itens |
 |---|---|
-| Papéis (3) | `product-finance`, `cloudflare`, `release` |
-| Ações (4) | `/finance`, `/cloudflare`, `/release`, `/threat-model` |
-| Perfis (5) | `external-first`, `product-discovery`, `nestjs-prisma`, `edge-cloudflare-vercel`, `guardrails` |
-| Workflows (2) | externo primeiro; descoberta de produto |
+| Papéis (4) | `product-finance`, `cloudflare`, `release`, `scrum-master` |
+| Ações (5) | `/finance`, `/cloudflare`, `/release`, `/threat-model`, `/board` |
+| Perfis (6) | `external-first`, `product-discovery`, `kanban-board`, `nestjs-prisma`, `edge-cloudflare-vercel`, `guardrails` |
+| Workflows (3) | externo primeiro; descoberta de produto; quadro Kanban |
 | Política (1) | conteúdo não confiável e prompt injection |
-| Templates (5) | PRD, modelo financeiro, modelo de ameaças, checklist de release, plano de lançamento |
-| Tabela | `resolution.json`, com os 31 papéis |
+| Templates (6) | PRD, modelo financeiro, modelo de ameaças, checklist de release, plano de lançamento, card Kanban |
+| Tabela | `resolution.json`, com os 32 papéis |
+| Quadro | Auditor do quadro Kanban e script de campos ([detalhes](12-kanban.md)) |
 | Mod | `guardrails` |
 
 Tudo o que é opcional entra como **perfil**. Um projeto que não selecionar `external-first` continua usando só os papéis do `guilda`.
@@ -104,7 +105,7 @@ Com o perfil `external-first`, o principal consulta a tabela de resolução para
 2. **Papel do guilda.** O próprio papel canônico ou a reserva indicada.
 3. **Lacuna.** Registrada e tratada pelo fluxo de staffing do `guilda`; nunca se troca por um papel de nome parecido.
 
-Dos 31 papéis, **20 preferem externo** e **11 ficam sempre com o `guilda`**: privacidade, usuário leigo, marca, product-owner, ingress, finops, service mesh, escriba e os três criados na v1.
+Dos 32 papéis, **20 preferem externo** e **12 ficam sempre com o `guilda`**: privacidade, usuário leigo, marca, product-owner, ingress, finops, service mesh, escriba e os quatro criados na v1.
 
 Um agente externo não conhece as regras do `guilda`. Por isso o principal passa o contrato no briefing (escopo, critérios, evidência esperada), e ao menos um gate de cada entrega vem de uma fonte diferente da do autor.
 
@@ -180,7 +181,7 @@ Diferenças que pesam na escolha:
 |---|---|---|
 | Governança | Regras curtas na skill `orquestrar` e no `CLAUDE.md` | Políticas e workflows completos do `guilda` |
 | Estado das fases | Arquivo local, conferido pela CLI | Quadro do GitHub Projects |
-| Agentes carregados | Só os dos plugins instalados | Todos os 31, mesmo os substituídos por externos |
+| Agentes carregados | Só os dos plugins instalados | Todos os 32, mesmo os substituídos por externos |
 | Idioma dos agentes | Português | Inglês, no formato de contrato do `guilda` |
 | Atualização | Pelo marketplace | Só pela v1, até promover ao `guilda` |
 | Dependência | Nenhuma | Checkout do `guilda` 2.0.0 |
@@ -203,4 +204,4 @@ Minha recomendação é usar as duas em sequência: a v0 para experimentar e med
 
 Detalhes em [`v0/README.md`](../v0/README.md), [`v1/README.md`](../v1/README.md) e [`v1/docs/decisoes.md`](../v1/docs/decisoes.md).
 
-Voltar ao [início](../README.md).
+Próximo: [Gestão por quadro Kanban](12-kanban.md).

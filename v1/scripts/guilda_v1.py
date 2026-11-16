@@ -31,7 +31,7 @@ SUFIXO = "+v1"
 COPIAR = ("guilda", "core", "profiles", "adapters", "integrations", "scripts")
 ARQUIVOS = ("template.json", "install.py", "LICENSE")
 PERFIS = ("base,product-team,github-projects,polyrepo,vps-k3s,"
-          "external-first,product-discovery,nestjs-prisma,edge-cloudflare-vercel,guardrails")
+          "external-first,product-discovery,kanban-board,nestjs-prisma,edge-cloudflare-vercel,guardrails")
 MOD = '''    "guardrails": {
         "summary": "bloqueia comandos destrutivos e leitura de segredos, pede confirmação para produção, aplica teto de custo por sessão e alerta sobre prompt injection",
         "warning": "este mod BLOQUEIA comandos e leituras (segredos, destrutivos, push em ramo protegido) e INTERROMPE o trabalho ao atingir o teto de chamadas da sessão",

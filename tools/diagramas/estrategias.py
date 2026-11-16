@@ -12,7 +12,7 @@ def e01():
         ("Aspecto", "v0: sem o guilda", "v1: com o guilda"),
         ("Forma", "Marketplace de plugins do Claude Code", "Sobreposição montada sobre o guilda 2.0.0"),
         ("Como chega ao projeto", "Você instala os plugins do perfil", "O instalador do guilda copia para o projeto"),
-        ("Especialistas", "11 agentes próprios; externos só mapeados", "31 papéis: 20 preferem externo, 11 canônicos"),
+        ("Especialistas", "11 agentes próprios; externos só mapeados", "32 papéis: 20 preferem externo, 12 canônicos"),
         ("Fases e portões", "CLI própria, estado em .agentes/", "Workflows do guilda e GitHub Projects"),
         ("Proteção técnica", "Hooks dentro do plugin nucleo", "Mod guardrails (os mesmos hooks)"),
         ("Modelos", "modelos.json e um comando para aplicar", "Tiers do guilda, ajustáveis por projeto"),
@@ -109,11 +109,11 @@ def e05():
           5, 2, cw=190, ch=104, gx=48,
           note="Se o guilda mudar de versão ou passar a ter um arquivo, papel ou ação com o mesmo nome, a montagem para com erro em vez de sobrescrever.")
     d.node("g", 0, 0, "guilda 2.0.0", "checkout oficial, não alterado", "guilda")
-    d.node("o", 0, 1, "overlay/", "30 arquivos novos e as adições ao catálogo", "novo")
+    d.node("o", 0, 1, "overlay/", "40 arquivos novos e as adições ao catálogo", "novo")
     d.node("m", 1, 0, "montar", "copia o guilda, soma a sobreposição e valida com o motor do guilda", "novo", rs=2)
-    d.node("b", 2, 0, "build/guilda 2.0.0+v1", "um guilda completo, com 31 papéis", "guilda")
+    d.node("b", 2, 0, "build/guilda 2.0.0+v1", "um guilda completo, com 32 papéis", "guilda")
     d.node("i", 3, 0, "install.py do guilda", "grava, confere e mantém o manifesto", "guilda")
-    d.node("p", 4, 0, "Seu projeto", ".engineering/, 31 agentes e 15 comandos", "data")
+    d.node("p", 4, 0, "Seu projeto", ".engineering/, 32 agentes e 16 comandos", "data")
     d.node("j", 2, 1, "3 junções mecânicas", "catálogo, lista de payload e registro do mod", "data")
     d.node("md", 3, 1, "--mod guardrails", "o Claude Code instala o plugin; linha no registro", "novo")
     d.node("up", 4, 1, "Atualização", "só pela v1, até promover ao guilda", "gap")
@@ -132,7 +132,7 @@ def e06():
     d = D(F, "e06-v1-resolucao", "v1: quem faz cada papel (perfil external-first)",
           "Externo instalado e registrado primeiro; depois o papel do guilda; o que sobra vira lacuna registrada",
           4, 3, cw=215, ch=96,
-          note="11 papéis ficam sempre com o guilda (privacidade, usuário leigo, marca, product-owner, ingress, finops e os criados na v1). A governança é a mesma para qualquer fonte.")
+          note="12 papéis ficam sempre com o guilda (privacidade, usuário leigo, marca, product-owner, ingress, finops e os criados na v1). A governança é a mesma para qualquer fonte.")
     d.node("ne", 0, 0, "Papel necessário", "ex.: backend, QA, segurança", "data")
     d.node("q1", 1, 0, "Externo instalado e registrado?", "candidatos em ordem, em resolution.json", "human")
     d.node("ex", 2, 0, "Despacha o externo", "o principal passa o contrato do guilda no briefing", "ext")
@@ -276,13 +276,13 @@ def t04():
     return terminal(F, "t04-v1-montar", "v1: montar sobre o guilda e simular a instalação", [
         ("$ python3 scripts/guilda_v1.py montar", "cmd"),
         ("montado em /caminho/brainstorm/v1/build/guilda: guilda 2.0.0+v1 (base a4ae894),", None),
-        ("  3 papéis, 4 ações e 30 arquivos novos", None),
+        ("  4 papéis, 5 ações e 40 arquivos novos", None),
         ("", None),
         ("$ python3 scripts/guilda_v1.py instalar /caminho/projeto --dry-run", "cmd"),
         ("instalação (simulação) em /caminho/projeto", None),
         ("  perfis: base, product-team, github-projects, polyrepo, vps-k3s, external-first,", "dim"),
-        ("          product-discovery, nestjs-prisma, edge-cloudflare-vercel, guardrails", "dim"),
-        ("  216 arquivos seriam gravados, 0 removidos", "ok"),
+        ("          product-discovery, kanban-board, nestjs-prisma, edge-cloudflare-vercel, guardrails", "dim"),
+        ("  227 arquivos seriam gravados, 0 removidos", "ok"),
         ("  rode sem --dry-run para aplicar.", None),
         ("mod guardrails 0.1.0 (project) — ATENÇÃO: este mod BLOQUEIA comandos e leituras", "ask"),
         ("  (segredos, destrutivos, push em ramo protegido) e INTERROMPE o trabalho ao atingir", "ask"),

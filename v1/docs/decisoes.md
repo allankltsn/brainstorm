@@ -33,6 +33,20 @@ Seguindo "as pendentes, crie elas e me liste quais foram".
 | L10 | Vercel | Sem papel novo: o plugin oficial cobre a operação e o perfil `edge-cloudflare-vercel` traz as convenções | perfil |
 | L11 | FinOps fora da AWS | Sem alterar o papel do `guilda`: o perfil `edge-cloudflare-vercel` redireciona o `finops` para VPS, Cloudflare, Vercel, CI e uso de IA | perfil |
 
+## Gestão por quadro Kanban
+
+Decisões que você tomou depois, sobre o quadro no GitHub Projects.
+
+| # | Decisão | Resolução na v1 | Onde está |
+|---|---|---|---|
+| K1 | Colunas | Cinco etapas para você (campo `Etapa`) e os nove estados do `guilda` para os agentes (campo `Status`) | `overlay/core/workflow/kanban-board.md` |
+| K2 | Poder do Scrum Master | Corrige o mecânico e cobra o resto. O mecânico são três campos derivados, corrigidos pelo script. Conteúdo nunca é preenchido por ele | `overlay/core/roles/scrum-master.md`, `overlay/integrations/kanban/audit_board.py` |
+| K3 | Granularidade | Um card por história; tarefas como sub-issues | `overlay/core/templates/kanban-card.md` |
+| K4 | Idioma | Resumo em português; ficha do agente em inglês | `overlay/core/templates/kanban-card.md` |
+| K5 | Bloqueio técnico | Hook que nega despachar um agente sem a linha `Card: dono/repo#N` no briefing | `overlay/integrations/mod/guardrails/hooks/guarda_despacho.py` |
+
+Um ajuste em relação ao que combinamos em K2: o papel `scrum-master` é somente leitura, como os demais papéis de diagnóstico do `guilda`. A correção mecânica é feita pelo script (`--aplicar`), que o principal roda ou autoriza. O efeito é o mesmo, com menos permissão para o agente.
+
 ## Em aberto (só você decide)
 
 | # | Decisão | Por que não resolvi |

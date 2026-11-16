@@ -366,6 +366,16 @@
         }
       ],
       "note": "Created to fill a gap: consult operating-kit for pre-ship checks."
+    },
+    "scrum-master": {
+      "prefer": "canonical",
+      "external": [
+        {
+          "source": "VoltAgent",
+          "name": "scrum-master"
+        }
+      ],
+      "note": "Created for the kanban-board contract: an external scrum-master does not know the nine states, the two-layer card or the audit script. It may be consulted for ceremonies and backlog grooming."
     }
   },
   "needs": [
@@ -427,7 +437,7 @@
           "name": "backlog-grooming"
         }
       ],
-      "fallback": "product-owner"
+      "fallback": "scrum-master"
     },
     {
       "need": "database",
