@@ -22,6 +22,7 @@ Este repositório documenta o plano para ter **uma equipe de agentes de IA reapr
 | 9 | [Lacunas e decisões](docs/09-lacunas-e-decisoes.md) | O que falta e o que só você decide |
 | 10 | [Roteiro](docs/10-roteiro.md) | Marcos e critérios de pronto |
 | 11 | [Como funciona cada estratégia](docs/11-estrategias.md) | A v0 e a v1 explicadas, com diagramas e saídas reais |
+| 12 | [Gestão por quadro Kanban](docs/12-kanban.md) | Card em duas camadas, cinco etapas, Scrum Master e auditoria do quadro |
 
 ## Resumo em dez linhas
 
@@ -44,13 +45,13 @@ A pasta [`v1/`](v1/README.md) traz a versão **com o guilda**: uma sobreposiçã
 
 ## Como regenerar os diagramas
 
-Os 50 diagramas em `docs/assets/` são SVG gerados por script, sem dependências:
+Os 58 diagramas em `docs/assets/` são SVG gerados por script, sem dependências:
 
 ```sh
 python3 tools/diagramas/gerar.py
 ```
 
-Para mudar um diagrama, edite `tools/diagramas/fluxos.py`, `ferramentas.py` ou `estrategias.py` e gere de novo.
+Para mudar um diagrama, edite `tools/diagramas/fluxos.py`, `ferramentas.py`, `estrategias.py` ou `kanban.py` e gere de novo.
 
 ## Nota sobre este repositório ser público
 

@@ -67,6 +67,6 @@
 <text x="585.0699999999999" y="531" font-size="10.5" fill="#94a3b8">dado ou artefato</text>
 <rect x="702.8299999999999" y="521" width="12" height="12" rx="3" fill="#251b47" stroke="#a78bfa" stroke-width="1.4"/>
 <text x="720.8299999999999" y="531" font-size="10.5" fill="#94a3b8">segurança e gates</text>
-<text x="36" y="554" font-size="11" fill="#94a3b8">11 papéis ficam sempre com o guilda (privacidade, usuário leigo, marca, product-owner, ingress, finops e os criados na v1). A governança é a mesma para qualquer</text>
+<text x="36" y="554" font-size="11" fill="#94a3b8">12 papéis ficam sempre com o guilda (privacidade, usuário leigo, marca, product-owner, ingress, finops e os criados na v1). A governança é a mesma para qualquer</text>
 <text x="36" y="568" font-size="11" fill="#94a3b8">fonte.</text>
 </svg>

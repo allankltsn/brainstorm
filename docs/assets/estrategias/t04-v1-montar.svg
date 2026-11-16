@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="684" height="319" viewBox="0 0 684 319" role="img" aria-label="v1: montar sobre o guilda e simular a instalação">
+<svg xmlns="http://www.w3.org/2000/svg" width="744" height="319" viewBox="0 0 744 319" role="img" aria-label="v1: montar sobre o guilda e simular a instalação">
 <title>v1: montar sobre o guilda e simular a instalação</title>
-<rect width="684" height="319" rx="12" fill="#0b1220"/>
-<rect width="684" height="38" rx="12" fill="#16223a"/><rect y="26" width="684" height="12" fill="#16223a"/>
+<rect width="744" height="319" rx="12" fill="#0b1220"/>
+<rect width="744" height="38" rx="12" fill="#16223a"/><rect y="26" width="744" height="12" fill="#16223a"/>
 <circle cx="20" cy="19" r="5.5" fill="#f87171"/><circle cx="38" cy="19" r="5.5" fill="#fbbf24"/><circle cx="56" cy="19" r="5.5" fill="#4ade80"/>
-<text x="342.0" y="23.5" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">v1: montar sobre o guilda e simular a instalação</text>
+<text x="372.0" y="23.5" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">v1: montar sobre o guilda e simular a instalação</text>
 <text x="22" y="62" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#e2e8f0" font-weight="700" xml:space="preserve">$ python3 scripts/guilda_v1.py montar</text>
 <text x="22" y="81" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">montado em /caminho/brainstorm/v1/build/guilda: guilda 2.0.0+v1 (base a4ae894),</text>
-<text x="22" y="100" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">  3 papéis, 4 ações e 30 arquivos novos</text>
+<text x="22" y="100" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">  4 papéis, 5 ações e 40 arquivos novos</text>
 <text x="22" y="119" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve"></text>
 <text x="22" y="138" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#e2e8f0" font-weight="700" xml:space="preserve">$ python3 scripts/guilda_v1.py instalar /caminho/projeto --dry-run</text>
 <text x="22" y="157" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">instalação (simulação) em /caminho/projeto</text>
 <text x="22" y="176" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#64748b" xml:space="preserve">  perfis: base, product-team, github-projects, polyrepo, vps-k3s, external-first,</text>
-<text x="22" y="195" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#64748b" xml:space="preserve">          product-discovery, nestjs-prisma, edge-cloudflare-vercel, guardrails</text>
-<text x="22" y="214" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#4ade80" xml:space="preserve">  216 arquivos seriam gravados, 0 removidos</text>
+<text x="22" y="195" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#64748b" xml:space="preserve">          product-discovery, kanban-board, nestjs-prisma, edge-cloudflare-vercel, guardrails</text>
+<text x="22" y="214" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#4ade80" xml:space="preserve">  227 arquivos seriam gravados, 0 removidos</text>
 <text x="22" y="233" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">  rode sem --dry-run para aplicar.</text>
 <text x="22" y="252" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#fbbf24" xml:space="preserve">mod guardrails 0.1.0 (project) — ATENÇÃO: este mod BLOQUEIA comandos e leituras</text>
 <text x="22" y="271" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#fbbf24" xml:space="preserve">  (segredos, destrutivos, push em ramo protegido) e INTERROMPE o trabalho ao atingir</text>

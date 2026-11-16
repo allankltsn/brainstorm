@@ -8,9 +8,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import estrategias  # noqa: E402
 import ferramentas  # noqa: E402
 import fluxos  # noqa: E402
+import kanban  # noqa: E402
 
 n = 0
-for fn in fluxos.ALL + ferramentas.ALL + estrategias.ALL:
+for fn in fluxos.ALL + ferramentas.ALL + estrategias.ALL + kanban.ALL:
     p = fn()
     n += 1
     print("ok", p.relative_to(p.parents[3]))

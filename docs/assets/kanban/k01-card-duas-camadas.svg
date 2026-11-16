@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="634" viewBox="0 0 1100 634" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Um card, dois leitores">
+<title>Um card, dois leitores</title>
+<defs></defs>
+<rect width="1100" height="634" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">Um card, dois leitores</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">A capa é o que você vê no quadro; a ficha é o contrato de trabalho do agente, na mesma issue</text>
+<rect x="14" y="86" width="530" height="364" rx="14" fill="#0f1a2e" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="6 5" opacity="0.95"/>
+<text x="28" y="106" font-size="12" font-weight="700" fill="#fbbf24">Capa: para você (português, leitura em segundos)</text>
+<rect x="556" y="86" width="530" height="364" rx="14" fill="#0f1a2e" stroke="#2dd4bf" stroke-width="1.2" stroke-dasharray="6 5" opacity="0.95"/>
+<text x="570" y="106" font-size="12" font-weight="700" fill="#2dd4bf">Ficha: para os agentes (inglês, recolhida na issue)</text>
+
+<rect x="36" y="116" width="486" height="84" rx="11" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="279.0" y="153.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">[S-014] Cadastro com e-mail</text>
+<text x="279.0" y="171.0" font-size="11" fill="#94a3b8" text-anchor="middle">título curto, com o ID da história</text>
+<rect x="36" y="230" width="486" height="84" rx="11" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="279.0" y="267.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Campos na face do card</text>
+<text x="279.0" y="285.0" font-size="11" fill="#94a3b8" text-anchor="middle">Etapa, Prioridade, Agente, Gates, Precisa de você</text>
+<rect x="36" y="344" width="486" height="84" rx="11" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="279.0" y="381.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Resumo em cinco linhas</text>
+<text x="279.0" y="399.0" font-size="11" fill="#94a3b8" text-anchor="middle">O quê, Por quê, Agora, Falta, Precisa de você</text>
+<rect x="578" y="116" width="215" height="84" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="685.5" y="139.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Entrada</text>
+<text x="685.5" y="157.0" font-size="11" fill="#94a3b8" text-anchor="middle">Context, Business rules,</text>
+<text x="685.5" y="171.0" font-size="11" fill="#94a3b8" text-anchor="middle">Acceptance criteria, Scope,</text>
+<text x="685.5" y="185.0" font-size="11" fill="#94a3b8" text-anchor="middle">Definition of Ready</text>
+<rect x="849" y="116" width="215" height="84" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="956.5" y="153.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Execução</text>
+<text x="956.5" y="171.0" font-size="11" fill="#94a3b8" text-anchor="middle">Staffing, Evidence</text>
+<rect x="578" y="230" width="215" height="84" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="685.5" y="260.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Validação</text>
+<text x="685.5" y="278.0" font-size="11" fill="#94a3b8" text-anchor="middle">Gates (veredito e SHA),</text>
+<text x="685.5" y="292.0" font-size="11" fill="#94a3b8" text-anchor="middle">Findings</text>
+<rect x="849" y="230" width="215" height="84" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="956.5" y="260.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Saída</text>
+<text x="956.5" y="278.0" font-size="11" fill="#94a3b8" text-anchor="middle">Definition of Done, Human</text>
+<text x="956.5" y="292.0" font-size="11" fill="#94a3b8" text-anchor="middle">acceptance</text>
+<rect x="578" y="344" width="486" height="84" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="821.0" y="381.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Exceção</text>
+<text x="821.0" y="399.0" font-size="11" fill="#94a3b8" text-anchor="middle">Blocked: motivo, quem destrava e status anterior</text>
+<rect x="36" y="458" width="1028" height="84" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="550.0" y="495.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Diário nos comentários</text>
+<text x="550.0" y="513.0" font-size="11" fill="#94a3b8" text-anchor="middle">uma linha por mudança: LOG STATUS | data | quem | id | de -&gt; para | evidência</text>
+
+<rect x="36" y="567" width="12" height="12" rx="3" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="54" y="577" font-size="10.5" fill="#94a3b8">guilda (núcleo)</text>
+<rect x="165.77499999999998" y="567" width="12" height="12" rx="3" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="183.77499999999998" y="577" font-size="10.5" fill="#94a3b8">decisão humana</text>
+<rect x="289.56499999999994" y="567" width="12" height="12" rx="3" fill="#1b2538" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="307.56499999999994" y="577" font-size="10.5" fill="#94a3b8">dado ou artefato</text>
+<text x="36" y="600" font-size="11" fill="#94a3b8">A capa é reescrita a cada mudança de status. A ficha só cresce: nada que foi provado é apagado.</text>
+</svg>

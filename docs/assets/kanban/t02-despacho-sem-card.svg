@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="691" height="205" viewBox="0 0 691 205" role="img" aria-label="Hook de despacho: sem card, o agente não é chamado (entrada simulada)">
+<title>Hook de despacho: sem card, o agente não é chamado (entrada simulada)</title>
+<rect width="691" height="205" rx="12" fill="#0b1220"/>
+<rect width="691" height="38" rx="12" fill="#16223a"/><rect y="26" width="691" height="12" fill="#16223a"/>
+<circle cx="20" cy="19" r="5.5" fill="#f87171"/><circle cx="38" cy="19" r="5.5" fill="#fbbf24"/><circle cx="56" cy="19" r="5.5" fill="#4ade80"/>
+<text x="345.5" y="23.5" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">Hook de despacho: sem card, o agente não é chamado (entrada simulada)</text>
+<text x="22" y="62" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#e2e8f0" font-weight="700" xml:space="preserve">principal&gt; Agent(backend): "Implemente o login."</text>
+<text x="22" y="81" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#f87171" xml:space="preserve">[guardrails] BLOQUEADO: despacho de 'backend' sem card. Inclua no briefing uma linha</text>
+<text x="22" y="100" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#f87171" xml:space="preserve">  'Card: dono/repo#N' com a issue desta tarefa. Se o card não existe, crie-o primeiro</text>
+<text x="22" y="119" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#f87171" xml:space="preserve">  (product-owner) e passe pela auditoria do quadro</text>
+<text x="22" y="138" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve"></text>
+<text x="22" y="157" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#e2e8f0" font-weight="700" xml:space="preserve">principal&gt; Agent(backend): "Card: exemplo/hub#15 ... Implemente o login."</text>
+<text x="22" y="176" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#4ade80" xml:space="preserve">(permitido)</text>
+</svg>
