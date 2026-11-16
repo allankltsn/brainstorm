@@ -32,10 +32,10 @@ const STATUS_TONE = { vazio: 'neutral', sugerido: 'warning', aprovado: 'success'
 export function Inicio() {
   const navigate = useNavigate()
   const { kit, approved } = useBrand()
-  const { queue, scheduled, remove, restore } = useContent()
+  const { queue, scheduled, failed, remove, restore } = useContent()
   const [replies, setReplies] = useState(replyDrafts)
   const [open, setOpen] = useState<ReplyDraft | null>(null)
-  const pendingCount = queue.length + replies.length
+  const pendingCount = queue.length + replies.length + failed.length
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
   const totalLeads = leadSources.reduce((n, s) => n + s.leads, 0)
@@ -54,7 +54,7 @@ export function Inicio() {
           <>
             Hoje é {TODAY_LABEL}.{' '}
             <strong className="font-medium text-foreground">
-              {pendingCount === 0 ? 'Nada pendente' : `${pendingCount} ${pendingCount === 1 ? 'rascunho espera' : 'rascunhos esperam'} a sua aprovação`}
+              {pendingCount === 0 ? 'Nada pendente' : `${pendingCount} ${pendingCount === 1 ? 'item espera' : 'itens esperam'} por você`}
             </strong>
             .
           </>
@@ -67,17 +67,33 @@ export function Inicio() {
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <Section title="Precisa de você" description="A Aura só sugere. Nada é publicado ou enviado sem a sua aprovação." className="min-w-0 lg:col-span-2">
+        <Section title="Precisa de você" description="O que não saiu vem primeiro. A Aura só sugere: nada é publicado ou enviado sem a sua aprovação." className="min-w-0 lg:col-span-2">
           {pendingCount === 0 ? (
             <div className="flex flex-col items-center gap-1.5 py-8 text-center">
               <span className="flex size-10 items-center justify-center rounded-full bg-success-soft text-success">
                 <Check className="size-5" />
               </span>
               <p className="font-medium">Tudo em dia</p>
-              <p className="text-sm text-muted-foreground">Nenhum rascunho espera por você agora.</p>
+              <p className="text-sm text-muted-foreground">Nada espera por você agora.</p>
             </div>
           ) : (
             <ul className="-mx-2 divide-y">
+              {failed.map((c) => (
+                <li key={c.id} className="flex flex-wrap items-center gap-x-4 gap-y-2.5 px-2 py-3.5">
+                  <div className="min-w-0 flex-1 basis-64">
+                    <p className="flex flex-wrap items-center gap-2 text-sm font-medium">
+                      {c.headline}
+                      <Pill tone="danger">Não publicado no {channelOf(c.channel).label}</Pill>
+                    </p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      Era para sair em {whenLabel(c.when)}. {c.failure}
+                    </p>
+                  </div>
+                  <Button size="sm" variant="secondary" onClick={() => navigate('/conteudo?aba=agenda')}>
+                    Resolver
+                  </Button>
+                </li>
+              ))}
               {queue.map((c) => (
                 <li key={c.id} className="flex flex-wrap items-center gap-x-4 gap-y-2.5 px-2 py-3.5">
                   <div className="min-w-0 flex-1 basis-64">

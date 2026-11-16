@@ -44,6 +44,7 @@ O app está em `aura-brand/` (ver `README.md`). Prontos no protótipo:
 - shell, tema roxo e Início com a fila "Precisa de você";
 - módulo 1, **Brand kit**: briefing, logo, paleta, tipografia, tom de voz e aprovação por parte;
 - módulo 2, **Gerador de conteúdo**: criar rascunho de post ou carrossel, fila de aprovação com edição e prévia, e agendados.
+- módulo 3, **Agendamento e publicação**: agenda com calendário, estado de cada post (agendado, publicado, não publicado) e conexão das redes em Configurações.
 
 ## Próximo passo
-Módulo 3, **Agendamento e publicação**: calendário dos agendados, conexão das redes e estado de cada publicação.
+Módulo 4, **Captação**: formulários e landing pages, com a origem do lead registrada (`#/clientes`).

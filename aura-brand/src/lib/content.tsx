@@ -7,8 +7,14 @@ export type Format = 'post' | 'carrossel'
 export type Channel = 'instagram' | 'facebook' | 'linkedin'
 export type Goal = 'novidade' | 'dica' | 'oferta' | 'bastidores'
 export type Slide = { title: string; text: string }
-/* fila: espera aprovação · agendado: aprovado, com data para publicar */
-export type ContentStatus = 'fila' | 'agendado'
+/*
+ * fila: espera aprovação · agendado: aprovado, com data para publicar
+ * publicado: foi para a rede · falhou: a rede recusou ou não estava conectada
+ */
+export type ContentStatus = 'fila' | 'agendado' | 'publicado' | 'falhou'
+/* conectada: pronta para publicar · expirada: precisa entrar de novo · desconectada: nunca ligada */
+export type NetworkState = 'conectada' | 'expirada' | 'desconectada'
+export type Network = { state: NetworkState; account: string }
 
 export type ContentItem = {
   id: string
@@ -23,6 +29,8 @@ export type ContentItem = {
   when: string // data e hora locais, no formato do campo datetime-local
   status: ContentStatus
   version: number
+  publishedAt?: string
+  failure?: string
 }
 
 export const FORMATS: { value: Format; label: string }[] = [
@@ -194,23 +202,83 @@ const SEED: ContentItem[] = [
     status: 'agendado',
     version: 0,
   },
+  {
+    id: 'c-pub',
+    format: 'post',
+    channel: 'instagram',
+    goal: 'oferta',
+    topic: 'últimas vagas da oficina',
+    headline: 'Oficina de sábado: últimas vagas',
+    caption: 'Oi! Restam 4 vagas para a oficina de café coado deste sábado.\n\nSão duas horas de prática, com degustação no final.\n\nChama a gente no WhatsApp e garante a sua.',
+    hashtags: ['#ateliecafe', '#oficinadecafe'],
+    slides: [],
+    when: '2026-11-09T09:00',
+    status: 'publicado',
+    version: 0,
+    publishedAt: '2026-11-09T09:00',
+  },
+  {
+    id: 'c-fail',
+    format: 'post',
+    channel: 'facebook',
+    goal: 'novidade',
+    topic: 'novo horário de domingo',
+    headline: 'Agora abrimos aos domingos',
+    caption: 'Tem novidade: a partir deste mês abrimos aos domingos, das 9h às 14h. Passa aqui para um café sem pressa.',
+    hashtags: [],
+    slides: [],
+    when: '2026-11-10T18:00',
+    status: 'falhou',
+    version: 0,
+    failure: 'A conexão com o Facebook expirou.',
+  },
 ]
 
-const KEY = 'aura-brand-content'
-function load(): ContentItem[] {
+const NETWORKS_SEED: Record<Channel, Network> = {
+  instagram: { state: 'conectada', account: '@ateliecafe' },
+  facebook: { state: 'expirada', account: 'Ateliê Café' },
+  linkedin: { state: 'desconectada', account: '' },
+}
+
+const KEY = 'aura-brand-content-2'
+const NET_KEY = 'aura-brand-networks'
+function load<T>(key: string, fallback: T): T {
   try {
-    const raw = localStorage.getItem(KEY)
-    if (raw) return JSON.parse(raw) as ContentItem[]
+    const raw = localStorage.getItem(key)
+    if (raw) return JSON.parse(raw) as T
   } catch {
     /* sem storage ou dado inválido: usa os exemplos */
   }
-  return SEED
+  return fallback
+}
+function store(key: string, value: unknown) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch {
+    /* ignora */
+  }
+}
+
+/* Por que um post não pode ser publicado agora, ou null se a rede está pronta. */
+export function networkProblem(channel: Channel, networks: Record<Channel, Network>): string | null {
+  const label = channelOf(channel).label
+  const state = networks[channel].state
+  if (state === 'expirada') return `A conexão com o ${label} expirou.`
+  if (state === 'desconectada') return `O ${label} não está conectado.`
+  return null
 }
 
 type Ctx = {
   items: ContentItem[]
   queue: ContentItem[]
   scheduled: ContentItem[]
+  published: ContentItem[]
+  failed: ContentItem[]
+  networks: Record<Channel, Network>
+  connect: (channel: Channel) => void
+  disconnect: (channel: Channel) => void
+  /* Publica na hora. Se a rede não estiver pronta, não muda nada e devolve o motivo. */
+  publish: (id: string) => string | null
   add: (draft: Omit<ContentItem, 'id' | 'status' | 'when'>) => ContentItem
   patch: (id: string, patch: Partial<ContentItem>) => void
   remove: (id: string) => void
@@ -219,15 +287,18 @@ type Ctx = {
 const ContentCtx = createContext<Ctx | null>(null)
 
 export function ContentProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<ContentItem[]>(load)
+  const [items, setItems] = useState<ContentItem[]>(() => load(KEY, SEED))
+  const [networks, setNetworks] = useState<Record<Channel, Network>>(() => load(NET_KEY, NETWORKS_SEED))
   const save = (fn: (cur: ContentItem[]) => ContentItem[]) =>
     setItems((cur) => {
       const next = fn(cur)
-      try {
-        localStorage.setItem(KEY, JSON.stringify(next))
-      } catch {
-        /* ignora */
-      }
+      store(KEY, next)
+      return next
+    })
+  const setNetwork = (channel: Channel, network: Network) =>
+    setNetworks((cur) => {
+      const next = { ...cur, [channel]: network }
+      store(NET_KEY, next)
       return next
     })
   const byDate = (a: ContentItem, b: ContentItem) => a.when.localeCompare(b.when)
@@ -235,6 +306,20 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     items,
     queue: items.filter((i) => i.status === 'fila'),
     scheduled: items.filter((i) => i.status === 'agendado').sort(byDate),
+    published: items.filter((i) => i.status === 'publicado').sort((a, b) => byDate(b, a)),
+    failed: items.filter((i) => i.status === 'falhou').sort(byDate),
+    networks,
+    // Protótipo: conectar é imediato. No produto, abre a autorização da rede.
+    connect: (channel) => setNetwork(channel, { state: 'conectada', account: networks[channel].account || NETWORKS_SEED.instagram.account }),
+    disconnect: (channel) => setNetwork(channel, { state: 'desconectada', account: '' }),
+    publish: (id) => {
+      const item = items.find((i) => i.id === id)
+      if (!item) return null
+      const problem = networkProblem(item.channel, networks)
+      // Rede não pronta: nada muda. O post segue agendado (ou como não publicado) até conectar.
+      if (!problem) save((cur) => cur.map((i) => (i.id === id ? { ...i, status: 'publicado', publishedAt: NOW, failure: undefined } : i)))
+      return problem
+    },
     add: (draft) => {
       // sugestão de horário: dois dias depois de "hoje", às 9h
       const item: ContentItem = { ...draft, id: `c${Date.now()}`, status: 'fila', when: '2026-11-13T09:00' }
