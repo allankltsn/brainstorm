@@ -1,14 +1,16 @@
-import { Palette, PenLine, Settings, Sparkles } from 'lucide-react'
+import { Megaphone, Palette, PenLine, Settings, Sparkles, UserPlus } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/lightswind/command'
 import { useAssistant } from '@/lib/assistant'
+import { stageLabel, useCrm } from '@/lib/crm'
 import { NAV } from '@/lib/nav'
 
-/* Busca única (Ctrl/⌘ K): telas e ações no mesmo lugar. Usa o Command do Lightswind. */
+/* Busca única (Ctrl/⌘ K): telas, contatos e ações no mesmo lugar. Usa o Command do Lightswind. */
 export function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const navigate = useNavigate()
   const assistant = useAssistant()
+  const { contacts } = useCrm()
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -53,6 +55,8 @@ export function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenCh
     heading: 'Ações',
     items: [
       { key: 'post', label: 'Criar post', words: 'novo conteúdo carrossel', icon: <PenLine />, run: go('/conteudo') },
+      { key: 'contato', label: 'Adicionar contato', words: 'novo cliente lead', icon: <UserPlus />, run: go('/clientes?aba=contatos&novo=1') },
+      { key: 'campanha', label: 'Criar campanha', words: 'nova e-mail whatsapp', icon: <Megaphone />, run: go('/conversas?aba=campanhas&campanha=nova') },
       { key: 'kit-ia', label: 'Gerar brand kit com IA', words: 'marca briefing logo paleta', icon: <Sparkles />, run: go('/marca?aba=briefing') },
       {
         key: 'aura',
@@ -66,12 +70,22 @@ export function CommandPalette({ open, onOpenChange }: { open: boolean; onOpenCh
       },
     ],
   })
+  groups.push({
+    heading: 'Contatos',
+    items: contacts.map((x) => ({
+      key: x.id,
+      label: x.name,
+      hint: stageLabel(x.stage),
+      icon: <span className="flex size-6 items-center justify-center rounded-full bg-muted text-[10px] font-medium">{x.name[0]}</span>,
+      run: go(`/clientes?aba=contatos&contato=${x.id}`),
+    })),
+  })
   // O filtro fica aqui para esconder grupos vazios e só mostrar "nada encontrado" quando for verdade
   const shown = groups.map((g) => ({ ...g, items: g.items.filter((i) => match(`${i.label} ${i.words ?? ''} ${i.hint ?? ''}`)) })).filter((g) => g.items.length)
 
   return (
     <CommandDialog open={open} onOpenChange={onOpenChange}>
-      <CommandInput placeholder="Buscar telas ou ações" value={q} onValueChange={setQ} />
+      <CommandInput placeholder="Buscar telas, contatos ou ações" value={q} onValueChange={setQ} />
       <CommandList>
         {shown.length === 0 && <CommandEmpty>Nada encontrado. Tente outro nome.</CommandEmpty>}
         {shown.map((g) => (

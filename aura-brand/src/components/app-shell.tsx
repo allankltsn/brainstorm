@@ -1,7 +1,6 @@
-import { Bell, ChevronsUpDown, CreditCard, LogOut, Moon, Palette, PenLine, Plus, Search, Settings, Sparkles, Sun, UserPlus } from 'lucide-react'
+import { Bell, ChevronsUpDown, CreditCard, LogOut, Megaphone, Moon, Palette, PenLine, Plus, Search, Settings, Sparkles, Sun, UserPlus } from 'lucide-react'
 import { useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { toast } from 'sonner'
 import { AssistantWidget } from '@/components/assistant'
 import { CommandPalette } from '@/components/command-palette'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -36,6 +35,7 @@ import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { AssistantProvider } from '@/lib/assistant'
 import { useContent } from '@/lib/content'
+import { useCrm } from '@/lib/crm'
 import { initials, notifications, session } from '@/lib/data'
 import { currentNav, NAV, pageTitle, type NavItem } from '@/lib/nav'
 import { useTheme } from '@/lib/theme'
@@ -105,8 +105,11 @@ function NewButton() {
         <DropdownMenuItem onSelect={go('/marca?aba=briefing')}>
           <Sparkles /> Gerar brand kit com IA
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => toast.success('Contato adicionado', { description: 'Ele aparece em Clientes, na primeira etapa do funil.' })}>
+        <DropdownMenuItem onSelect={go('/clientes?aba=contatos&novo=1')}>
           <UserPlus /> Adicionar contato
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={go('/conversas?aba=campanhas&campanha=nova')}>
+          <Megaphone /> Criar campanha
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -238,10 +241,12 @@ function BottomNav() {
   )
 }
 
-/* O menu é fixo; o número ao lado de Conteúdo vem da fila de aprovação. */
+/* O menu é fixo; os números vêm da fila de aprovação e das conversas sem resposta. */
 function useNav(): NavItem[] {
   const { queue } = useContent()
-  return NAV.map((i) => (i.to === '/conteudo' ? { ...i, badge: queue.length || undefined } : i))
+  const { unread } = useCrm()
+  const badge: Record<string, number> = { '/conteudo': queue.length, '/conversas': unread }
+  return NAV.map((i) => ({ ...i, badge: badge[i.to] || undefined }))
 }
 
 export function AppShell() {

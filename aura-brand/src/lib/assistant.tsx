@@ -1,7 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { toast } from 'sonner'
 import type { GlowCloudMood } from '@/components/affect/glow-cloud'
-import { leadSources } from './data'
 
 /* Assistente "Aura": estado, voz e respostas de exemplo (sem servidor: tudo simulado no protótipo). */
 
@@ -43,17 +42,17 @@ function reply(q: string): Omit<AssistantMessage, 'id' | 'from'> {
       text: 'Os rascunhos de posts e a resposta sugerida no WhatsApp esperam a sua revisão. Nada é publicado ou enviado sem a sua aprovação.',
       actions: [{ label: 'Abrir a fila de aprovação', to: '/conteudo?aba=fila' }],
     }
-  if (/(lead|origem|captac|de onde)/.test(t)) {
-    const total = leadSources.reduce((n, s) => n + s.leads, 0)
-    return { text: `Foram ${total} leads nos últimos 7 dias. A maior origem é ${leadSources[0].source}, com ${leadSources[0].leads}.`, actions: [{ label: 'Abrir clientes', to: '/clientes' }] }
-  }
+  if (/(lead|origem|captac|de onde|relatorio|resultado)/.test(t))
+    return { text: 'Os relatórios mostram de onde vêm os contatos, quantos fecharam e o resultado das campanhas, por período.', actions: [{ label: 'Abrir relatórios', to: '/inicio?aba=relatorios' }] }
+  if (/(funil|cliente|contato|proposta)/.test(t)) return { text: 'O funil mostra cada contato na etapa em que está, com a origem e o valor em negociação.', actions: [{ label: 'Abrir o funil', to: '/clientes' }] }
+  if (/(campanha|newsletter|disparo)/.test(t)) return { text: 'Posso escrever o texto de uma campanha de e-mail ou WhatsApp. Você revisa e confirma antes de sair.', actions: [{ label: 'Criar campanha', to: '/conversas?aba=campanhas&campanha=nova' }] }
   if (/(post|carrossel|conteudo|legenda|imagem)/.test(t)) return { text: 'Vou preparar um rascunho usando o seu brand kit. Ele entra na fila de aprovação e só é publicado depois que você aprovar.', actions: [{ label: 'Criar rascunho', to: '/conteudo' }] }
   if (/(marca|brand|logo|paleta|cor|fonte|tipografia|tom de voz|briefing)/.test(t)) return { text: 'O brand kit reúne logo, paleta, tipografia e tom de voz. Responda o briefing e eu sugiro tudo para você revisar.', actions: [{ label: 'Abrir a marca', to: '/marca' }] }
-  if (/(mensag|conversa|whatsapp|instagram|e-?mail)/.test(t)) return { text: 'Há 1 conversa nova no WhatsApp. Deixei uma resposta sugerida para você revisar.', actions: [{ label: 'Abrir conversas', to: '/conversas' }] }
+  if (/(mensag|conversa|whatsapp|instagram|e-?mail)/.test(t)) return { text: 'As conversas sem resposta ficam no topo da caixa de entrada. Onde deu, deixei uma resposta sugerida para você revisar.', actions: [{ label: 'Abrir conversas', to: '/conversas' }] }
   if (/(assinatura|plano|pagamento|cobranca|credito)/.test(t)) return { text: 'Seu plano é o Pro. Você usou 340 de 1.000 créditos de IA neste mês e a próxima cobrança é em 03/12.', actions: [{ label: 'Ver assinatura', to: '/configuracoes?aba=assinatura' }] }
   if (/(oi|ola|bom dia|boa tarde|boa noite)\b/.test(t)) return { text: 'Olá! Posso mostrar o que precisa da sua aprovação, preparar um post ou abrir qualquer tela para você.' }
   return {
-    text: 'Ainda estou aprendendo essa. Por enquanto consigo: mostrar o que espera sua aprovação, resumir seus leads, preparar rascunhos de conteúdo e abrir as telas para você.',
+    text: 'Ainda estou aprendendo essa. Por enquanto consigo: mostrar o que espera sua aprovação, abrir relatórios e o funil, preparar rascunhos de conteúdo e de campanha e abrir as telas para você.',
   }
 }
 

@@ -45,6 +45,15 @@ O app está em `aura-brand/` (ver `README.md`). Prontos no protótipo:
 - módulo 1, **Brand kit**: briefing, logo, paleta, tipografia, tom de voz e aprovação por parte;
 - módulo 2, **Gerador de conteúdo**: criar rascunho de post ou carrossel, fila de aprovação com edição e prévia, e agendados.
 - módulo 3, **Agendamento e publicação**: agenda com calendário, estado de cada post (agendado, publicado, não publicado) e conexão das redes em Configurações.
+- módulos 4 e 5, **Captação** e **CRM e funil**, em Clientes: formulários e páginas com origem registrada, funil por etapa, contatos, propostas e automações;
+- módulos 6 e 7, **Caixa de entrada** e **Campanhas**, em Conversas;
+- módulo 8, **Painel da marca**, na aba Relatórios do Início.
+
+Os oito módulos do MVP existem no protótipo, com dados fictícios e sem integração real.
+
+### Reaproveitado do aura-fit: o que entrou
+- Entrou: fila "Precisa de você", consentimento (LGPD) por contato, limite por plano (contatos), importação de planilha, assinatura em Configurações.
+- Ainda não: cobrança real (Stripe), cupons, troca de plano, notificações de verdade.
 
 ## Próximo passo
-Módulo 4, **Captação**: formulários e landing pages, com a origem do lead registrada (`#/clientes`).
+Sair do protótipo: escolher o backend e trocar as partes simuladas por integrações reais, nesta ordem sugerida: geração por IA (brand kit, conteúdo, respostas, campanhas), conexão e publicação nas redes, WhatsApp e e-mail, e cobrança.

@@ -4,9 +4,12 @@ import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { BrandProvider } from '@/lib/brand'
 import { ContentProvider } from '@/lib/content'
+import { CrmProvider } from '@/lib/crm'
 import { ThemeProvider } from '@/lib/theme'
+import { Clientes } from '@/pages/clientes'
 import { Configuracoes } from '@/pages/configuracoes'
 import { Conteudo } from '@/pages/conteudo'
+import { Conversas } from '@/pages/conversas'
 import { DesignSystem } from '@/pages/design-system'
 import { Inicio } from '@/pages/inicio'
 import { Login, VerifyEmail } from '@/pages/login'
@@ -19,6 +22,7 @@ export default function App() {
     <ThemeProvider>
       <BrandProvider>
         <ContentProvider>
+         <CrmProvider>
           <TooltipProvider>
             <HashRouter>
               <Routes>
@@ -29,6 +33,8 @@ export default function App() {
                   <Route path="/inicio" element={<Inicio />} />
                   <Route path="/marca" element={<Marca />} />
                   <Route path="/conteudo" element={<Conteudo />} />
+                  <Route path="/clientes" element={<Clientes />} />
+                  <Route path="/conversas" element={<Conversas />} />
                   <Route path="/configuracoes" element={<Configuracoes />} />
                   <Route path="/design-system" element={<DesignSystem />} />
                   <Route path="*" element={<Placeholder />} />
@@ -37,6 +43,7 @@ export default function App() {
             </HashRouter>
             <Toaster position="top-center" />
           </TooltipProvider>
+         </CrmProvider>
         </ContentProvider>
       </BrandProvider>
     </ThemeProvider>

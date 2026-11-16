@@ -13,7 +13,7 @@ export const NAV: NavItem[] = [
   { to: '/marca', label: 'Marca', icon: SwatchBook },
   { to: '/conteudo', label: 'Conteúdo', icon: PenLine },
   { to: '/clientes', label: 'Clientes', icon: Users },
-  { to: '/conversas', label: 'Conversas', icon: Inbox, badge: 1 },
+  { to: '/conversas', label: 'Conversas', icon: Inbox },
 ]
 
 const TITLES: Record<string, string> = {

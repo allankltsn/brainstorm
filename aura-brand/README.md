@@ -31,8 +31,17 @@ npm run dev
   - Agenda: calendário do mês (no celular, só a lista), próximos posts, avisos de rede não conectada e o que não foi publicado, com "Publicar agora";
   - Publicados: o que já saiu, do mais recente ao mais antigo.
 - **Redes** (`#/configuracoes?aba=redes`): conectar e desconectar Instagram, Facebook e LinkedIn, com o estado de cada conexão.
+- **Clientes** (`#/clientes`): captação e funil, em quatro abas:
+  - Funil: colunas por etapa (Novo, Em conversa, Proposta, Fechado) com total em reais; a etapa muda por um seletor em cada cartão; perdidos ficam numa lista à parte;
+  - Contatos: busca, filtro por origem, adicionar contato e importar planilha CSV (nome, e-mail, telefone);
+  - Captação: formulários e páginas de captura com visitas, contatos e conversão; o editor mostra a prévia com as cores da marca, e enviar a prévia cria um contato de verdade no funil;
+  - Automações: mensagens de texto fixo por etapa, com liga e desliga.
+  - A ficha do contato (painel lateral) traz origem, etapa, consentimento, anotações, propostas e o atalho para a conversa.
+- **Conversas** (`#/conversas`): caixa de entrada e campanhas:
+  - Caixa de entrada: WhatsApp, Instagram e e-mail numa lista só, sem resposta primeiro; a Aura sugere a resposta e você revisa antes de enviar;
+  - Campanhas: e-mail ou WhatsApp para um público (todos ou uma etapa), com texto sugerido pela Aura, prévia, agendamento e "Enviar agora" com confirmação; campanhas enviadas mostram abertura, cliques e respostas.
+- **Relatórios** (`#/inicio?aba=relatorios`): painel da marca por período (7, 30 ou 90 dias): contatos novos, taxa de fechamento, valores, funil, origem dos contatos, conteúdo, campanhas e créditos de IA por recurso, com download das origens em CSV.
 - Entrar, Configurações e Kit de interface vieram do `prototype-v2`, com os textos adaptados.
-- Clientes e Conversas ainda mostram "ainda não foi construída".
 
 ## Regras do brand kit
 
@@ -50,6 +59,16 @@ npm run dev
 - Post agendado ou publicado não é editável; para editar, ele volta para a fila e precisa de nova aprovação.
 - Rascunhos e conexões ficam no aparelho (`localStorage`, chaves `aura-brand-content-2` e `aura-brand-networks`).
 
+## Regras de clientes e conversas
+
+- Todo contato guarda a origem (rede, formulário, indicação, planilha ou cadastro à mão).
+- Consentimento (LGPD): quem não aceitou receber mensagens fica fora de campanhas e automações, e a tela mostra quantos ficaram de fora. Responder a uma mensagem do próprio contato continua permitido. Contatos importados de planilha entram sem consentimento.
+- Automações têm texto fixo escrito pelo dono, não pela IA. Rodam quando o contato entra na etapa e a mensagem aparece na conversa, marcada como automação.
+- Enviar uma proposta leva o contato para Proposta; marcar como aceita, para Fechado. Responder um contato novo leva para Em conversa.
+- A Aura sugere respostas e textos de campanha, mas nada sai sem revisão: a sugestão vai para o campo de texto e quem envia é o dono. "Enviar agora" numa campanha pede confirmação.
+- Limite do plano: 500 contatos; a importação recusa a planilha que passar disso.
+- Tudo fica no aparelho (`localStorage`, chave `aura-brand-crm`).
+
 ## O que é simulado
 
 - Os rascunhos (`draftFrom` em `src/lib/content.tsx`) saem de modelos de texto, não de IA. Nada é enviado a rede nenhuma: conectar uma rede e publicar só mudam o estado no aparelho. O relógio do protótipo é fixo (11/11/2026, 10h), então um post agendado não sai sozinho no horário; use "Publicar agora".
@@ -57,7 +76,9 @@ npm run dev
 - A sugestão do kit (`suggestFrom` em `src/lib/brand.tsx`) e as respostas da Aura (`reply` em `src/lib/assistant.tsx`) são de exemplo. Em produção, viram chamadas ao agente.
 - Os logos são desenhados em SVG a partir do nome e da paleta.
 - Só a fonte Geist está instalada; os outros pares de tipografia usam fontes do aparelho.
-- Todos os dados (`src/lib/data.ts`) são fictícios.
+- Nenhuma mensagem ou campanha é enviada de verdade, e nenhuma chega: a caixa de entrada só tem as conversas de exemplo. Os números de visitas dos formulários e de abertura das campanhas de exemplo são fixos; uma campanha enviada no protótipo fica em "aguardando".
+- Os relatórios são calculados a partir dos dados de exemplo do app. Os créditos de IA são um número fixo, que não diminui com o uso.
+- Todos os dados (`src/lib/data.ts`, `src/lib/crm.tsx`, `src/lib/content.tsx`) são fictícios.
 
 ## Tema
 

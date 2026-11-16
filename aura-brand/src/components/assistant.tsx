@@ -10,7 +10,7 @@ import { useAssistant } from '@/lib/assistant'
 import { firstName, session } from '@/lib/data'
 import { cn } from '@/lib/utils'
 
-const SUGGESTIONS = ['O que precisa de mim hoje?', 'Criar um post sobre a novidade', 'De onde vêm meus leads?']
+const SUGGESTIONS = ['O que precisa de mim hoje?', 'Criar um post sobre a novidade', 'De onde vêm meus contatos?']
 
 const STATUS = { thinking: 'Trabalhando nisso…', listening: 'Ouvindo você…', happy: 'Pronto!', sleepy: 'Descansando', idle: 'Pronta para ajudar' } as const
 
