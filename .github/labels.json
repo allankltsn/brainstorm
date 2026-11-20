@@ -1,0 +1,12 @@
+[
+  {"name": "type:epic", "color": "6f42c1"},
+  {"name": "type:story", "color": "0e8a16"},
+  {"name": "type:bug", "color": "d73a4a"},
+  {"name": "type:spike", "color": "fbca04"},
+  {"name": "tier:deep", "color": "1d76db"},
+  {"name": "tier:standard", "color": "5319e7"},
+  {"name": "tier:light", "color": "c5def5"},
+  {"name": "checkpoint", "color": "bfdadc"},
+  {"name": "retroativo", "color": "ededed"},
+  {"name": "abandonado", "color": "cccccc"}
+]

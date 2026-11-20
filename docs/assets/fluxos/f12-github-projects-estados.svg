@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1222" height="558" viewBox="0 0 1222 558" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="GitHub Projects: nove estados e quem move cada um">
+<title>GitHub Projects: nove estados e quem move cada um</title>
+<defs><marker id="ar64748b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<rect width="1222" height="558" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">GitHub Projects: nove estados e quem move cada um</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">O Status segue a autoridade, não eventos do repositório; as automações nativas de Status ficam desligadas</text>
+<path d="M226.0,159.0 L276.0,159.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M466.0,159.0 L516.0,159.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M706.0,159.0 L756.0,159.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M946.0,159.0 L996.0,159.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M611.0,202.0 L611.0,248.0" fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#ar64748b)"/>
+<path d="M851.0,202.0 L851.0,248.0" fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#ar64748b)"/>
+<path d="M1091.0,202.0 L1091.0,248.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+<path d="M1091.0,334.0 L1091.0,380.0" fill="none" stroke="#64748b" stroke-width="1.8" marker-end="url(#ar64748b)"/>
+
+<rect x="36" y="116" width="190" height="86" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="131.0" y="147.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">open</text>
+<text x="131.0" y="165.0" font-size="11" fill="#94a3b8" text-anchor="middle">planejado, não agendado</text>
+<text x="131.0" y="179.0" font-size="11" fill="#94a3b8" text-anchor="middle">(principal)</text>
+<rect x="276" y="116" width="190" height="86" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="371.0" y="147.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">pending</text>
+<text x="371.0" y="165.0" font-size="11" fill="#94a3b8" text-anchor="middle">briefing pronto</text>
+<text x="371.0" y="179.0" font-size="11" fill="#94a3b8" text-anchor="middle">(principal)</text>
+<rect x="516" y="116" width="190" height="86" rx="11" fill="#0e2340" stroke="#60a5fa" stroke-width="1.6"/>
+<text x="611.0" y="147.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">in-progress</text>
+<text x="611.0" y="165.0" font-size="11" fill="#94a3b8" text-anchor="middle">trabalho ativo (instância</text>
+<text x="611.0" y="179.0" font-size="11" fill="#94a3b8" text-anchor="middle">designada)</text>
+<rect x="756" y="116" width="190" height="86" rx="11" fill="#251b47" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="851.0" y="147.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">in-review</text>
+<text x="851.0" y="165.0" font-size="11" fill="#94a3b8" text-anchor="middle">entregue para validação</text>
+<text x="851.0" y="179.0" font-size="11" fill="#94a3b8" text-anchor="middle">(autor envia)</text>
+<rect x="996" y="116" width="190" height="86" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="1091.0" y="147.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">completed</text>
+<text x="1091.0" y="165.0" font-size="11" fill="#94a3b8" text-anchor="middle">verificado com evidência</text>
+<text x="1091.0" y="179.0" font-size="11" fill="#94a3b8" text-anchor="middle">(principal)</text>
+<rect x="516" y="248" width="190" height="86" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="611.0" y="279.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">blocked</text>
+<text x="611.0" y="297.0" font-size="11" fill="#94a3b8" text-anchor="middle">impedimento ou decisão</text>
+<text x="611.0" y="311.0" font-size="11" fill="#94a3b8" text-anchor="middle">pendente</text>
+<rect x="756" y="248" width="190" height="86" rx="11" fill="#3b1414" stroke="#f87171" stroke-width="1.6"/>
+<text x="851.0" y="279.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">rejected</text>
+<text x="851.0" y="297.0" font-size="11" fill="#94a3b8" text-anchor="middle">defeito devolvido ao autor</text>
+<text x="851.0" y="311.0" font-size="11" fill="#94a3b8" text-anchor="middle">(validador)</text>
+<rect x="996" y="248" width="190" height="86" rx="11" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="1091.0" y="279.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">accepted</text>
+<text x="1091.0" y="297.0" font-size="11" fill="#94a3b8" text-anchor="middle">aceito explicitamente por</text>
+<text x="1091.0" y="311.0" font-size="11" fill="#94a3b8" text-anchor="middle">você</text>
+<rect x="996" y="380" width="190" height="86" rx="11" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="1091.0" y="411.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">closed</text>
+<text x="1091.0" y="429.0" font-size="11" fill="#94a3b8" text-anchor="middle">fechamento de sprint ou</text>
+<text x="1091.0" y="443.0" font-size="11" fill="#94a3b8" text-anchor="middle">abandono</text>
+
+<rect x="36" y="491" width="12" height="12" rx="3" fill="#0b2f31" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="54" y="501" font-size="10.5" fill="#94a3b8">guilda (núcleo)</text>
+<rect x="165.77499999999998" y="491" width="12" height="12" rx="3" fill="#0e2340" stroke="#60a5fa" stroke-width="1.4"/>
+<text x="183.77499999999998" y="501" font-size="10.5" fill="#94a3b8">ferramenta externa</text>
+<rect x="313.505" y="491" width="12" height="12" rx="3" fill="#3b1414" stroke="#f87171" stroke-width="1.4"/>
+<text x="331.505" y="501" font-size="10.5" fill="#94a3b8">lacuna ou risco</text>
+<rect x="443.28" y="491" width="12" height="12" rx="3" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="461.28" y="501" font-size="10.5" fill="#94a3b8">decisão humana</text>
+<rect x="567.0699999999999" y="491" width="12" height="12" rx="3" fill="#251b47" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="585.0699999999999" y="501" font-size="10.5" fill="#94a3b8">segurança e gates</text>
+<text x="36" y="524" font-size="11" fill="#94a3b8">Cores: verde-água = principal; azul = quem executa; roxo = validadores independentes; âmbar = você. Nunca existe estado Done.</text>
+</svg>

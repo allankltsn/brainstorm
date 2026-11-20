@@ -1,0 +1,21 @@
+name: História
+description: Entrega de valor, dividida em tarefas
+title: "[S-NNN] "
+labels: ["type:story"]
+body:
+  - type: textarea
+    id: resumo
+    attributes:
+      label: Resumo (cinco linhas, em português)
+      value: |
+        - **O quê:**
+        - **Por quê:**
+        - **Agora:**
+        - **Falta:**
+        - **Precisa de você:** não
+    validations: {required: true}
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Critérios de aceite e Definition of Ready
+    validations: {required: true}

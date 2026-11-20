@@ -1,0 +1,6 @@
+{
+  "name": "guardrails",
+  "version": "0.1.0",
+  "description": "Bloqueia comandos destrutivos e leitura de segredos, pede confirmacao para producao, aplica teto de custo por sessao e alerta sobre prompt injection.",
+  "license": "Apache-2.0"
+}

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1118" height="564" viewBox="0 0 1118 564" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="O que o auditor confere, por momento da vida do card">
+<title>O que o auditor confere, por momento da vida do card</title>
+<defs></defs>
+<rect width="1118" height="564" rx="16" fill="#0b1220"/>
+<rect x="36" y="28" width="34" height="4" rx="2" fill="#2dd4bf"/>
+<text x="36" y="58" font-size="20" font-weight="800" fill="#e2e8f0">O que o auditor confere, por momento da vida do card</text>
+<text x="36" y="80" font-size="12.5" fill="#94a3b8">Erros impedem a passagem; avisos são listados</text>
+
+
+<rect x="36" y="116" width="330" height="64" rx="11" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="201.0" y="152.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Sempre</text>
+<rect x="394" y="116" width="330" height="64" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="559.0" y="144.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Status válido, título no formato,</text>
+<text x="559.0" y="161.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">campos derivados em sincronia</text>
+<rect x="752" y="116" width="330" height="64" rx="11" fill="#251b47" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="917.0" y="152.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">K-01 a K-05</text>
+<rect x="36" y="196" width="330" height="64" rx="11" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="201.0" y="232.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Capa</text>
+<rect x="394" y="196" width="330" height="64" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="559.0" y="224.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Resumo com as cinco linhas, curto e</text>
+<text x="559.0" y="241.0" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">coerente com o status</text>
+<rect x="752" y="196" width="330" height="64" rx="11" fill="#251b47" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="917.0" y="232.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">K-06, K-07</text>
+<rect x="36" y="276" width="330" height="64" rx="11" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="201.0" y="312.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Antes de começar</text>
+<rect x="394" y="276" width="330" height="64" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="559.0" y="295.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Definition of Ready completa,</text>
+<text x="559.0" y="312.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">critérios em lista, escopo</text>
+<text x="559.0" y="329.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">preenchido</text>
+<rect x="752" y="276" width="330" height="64" rx="11" fill="#251b47" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="917.0" y="312.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">K-08 a K-10</text>
+<rect x="36" y="356" width="330" height="64" rx="11" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="201.0" y="392.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Durante</text>
+<rect x="394" y="356" width="330" height="64" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="559.0" y="375.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">agente e staffing definidos,</text>
+<text x="559.0" y="392.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">evidência ao entregar, motivo ao</text>
+<text x="559.0" y="409.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">bloquear ou rejeitar</text>
+<rect x="752" y="356" width="330" height="64" rx="11" fill="#251b47" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="917.0" y="392.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">K-11 a K-15</text>
+<rect x="36" y="436" width="330" height="64" rx="11" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="201.0" y="472.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">Antes de concluir</text>
+<rect x="394" y="436" width="330" height="64" rx="11" fill="#1b2538" stroke="#94a3b8" stroke-width="1.6"/>
+<text x="559.0" y="455.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">gates aprovados no mesmo SHA por</text>
+<text x="559.0" y="472.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">outra instância, Definition of Done,</text>
+<text x="559.0" y="489.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">aceite, diário e transições válidas</text>
+<rect x="752" y="436" width="330" height="64" rx="11" fill="#251b47" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="917.0" y="472.5" font-size="13.5" font-weight="700" fill="#e2e8f0" text-anchor="middle">K-16 a K-23</text>
+
+<rect x="36" y="525" width="12" height="12" rx="3" fill="#3a2b0a" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="54" y="535" font-size="10.5" fill="#94a3b8">decisão humana</text>
+<rect x="159.79" y="525" width="12" height="12" rx="3" fill="#1b2538" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="177.79" y="535" font-size="10.5" fill="#94a3b8">dado ou artefato</text>
+<rect x="295.54999999999995" y="525" width="12" height="12" rx="3" fill="#251b47" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="313.54999999999995" y="535" font-size="10.5" fill="#94a3b8">segurança e gates</text>
+
+</svg>

@@ -1,0 +1,21 @@
+name: Épico
+description: Objetivo grande, dividido em histórias
+title: "[E-NN] "
+labels: ["type:epic"]
+body:
+  - type: textarea
+    id: resumo
+    attributes:
+      label: Resumo (cinco linhas, em português)
+      value: |
+        - **O quê:**
+        - **Por quê:**
+        - **Agora:**
+        - **Falta:**
+        - **Precisa de você:** não
+    validations: {required: true}
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Critérios de aceite e Definition of Ready
+    validations: {required: true}

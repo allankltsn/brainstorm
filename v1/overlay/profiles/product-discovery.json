@@ -1,0 +1,5 @@
+{
+  "id": "product-discovery",
+  "description": "Discovery, requirements, design and architecture phases with human gates before the first story",
+  "instructions": "Apply workflow/product-discovery.md. Phases 0 discovery, 1 requirements, 2 design and 3 architecture each end with file artifacts and an explicit human decision; the next phase is not dispatched before it. Use templates/financial-model.md, templates/prd.md, templates/threat-model.md and templates/decision.md; after phase 3 continue with workflow/user-stories.md and workflow/engineering.md, then the release role (templates/release-checklist.md) and templates/launch-plan.md. Artifacts separate verified facts, dated references and estimates. Authors never approve their own artifacts. Personal or health data triggers privacy-compliance in the phase where it appears."
+}

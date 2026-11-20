@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="736" height="509" viewBox="0 0 736 509" role="img" aria-label="Auditoria de um quadro de exemplo (cards fictícios; trecho da saída real)">
+<title>Auditoria de um quadro de exemplo (cards fictícios; trecho da saída real)</title>
+<rect width="736" height="509" rx="12" fill="#0b1220"/>
+<rect width="736" height="38" rx="12" fill="#16223a"/><rect y="26" width="736" height="12" fill="#16223a"/>
+<circle cx="20" cy="19" r="5.5" fill="#f87171"/><circle cx="38" cy="19" r="5.5" fill="#fbbf24"/><circle cx="56" cy="19" r="5.5" fill="#4ade80"/>
+<text x="368.0" y="23.5" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">Auditoria de um quadro de exemplo (cards fictícios; trecho da saída real)</text>
+<text x="22" y="62" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#e2e8f0" font-weight="700" xml:space="preserve">$ python audit_board.py --arquivo example-board.json --agora 2026-11-16T00:00:00Z</text>
+<text x="22" y="81" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">Quadro auditado: 7 cards, 12 erro(s), 3 aviso(s), 2 correção(ões) mecânica(s) possível(is).</text>
+<text x="22" y="100" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve"></text>
+<text x="22" y="119" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#fbbf24" xml:space="preserve">Cobrar de: frontend-senior</text>
+<text x="22" y="138" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#f87171" xml:space="preserve">  [erro] K-13 exemplo/hub#16 [S-016] Perfil do aluno</text>
+<text x="22" y="157" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">          in-review sem evidência registrada</text>
+<text x="22" y="176" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve"></text>
+<text x="22" y="195" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#fbbf24" xml:space="preserve">Cobrar de: principal</text>
+<text x="22" y="214" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#f87171" xml:space="preserve">  [erro] K-16 exemplo/hub#18 [S-018] Pagamento da mensalidade</text>
+<text x="22" y="233" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">          completed sem gate aprovado: security, privacy</text>
+<text x="22" y="252" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#f87171" xml:space="preserve">  [erro] K-23 exemplo/hub#18 [S-018] Pagamento da mensalidade</text>
+<text x="22" y="271" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">          completed movido por 'be-2': só o principal move para completed</text>
+<text x="22" y="290" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve"></text>
+<text x="22" y="309" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#fbbf24" xml:space="preserve">Cobrar de: product-owner</text>
+<text x="22" y="328" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#f87171" xml:space="preserve">  [erro] K-08 exemplo/hub#17 [S-017] Agendar treino</text>
+<text x="22" y="347" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">          saiu de open com Definition of Ready incompleta (2/5)</text>
+<text x="22" y="366" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#f87171" xml:space="preserve">  [erro] K-02 exemplo/hub#20 melhorar o login</text>
+<text x="22" y="385" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">          título fora do formato '[S-014] Título curto'</text>
+<text x="22" y="404" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve"></text>
+<text x="22" y="423" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#fbbf24" xml:space="preserve">Cobrar de: scrum-master</text>
+<text x="22" y="442" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#64748b" xml:space="preserve">  [aviso] K-03 exemplo/hub#16 [S-016] Perfil do aluno</text>
+<text x="22" y="461" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#cbd5e1" xml:space="preserve">          campo Etapa é 'Em andamento', deveria ser 'Em validação' (correção mecânica)</text>
+<text x="22" y="480" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12.5" fill="#64748b" xml:space="preserve">  ... (trecho; o relatório completo lista as 15 pendências)</text>
+</svg>
