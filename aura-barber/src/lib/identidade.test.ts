@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { idValido, lerProfId, lerClienteId, PROF_PADRAO, CLIENTE_PADRAO } from './identidade'
+import { idValido, lerProfId, lerClienteId, clienteSelecionado, PROF_PADRAO, CLIENTE_PADRAO } from './identidade'
 
 function fakeStore(init: Record<string, string> = {}) {
   const m = new Map(Object.entries(init))
@@ -22,6 +22,17 @@ describe('lerProfId', () => {
   it('lê um profissional válido do storage', () => expect(lerProfId(fakeStore({ 'aura-barber-prof': 'p-joao' }))).toBe('p-joao'))
   it('rejeita um profissional inexistente e cai no padrão', () =>
     expect(lerProfId(fakeStore({ 'aura-barber-prof': 'zzz' }))).toBe(PROF_PADRAO))
+})
+
+describe('clienteSelecionado', () => {
+  it('cliente usa sempre a própria identidade, ignorando estado local', () =>
+    expect(clienteSelecionado('cliente', 'c-ana', 'c-bruno')).toBe('c-ana'))
+  it('cliente usa a identidade mesmo com estado null', () =>
+    expect(clienteSelecionado('cliente', 'c-ana', null)).toBe('c-ana'))
+  it('dono usa o estado local escolhido na tela', () =>
+    expect(clienteSelecionado('dono', 'c-ana', 'c-bruno')).toBe('c-bruno'))
+  it('barbeiro usa o estado local (null até escolher)', () =>
+    expect(clienteSelecionado('barbeiro', 'c-ana', null)).toBe(null))
 })
 
 describe('lerClienteId', () => {

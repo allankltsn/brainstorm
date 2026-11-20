@@ -4,6 +4,7 @@
  * Persistido em localStorage, com fallback para padrões e validação contra o db.
  */
 import { db } from './data'
+import type { Role } from './data'
 
 export const PROF_PADRAO = 'p-rafa'
 export const CLIENTE_PADRAO = 'c-ana'
@@ -52,6 +53,14 @@ export function lerClienteId(ls: Store | undefined = storagePadrao()): string {
     db.clientes.map((c) => c.id),
     CLIENTE_PADRAO,
   )
+}
+
+/**
+ * Cliente efetivo de um agendamento: o cliente logado agenda sempre para si (a identidade
+ * viva vence o estado local, evitando valor defasado); dono/barbeiro usam o que escolheram na tela.
+ */
+export function clienteSelecionado(role: Role, euClienteId: string, estado: string | null): string | null {
+  return role === 'cliente' ? euClienteId : estado
 }
 
 export function salvarId(key: string, valor: string, ls: Store | undefined = storagePadrao()): void {
