@@ -68,6 +68,37 @@ Todos os papéis, com troca de perfil no menu (como no aura-fit):
 - Granularidade da grade de horário (ex.: 15/30 min) e janela do dia.
 - Componentes reaproveitados vs. novos específicos da agenda.
 
+## Fase 2 — detalhamento (addendum, aprovado 2026-11-20)
+Escopo aprovado pelo dono: **App do Cliente** + **Dashboards por papel (Início)**, dobrando a
+correção dos rótulos possessivos. Protótipo, dados mock, sem backend (igual à Fase 1).
+
+**Identidade (base de tudo).** O protótipo passa a saber *quem* é o usuário, além do papel.
+Decisão do dono: **seletor de identidade junto do seletor de papel** (sem tela de login).
+- `RoleProvider` passa a guardar, além de `role`: `profissionalId` (quando barbeiro) e `clienteId`
+  (quando cliente), cada um em sua chave no `localStorage`. Dono é único, sem sub-identidade.
+- No `app-shell`, ao lado do `RoleSwitch`, um 2º seletor aparece **só** para barbeiro/cliente
+  ("Sou: Rafa ▾" / "Sou: Ana ▾"). Padrões: `p-rafa` (barbeiro) e `c-ana` (cliente); id inválido
+  no storage cai no padrão.
+
+**Dashboards por papel (Início), leves e sem poluição.**
+- **Dono:** agendamentos de hoje, faturamento previsto do dia, nº de profissionais, e ocupação
+  por profissional (barra discreta; Recharts já é dependência).
+- **Barbeiro (= o profissional logado):** minha agenda de hoje, minha comissão estimada
+  (Σ preço × comissão dos meus do dia), meus serviços.
+- **Cliente:** meus próximos horários + histórico + botão Agendar.
+
+**App do Cliente (papel cliente).**
+- Página **"Meus horários"**: próximos (com **cancelar** → status `cancelado`) e passados.
+- `/agendar` já logado como eu: quando o papel é cliente, o cliente vem pré-selecionado da
+  identidade e a etapa de escolher cliente some.
+- Nav do cliente: Início · Meus horários · Agendar.
+
+**Correção #3 (rótulos possessivos) dobrada aqui:** o Início passa a filtrar por
+`profissionalId`/`clienteId` reais em vez de rótulos genéricos.
+
+**Decisões assumidas (o dono pode corrigir):** faturamento e comissão são *estimativas* sobre os
+mocks; cancelar é só mudança de status (sem desfazer); dono não tem sub-identidade.
+
 ## Rastreamento
 Gerido no GitHub Project **brainstrm** (público), Frente = `Aura Barber`:
 https://github.com/users/allankltsn/projects/2
