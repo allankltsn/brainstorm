@@ -784,6 +784,64 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": ["utils"],
       "files": [{ "path": "src/components/ui/agent-cursors.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-findings",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/agent-findings.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-ledger",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "table", "badge"],
+      "files": [{ "path": "src/components/ui/agent-ledger.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "approval-gates",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button", "badge"],
+      "files": [{ "path": "src/components/ui/approval-gates.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "autonomy-dial",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/autonomy-dial.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "run-controls",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "icon-button", "badge", "spinner"],
+      "files": [{ "path": "src/components/ui/run-controls.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "running-now",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/running-now.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "scheduled-runs",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "switch", "badge"],
+      "files": [{ "path": "src/components/ui/scheduled-runs.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "delegate-board",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "avatar", "badge"],
+      "files": [{ "path": "src/components/ui/delegate-board.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "fan-out-grid",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/fan-out-grid.tsx", "type": "registry:ui" }]
     }
   ]
 }
