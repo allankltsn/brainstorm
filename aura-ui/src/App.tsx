@@ -1,6 +1,81 @@
 import { type ReactNode, useEffect, useState } from 'react'
-import { Rocket, TriangleAlert } from 'lucide-react'
+import { ChevronDown, Rocket, Settings, TriangleAlert, User } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Progress } from '@/components/ui/progress'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
+import { toast } from 'sonner'
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart'
+import { Toaster } from '@/components/ui/sonner'
+
+const chartConfig = {
+  treinos: { label: 'Treinos', color: 'var(--chart-1)' },
+} satisfies ChartConfig
+
+const chartData = [
+  { dia: 'Seg', treinos: 4 },
+  { dia: 'Ter', treinos: 7 },
+  { dia: 'Qua', treinos: 5 },
+  { dia: 'Qui', treinos: 9 },
+  { dia: 'Sex', treinos: 6 },
+]
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -244,6 +319,169 @@ function ComponentsView() {
               <Skeleton className="h-4 w-24" />
             </div>
           </div>
+        </Demo>
+
+        <Demo title="Avatar">
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" alt="" />
+            <AvatarFallback>AB</AvatarFallback>
+          </Avatar>
+          <Avatar>
+            <AvatarFallback>CD</AvatarFallback>
+          </Avatar>
+        </Demo>
+
+        <Demo title="Tabs" full>
+          <Tabs defaultValue="perfil" className="max-w-sm">
+            <TabsList>
+              <TabsTrigger value="perfil">Perfil</TabsTrigger>
+              <TabsTrigger value="treino">Treino</TabsTrigger>
+            </TabsList>
+            <TabsContent value="perfil" className="text-sm text-muted-foreground">Dados do perfil.</TabsContent>
+            <TabsContent value="treino" className="text-sm text-muted-foreground">Seu treino da semana.</TabsContent>
+          </Tabs>
+        </Demo>
+
+        <Demo title="Tooltip">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="outline">Passe o mouse</Button>
+              </TooltipTrigger>
+              <TooltipContent>Dica útil</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </Demo>
+
+        <Demo title="Progress" full>
+          <Progress value={62} className="max-w-sm" />
+        </Demo>
+
+        <Demo title="Breadcrumb" full>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#">Início</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#">Alunos</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Ana</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </Demo>
+
+        <Demo title="Table" full>
+          <Table>
+            <TableCaption>Alunos ativos</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nome</TableHead>
+                <TableHead>Plano</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell>Ana</TableCell>
+                <TableCell>Mensal</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Bruno</TableCell>
+                <TableCell>Anual</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Demo>
+
+        <Demo title="ScrollArea" full>
+          <ScrollArea className="h-28 w-full max-w-sm rounded-lg border border-border p-3">
+            <div className="grid gap-2 text-sm">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <div key={i}>Item {i + 1}</div>
+              ))}
+            </div>
+          </ScrollArea>
+        </Demo>
+
+        <Demo title="Dialog · Sheet · Dropdown">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>Abrir dialog</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Confirmar</DialogTitle>
+                <DialogDescription>Esta ação não pode ser desfeita.</DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button>Entendi</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline">Abrir sheet</Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Configurações</SheetTitle>
+                <SheetDescription>Ajuste suas preferências.</SheetDescription>
+              </SheetHeader>
+              <SheetFooter>
+                <SheetClose asChild>
+                  <Button variant="secondary">Fechar</Button>
+                </SheetClose>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Menu <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Conta</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <User /> Perfil
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Settings /> Configurações
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </Demo>
+
+        <Demo title="Chart" full>
+          <ChartContainer config={chartConfig} className="h-48 w-full max-w-md">
+            <BarChart data={chartData}>
+              <CartesianGrid vertical={false} />
+              <XAxis dataKey="dia" tickLine={false} axisLine={false} />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <Bar dataKey="treinos" fill="var(--color-treinos)" radius={4} />
+            </BarChart>
+          </ChartContainer>
+        </Demo>
+
+        <Demo title="Sonner (toast)">
+          <Toaster />
+          <Button onClick={() => toast('Treino salvo', { description: 'Sincronizado agora.' })}>
+            Mostrar toast
+          </Button>
+        </Demo>
+
+        <Demo title="Sidebar" full>
+          <p className="text-sm text-muted-foreground">
+            Componente de layout (SidebarProvider + Sidebar + SidebarMenu…). Instalável com{' '}
+            <code>npx shadcn add @aura/sidebar</code>. Não renderizado aqui por ocupar a tela inteira.
+          </p>
         </Demo>
       </div>
     </>
