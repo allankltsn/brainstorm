@@ -9,11 +9,11 @@ import { cn } from '@/lib/utils'
 const brl = (n: number) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0 })
 
 export function Loja() {
-  const { isContratado, contratar } = useEcho()
+  const { isContratado, contratar, subscriptions } = useEcho()
 
-  const assinar = (id: ServiceId, nome: string) => {
+  const assinar = (id: ServiceId, nome: string, reativando: boolean) => {
     contratar(id)
-    toast.success(`${nome} contratado`, { description: 'Já aparece no seu painel.' })
+    toast.success(`${nome} ${reativando ? 'reativado' : 'contratado'}`, { description: 'Já aparece no seu painel.' })
   }
 
   return (
@@ -28,6 +28,7 @@ export function Loja() {
           const tone = SERVICE_TONE[s.id]
           const Icon = s.icon
           const contratado = isContratado(s.id)
+          const cancelado = subscriptions.some((x) => x.serviceId === s.id && x.status === 'cancelada')
           return (
             <article key={s.id} className="flex flex-col rounded-2xl border border-border bg-card p-6">
               <div className="flex items-start gap-3">
@@ -66,8 +67,8 @@ export function Loja() {
                     <span className="text-sm text-muted-foreground">Contratado</span>
                   </>
                 ) : (
-                  <Button size="sm" className="w-full" onClick={() => assinar(s.id, s.nome)}>
-                    Contratar {s.nome.replace('Aura ', '')}
+                  <Button size="sm" className="w-full" onClick={() => assinar(s.id, s.nome, cancelado)}>
+                    {cancelado ? 'Reativar' : 'Contratar'} {s.nome.replace('Aura ', '')}
                   </Button>
                 )}
               </div>

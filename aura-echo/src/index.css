@@ -49,7 +49,10 @@
     --color-warning-soft: var(--warning-soft);
     --color-info: var(--info);
     --color-info-soft: var(--info-soft);
-    /* cromas por serviço — cada serviço é uma estrela com cor própria */
+    /* cromas por serviço — cada serviço é uma estrela com cor própria.
+       Atenção ao prefixo "brand": `brand-soft`/`brand-text` (acima) são o
+       acento TEAL do hub; `brand` + `brand-svc-soft` (abaixo) são o VIOLETA
+       do serviço Aura Brand. Nomes parecidos, cores diferentes — de propósito. */
     --color-fit: var(--svc-fit);
     --color-fit-soft: var(--svc-fit-soft);
     --color-barber: var(--svc-barber);

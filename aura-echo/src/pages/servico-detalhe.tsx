@@ -29,9 +29,10 @@ export function ServicoDetalhe() {
   const sub = subscriptions.find((s) => s.serviceId === service.id)
   const ativo = sub?.status === 'ativa'
 
+  const reativando = sub?.status === 'cancelada'
   const assinar = () => {
     contratar(service.id)
-    toast.success(`${service.nome} contratado`, { description: 'Já aparece no seu painel.' })
+    toast.success(`${service.nome} ${reativando ? 'reativado' : 'contratado'}`, { description: 'Já aparece no seu painel.' })
   }
   const cancelarAssinatura = () => {
     cancelar(service.id)

@@ -70,9 +70,9 @@ export const serviceById = (id: ServiceId): Service | undefined => SERVICES.find
 export const serviceBySlug = (slug: string): Service | undefined => SERVICES.find((s) => s.slug === slug)
 
 /* Classes de croma por serviço (tokens --svc-* definidos no index.css). */
-export const SERVICE_TONE: Record<ServiceId, { text: string; bg: string; ring: string; dot: string }> = {
-  fit: { text: 'text-fit', bg: 'bg-fit-soft', ring: 'ring-fit/30', dot: 'bg-fit' },
-  barber: { text: 'text-barber', bg: 'bg-barber-soft', ring: 'ring-barber/30', dot: 'bg-barber' },
-  brand: { text: 'text-brand', bg: 'bg-brand-svc-soft', ring: 'ring-brand/30', dot: 'bg-brand' },
-  vagas: { text: 'text-vagas', bg: 'bg-vagas-soft', ring: 'ring-vagas/30', dot: 'bg-vagas' },
+export const SERVICE_TONE: Record<ServiceId, { text: string; bg: string; dot: string }> = {
+  fit: { text: 'text-fit', bg: 'bg-fit-soft', dot: 'bg-fit' },
+  barber: { text: 'text-barber', bg: 'bg-barber-soft', dot: 'bg-barber' },
+  brand: { text: 'text-brand', bg: 'bg-brand-svc-soft', dot: 'bg-brand' },
+  vagas: { text: 'text-vagas', bg: 'bg-vagas-soft', dot: 'bg-vagas' },
 }
