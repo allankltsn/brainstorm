@@ -723,6 +723,67 @@
       "type": "registry:ui",
       "registryDependencies": ["utils", "badge"],
       "files": [{ "path": "src/components/ui/agent-lanes.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-handoff",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "avatar"],
+      "files": [{ "path": "src/components/ui/agent-handoff.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-sequence",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/agent-sequence.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-router",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "progress", "badge"],
+      "files": [{ "path": "src/components/ui/agent-router.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-steering",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button", "textarea"],
+      "files": [{ "path": "src/components/ui/agent-steering.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-monitor",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/agent-monitor.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-timing",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/agent-timing.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-checkpoints",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button"],
+      "files": [{ "path": "src/components/ui/agent-checkpoints.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-recap",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card"],
+      "files": [{ "path": "src/components/ui/agent-recap.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-cursors",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/agent-cursors.tsx", "type": "registry:ui" }]
     }
   ]
 }
