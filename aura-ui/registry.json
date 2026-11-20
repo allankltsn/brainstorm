@@ -370,6 +370,52 @@
       "type": "registry:ui",
       "registryDependencies": ["utils"],
       "files": [{ "path": "src/components/ui/animated-shiny-text.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "approval-card",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "card", "button", "badge"],
+      "files": [{ "path": "src/components/ui/approval-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "thinking-state",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/thinking-state.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "tool-call-card",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "spinner"],
+      "files": [{ "path": "src/components/ui/tool-call-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "model-picker",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "dropdown-menu", "button", "badge"],
+      "files": [{ "path": "src/components/ui/model-picker.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "context-window",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "progress"],
+      "files": [{ "path": "src/components/ui/context-window.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "permission-request",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "button", "badge"],
+      "files": [{ "path": "src/components/ui/permission-request.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-trail",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "spinner"],
+      "files": [{ "path": "src/components/ui/agent-trail.tsx", "type": "registry:ui" }]
     }
   ]
 }
