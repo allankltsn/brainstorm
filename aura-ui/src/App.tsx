@@ -166,6 +166,53 @@ import { UsageMeter } from '@/components/ui/usage-meter'
 import { IconButton } from '@/components/ui/icon-button'
 import { TagInput } from '@/components/ui/tag-input'
 import { TreeView, type TreeNode } from '@/components/ui/tree-view'
+import { ColorPicker } from '@/components/ui/color-picker'
+import { TimePicker } from '@/components/ui/time-picker'
+import { DateRangePicker } from '@/components/ui/date-range-picker'
+import { Dropzone } from '@/components/ui/dropzone'
+import { DataTable } from '@/components/ui/data-table'
+import { CommandMenu, useCommandMenu } from '@/components/ui/command-menu'
+import { FileText, Settings2, UserPlus } from 'lucide-react'
+import type { ColumnDef } from '@tanstack/react-table'
+
+type Aluno = { nome: string; plano: string; treinos: number }
+const alunos: Aluno[] = [
+  { nome: 'Ana Souza', plano: 'Mensal', treinos: 12 },
+  { nome: 'Bruno Lima', plano: 'Anual', treinos: 34 },
+  { nome: 'Carla Dias', plano: 'Trimestral', treinos: 21 },
+  { nome: 'Diego Reis', plano: 'Mensal', treinos: 8 },
+]
+const alunosColumns: ColumnDef<Aluno>[] = [
+  { accessorKey: 'nome', header: 'Aluno' },
+  { accessorKey: 'plano', header: 'Plano' },
+  { accessorKey: 'treinos', header: 'Treinos' },
+]
+
+const comandoGrupos = [
+  {
+    heading: 'Ações',
+    items: [
+      { id: 'novo', label: 'Novo aluno', icon: <UserPlus />, shortcut: '⌘N' },
+      { id: 'treino', label: 'Montar treino', icon: <FileText /> },
+    ],
+  },
+  {
+    heading: 'Geral',
+    items: [{ id: 'config', label: 'Configurações', icon: <Settings2 />, shortcut: '⌘,' }],
+  },
+]
+
+function CommandMenuDemo() {
+  const { open, setOpen } = useCommandMenu()
+  return (
+    <>
+      <Button variant="outline" onClick={() => setOpen(true)}>
+        Abrir paleta <Kbd>⌘K</Kbd>
+      </Button>
+      <CommandMenu open={open} onOpenChange={setOpen} groups={comandoGrupos} />
+    </>
+  )
+}
 
 const arvore: TreeNode[] = [
   {
@@ -1016,6 +1063,26 @@ function ComponentsView() {
               code={`export function Button() {\n  return <button className="btn" />\n}`}
             />
           </div>
+        </Demo>
+
+        <Demo title="Color · Time · Date range picker">
+          <ColorPicker defaultValue="#ef4444" />
+          <TimePicker defaultValue="07:30" />
+          <DateRangePicker
+            defaultValue={{ from: new Date(2026, 0, 10), to: new Date(2026, 0, 20) }}
+          />
+        </Demo>
+
+        <Demo title="Command menu (⌘K)">
+          <CommandMenuDemo />
+        </Demo>
+
+        <Demo title="Dropzone" full>
+          <Dropzone accept="image/*" />
+        </Demo>
+
+        <Demo title="Data table" full>
+          <DataTable columns={alunosColumns} data={alunos} searchKey="nome" searchPlaceholder="Filtrar por aluno…" />
         </Demo>
       </div>
     </>

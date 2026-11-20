@@ -624,6 +624,46 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": ["utils"],
       "files": [{ "path": "src/components/ui/tree-view.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "color-picker",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "popover", "button", "input"],
+      "files": [{ "path": "src/components/ui/color-picker.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "time-picker",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "select"],
+      "files": [{ "path": "src/components/ui/time-picker.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "date-range-picker",
+      "type": "registry:ui",
+      "dependencies": ["react-day-picker", "date-fns", "lucide-react"],
+      "registryDependencies": ["utils", "popover", "calendar", "button"],
+      "files": [{ "path": "src/components/ui/date-range-picker.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "dropzone",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/dropzone.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui",
+      "dependencies": ["@tanstack/react-table"],
+      "registryDependencies": ["utils", "table", "input", "button"],
+      "files": [{ "path": "src/components/ui/data-table.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "command-menu",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "command"],
+      "files": [{ "path": "src/components/ui/command-menu.tsx", "type": "registry:ui" }]
     }
   ]
 }
