@@ -6,15 +6,12 @@ import { CriarConta, Entrar } from '@/pages/entrar'
 import { Inicio } from '@/pages/inicio'
 import { Landing } from '@/pages/landing'
 import { Assinatura } from '@/pages/assinatura'
+import { Conta } from '@/pages/conta'
 import { Loja } from '@/pages/loja'
 import { ServicoDetalhe } from '@/pages/servico-detalhe'
 import { NaoEncontrada } from '@/pages/nao-encontrada'
 import { EchoProvider } from '@/lib/store'
 import { ThemeProvider } from '@/lib/theme'
-
-const Placeholder = ({ nome }: { nome: string }) => (
-  <div className="rounded-xl border border-dashed border-border p-8 text-muted-foreground">{nome} — em construção</div>
-)
 
 /* HashRouter: o build é estático e abre em qualquer hospedagem, sem rota no servidor. */
 export default function App() {
@@ -33,7 +30,7 @@ export default function App() {
                 <Route path="loja" element={<Loja />} />
                 <Route path="loja/:slug" element={<ServicoDetalhe />} />
                 <Route path="assinatura" element={<Assinatura />} />
-                <Route path="conta" element={<Placeholder nome="Conta" />} />
+                <Route path="conta" element={<Conta />} />
               </Route>
               <Route path="*" element={<NaoEncontrada />} />
             </Routes>
