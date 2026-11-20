@@ -1020,6 +1020,68 @@
       "type": "registry:ui",
       "registryDependencies": ["utils", "badge"],
       "files": [{ "path": "src/components/ui/inline-diff.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "collaboration-stream",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "avatar"],
+      "files": [{ "path": "src/components/ui/collaboration-stream.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "comments-panel",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "avatar", "button", "badge"],
+      "files": [{ "path": "src/components/ui/comments-panel.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "commit-trail",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/commit-trail.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "review-center",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "avatar", "button", "badge"],
+      "files": [{ "path": "src/components/ui/review-center.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "reaction-bar",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/reaction-bar.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "away-summary",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "badge"],
+      "files": [{ "path": "src/components/ui/away-summary.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "project-card",
+      "type": "registry:ui",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils", "card", "avatar", "progress", "badge"],
+      "files": [{ "path": "src/components/ui/project-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "setup-guide",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "progress", "button"],
+      "files": [{ "path": "src/components/ui/setup-guide.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "stepper-form",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button"],
+      "files": [{ "path": "src/components/ui/stepper-form.tsx", "type": "registry:ui" }]
     }
   ]
 }
