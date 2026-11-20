@@ -11,6 +11,7 @@ export type Service = {
   precoMensal: number
   url: string
   icon: LucideIcon
+  destaques: string[]
 }
 
 /* Catálogo mockado do ecossistema. Cada serviço é uma vertical Aura. */
@@ -25,6 +26,7 @@ export const SERVICES: Service[] = [
     precoMensal: 79,
     url: 'https://fit.aura.app',
     icon: Dumbbell,
+    destaques: ['Alunos ilimitados', 'Montagem de treinos com IA', 'App do aluno incluído'],
   },
   {
     id: 'barber',
@@ -36,6 +38,7 @@ export const SERVICES: Service[] = [
     precoMensal: 69,
     url: 'https://barber.aura.app',
     icon: Scissors,
+    destaques: ['Agenda online 24h', 'Comissão por profissional', 'Lembrete por WhatsApp'],
   },
   {
     id: 'brand',
@@ -47,6 +50,7 @@ export const SERVICES: Service[] = [
     precoMensal: 149,
     url: 'https://brand.aura.app',
     icon: Megaphone,
+    destaques: ['Funil de vendas visual', 'Automação de campanhas', 'Relatórios de conversão'],
   },
   {
     id: 'vagas',
@@ -58,6 +62,7 @@ export const SERVICES: Service[] = [
     precoMensal: 99,
     url: 'https://vagas.aura.app',
     icon: Briefcase,
+    destaques: ['Vagas ilimitadas', 'Kanban de candidatos', 'Página de carreiras'],
   },
 ]
 
