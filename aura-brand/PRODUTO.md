@@ -18,7 +18,8 @@ Plataforma para empresas construírem a marca e se venderem ao público: brand k
 ### Tokens de cor
 O roxo substitui o vermelho do aura-fit como `primary`.
 - `primary`: `#6A0DAD` (definido; contraste de cerca de 9:1 sobre `#ffffff`, acima do AA)
-- hover e variante do dark mode: tons derivados do `#6A0DAD`, a definir na montagem do app (mais escuro para hover, mais claro para o dark mode)
+- hover: `#5b0b95`; dark mode: `primary` `#8436cc`, com `ring` `#b98af0`
+- `brand-soft` `#f5edfb` e `brand-text` `#5b0b95` (dark: `#2a1640` e `#d3a8f5`)
 
 Os valores hex ficam só no `index.css`; os componentes usam apenas tokens.
 
@@ -38,17 +39,21 @@ Planos e assinatura (Stripe), cupons, fila "Precisa de você", chat e notificaç
 ## Fora do escopo
 Treino, alunos, exercícios, recrutamento e "Pensamento do dia".
 
-## Estado do protótipo
-O app em `aura-brand/` tem todas as telas do MVP, com dados fictícios e sem servidor. Para rodar: `npm ci && npm run dev`.
+## Estado do app
+O app está em `aura-brand/` (ver `README.md`). Prontos no protótipo:
+- shell, tema roxo e Início com a fila "Precisa de você";
+- módulo 1, **Brand kit**: briefing, logo, paleta, tipografia, tom de voz e aprovação por parte;
+- módulo 2, **Gerador de conteúdo**: criar rascunho de post ou carrossel, fila de aprovação com edição e prévia, e agendados.
+- módulo 3, **Agendamento e publicação**: agenda com calendário, estado de cada post (agendado, publicado, não publicado) e conexão das redes em Configurações.
+- módulos 4 e 5, **Captação** e **CRM e funil**, em Clientes: formulários e páginas com origem registrada, funil por etapa, contatos, propostas e automações;
+- módulos 6 e 7, **Caixa de entrada** e **Campanhas**, em Conversas;
+- módulo 8, **Painel da marca**, na aba Relatórios do Início.
 
-| Tela | O que tem |
-|---|---|
-| Início | KPIs, fila "Precisa de você", leads dos últimos 7 dias, progresso do brand kit, créditos |
-| Marca | Brand kit: identidade, paleta, tipografia, logo e tom de voz |
-| Conteúdo | Gerador (simulado), fila de aprovação, ajustes e agendamento |
-| Leads | Funil por etapa, formulários de captação, consentimento por lead |
-| Mensagens | Caixa de entrada unificada e campanhas (salvas como rascunho) |
-| Configurações | Conta, avisos, plano, cupom e privacidade (LGPD) |
+Os oito módulos do MVP existem no protótipo, com dados fictícios e sem integração real.
+
+### Reaproveitado do aura-fit: o que entrou
+- Entrou: fila "Precisa de você", consentimento (LGPD) por contato, limite por plano (contatos), importação de planilha, assinatura em Configurações.
+- Ainda não: cobrança real (Stripe), cupons, troca de plano, notificações de verdade.
 
 ## Próximo passo
-Ligar um backend: login, gravação dos dados, IA real no gerador e nas respostas, publicação nas redes, envio de campanhas e cobrança (Stripe).
+Sair do protótipo: escolher o backend e trocar as partes simuladas por integrações reais, nesta ordem sugerida: geração por IA (brand kit, conteúdo, respostas, campanhas), conexão e publicação nas redes, WhatsApp e e-mail, e cobrança.

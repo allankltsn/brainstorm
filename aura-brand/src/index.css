@@ -59,7 +59,7 @@
 /* ------------------------------------------------------------------
    Tema aura-brand. Um só conjunto de tokens (padrão shadcn/ui) e, logo
    abaixo, a ponte para o affectUI (--aui-*), para os dois kits lerem as
-   mesmas cores. Roxo da marca (#6a0dad) só em ações principais e destaques.
+   mesmas cores. Roxo da marca só em ações principais e destaques.
    ------------------------------------------------------------------ */
 :root {
     --background: #ffffff;
@@ -80,8 +80,8 @@
     --border: #e7e7ea;
     --input: #dcdce0;
     --ring: #6a0dad;
-    --brand-soft: #f6effc;
-    --brand-text: #5c0b96;
+    --brand-soft: #f5edfb;
+    --brand-text: #5b0b95;
     --success: #137a3d;
     --success-soft: #e6f5ec;
     --warning: #855800;
@@ -89,7 +89,7 @@
     --info: #175cd3;
     --info-soft: #eef4ff;
     --chart-1: #6a0dad;
-    --chart-2: #b98ad9;
+    --chart-2: #c39be3;
     --chart-3: #52525b;
     --chart-4: #a1a1aa;
     --chart-5: #d4d4d8;
@@ -111,7 +111,7 @@
     --card-foreground: #f4f4f5;
     --popover: #1c1c20;
     --popover-foreground: #f4f4f5;
-    --primary: #8b2fd0;
+    --primary: #8436cc;
     --primary-foreground: #ffffff;
     --secondary: #232327;
     --secondary-foreground: #f4f4f5;
@@ -122,28 +122,28 @@
     --destructive: #ff8a7a;
     --border: #2a2a2f;
     --input: #36363c;
-    --ring: #c084fc;
-    --brand-soft: #2a1740;
-    --brand-text: #d2a8ff;
+    --ring: #b98af0;
+    --brand-soft: #2a1640;
+    --brand-text: #d3a8f5;
     --success: #6fd79b;
     --success-soft: #16301f;
     --warning: #f1b93a;
     --warning-soft: #3a2f12;
     --info: #84adff;
     --info-soft: #16233d;
-    --chart-1: #a855f7;
-    --chart-2: #5b2a8f;
+    --chart-1: #a565e6;
+    --chart-2: #5c2a8a;
     --chart-3: #a1a1aa;
     --chart-4: #52525b;
     --chart-5: #3f3f46;
     --sidebar: #09090b;
     --sidebar-foreground: #c8c8cf;
-    --sidebar-primary: #8b2fd0;
+    --sidebar-primary: #8436cc;
     --sidebar-primary-foreground: #ffffff;
     --sidebar-accent: #1c1c20;
     --sidebar-accent-foreground: #f4f4f5;
     --sidebar-border: #2a2a2f;
-    --sidebar-ring: #c084fc;
+    --sidebar-ring: #b98af0;
 }
 
 /* Ponte affectUI: os componentes leem --aui-* (ver affectui.com/docs/theming) */
@@ -167,14 +167,14 @@
 /* Botão principal do affectUI na cor da marca (o padrão do kit é grafite) */
 :root .ui-button {
     --ui-btn-on-ink: #ffffff;
-    --ui-btn-dark-top: #7a1cc0;
-    --ui-btn-dark-bottom: #5c0b96;
-    --ui-btn-dark-hover-top: #8627cc;
+    --ui-btn-dark-top: #7a1fc0;
+    --ui-btn-dark-bottom: #5b0b95;
+    --ui-btn-dark-hover-top: #8530c8;
     --ui-btn-dark-hover-bottom: #6a0dad;
-    --ui-btn-edge-top: #a565d8;
+    --ui-btn-edge-top: #9b5ad3;
     --ui-btn-edge-mid: #6a0dad;
     --ui-btn-edge-bottom: #45086f;
-    --ui-btn-ring: #4f0a80;
+    --ui-btn-ring: #52098a;
     --ui-btn-dark-shadow: rgba(106, 13, 173, 0.22);
     --ui-btn-shine-on-ink: rgba(255, 255, 255, 0.95);
 }
@@ -192,6 +192,23 @@
 :root .ui-di__btn--primary:hover,
 :root .ui-tp__btn--primary:hover {
     background: color-mix(in srgb, var(--primary) 88%, black);
+}
+
+/* Nuvem da Aura (affectUI): o kit vem em azul ou laranja; aqui ela segue o roxo da marca */
+:root .ui-glw[data-color] {
+    --ui-glw-sky-top: #5b0b95;
+    --ui-glw-sky-bottom: #a565e6;
+    --ui-glw-sky-light: rgba(211, 168, 245, 0.5);
+    --ui-glw-rim: #fbf7ff;
+    --ui-glw-body-1: #7a1fc0;
+    --ui-glw-body-2: #9446d6;
+    --ui-glw-body-3: #c39be3;
+    --ui-glw-eye: #f1e4fc;
+    --ui-glw-eye-shade: rgba(106, 13, 173, 0.3);
+    --ui-glw-halo: rgba(132, 54, 204, 0.2);
+    --ui-glw-edge: rgba(106, 13, 173, 0.4);
+    --ui-glw-shadow: rgba(69, 8, 111, 0.5);
+    --ui-glw-ground: rgba(69, 8, 111, 0.36);
 }
 
 @layer base {

@@ -1,6 +1,8 @@
-import { Bell, ChevronsUpDown, CreditCard, FileText, LogOut, Moon, Palette, Plus, Settings, Sparkles, Sun } from 'lucide-react'
+import { Bell, ChevronsUpDown, CreditCard, LogOut, Megaphone, Moon, Palette, PenLine, Plus, Search, Settings, Sparkles, Sun, UserPlus } from 'lucide-react'
+import { useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { toast } from 'sonner'
+import { AssistantWidget } from '@/components/assistant'
+import { CommandPalette } from '@/components/command-palette'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -31,6 +33,7 @@ import {
 } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { AssistantProvider } from '@/lib/assistant'
 import { useContent } from '@/lib/content'
 import { useCrm } from '@/lib/crm'
 import { initials, notifications, session } from '@/lib/data'
@@ -50,38 +53,28 @@ function BrandMark() {
   return (
     <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
       <svg viewBox="0 0 24 24" className="size-4.5" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M7 4h6a4 4 0 0 1 0 8H7zM7 12h7a4 4 0 0 1 0 8H7z" />
+        <path d="M5 19 12 5l7 14M8 14h8" />
       </svg>
     </span>
   )
-}
-
-/* Selos calculados: Conteúdo mostra o que espera aprovação; Mensagens, as conversas não lidas. */
-function useBadge(item: NavItem) {
-  const { items } = useContent()
-  const { conversations } = useCrm()
-  if (item.to === '/conteudo') return items.filter((i) => i.status === 'aprovacao').length
-  if (item.to === '/mensagens') return conversations.filter((c) => c.unread).length
-  return item.badge
 }
 
 function NavEntry({ item }: { item: NavItem }) {
   const { pathname } = useLocation()
   const { setOpenMobile } = useSidebar()
   const active = currentNav(pathname)?.to === item.to
-  const badge = useBadge(item)
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={active} tooltip={item.label} className="h-10 gap-3 text-sm data-[active=true]:bg-background data-[active=true]:shadow-xs">
+      <SidebarMenuButton asChild isActive={active} tooltip={item.label} className="h-10 gap-3 text-[0.9375rem] data-[active=true]:bg-background data-[active=true]:shadow-xs">
         <NavLink to={item.to} onClick={() => setOpenMobile(false)}>
           <item.icon className={cn(active && 'text-primary')} />
           <span>{item.label}</span>
         </NavLink>
       </SidebarMenuButton>
-      {badge ? (
+      {item.badge ? (
         <SidebarMenuBadge className="top-2.5 rounded-full bg-primary px-1.5 text-primary-foreground peer-data-[active=true]/menu-button:text-primary-foreground">
-          {badge}
-          <span className="sr-only"> novos</span>
+          {item.badge}
+          <span className="sr-only"> esperando você</span>
         </SidebarMenuBadge>
       ) : null}
     </SidebarMenuItem>
@@ -99,7 +92,7 @@ function NewButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="h-10 w-full justify-start gap-2 px-3 text-sm group-data-[collapsible=icon]:size-8 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0" aria-label="Novo: criar">
+        <Button className="h-10 w-full justify-start gap-2 px-3 text-[0.9375rem] group-data-[collapsible=icon]:size-8 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0" aria-label="Novo: criar ou adicionar">
           <Plus />
           <span className="group-data-[collapsible=icon]:hidden">Novo</span>
         </Button>
@@ -107,20 +100,23 @@ function NewButton() {
       <DropdownMenuContent align="start" className="w-60">
         <DropdownMenuLabel className="text-xs text-muted-foreground">O que você quer fazer?</DropdownMenuLabel>
         <DropdownMenuItem onSelect={go('/conteudo')}>
-          <Sparkles /> Gerar post com IA
+          <PenLine /> Criar rascunho de post
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={go('/marca')}>
-          <Palette /> Editar brand kit
+        <DropdownMenuItem onSelect={go('/marca?aba=briefing')}>
+          <Sparkles /> Gerar brand kit com IA
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={go('/leads')}>
-          <FileText /> Criar formulário
+        <DropdownMenuItem onSelect={go('/clientes?aba=contatos&novo=1')}>
+          <UserPlus /> Adicionar contato
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={go('/conversas?aba=campanhas&campanha=nova')}>
+          <Megaphone /> Criar campanha
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
 }
 
-/* Tudo o que é da conta mora aqui: configurações e sair. */
+/* Tudo o que é da conta mora aqui: configurações, assinatura, sair. */
 function UserMenu() {
   const navigate = useNavigate()
   const me = session
@@ -148,12 +144,16 @@ function UserMenu() {
           <DropdownMenuItem onSelect={() => navigate('/configuracoes')}>
             <Settings /> Configurações
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => navigate('/configuracoes?aba=plano')}>
-            <CreditCard /> Plano e créditos
+          <DropdownMenuItem onSelect={() => navigate('/configuracoes?aba=assinatura')}>
+            <CreditCard /> Minha assinatura
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={() => toast.info('Protótipo: não há login ainda')}>
+        <DropdownMenuItem onSelect={() => navigate('/design-system')}>
+          <Palette /> Kit de interface
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onSelect={() => navigate('/login')}>
           <LogOut /> Sair
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -211,44 +211,51 @@ function ThemeToggle() {
   )
 }
 
-function BottomNavItem({ item: i, active }: { item: NavItem; active: boolean }) {
-  const badge = useBadge(i)
-  return (
-    <li>
-      <Link
-        to={i.to}
-        aria-current={active ? 'page' : undefined}
-        className={cn('relative flex h-14 flex-col items-center justify-center gap-0.5 text-xs font-medium text-muted-foreground', active && 'text-primary')}
-      >
-        <span className="relative">
-          <i.icon className="size-5" strokeWidth={active ? 2.4 : 2} />
-          {badge ? <span className="absolute -top-1 -right-1.5 size-2 rounded-full bg-primary ring-2 ring-background" /> : null}
-        </span>
-        {i.label}
-      </Link>
-    </li>
-  )
-}
-
 function BottomNav() {
   const { pathname } = useLocation()
-  const items = NAV
+  const items = useNav()
   const current = currentNav(pathname)?.to
   return (
     <nav aria-label="Principal" className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
       <ul className="grid" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
-        {items.map((i) => (
-          <BottomNavItem key={i.to} item={i} active={current === i.to} />
-        ))}
+        {items.map((i) => {
+          const active = current === i.to
+          return (
+            <li key={i.to}>
+              <Link
+                to={i.to}
+                aria-current={active ? 'page' : undefined}
+                className={cn('relative flex h-14 flex-col items-center justify-center gap-0.5 text-[11px] font-medium text-muted-foreground', active && 'text-primary')}
+              >
+                <span className="relative">
+                  <i.icon className="size-5" strokeWidth={active ? 2.4 : 2} />
+                  {i.badge ? <span className="absolute -top-1 -right-1.5 size-2 rounded-full bg-primary ring-2 ring-background" /> : null}
+                </span>
+                {i.label}
+              </Link>
+            </li>
+          )
+        })}
       </ul>
     </nav>
   )
 }
 
+/* O menu é fixo; os números vêm da fila de aprovação e das conversas sem resposta. */
+function useNav(): NavItem[] {
+  const { queue } = useContent()
+  const { unread } = useCrm()
+  const badge: Record<string, number> = { '/conteudo': queue.length, '/conversas': unread }
+  return NAV.map((i) => ({ ...i, badge: badge[i.to] || undefined }))
+}
+
 export function AppShell() {
   const { pathname } = useLocation()
+  const [search, setSearch] = useState(false)
+  const nav = useNav()
   return (
-    <SidebarProvider>
+    <AssistantProvider>
+      <SidebarProvider>
         <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:shadow">
           Ir para o conteúdo
         </a>
@@ -264,7 +271,7 @@ export function AppShell() {
             <SidebarGroup>
               <SidebarGroupContent>
                 <SidebarMenu className="gap-1">
-                  {NAV.map((it) => (
+                  {nav.map((it) => (
                     <NavEntry key={it.to} item={it} />
                   ))}
                 </SidebarMenu>
@@ -288,6 +295,20 @@ export function AppShell() {
             <Separator orientation="vertical" className="mr-1 h-5! self-center!" />
             <span className="truncate text-sm font-medium">{pageTitle(pathname)}</span>
             <div className="ml-auto flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => setSearch(true)}
+                className="mr-1 hidden h-8 w-56 items-center gap-2 rounded-lg border bg-muted/50 px-2.5 text-sm text-muted-foreground outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring md:flex"
+              >
+                <Search className="size-4" />
+                Buscar
+                <kbd className="ml-auto rounded border bg-background px-1.5 text-[11px] font-medium">Ctrl K</kbd>
+              </button>
+              <Tip label="Buscar">
+                <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setSearch(true)} aria-label="Buscar">
+                  <Search />
+                </Button>
+              </Tip>
               <ThemeToggle />
               <Notifications />
             </div>
@@ -297,6 +318,9 @@ export function AppShell() {
           </main>
         </SidebarInset>
         <BottomNav />
-    </SidebarProvider>
+        <CommandPalette open={search} onOpenChange={setSearch} />
+        <AssistantWidget />
+      </SidebarProvider>
+    </AssistantProvider>
   )
 }
