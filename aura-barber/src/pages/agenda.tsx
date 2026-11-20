@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { PageHeader } from '@/components/layout'
 import { Button } from '@/components/affect/button'
 import { db } from '@/lib/data'
-import { fimDoAgendamento } from '@/lib/schedule'
+import { fimDoAgendamento, janelaDoDia } from '@/lib/schedule'
 
 const GRADE = 30
 const ALTURA = 48 // px por faixa de GRADE minutos
@@ -31,8 +31,8 @@ export function Agenda() {
 
   const [y, m, d] = dia.split('-').map(Number)
   const weekday = new Date(y, m - 1, d).getDay()
-  const abertura = toMin(db.empresa.abertura)
-  const fechamento = toMin(db.empresa.fechamento)
+  // janela da grade = disponibilidade real do dia (clampada à empresa), não 08–20 fixo
+  const { inicioMin: abertura, fimMin: fechamento } = janelaDoDia(weekday, db.profissionais, db.empresa)
   const faixas: number[] = []
   for (let t = abertura; t < fechamento; t += GRADE) faixas.push(t)
   const alturaTotal = ((fechamento - abertura) / GRADE) * ALTURA
