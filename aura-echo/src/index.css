@@ -1,0 +1,192 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/bricolage-grotesque";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-display: 'Bricolage Grotesque Variable', sans-serif;
+    --font-sans: 'Geist Variable', sans-serif;
+    --font-heading: var(--font-display);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --color-brand-soft: var(--brand-soft);
+    --color-brand-text: var(--brand-text);
+    --color-success: var(--success);
+    --color-success-soft: var(--success-soft);
+    --color-warning: var(--warning);
+    --color-warning-soft: var(--warning-soft);
+    --color-info: var(--info);
+    --color-info-soft: var(--info-soft);
+    /* cromas por serviço — cada serviço é uma estrela com cor própria */
+    --color-fit: var(--svc-fit);
+    --color-fit-soft: var(--svc-fit-soft);
+    --color-barber: var(--svc-barber);
+    --color-barber-soft: var(--svc-barber-soft);
+    --color-brand: var(--svc-brand);
+    --color-brand-svc-soft: var(--svc-brand-soft);
+    --color-vagas: var(--svc-vagas);
+    --color-vagas-soft: var(--svc-vagas-soft);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+/* ------------------------------------------------------------------
+   Tema "Aura mestre". O hub é um céu neutro (grafite frio) com um
+   único acento teal; cada serviço do ecossistema traz seu próprio
+   croma (--svc-*). A "aura" do hero é a mistura dos quatro cromas.
+   ------------------------------------------------------------------ */
+:root {
+    --background: #fafafb;
+    --foreground: #16181d;
+    --card: #ffffff;
+    --card-foreground: #16181d;
+    --popover: #ffffff;
+    --popover-foreground: #16181d;
+    --primary: #0d9488;
+    --primary-foreground: #ffffff;
+    --secondary: #f1f2f4;
+    --secondary-foreground: #2a2d34;
+    --muted: #f1f2f4;
+    --muted-foreground: #646973;
+    --accent: #eef2f1;
+    --accent-foreground: #16181d;
+    --destructive: #c4320a;
+    --border: #e6e7ea;
+    --input: #d7d9dd;
+    --ring: #0d9488;
+    --brand-soft: #e6faf7;
+    --brand-text: #0b6e66;
+    --success: #137a3d;
+    --success-soft: #e6f5ec;
+    --warning: #855800;
+    --warning-soft: #fdf3d3;
+    --info: #175cd3;
+    --info-soft: #eef4ff;
+    --svc-fit: #e5484f;
+    --svc-fit-soft: #fdecec;
+    --svc-barber: #2563eb;
+    --svc-barber-soft: #e8effe;
+    --svc-brand: #7c3aed;
+    --svc-brand-soft: #f1ebfe;
+    --svc-vagas: #d97706;
+    --svc-vagas-soft: #fcf0dd;
+    --chart-1: var(--svc-fit);
+    --chart-2: var(--svc-barber);
+    --chart-3: var(--svc-brand);
+    --chart-4: var(--svc-vagas);
+    --chart-5: #646973;
+    --radius: 0.8rem;
+    --sidebar: #f4f5f6;
+    --sidebar-foreground: #3d4149;
+    --sidebar-primary: #0d9488;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #e9ebed;
+    --sidebar-accent-foreground: #16181d;
+    --sidebar-border: #e6e7ea;
+    --sidebar-ring: #0d9488;
+}
+
+.dark {
+    --background: #0e1013;
+    --foreground: #eceef1;
+    --card: #15181c;
+    --card-foreground: #eceef1;
+    --popover: #181b20;
+    --popover-foreground: #eceef1;
+    --primary: #14b8a6;
+    --primary-foreground: #04110f;
+    --secondary: #1e2228;
+    --secondary-foreground: #eceef1;
+    --muted: #1a1d22;
+    --muted-foreground: #9ba1ac;
+    --accent: #1e2228;
+    --accent-foreground: #eceef1;
+    --destructive: #ff8a7a;
+    --border: #262a30;
+    --input: #333841;
+    --ring: #2dd4bf;
+    --brand-soft: #0c2e2a;
+    --brand-text: #5eead4;
+    --success: #6fd79b;
+    --success-soft: #16301f;
+    --warning: #f1b93a;
+    --warning-soft: #3a2f12;
+    --info: #84adff;
+    --info-soft: #16233d;
+    --svc-fit: #ff6b70;
+    --svc-fit-soft: #3a1a1c;
+    --svc-barber: #6b9bff;
+    --svc-barber-soft: #16233d;
+    --svc-brand: #a78bfa;
+    --svc-brand-soft: #241a3a;
+    --svc-vagas: #f0a94a;
+    --svc-vagas-soft: #352611;
+    --chart-1: var(--svc-fit);
+    --chart-2: var(--svc-barber);
+    --chart-3: var(--svc-brand);
+    --chart-4: var(--svc-vagas);
+    --chart-5: #9ba1ac;
+    --sidebar: #0a0c0e;
+    --sidebar-foreground: #c3c8d0;
+    --sidebar-primary: #14b8a6;
+    --sidebar-primary-foreground: #04110f;
+    --sidebar-accent: #181b20;
+    --sidebar-accent-foreground: #eceef1;
+    --sidebar-border: #262a30;
+    --sidebar-ring: #2dd4bf;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+    }
+  html {
+    @apply font-sans;
+    }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    }
+}
