@@ -1,0 +1,6 @@
+# Grafo de conhecimento (artefato local do graphify)
+graphify-out/
+
+# Dependências e build
+node_modules/
+dist/
