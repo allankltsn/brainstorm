@@ -214,6 +214,78 @@ function CommandMenuDemo() {
   )
 }
 
+import { AgentGraph, type AgentNode as AgentGraphNode } from '@/components/ui/agent-graph'
+import { AgentTree, type AgentNode as AgentTreeNode } from '@/components/ui/agent-tree'
+import { AgentFleet, type FleetAgent } from '@/components/ui/agent-fleet'
+import { AgentInbox, type AgentInboxItem } from '@/components/ui/agent-inbox'
+import { AgentPlan, type PlanStep } from '@/components/ui/agent-plan'
+import { AgentQueue, type AgentQueueItem } from '@/components/ui/agent-queue'
+import { AgentWorkbench, type AgentWorkbenchAgent } from '@/components/ui/agent-workbench'
+import { AgentCrew, type AgentCrewMember } from '@/components/ui/agent-crew'
+import { AgentLanes, type AgentLane } from '@/components/ui/agent-lanes'
+
+const grafoNodes: AgentGraphNode[] = [
+  { id: 'plan', label: 'Planejar', status: 'done', col: 0, row: 0 },
+  { id: 'code', label: 'Codar', status: 'running', col: 1, row: 0 },
+  { id: 'test', label: 'Testar', status: 'idle', col: 2, row: 0 },
+  { id: 'review', label: 'Revisar', status: 'idle', col: 2, row: 1 },
+]
+const grafoEdges = [
+  { from: 'plan', to: 'code' },
+  { from: 'code', to: 'test' },
+  { from: 'code', to: 'review' },
+]
+const crewTree: AgentTreeNode = {
+  id: 'lead', name: 'Orquestrador', role: 'lead', status: 'running',
+  children: [
+    { id: 'r', name: 'Pesquisador', role: 'worker', status: 'done' },
+    {
+      id: 'w', name: 'Redator', role: 'worker', status: 'running',
+      children: [{ id: 'rev', name: 'Revisor', role: 'reviewer', status: 'idle' }],
+    },
+  ],
+}
+const frota: FleetAgent[] = [
+  { id: '1', name: 'Scout', status: 'running', task: 'Varrendo o repositório', progress: 62 },
+  { id: '2', name: 'Builder', status: 'done', task: 'Build concluído', progress: 100 },
+  { id: '3', name: 'Tester', status: 'error', task: '2 testes falharam' },
+]
+const inboxItens: AgentInboxItem[] = [
+  { id: '1', agent: 'Builder', title: 'Aprovar deploy em produção', detail: 'Pages · brainstorm', kind: 'approval' },
+  { id: '2', agent: 'Scout', title: 'Qual branch devo analisar?', kind: 'question' },
+]
+const planoSteps: PlanStep[] = [
+  { id: '1', label: 'Ler o PLANO.md', status: 'done' },
+  {
+    id: '2', label: 'Gerar componentes', status: 'active', detail: 'onda 3A',
+    substeps: [
+      { id: '2a', label: 'agent-graph', status: 'done' },
+      { id: '2b', label: 'agent-fleet', status: 'active' },
+    ],
+  },
+  { id: '3', label: 'Publicar no Pages', status: 'pending' },
+]
+const fila: AgentQueueItem[] = [
+  { id: '1', label: 'Indexar documentação', priority: 'high', eta: '~2 min', status: 'running' },
+  { id: '2', label: 'Resumir issues', priority: 'normal', eta: '~5 min', status: 'queued' },
+  { id: '3', label: 'Limpar caches', priority: 'low', status: 'queued' },
+]
+const wbAgent: AgentWorkbenchAgent = { name: 'Codador', model: 'Opus 4.8', status: 'running' }
+const wbTools = [
+  { id: '1', name: 'read_file(App.tsx)', status: 'done' as const },
+  { id: '2', name: 'edit_file(registry.json)', status: 'running' as const },
+]
+const crewMembers: AgentCrewMember[] = [
+  { id: '1', name: 'Orquestrador', role: 'lead', status: 'running', task: 'Coordenando a onda' },
+  { id: '2', name: 'Pesquisador', role: 'worker', status: 'done' },
+  { id: '3', name: 'Revisor', role: 'reviewer', status: 'idle' },
+]
+const laneData: AgentLane[] = [
+  { id: 'q', title: 'Fila', items: [{ id: '1', label: 'Indexar docs', agent: 'Scout' }, { id: '2', label: 'Resumir PRs' }] },
+  { id: 'r', title: 'Executando', items: [{ id: '3', label: 'Gerar testes', agent: 'Codador' }] },
+  { id: 'd', title: 'Pronto', items: [] },
+]
+
 const arvore: TreeNode[] = [
   {
     id: 'src', label: 'src', defaultOpen: true, children: [
@@ -1083,6 +1155,45 @@ function ComponentsView() {
 
         <Demo title="Data table" full>
           <DataTable columns={alunosColumns} data={alunos} searchKey="nome" searchPlaceholder="Filtrar por aluno…" />
+        </Demo>
+
+        <section className="intro" style={{ marginTop: '1.5rem' }}>
+          <h2>Orquestração de agentes</h2>
+          <p>Componentes para UIs de agentes de IA — reescritos no padrão aura-ui (paridade com o catálogo affectUI).</p>
+        </section>
+
+        <Demo title="Agent graph · Agent tree" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <AgentGraph nodes={grafoNodes} edges={grafoEdges} />
+            <AgentTree root={crewTree} />
+          </div>
+        </Demo>
+
+        <Demo title="Agent fleet" full>
+          <AgentFleet agents={frota} />
+        </Demo>
+
+        <Demo title="Agent plan · Agent queue" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <AgentPlan title="Plano do agente" steps={planoSteps} />
+            <AgentQueue items={fila} />
+          </div>
+        </Demo>
+
+        <Demo title="Agent workbench" full>
+          <AgentWorkbench agent={wbAgent} currentAction="Editando registry.json" toolCalls={wbTools} />
+        </Demo>
+
+        <Demo title="Agent crew" full>
+          <AgentCrew members={crewMembers} />
+        </Demo>
+
+        <Demo title="Agent inbox" full>
+          <AgentInbox items={inboxItens} />
+        </Demo>
+
+        <Demo title="Agent lanes" full>
+          <AgentLanes lanes={laneData} />
         </Demo>
       </div>
     </>
