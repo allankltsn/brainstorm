@@ -8,7 +8,7 @@ import { db, type Disponibilidade, type Profissional } from '@/lib/data'
 import { criarProfissional, createInvite, listMemberships } from '@/lib/api'
 
 const DIAS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
-type Rascunho = Omit<Profissional, 'id' | 'userId'> & { id?: string; userId?: string }
+type Rascunho = Omit<Profissional, 'id' | 'userId' | 'filialId'> & { id?: string; userId?: string }
 const vazio: Rascunho = { nome: '', servicos: [], disponibilidade: [], comissaoPct: 50 }
 
 export function Profissionais() {
@@ -37,7 +37,7 @@ export function Profissionais() {
     if (!draft.nome.trim()) return
     if (draft.id) {
       // edição: preserva o userId do profissional existente
-      const nova = lista.map((p) => (p.id === draft.id ? ({ ...p, ...draft, id: draft.id, userId: p.userId } as Profissional) : p))
+      const nova = lista.map((p) => (p.id === draft.id ? ({ ...p, ...draft, id: draft.id, userId: p.userId, filialId: p.filialId } as Profissional) : p))
       aplicar(nova)
     } else {
       // novo: nasce como User + Membership(barbeiro) no store de identidade

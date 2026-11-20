@@ -11,6 +11,12 @@ import {
   setMembershipStatus,
   userIdDaIdentidade,
   getMe,
+  listFiliais,
+  getFilial,
+  updateFilial,
+  profissionaisDaFilial,
+  agendamentosDaFilial,
+  filialPadrao,
 } from './api'
 
 describe('validações', () => {
@@ -26,24 +32,50 @@ describe('validações', () => {
   })
 })
 
-describe('updateEmpresa', () => {
-  it('rejeita horário invertido e não grava', () => {
-    const antes = getEmpresa().abertura
-    const r = updateEmpresa({ abertura: '19:00', fechamento: '09:00' })
-    expect(r.ok).toBe(false)
-    expect(r.erro).toBeTruthy()
-    expect(getEmpresa().abertura).toBe(antes)
-  })
-  it('rejeita grade fora de 15/30/60', () => {
-    expect(updateEmpresa({ gradeMin: 20 }).ok).toBe(false)
-  })
-  it('rejeita slug vazio', () => {
+describe('updateEmpresa (marca)', () => {
+  it('rejeita slug vazio e não grava', () => {
+    const antes = getEmpresa().slug
     expect(updateEmpresa({ slug: '   ' }).ok).toBe(false)
+    expect(getEmpresa().slug).toBe(antes)
   })
-  it('grava quando válido', () => {
-    expect(updateEmpresa({ gradeMin: 15, nome: 'Nova' }).ok).toBe(true)
-    expect(getEmpresa().gradeMin).toBe(15)
+  it('rejeita nome vazio', () => {
+    expect(updateEmpresa({ nome: '  ' }).ok).toBe(false)
+  })
+  it('grava nome válido', () => {
+    expect(updateEmpresa({ nome: 'Nova' }).ok).toBe(true)
     expect(getEmpresa().nome).toBe('Nova')
+  })
+})
+
+describe('filiais', () => {
+  it('listFiliais retorna as filiais da marca', () => {
+    expect(listFiliais().length).toBeGreaterThanOrEqual(2)
+  })
+  it('updateFilial rejeita horário invertido e não grava', () => {
+    const f = listFiliais()[0]
+    const r = updateFilial(f.id, { abertura: '19:00', fechamento: '09:00' })
+    expect(r.ok).toBe(false)
+    expect(getFilial(f.id)?.abertura).not.toBe('19:00')
+  })
+  it('updateFilial rejeita grade fora de 15/30/60', () => {
+    expect(updateFilial(listFiliais()[0].id, { gradeMin: 20 }).ok).toBe(false)
+  })
+  it('updateFilial grava quando válido', () => {
+    const f = listFiliais()[0]
+    expect(updateFilial(f.id, { gradeMin: 15 }).ok).toBe(true)
+    expect(getFilial(f.id)?.gradeMin).toBe(15)
+  })
+  it('profissionaisDaFilial traz só os da filial', () => {
+    const f = listFiliais()[0]
+    expect(profissionaisDaFilial(f.id).every((p) => p.filialId === f.id)).toBe(true)
+  })
+  it('agendamentosDaFilial traz só os da filial', () => {
+    const f = listFiliais()[0]
+    expect(agendamentosDaFilial(f.id).every((a) => a.filialId === f.id)).toBe(true)
+  })
+  it('filialPadrao: barbeiro usa a própria filial; dono usa a primeira', () => {
+    expect(filialPadrao('barbeiro', 'p-rafa')).toBe(db.profissionalById('p-rafa')!.filialId)
+    expect(filialPadrao('dono', '')).toBe(listFiliais()[0].id)
   })
 })
 

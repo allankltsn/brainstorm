@@ -15,6 +15,7 @@ function ag(p: Partial<Agendamento> & Pick<Agendamento, 'servicoId' | 'inicio'>)
     id: p.id ?? `a-${Math.random()}`,
     clienteId: p.clienteId ?? 'c-ana',
     profissionalId: p.profissionalId ?? 'p-rafa',
+    filialId: p.filialId ?? 'f-centro',
     status: p.status ?? 'marcado',
     servicoId: p.servicoId,
     inicio: p.inicio,
@@ -59,8 +60,8 @@ describe('agendaDoProfissional', () => {
 describe('ocupacaoPorProfissional', () => {
   const todoDia = (ini: string, fim: string): Profissional['disponibilidade'] =>
     [0, 1, 2, 3, 4, 5, 6].map((dia) => ({ dia, inicio: ini, fim }))
-  const trabalha: Profissional = { id: 'p-x', userId: 'u-x', nome: 'X', servicos: [], disponibilidade: todoDia('09:00', '12:00'), comissaoPct: 50 }
-  const folga: Profissional = { id: 'p-y', userId: 'u-y', nome: 'Y', servicos: [], disponibilidade: [], comissaoPct: 50 }
+  const trabalha: Profissional = { id: 'p-x', userId: 'u-x', filialId: 'f-centro', nome: 'X', servicos: [], disponibilidade: todoDia('09:00', '12:00'), comissaoPct: 50 }
+  const folga: Profissional = { id: 'p-y', userId: 'u-y', filialId: 'f-centro', nome: 'Y', servicos: [], disponibilidade: [], comissaoPct: 50 }
 
   it('calcula pct = ocupado/janela', () => {
     const ags = [ag({ servicoId: 's-corte', inicio: `${D}T09:00:00`, profissionalId: 'p-x' })] // 30 min
