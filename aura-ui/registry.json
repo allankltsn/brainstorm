@@ -664,6 +664,65 @@
       "type": "registry:ui",
       "registryDependencies": ["utils", "command"],
       "files": [{ "path": "src/components/ui/command-menu.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-graph",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/agent-graph.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-tree",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/agent-tree.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-fleet",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge", "progress"],
+      "files": [{ "path": "src/components/ui/agent-fleet.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-inbox",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "button", "badge", "avatar", "empty-state"],
+      "files": [{ "path": "src/components/ui/agent-inbox.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-plan",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/agent-plan.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-queue",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/agent-queue.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-workbench",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "button", "badge", "spinner"],
+      "files": [{ "path": "src/components/ui/agent-workbench.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-crew",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "avatar", "badge"],
+      "files": [{ "path": "src/components/ui/agent-crew.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "agent-lanes",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/agent-lanes.tsx", "type": "registry:ui" }]
     }
   ]
 }
