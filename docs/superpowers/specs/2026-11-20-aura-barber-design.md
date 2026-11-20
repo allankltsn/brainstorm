@@ -99,6 +99,38 @@ Decisão do dono: **seletor de identidade junto do seletor de papel** (sem tela 
 **Decisões assumidas (o dono pode corrigir):** faturamento e comissão são *estimativas* sobre os
 mocks; cancelar é só mudança de status (sem desfazer); dono não tem sub-identidade.
 
+## Fase 3 — Config padrão AuraFit (addendum, aprovado 2026-11-20)
+Escopo aprovado: telas de **configuração de usuário, empresa, profissionais e clientes**,
+**padronizadas pela estrutura do AuraFit** (banco `identity`), para mais à frente plugar no
+**BFF global** da Aura. Protótipo mock/estático (repo público, sem dado real).
+
+**Abordagem A (aditiva), escolhida.** Adiciona uma camada de identidade espelhando o `identity`
+do AuraFit (ver `C:\dev\aura\internal\aura-projects\docs\database\identity.dbml`), **sem reescrever
+Fase 1/2**: `User`, `UserSettings`, `Empresa`(≈`Tenant`: id, ownerUserId, name, slug, status +
+campos barber abertura/fechamento/gradeMin), `Membership`(userId, empresaId, role, status,
+invitedBy), `Invite`. Papéis = `dono|barbeiro|cliente` (no AuraFit: admin|personal|aluno).
+`Profissional`/`Cliente` ganham `userId` ligando ao `User`. Fora desta rodada: `legal_*`,
+catálogo de permissões detalhado, multiunidade (filiais — fase própria depois).
+
+Mapa: profissional = `User` + `Membership(role=barbeiro)` + perfil barber; cliente = `User` +
+`Membership(role=cliente)` — mesmo padrão tenant→membership do AuraFit.
+
+**Telas:** (1) Meu usuário (todos; via engrenagem/avatar no topo) — perfil + preferências
+(theme/locale/notify*); (2) Empresa (dono) — nome/slug/status + horário + grade (15/30/60, novo
+`gradeMin`, com efeito imediato em Agenda/Agendar); (3) Clientes (dono) — memberships `cliente` +
+convidar + suspender/reativar; (4) Profissionais (dono) — memberships `barbeiro` + convidar +
+status (além do CRUD de perfil que já existe).
+
+**Pronto para o BFF global:** toda leitura/escrita passa por uma camada fina `src/lib/api.ts` com
+funções no formato dos endpoints do BFF AuraFit (`getMe`, `getMySettings`/`updateMySettings`,
+`getEmpresa`/`updateEmpresa`, `listMemberships(role)`, `createInvite`, `setMembershipStatus`).
+Hoje opera sobre o mock; depois troca-se a implementação por `fetch` sem tocar nas telas.
+
+**Decisões assumidas:** mock em memória; enums de status iguais (ACTIVE/SUSPENDED/PENDING);
+`Membership.role` guarda o nome do papel (no AuraFit é `roleId`→tabela `roles` — simplificação de
+protótipo); convite é mock (gera código, sem e-mail); "Meu usuário" no topo (engrenagem), Clientes
+entra no menu do dono.
+
 ## Rastreamento
 Gerido no GitHub Project **brainstrm** (público), Frente = `Aura Barber`:
 https://github.com/users/allankltsn/projects/2
