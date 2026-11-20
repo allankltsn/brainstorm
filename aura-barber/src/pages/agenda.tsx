@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { PageHeader } from '@/components/layout'
 import { Button } from '@/components/affect/button'
 import { db } from '@/lib/data'
+import { useRole } from '@/lib/role'
+import { profissionaisDaFilial, agendamentosDaFilial } from '@/lib/api'
 import { fimDoAgendamento, janelaDoDia } from '@/lib/schedule'
 
 const ALTURA = 48 // px por faixa de GRADE minutos
@@ -26,18 +28,21 @@ function addDias(diaISO: string, n: number) {
 
 export function Agenda() {
   const nav = useNavigate()
+  const { filialId } = useRole()
+  const filial = db.filialById(filialId) ?? db.filiais[0]
   const [dia, setDia] = useState<string>(hojeISO)
-  const GRADE = db.empresa.gradeMin // granularidade configurável (Empresa/Config)
+  const GRADE = filial.gradeMin // granularidade da filial ativa
 
+  const profs = profissionaisDaFilial(filial.id)
   const [y, m, d] = dia.split('-').map(Number)
   const weekday = new Date(y, m - 1, d).getDay()
-  // janela da grade = disponibilidade real do dia (clampada à empresa), não 08–20 fixo
-  const { inicioMin: abertura, fimMin: fechamento } = janelaDoDia(weekday, db.profissionais, db.empresa)
+  // janela da grade = disponibilidade real do dia (clampada ao horário da filial)
+  const { inicioMin: abertura, fimMin: fechamento } = janelaDoDia(weekday, profs, filial)
   const faixas: number[] = []
   for (let t = abertura; t < fechamento; t += GRADE) faixas.push(t)
   const alturaTotal = ((fechamento - abertura) / GRADE) * ALTURA
 
-  const doDia = db.agendamentos.filter((a) => a.inicio.slice(0, 10) === dia && a.status !== 'cancelado')
+  const doDia = agendamentosDaFilial(filial.id).filter((a) => a.inicio.slice(0, 10) === dia && a.status !== 'cancelado')
 
   const dataLabel = `${DIAS[weekday]}, ${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}`
 
@@ -81,7 +86,7 @@ export function Agenda() {
           </div>
 
           {/* uma coluna por profissional */}
-          {db.profissionais.map((p) => {
+          {profs.map((p) => {
             const trabalha = p.disponibilidade.some((f) => f.dia === weekday)
             const seus = doDia.filter((a) => a.profissionalId === p.id)
             return (

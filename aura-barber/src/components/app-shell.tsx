@@ -66,6 +66,28 @@ function IdentidadeSwitch() {
   return null
 }
 
+// Filial ativa: dono alterna; barbeiro vê a própria (fixa); cliente não vê (escolhe ao agendar).
+function FilialSwitch() {
+  const { role, filialId, setFilialId } = useRole()
+  if (role === 'cliente') return null
+  if (role === 'barbeiro') {
+    return (
+      <span className="block truncate rounded-lg border bg-background px-2 py-1.5 text-xs text-muted-foreground">
+        Filial: <span className="text-foreground">{db.filialById(filialId)?.nome ?? '—'}</span>
+      </span>
+    )
+  }
+  return (
+    <Select
+      size="sm"
+      aria-label="Filial"
+      value={filialId}
+      options={db.filiais.map((f) => ({ value: f.id, label: f.nome }))}
+      onChange={setFilialId}
+    />
+  )
+}
+
 function ThemeToggle() {
   const { isDark, setTheme } = useTheme()
   return (
@@ -107,6 +129,7 @@ export function AppShell() {
           ))}
         </nav>
         <div className="mt-auto space-y-2">
+          <FilialSwitch />
           <IdentidadeSwitch />
           <RoleSwitch />
         </div>
@@ -118,6 +141,11 @@ export function AppShell() {
           <BrandMark />
         </div>
         <div className="ml-auto flex items-center gap-2">
+          {role === 'dono' && (
+            <div className="w-32 md:hidden">
+              <FilialSwitch />
+            </div>
+          )}
           {role !== 'dono' && (
             <div className="w-32 md:hidden">
               <IdentidadeSwitch />
