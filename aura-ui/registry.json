@@ -155,6 +155,109 @@
       "dependencies": ["radix-ui", "class-variance-authority", "lucide-react"],
       "registryDependencies": ["utils", "button", "input", "separator", "sheet", "skeleton", "tooltip", "use-mobile"],
       "files": [{ "path": "src/components/ui/sidebar.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/accordion.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/popover.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/radio-group.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/slider.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button"],
+      "files": [{ "path": "src/components/ui/pagination.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/spinner.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/kbd.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/empty-state.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/textarea.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["utils", "button", "input", "textarea"],
+      "files": [{ "path": "src/components/ui/input-group.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "dependencies": ["react-day-picker", "lucide-react"],
+      "registryDependencies": ["utils", "button"],
+      "files": [{ "path": "src/components/ui/calendar.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "dependencies": ["cmdk", "lucide-react"],
+      "registryDependencies": ["utils", "dialog", "input-group"],
+      "files": [{ "path": "src/components/ui/command.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "popover", "command", "button"],
+      "files": [{ "path": "src/components/ui/combobox.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react", "date-fns"],
+      "registryDependencies": ["utils", "popover", "calendar", "button"],
+      "files": [{ "path": "src/components/ui/date-picker.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "number-input",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button", "input"],
+      "files": [{ "path": "src/components/ui/number-input.tsx", "type": "registry:ui" }]
     }
   ]
 }
