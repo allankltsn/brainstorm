@@ -437,6 +437,78 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": ["utils", "input", "button"],
       "files": [{ "path": "src/components/ui/ai-prompt.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "thinking-loader",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/thinking-loader.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "shimmer-loader",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/shimmer-loader.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "tips-panel",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "kbd"],
+      "files": [{ "path": "src/components/ui/tips-panel.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "change-summary",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/change-summary.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "smart-recommendation",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "button", "badge"],
+      "files": [{ "path": "src/components/ui/smart-recommendation.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "decision-inbox",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "button", "badge", "empty-state"],
+      "files": [{ "path": "src/components/ui/decision-inbox.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "progress-tracker",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "progress"],
+      "files": [{ "path": "src/components/ui/progress-tracker.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "message-actions",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button", "tooltip", "input"],
+      "files": [{ "path": "src/components/ui/message-actions.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "comment-thread",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "avatar", "button", "textarea"],
+      "files": [{ "path": "src/components/ui/comment-thread.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "glow-cloud",
+      "type": "registry:ui",
+      "files": [{ "path": "src/components/ui/glow-cloud.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "notification-stack",
+      "type": "registry:ui",
+      "files": [{ "path": "src/components/ui/notification-stack.tsx", "type": "registry:ui" }]
     }
   ]
 }

@@ -43,6 +43,7 @@ if (typeof window !== 'undefined') {
     },
   })) as unknown as typeof window.matchMedia
 
-  // cmdk e alguns componentes chamam scrollIntoView, ausente no jsdom.
+  // cmdk e alguns componentes chamam scrollIntoView/scrollTo, ausentes no jsdom.
   window.Element.prototype.scrollIntoView ??= function () {}
+  window.Element.prototype.scrollTo ??= function () {}
 }
