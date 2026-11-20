@@ -41,7 +41,9 @@
   --sidebar-border: #e7e7ea;
   --sidebar-ring: #6a0dad;
   --radius: 0.75rem;
+  --spacing: 0.25rem;
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
   --shadow-card: 0 1px 2px 0 rgb(24 24 27 / 0.06), 0 1px 3px 0 rgb(24 24 27 / 0.08);
   --shadow-popover: 0 8px 24px -8px rgb(24 24 27 / 0.18), 0 2px 8px -2px rgb(24 24 27 / 0.10);
@@ -88,7 +90,9 @@
   --sidebar-border: #e7e7ea;
   --sidebar-ring: #6a0dad;
   --radius: 0.75rem;
+  --spacing: 0.25rem;
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
   --shadow-card: 0 1px 2px 0 rgb(24 24 27 / 0.06), 0 1px 3px 0 rgb(24 24 27 / 0.08);
   --shadow-popover: 0 8px 24px -8px rgb(24 24 27 / 0.18), 0 2px 8px -2px rgb(24 24 27 / 0.10);
@@ -135,7 +139,9 @@
   --sidebar-border: #2a2a2f;
   --sidebar-ring: #b98af0;
   --radius: 0.75rem;
+  --spacing: 0.25rem;
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
   --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.40), 0 1px 3px 0 rgb(0 0 0 / 0.50);
   --shadow-popover: 0 8px 24px -8px rgb(0 0 0 / 0.60), 0 2px 8px -2px rgb(0 0 0 / 0.45);
@@ -182,7 +188,9 @@
   --sidebar-border: #e7e7ea;
   --sidebar-ring: #b1111b;
   --radius: 0.75rem;
+  --spacing: 0.25rem;
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
   --shadow-card: 0 1px 2px 0 rgb(24 24 27 / 0.06), 0 1px 3px 0 rgb(24 24 27 / 0.08);
   --shadow-popover: 0 8px 24px -8px rgb(24 24 27 / 0.18), 0 2px 8px -2px rgb(24 24 27 / 0.10);
@@ -229,7 +237,9 @@
   --sidebar-border: #2a2a2f;
   --sidebar-ring: #ff6f78;
   --radius: 0.75rem;
+  --spacing: 0.25rem;
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
   --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.40), 0 1px 3px 0 rgb(0 0 0 / 0.50);
   --shadow-popover: 0 8px 24px -8px rgb(0 0 0 / 0.60), 0 2px 8px -2px rgb(0 0 0 / 0.45);

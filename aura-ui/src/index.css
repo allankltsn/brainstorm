@@ -44,6 +44,16 @@ code, .val, .t-mono { font-family: var(--font-mono); }
 }
 .controls { display: flex; gap: 8px; flex-wrap: wrap; }
 
+/* nav (Tokens / Componentes) */
+.nav { display: flex; gap: 4px; }
+.nav-btn {
+  appearance: none; border: 0; background: transparent; color: var(--muted-foreground);
+  font: inherit; font-size: 0.9rem; font-weight: 500; padding: 6px 10px; border-radius: calc(var(--radius) * 0.6);
+  cursor: pointer; transition: all 0.15s var(--ease-out, ease);
+}
+.nav-btn:hover { color: var(--foreground); }
+.nav-btn[data-active='true'] { color: var(--primary); background: var(--brand-soft); }
+
 /* segmented control */
 .seg {
   display: inline-flex; background: var(--muted); border: 1px solid var(--border);
