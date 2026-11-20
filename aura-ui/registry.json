@@ -1082,6 +1082,68 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": ["utils", "button"],
       "files": [{ "path": "src/components/ui/stepper-form.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "cited-answer",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge", "separator"],
+      "files": [{ "path": "src/components/ui/cited-answer.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "reasoning-summary",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/reasoning-summary.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "writing-assistant",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button", "badge"],
+      "files": [{ "path": "src/components/ui/writing-assistant.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "prompt-library",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "input", "button", "badge"],
+      "files": [{ "path": "src/components/ui/prompt-library.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "email-draft",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "input", "textarea", "button", "badge"],
+      "files": [{ "path": "src/components/ui/email-draft.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "filter-menu",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "popover", "checkbox", "button", "badge"],
+      "files": [{ "path": "src/components/ui/filter-menu.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "profile-menu",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "dropdown-menu", "avatar", "badge"],
+      "files": [{ "path": "src/components/ui/profile-menu.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "integration-picker",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button", "badge"],
+      "files": [{ "path": "src/components/ui/integration-picker.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "integration-settings",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "card", "switch", "input", "label", "button"],
+      "files": [{ "path": "src/components/ui/integration-settings.tsx", "type": "registry:ui" }]
     }
   ]
 }
