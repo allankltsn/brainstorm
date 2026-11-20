@@ -117,6 +117,25 @@ import { MagicCard } from '@/components/ui/magic-card'
 import { BorderBeam } from '@/components/ui/border-beam'
 import { Marquee } from '@/components/ui/marquee'
 import { DotPattern } from '@/components/ui/dot-pattern'
+import { ApprovalCard } from '@/components/ui/approval-card'
+import { ThinkingState } from '@/components/ui/thinking-state'
+import { ToolCallCard } from '@/components/ui/tool-call-card'
+import { ModelPicker } from '@/components/ui/model-picker'
+import { ContextWindow } from '@/components/ui/context-window'
+import { PermissionRequest } from '@/components/ui/permission-request'
+import { AgentTrail } from '@/components/ui/agent-trail'
+
+const modelos = [
+  { id: 'opus', label: 'Opus 4.8', provider: 'Anthropic', badge: 'Novo' },
+  { id: 'sonnet', label: 'Sonnet 5.5', provider: 'Anthropic' },
+  { id: 'haiku', label: 'Haiku 5.5', provider: 'Anthropic' },
+]
+
+const trilha = [
+  { id: '1', label: 'Ler o plano', status: 'done' as const },
+  { id: '2', label: 'Escrever o componente', status: 'active' as const, detail: 'src/app.tsx' },
+  { id: '3', label: 'Rodar os testes', status: 'pending' as const },
+]
 
 const cidades = [
   { value: 'sp', label: 'São Paulo' },
@@ -723,6 +742,35 @@ function ComponentsView() {
               <span className="mx-4">shadcn</span>
               <span className="mx-4">Radix</span>
             </Marquee>
+          </div>
+        </Demo>
+
+        <Demo title="Padrões de IA" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <ApprovalCard
+              title="Publicar release v2.1"
+              description="A IA preparou o changelog e quer sua aprovação."
+              details={<p className="text-xs text-muted-foreground">12 commits · 3 arquivos</p>}
+            />
+            <PermissionRequest
+              title="Acessar o repositório?"
+              description="O agente quer ler os arquivos do projeto."
+              scope="Ler arquivos do projeto"
+            />
+            <ToolCallCard
+              name="search_web"
+              status="success"
+              args={'{"q":"aura ui","limit":5}'}
+              result="2 resultados encontrados"
+            />
+            <div className="grid content-start gap-4">
+              <div className="flex flex-wrap items-center gap-3">
+                <ModelPicker models={modelos} />
+                <ThinkingState>analisando o plano…</ThinkingState>
+              </div>
+              <ContextWindow used={120000} total={200000} />
+              <AgentTrail steps={trilha} />
+            </div>
           </div>
         </Demo>
       </div>
