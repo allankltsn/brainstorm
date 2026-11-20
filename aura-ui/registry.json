@@ -258,6 +258,66 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": ["utils", "button", "input"],
       "files": [{ "path": "src/components/ui/number-input.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "use-in-view",
+      "type": "registry:hook",
+      "files": [{ "path": "src/hooks/use-in-view.ts", "type": "registry:hook" }]
+    },
+    {
+      "name": "chart-tip",
+      "type": "registry:ui",
+      "files": [{ "path": "src/components/ui/chart-tip.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "reveal",
+      "type": "registry:ui",
+      "registryDependencies": ["use-in-view"],
+      "files": [{ "path": "src/components/ui/reveal.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "chart-card",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/chart-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "stat-card",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/stat-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "sparkline",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "use-in-view"],
+      "files": [{ "path": "src/components/ui/sparkline.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "mini-bars",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "use-in-view"],
+      "files": [{ "path": "src/components/ui/mini-bars.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "h-bars",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "use-in-view"],
+      "files": [{ "path": "src/components/ui/h-bars.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "bars-chart",
+      "type": "registry:ui",
+      "dependencies": ["recharts"],
+      "registryDependencies": ["utils", "chart", "chart-tip", "reveal", "use-in-view"],
+      "files": [{ "path": "src/components/ui/bars-chart.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "trend-chart",
+      "type": "registry:ui",
+      "dependencies": ["recharts"],
+      "registryDependencies": ["utils", "chart", "chart-tip", "reveal", "use-in-view"],
+      "files": [{ "path": "src/components/ui/trend-chart.tsx", "type": "registry:ui" }]
     }
   ]
 }

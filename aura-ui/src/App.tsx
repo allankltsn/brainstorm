@@ -107,10 +107,23 @@ import { Combobox } from '@/components/ui/combobox'
 import { DatePicker } from '@/components/ui/date-picker'
 import { NumberInput } from '@/components/ui/number-input'
 
+import { StatCard } from '@/components/ui/stat-card'
+import { Sparkline } from '@/components/ui/sparkline'
+import { ChartCard } from '@/components/ui/chart-card'
+import { TrendChart } from '@/components/ui/trend-chart'
+
 const cidades = [
   { value: 'sp', label: 'São Paulo' },
   { value: 'rj', label: 'Rio de Janeiro' },
   { value: 'bh', label: 'Belo Horizonte' },
+]
+
+const trendData = [
+  { mes: 'Jan', treinos: 120, meta: 100 },
+  { mes: 'Fev', treinos: 150, meta: 110 },
+  { mes: 'Mar', treinos: 130, meta: 120 },
+  { mes: 'Abr', treinos: 180, meta: 130 },
+  { mes: 'Mai', treinos: 170, meta: 140 },
 ]
 
 const chartConfig = {
@@ -641,6 +654,35 @@ function ComponentsView() {
               <Button>Convidar aluno</Button>
             </EmptyContent>
           </Empty>
+        </Demo>
+
+        <Demo title="Charts · Stat card · Sparkline" full>
+          <div className="grid gap-4">
+            <div className="grid gap-3 sm:grid-cols-3">
+              <StatCard label="Alunos ativos" value="128" delta={{ text: '+12 no mês' }} />
+              <StatCard label="Treinos/semana" value="1.240" delta={{ text: '+8%' }} />
+              <StatCard label="Churn" value="2,1%" delta={{ text: '-0,4pp', tone: 'good' }} />
+            </div>
+            <ChartCard
+              label="Treinos no mês"
+              value="170"
+              delta={{ text: '+13% vs. meta' }}
+              className="max-w-xl"
+            >
+              <TrendChart
+                data={trendData}
+                xKey="mes"
+                series={[
+                  { key: 'treinos', label: 'Treinos' },
+                  { key: 'meta', label: 'Meta', muted: true, dashed: true },
+                ]}
+                area
+              />
+            </ChartCard>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              Tendência semanal <Sparkline data={[3, 5, 4, 8, 6, 9, 7]} tone="good" />
+            </div>
+          </div>
         </Demo>
       </div>
     </>
