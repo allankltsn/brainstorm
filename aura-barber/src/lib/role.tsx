@@ -42,11 +42,14 @@ export function RoleProvider({ children }: { children: ReactNode }) {
   const [profId, setProfIdState] = useState<string>(() => lerProfId())
   const [clienteId, setClienteIdState] = useState<string>(() => lerClienteId())
   const [filialId, setFilialIdState] = useState<string>(() => {
-    try {
-      const f = localStorage.getItem(KEY_FILIAL)
-      if (f && db.filialById(f)) return f
-    } catch {
-      /* ignora */
+    // barbeiro sempre segue a própria filial; os outros podem restaurar a última escolhida
+    if (role !== 'barbeiro') {
+      try {
+        const f = localStorage.getItem(KEY_FILIAL)
+        if (f && db.filialById(f)) return f
+      } catch {
+        /* ignora */
+      }
     }
     return filialPadrao(role, profId)
   })

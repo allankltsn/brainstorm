@@ -140,6 +140,9 @@ export function Agendar() {
           options={profsDoServico.map((p) => ({ value: p.id, label: p.nome }))}
           onChange={escolheProf}
         />
+        {servico && profsDoServico.length === 0 && (
+          <p className="text-sm text-muted-foreground">Nenhum profissional desta filial executa esse serviço.</p>
+        )}
 
         {prof && servico && (
           <div>

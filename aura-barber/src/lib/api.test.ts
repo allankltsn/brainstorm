@@ -17,6 +17,7 @@ import {
   profissionaisDaFilial,
   agendamentosDaFilial,
   filialPadrao,
+  criarProfissional,
 } from './api'
 
 describe('validações', () => {
@@ -76,6 +77,12 @@ describe('filiais', () => {
   it('filialPadrao: barbeiro usa a própria filial; dono usa a primeira', () => {
     expect(filialPadrao('barbeiro', 'p-rafa')).toBe(db.profissionalById('p-rafa')!.filialId)
     expect(filialPadrao('dono', '')).toBe(listFiliais()[0].id)
+  })
+  it('criarProfissional respeita a filial informada (nasce na filial ativa)', () => {
+    const alvo = listFiliais()[1]?.id ?? listFiliais()[0].id
+    const p = criarProfissional({ nome: 'Teste Filial', servicos: [], disponibilidade: [], comissaoPct: 0, filialId: alvo })
+    expect(p.filialId).toBe(alvo)
+    expect(db.memberships.find((m) => m.userId === p.userId)?.filialId).toBe(alvo)
   })
 })
 
