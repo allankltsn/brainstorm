@@ -6,7 +6,7 @@ import { defineConfig } from 'vite'
 const BASE = process.env.VITE_BASE || '/'
 
 // Rotas do host que o GitHub Pages precisa servir com HTTP 200 (sem passar pelo 404.html).
-const ENTRY_ROUTES = ['login', 'brand', 'ui']
+const ENTRY_ROUTES = ['login', 'brand', 'ui', 'apply']
 
 // Copia o index.html final para <rota>/index.html, com os mesmos assets (REV-BL-01 / UX-BL-01).
 function entryRoutes() {

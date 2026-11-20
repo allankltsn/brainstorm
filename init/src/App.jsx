@@ -55,3 +55,8 @@ export function Ui() {
 export function Barber() {
   return <iframe title="aura-barber · protótipo" src={`${BASE}barber/index.html#/`} style={frame} />
 }
+
+// "/apply" → aura-apply, compilado em apply-app/ (usa HashRouter). index.html#/ explícito pelo mesmo motivo do /brand.
+export function Apply() {
+  return <iframe title="aura-apply · protótipo" src={`${BASE}apply-app/index.html#/`} style={frame} />
+}
