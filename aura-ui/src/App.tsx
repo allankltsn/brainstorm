@@ -385,6 +385,61 @@ const fanCells: FanOutCell[] = [
   { id: '6', label: 'Tentativa 6', status: 'pending' },
 ]
 
+import { ParallelAttempts, type ParallelAttempt } from '@/components/ui/parallel-attempts'
+import { JudgeBracket, type JudgeRound } from '@/components/ui/judge-bracket'
+import { ExperimentCard, type ExperimentVariant } from '@/components/ui/experiment-card'
+import { FallbackChain, type FallbackChainLink } from '@/components/ui/fallback-chain'
+import { ModelRouter, type ModelOption } from '@/components/ui/model-router'
+import { ModelUsage, type ModelUsageItem } from '@/components/ui/model-usage'
+import { RateLimitPlanner, type RateLimit } from '@/components/ui/rate-limit-planner'
+import { ToolAccessMap, type ToolAccessMapTool } from '@/components/ui/tool-access-map'
+import { ConflictRadar, type Conflict } from '@/components/ui/conflict-radar'
+
+const tentativas: ParallelAttempt[] = [
+  { id: '1', label: 'Tentativa A', status: 'done', best: true, result: 'Passou em 142/142 testes' },
+  { id: '2', label: 'Tentativa B', status: 'done', result: 'Passou em 139/142' },
+  { id: '3', label: 'Tentativa C', status: 'error', result: 'Erro de compilação' },
+]
+const bracket: JudgeRound[] = [
+  { id: 'r1', matches: [
+    { id: 'm1', a: 'Resposta A', b: 'Resposta B', winner: 'a' },
+    { id: 'm2', a: 'Resposta C', b: 'Resposta D', winner: 'b' },
+  ] },
+  { id: 'r2', matches: [{ id: 'm3', a: 'Resposta A', b: 'Resposta D', winner: 'a' }] },
+]
+const expVariants: ExperimentVariant[] = [
+  { id: 'a', label: 'Controle', value: '3,1%' },
+  { id: 'b', label: 'Variante nova', value: '4,2%', delta: '+1,1pp', winner: true },
+]
+const fallback: FallbackChainLink[] = [
+  { id: '1', label: 'Opus 4.8 (primário)', status: 'failed' },
+  { id: '2', label: 'Sonnet 5.5 (fallback)', status: 'failed' },
+  { id: '3', label: 'Haiku 5.5 (fallback)', status: 'ok' },
+]
+const modelOptions: ModelOption[] = [
+  { id: '1', name: 'Opus 4.8', score: 95, cost: '$$$', latency: '2.1s', selected: true },
+  { id: '2', name: 'Sonnet 5.5', score: 78, cost: '$$', latency: '0.9s' },
+  { id: '3', name: 'Haiku 5.5', score: 52, cost: '$', latency: '0.3s' },
+]
+const modelUse: ModelUsageItem[] = [
+  { id: '1', name: 'Opus 4.8', tokens: 184000, cost: '$2.76' },
+  { id: '2', name: 'Sonnet 5.5', tokens: 92000, cost: '$0.28' },
+  { id: '3', name: 'Haiku 5.5', tokens: 41000, cost: '$0.03' },
+]
+const rateLimits: RateLimit[] = [
+  { id: '1', label: 'Requisições / min', used: 184, cap: 200, unit: 'req' },
+  { id: '2', label: 'Tokens / min', used: 62000, cap: 80000, unit: 'tk' },
+]
+const toolAccess: ToolAccessMapTool[] = [
+  { id: '1', name: 'read_file', access: 'allowed', description: 'Leitura do repositório' },
+  { id: '2', name: 'edit_file', access: 'ask', description: 'Pede confirmação' },
+  { id: '3', name: 'run_shell', access: 'denied', description: 'Bloqueado nesta sessão' },
+]
+const conflitos: Conflict[] = [
+  { id: '1', title: 'Dois agentes editaram registry.json', severity: 'high', parties: ['Codador', 'Revisor'], location: 'aura-ui/registry.json' },
+  { id: '2', title: 'Divergência de versão do Tailwind', severity: 'medium', location: 'package.json' },
+]
+
 const arvore: TreeNode[] = [
   {
     id: 'src', label: 'src', defaultOpen: true, children: [
@@ -1350,6 +1405,39 @@ function ComponentsView() {
             <DelegateBoard tasks={delegateTasks} />
             <ScheduledRuns runs={scheduled} />
           </div>
+        </Demo>
+
+        <Demo title="Parallel attempts" full>
+          <ParallelAttempts title="3 tentativas paralelas" attempts={tentativas} />
+        </Demo>
+
+        <Demo title="Judge bracket" full>
+          <JudgeBracket rounds={bracket} />
+        </Demo>
+
+        <Demo title="Experiment card · Fallback chain" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <ExperimentCard name="Novo onboarding" metric="Taxa de conversão" confidence="95%" variants={expVariants} />
+            <FallbackChain links={fallback} />
+          </div>
+        </Demo>
+
+        <Demo title="Model router · Model usage" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <ModelRouter request="Resumir 40 páginas de documentação" models={modelOptions} />
+            <ModelUsage models={modelUse} />
+          </div>
+        </Demo>
+
+        <Demo title="Rate limit planner · Tool access map" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <RateLimitPlanner limits={rateLimits} />
+            <ToolAccessMap tools={toolAccess} />
+          </div>
+        </Demo>
+
+        <Demo title="Conflict radar" full>
+          <ConflictRadar conflicts={conflitos} />
         </Demo>
       </div>
     </>

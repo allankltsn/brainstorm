@@ -842,6 +842,68 @@
       "type": "registry:ui",
       "registryDependencies": ["utils", "badge"],
       "files": [{ "path": "src/components/ui/fan-out-grid.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "parallel-attempts",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/parallel-attempts.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "judge-bracket",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/judge-bracket.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "experiment-card",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "badge", "progress"],
+      "files": [{ "path": "src/components/ui/experiment-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "fallback-chain",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/fallback-chain.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "model-router",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "progress", "badge"],
+      "files": [{ "path": "src/components/ui/model-router.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "model-usage",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/model-usage.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "rate-limit-planner",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "progress", "badge"],
+      "files": [{ "path": "src/components/ui/rate-limit-planner.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "tool-access-map",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/tool-access-map.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "conflict-radar",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/conflict-radar.tsx", "type": "registry:ui" }]
     }
   ]
 }
