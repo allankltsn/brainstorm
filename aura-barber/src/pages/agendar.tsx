@@ -6,6 +6,8 @@ import { Button } from '@/components/affect/button'
 import { Select } from '@/components/affect/select'
 import { db, type Agendamento } from '@/lib/data'
 import { availableSlots } from '@/lib/schedule'
+import { useRole } from '@/lib/role'
+import { clienteSelecionado } from '@/lib/identidade'
 
 const DIAS = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
 function hojeISO() {
@@ -21,7 +23,10 @@ const hm = (iso: string) => iso.slice(11, 16)
 
 export function Agendar() {
   const nav = useNavigate()
-  const [clienteId, setClienteId] = useState<string | null>(null)
+  const { role, clienteId: euClienteId } = useRole()
+  const [clienteEstado, setClienteEstado] = useState<string | null>(null)
+  // Cliente logado agenda para si (identidade viva vence o estado local); dono/barbeiro escolhem na tela.
+  const clienteId = clienteSelecionado(role, euClienteId, clienteEstado)
   const [servicoId, setServicoId] = useState<string | null>(null)
   const [profId, setProfId] = useState<string | null>(null)
   const [dia, setDia] = useState<string>(hojeISO)
@@ -75,13 +80,19 @@ export function Agendar() {
       <PageHeader title="Novo agendamento" subtitle="Cliente, serviço, profissional e um horário livre." />
 
       <Panel className="space-y-5 p-5">
-        <Select
-          label="Cliente"
-          placeholder="Escolha o cliente"
-          value={clienteId}
-          options={db.clientes.map((c) => ({ value: c.id, label: c.nome, description: c.telefone }))}
-          onChange={setClienteId}
-        />
+        {role === 'cliente' ? (
+          <p className="text-sm text-muted-foreground">
+            Agendando para <span className="font-medium text-foreground">{db.clienteById(euClienteId)?.nome}</span>.
+          </p>
+        ) : (
+          <Select
+            label="Cliente"
+            placeholder="Escolha o cliente"
+            value={clienteId}
+            options={db.clientes.map((c) => ({ value: c.id, label: c.nome, description: c.telefone }))}
+            onChange={setClienteEstado}
+          />
+        )}
 
         <div>
           <Select

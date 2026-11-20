@@ -3,7 +3,7 @@ import { Moon, Scissors, Sun } from 'lucide-react'
 import { useRole } from '@/lib/role'
 import { useTheme } from '@/lib/theme'
 import { NAV, ROLE_LABEL } from '@/lib/nav'
-import type { Role } from '@/lib/data'
+import { db, type Role } from '@/lib/data'
 import { Select } from '@/components/affect/select'
 
 const ROLES: Role[] = ['dono', 'barbeiro', 'cliente']
@@ -30,6 +30,34 @@ function RoleSwitch() {
       onChange={(v) => setRole(v as Role)}
     />
   )
+}
+
+// Quem sou eu dentro do papel: profissional (barbeiro) ou cliente. Dono é único → nada.
+function IdentidadeSwitch() {
+  const { role, profId, setProfId, clienteId, setClienteId } = useRole()
+  if (role === 'barbeiro') {
+    return (
+      <Select
+        size="sm"
+        aria-label="Sou (profissional)"
+        value={profId}
+        options={db.profissionais.map((p) => ({ value: p.id, label: `Sou: ${p.nome}` }))}
+        onChange={setProfId}
+      />
+    )
+  }
+  if (role === 'cliente') {
+    return (
+      <Select
+        size="sm"
+        aria-label="Sou (cliente)"
+        value={clienteId}
+        options={db.clientes.map((c) => ({ value: c.id, label: `Sou: ${c.nome}` }))}
+        onChange={setClienteId}
+      />
+    )
+  }
+  return null
 }
 
 function ThemeToggle() {
@@ -73,6 +101,7 @@ export function AppShell() {
           ))}
         </nav>
         <div className="mt-auto space-y-2">
+          <IdentidadeSwitch />
           <RoleSwitch />
         </div>
       </aside>
@@ -84,6 +113,9 @@ export function AppShell() {
         </div>
         <div className="ml-auto flex items-center gap-2">
           <div className="w-32 md:hidden">
+            <IdentidadeSwitch />
+          </div>
+          <div className="w-28 md:hidden">
             <RoleSwitch />
           </div>
           <ThemeToggle />
