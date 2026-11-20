@@ -131,6 +131,28 @@ Hoje opera sobre o mock; depois troca-se a implementação por `fetch` sem tocar
 protótipo); convite é mock (gera código, sem e-mail); "Meu usuário" no topo (engrenagem), Clientes
 entra no menu do dono.
 
+## Fase 4 — Multiunidade (filiais) (addendum, aprovado 2026-11-20)
+Escopo aprovado: `Empresa` (marca) passa a agregar **Filiais**. Recorte escolhido:
+**POR FILIAL** = profissionais, agenda/agendamentos e **horário + grade**; **COMPARTILHADO** na marca
+= catálogo de serviços e base de clientes. Protótipo mock/estático; filial ≈ `Tenant` do AuraFit.
+
+Modelo: novo `Filial { id, empresaId, nome, abertura, fechamento, gradeMin, status }` — horário/grade
+**saem de `Empresa` → `Filial`**. `Profissional` e `Agendamento` ganham `filialId`; `Membership` de
+barbeiro ganha `filialId` (dono/cliente sem filial fixa). `Empresa` mantém a marca (nome/slug/status/fuso/ownerUserId). Seed: 2 filiais.
+
+Filial ativa: no contexto (como a identidade), persistida em localStorage. Dono alterna; barbeiro fixo
+na sua; cliente escolhe ao agendar. Seletor de Filial no shell.
+
+Telas: **Filiais** (CRUD, dono) com horário/grade por unidade; **Empresa** perde horário/grade (vão p/ Filial);
+**Agenda/Agendar/Início** operam na filial ativa (janela/grade da filial; profissionais e agendamentos da
+filial). Serviços e Clientes seguem da marca.
+
+api.ts: `listFiliais`, `getFilial/updateFilial/criarFilial` (reusa validações de horário/grade),
+`profissionaisDaFilial`, `agendamentosDaFilial`. Profissional em 1 filial nesta rodada (multi-filial = extensão futura).
+
+Decisões assumidas: cliente escolhe a filial no `/agendar`; filial ativa default = primeira; excluir
+filial não migra agendamentos (protótipo).
+
 ## Rastreamento
 Gerido no GitHub Project **brainstrm** (público), Frente = `Aura Barber`:
 https://github.com/users/allankltsn/projects/2
