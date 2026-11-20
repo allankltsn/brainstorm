@@ -440,6 +440,60 @@ const conflitos: Conflict[] = [
   { id: '2', title: 'Divergência de versão do Tailwind', severity: 'medium', location: 'package.json' },
 ]
 
+import { TraceWaterfall, type TraceSpan } from '@/components/ui/trace-waterfall'
+import { CostWaterfall, type CostWaterfallStep } from '@/components/ui/cost-waterfall'
+import { BreakdownChart, type BreakdownSegment } from '@/components/ui/breakdown-chart'
+import { CompactBreakdown } from '@/components/ui/compact-breakdown'
+import { KpiChart } from '@/components/ui/kpi-chart'
+import { MeteringChart, type MeteringDatum } from '@/components/ui/metering-chart'
+import { PlanVsActual, type PlanVsActualRow } from '@/components/ui/plan-vs-actual'
+import { BillingSchedule, type BillingScheduleItem } from '@/components/ui/billing-schedule'
+import { FlowBuilder, type FlowNode, type FlowEdge } from '@/components/ui/flow-builder'
+
+const spans: TraceSpan[] = [
+  { id: '1', label: 'handleRequest', start: 0, duration: 1200, depth: 0 },
+  { id: '2', label: 'db.query', start: 120, duration: 320, depth: 1 },
+  { id: '3', label: 'cache.get', start: 460, duration: 80, depth: 1, status: 'error' },
+  { id: '4', label: 'render', start: 600, duration: 540, depth: 1 },
+]
+const custoSteps: CostWaterfallStep[] = [
+  { id: '1', label: 'Entrada (tokens)', amount: 1.2 },
+  { id: '2', label: 'Saída (tokens)', amount: 2.1 },
+  { id: '3', label: 'Ferramentas', amount: 0.5 },
+]
+const breakdown: BreakdownSegment[] = [
+  { id: '1', label: 'Opus', value: 55 },
+  { id: '2', label: 'Sonnet', value: 30 },
+  { id: '3', label: 'Haiku', value: 15 },
+]
+const meterData: MeteringDatum[] = [
+  { label: 'Seg', value: 120 }, { label: 'Ter', value: 180 }, { label: 'Qua', value: 150 },
+  { label: 'Qui', value: 320 }, { label: 'Sex', value: 280 }, { label: 'Sáb', value: 90 },
+]
+const planRows: PlanVsActualRow[] = [
+  { id: '1', label: 'Janeiro', plan: 100, actual: 120 },
+  { id: '2', label: 'Fevereiro', plan: 140, actual: 125 },
+  { id: '3', label: 'Março', plan: 160, actual: 172 },
+]
+const billing: BillingScheduleItem[] = [
+  { id: '1', date: '01/11', label: 'Plano Pro', amount: 'R$ 99,00', status: 'paid' },
+  { id: '2', date: '01/12', label: 'Plano Pro', amount: 'R$ 99,00', status: 'upcoming' },
+  { id: '3', date: '01/01', label: 'Plano Pro', amount: 'R$ 99,00', status: 'upcoming' },
+]
+const flowNodes: FlowNode[] = [
+  { id: 't', label: 'Novo aluno', type: 'trigger', x: 16, y: 16 },
+  { id: 'c', label: 'É assinante?', type: 'condition', x: 210, y: 16 },
+  { id: 'a', label: 'Enviar boas-vindas', type: 'action', x: 404, y: 16 },
+  { id: 'o', label: 'Concluído', type: 'output', x: 404, y: 110 },
+]
+const flowEdges: FlowEdge[] = [
+  { from: 't', to: 'c' }, { from: 'c', to: 'a' }, { from: 'a', to: 'o' },
+]
+const flowPalette = [
+  { type: 'trigger', label: 'Gatilho' }, { type: 'condition', label: 'Condição' },
+  { type: 'action', label: 'Ação' }, { type: 'output', label: 'Saída' },
+]
+
 const arvore: TreeNode[] = [
   {
     id: 'src', label: 'src', defaultOpen: true, children: [
@@ -1438,6 +1492,38 @@ function ComponentsView() {
 
         <Demo title="Conflict radar" full>
           <ConflictRadar conflicts={conflitos} />
+        </Demo>
+
+        <Demo title="Trace waterfall · Cost waterfall" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <TraceWaterfall spans={spans} />
+            <CostWaterfall steps={custoSteps} />
+          </div>
+        </Demo>
+
+        <Demo title="KPI chart" full>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <KpiChart label="Receita" value="R$ 48k" delta="+12%" trend="up" data={[3, 5, 4, 7, 6, 9]} />
+            <KpiChart label="Churn" value="2,1%" delta="-0,4pp" trend="down" data={[5, 4, 4, 3, 3, 2]} />
+            <KpiChart label="Ativos" value="1.284" delta="+3%" trend="up" data={[8, 9, 9, 10, 11, 12]} />
+          </div>
+        </Demo>
+
+        <Demo title="Breakdown · Compact breakdown · Metering" full>
+          <BreakdownChart title="Uso por modelo" segments={breakdown} />
+          <CompactBreakdown label="Tokens por tipo" segments={[{ id: 'in', label: 'Entrada', value: 70 }, { id: 'out', label: 'Saída', value: 30 }]} />
+          <MeteringChart data={meterData} cap={300} unit=" req" />
+        </Demo>
+
+        <Demo title="Plan vs actual · Billing schedule" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <PlanVsActual rows={planRows} unit=" treinos" />
+            <BillingSchedule items={billing} />
+          </div>
+        </Demo>
+
+        <Demo title="Flow builder" full>
+          <FlowBuilder nodes={flowNodes} edges={flowEdges} palette={flowPalette} />
         </Demo>
       </div>
     </>

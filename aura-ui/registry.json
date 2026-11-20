@@ -904,6 +904,61 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": ["utils", "badge"],
       "files": [{ "path": "src/components/ui/conflict-radar.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "trace-waterfall",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/trace-waterfall.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "cost-waterfall",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/cost-waterfall.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "breakdown-chart",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/breakdown-chart.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "compact-breakdown",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/compact-breakdown.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "kpi-chart",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "card", "sparkline"],
+      "files": [{ "path": "src/components/ui/kpi-chart.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "metering-chart",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/metering-chart.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "plan-vs-actual",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/plan-vs-actual.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "billing-schedule",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/billing-schedule.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "flow-builder",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/flow-builder.tsx", "type": "registry:ui" }]
     }
   ]
 }
