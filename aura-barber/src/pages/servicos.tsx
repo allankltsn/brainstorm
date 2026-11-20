@@ -22,16 +22,19 @@ export function Servicos() {
     setDraft({ ...s })
     setAberto(true)
   }
-  const excluir = (id: string) => setLista((l) => l.filter((s) => s.id !== id))
+  // grava no store compartilhado para refletir em Agenda/Agendar/Início
+  const aplicar = (nova: Servico[]) => {
+    setLista(nova)
+    db.replaceServicos(nova)
+  }
+  const excluir = (id: string) => aplicar(lista.filter((s) => s.id !== id))
 
   const salvar = () => {
     if (!draft.nome.trim()) return
-    if (draft.id) {
-      setLista((l) => l.map((s) => (s.id === draft.id ? ({ ...draft, id: draft.id } as Servico) : s)))
-    } else {
-      const id = `s-${Date.now()}`
-      setLista((l) => [...l, { ...draft, id }])
-    }
+    const nova = draft.id
+      ? lista.map((s) => (s.id === draft.id ? ({ ...draft, id: draft.id } as Servico) : s))
+      : [...lista, { ...draft, id: `s-${Date.now()}` }]
+    aplicar(nova)
     setAberto(false)
   }
 

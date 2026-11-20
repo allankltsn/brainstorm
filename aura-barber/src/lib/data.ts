@@ -139,6 +139,10 @@ export const db = {
   servicoById: (id: string) => servicos.find((s) => s.id === id),
   profissionalById: (id: string) => profissionais.find((p) => p.id === id),
   clienteById: (id: string) => clientes.find((c) => c.id === id),
+  // Escrita no store compartilhado: as telas de CRUD gravam aqui para que
+  // Agenda/Agendar/Início (que leem o db) reflitam as mudanças na mesma sessão.
+  replaceServicos: (lista: Servico[]) => servicos.splice(0, servicos.length, ...lista),
+  replaceProfissionais: (lista: Profissional[]) => profissionais.splice(0, profissionais.length, ...lista),
 }
 
 export { hojeAs }

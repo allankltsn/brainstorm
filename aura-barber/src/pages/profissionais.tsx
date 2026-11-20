@@ -23,15 +23,19 @@ export function Profissionais() {
     setDraft({ ...p, servicos: [...p.servicos], disponibilidade: p.disponibilidade.map((d) => ({ ...d })) })
     setAberto(true)
   }
-  const excluir = (id: string) => setLista((l) => l.filter((p) => p.id !== id))
+  // grava no store compartilhado para refletir em Agenda/Agendar/Início
+  const aplicar = (nova: Profissional[]) => {
+    setLista(nova)
+    db.replaceProfissionais(nova)
+  }
+  const excluir = (id: string) => aplicar(lista.filter((p) => p.id !== id))
 
   const salvar = () => {
     if (!draft.nome.trim()) return
-    if (draft.id) {
-      setLista((l) => l.map((p) => (p.id === draft.id ? ({ ...draft, id: draft.id } as Profissional) : p)))
-    } else {
-      setLista((l) => [...l, { ...draft, id: `p-${Date.now()}` }])
-    }
+    const nova = draft.id
+      ? lista.map((p) => (p.id === draft.id ? ({ ...draft, id: draft.id } as Profissional) : p))
+      : [...lista, { ...draft, id: `p-${Date.now()}` }]
+    aplicar(nova)
     setAberto(false)
   }
 
