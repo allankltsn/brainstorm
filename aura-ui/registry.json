@@ -959,6 +959,67 @@
       "type": "registry:ui",
       "registryDependencies": ["utils", "badge"],
       "files": [{ "path": "src/components/ui/flow-builder.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "memory-graph",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/memory-graph.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "memory-panel",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge", "button"],
+      "files": [{ "path": "src/components/ui/memory-panel.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "context-map",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/context-map.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "repo-map",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/repo-map.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "root-cause-tree",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/root-cause-tree.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "decision-tree",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/decision-tree.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "decision-card",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "button", "badge"],
+      "files": [{ "path": "src/components/ui/decision-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "diff-timeline",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/diff-timeline.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "inline-diff",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/inline-diff.tsx", "type": "registry:ui" }]
     }
   ]
 }

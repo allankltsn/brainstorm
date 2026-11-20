@@ -494,6 +494,83 @@ const flowPalette = [
   { type: 'action', label: 'Ação' }, { type: 'output', label: 'Saída' },
 ]
 
+import { MemoryGraph, type MemoryNode, type MemoryEdge } from '@/components/ui/memory-graph'
+import { MemoryPanel, type Memory } from '@/components/ui/memory-panel'
+import { ContextMap, type ContextMapItem } from '@/components/ui/context-map'
+import { RepoMap, type RepoNode } from '@/components/ui/repo-map'
+import { RootCauseTree, type CauseNode } from '@/components/ui/root-cause-tree'
+import { DecisionTree, type DecisionNode } from '@/components/ui/decision-tree'
+import { DecisionCard, type DecisionOption } from '@/components/ui/decision-card'
+import { DiffTimeline, type DiffTimelineEntry } from '@/components/ui/diff-timeline'
+import { InlineDiff, type InlineDiffLine } from '@/components/ui/inline-diff'
+
+const memNodes: MemoryNode[] = [
+  { id: 'u', label: 'Allan', kind: 'entity' },
+  { id: 'p', label: 'Prefere dark', kind: 'preference' },
+  { id: 'proj', label: 'aura-ui', kind: 'fact' },
+  { id: 'e', label: 'Publicou Leva 3', kind: 'event' },
+]
+const memEdges: MemoryEdge[] = [
+  { from: 'u', to: 'p', label: 'tem' },
+  { from: 'u', to: 'proj', label: 'trabalha em' },
+  { from: 'proj', to: 'e' },
+]
+const memorias: Memory[] = [
+  { id: '1', title: 'Modo base é escuro', type: 'feedback', at: 'hoje' },
+  { id: '2', title: 'Repo brainstorm é público', type: 'project', detail: 'sem dados pessoais reais' },
+  { id: '3', title: 'Catálogo affectUI = 136 itens', type: 'reference' },
+]
+const ctxItems: ContextMapItem[] = [
+  { id: '1', label: 'PLANO.md', tokens: 8200, kind: 'doc' },
+  { id: '2', label: 'App.tsx', tokens: 5400, kind: 'file' },
+  { id: '3', label: 'Instruções do sistema', tokens: 3100, kind: 'system' },
+  { id: '4', label: 'Histórico da conversa', tokens: 12000, kind: 'message' },
+]
+const repoRoot: RepoNode = {
+  id: 'root', name: 'aura-ui', kind: 'dir', children: [
+    {
+      id: 'src', name: 'src', kind: 'dir', children: [
+        { id: 'app', name: 'App.tsx', kind: 'file', change: 'modified', lines: 1180 },
+        { id: 'ui', name: 'components/ui', kind: 'dir', children: [
+          { id: 'mg', name: 'memory-graph.tsx', kind: 'file', change: 'added', lines: 165 },
+        ] },
+      ],
+    },
+    { id: 'reg', name: 'registry.json', kind: 'file', change: 'modified' },
+  ],
+}
+const causeRoot: CauseNode = {
+  id: '1', label: 'Build falhou no CI', children: [
+    { id: '2', label: 'Erro de tipo no App.tsx', children: [
+      { id: '3', label: 'Prop renomeada sem atualizar o uso', isRootCause: true },
+    ] },
+  ],
+}
+const decisionRoot: DecisionNode = {
+  id: '1', label: 'Precisa de SSR?', children: [
+    { id: '2', label: 'Next.js', branchLabel: 'Sim', outcome: true },
+    { id: '3', label: 'Mais leve?', branchLabel: 'Não', children: [
+      { id: '4', label: 'Vite + React', branchLabel: 'Sim', outcome: true, chosen: true },
+      { id: '5', label: 'Astro', branchLabel: 'Não', outcome: true },
+    ] },
+  ],
+}
+const decisionOpts: DecisionOption[] = [
+  { id: 'inc', label: 'Sincronização incremental', pros: ['Rápida', 'Barata'], cons: ['Pode perder eventos'], recommended: true },
+  { id: 'full', label: 'Sincronização completa', pros: ['Consistente'], cons: ['Mais lenta', 'Mais cara'] },
+]
+const diffEntries: DiffTimelineEntry[] = [
+  { id: '1', at: '14:02', label: 'Adiciona registry da Leva 3F', author: 'Codador', added: 420, removed: 0 },
+  { id: '2', at: '14:20', label: 'Corrige teste do judge-bracket', author: 'Codador', added: 2, removed: 2 },
+  { id: '3', at: '14:31', label: 'Publica na main', author: 'Codador', added: 1180, removed: 60 },
+]
+const diffLines: InlineDiffLine[] = [
+  { type: 'context', text: 'function App() {', oldNo: 10, newNo: 10 },
+  { type: 'del', text: "  const [mode, setMode] = useState('light')", oldNo: 11 },
+  { type: 'add', text: "  const [mode, setMode] = useState('dark')", newNo: 11 },
+  { type: 'context', text: '  return <Page />', oldNo: 12, newNo: 12 },
+]
+
 const arvore: TreeNode[] = [
   {
     id: 'src', label: 'src', defaultOpen: true, children: [
@@ -1524,6 +1601,38 @@ function ComponentsView() {
 
         <Demo title="Flow builder" full>
           <FlowBuilder nodes={flowNodes} edges={flowEdges} palette={flowPalette} />
+        </Demo>
+
+        <Demo title="Memory graph · Memory panel" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <MemoryGraph nodes={memNodes} edges={memEdges} />
+            <MemoryPanel memories={memorias} onForget={() => {}} />
+          </div>
+        </Demo>
+
+        <Demo title="Context map · Repo map" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <ContextMap items={ctxItems} capTokens={40000} />
+            <RepoMap root={repoRoot} />
+          </div>
+        </Demo>
+
+        <Demo title="Root cause tree · Decision tree" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <RootCauseTree node={causeRoot} />
+            <DecisionTree node={decisionRoot} />
+          </div>
+        </Demo>
+
+        <Demo title="Decision card" full>
+          <DecisionCard title="Como sincronizar os dados?" question="O volume cresceu 3× este mês." options={decisionOpts} onChoose={() => {}} />
+        </Demo>
+
+        <Demo title="Diff timeline · Inline diff" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <DiffTimeline entries={diffEntries} />
+            <InlineDiff filename="App.tsx" lines={diffLines} />
+          </div>
         </Demo>
       </div>
     </>
