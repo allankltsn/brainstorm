@@ -509,6 +509,121 @@
       "name": "notification-stack",
       "type": "registry:ui",
       "files": [{ "path": "src/components/ui/notification-stack.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/checkbox.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/switch.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/select.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/context-menu.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/hover-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "dependencies": ["react-resizable-panels"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/resizable.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "dependencies": ["input-otp", "lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/input-otp.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "dependencies": ["radix-ui", "class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/toggle.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "dependencies": ["radix-ui", "class-variance-authority"],
+      "registryDependencies": ["utils", "toggle"],
+      "files": [{ "path": "src/components/ui/toggle-group.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "segmented-control",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/segmented-control.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "form-field",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "label"],
+      "files": [{ "path": "src/components/ui/form-field.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "code-block",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button"],
+      "files": [{ "path": "src/components/ui/code-block.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "rating",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/rating.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "usage-meter",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "progress"],
+      "files": [{ "path": "src/components/ui/usage-meter.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "icon-button",
+      "type": "registry:ui",
+      "registryDependencies": ["utils", "button", "tooltip"],
+      "files": [{ "path": "src/components/ui/icon-button.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "tag-input",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "badge"],
+      "files": [{ "path": "src/components/ui/tag-input.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "tree-view",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/tree-view.tsx", "type": "registry:ui" }]
     }
   ]
 }

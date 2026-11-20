@@ -133,6 +133,53 @@ import { SmartRecommendation, type Recommendation } from '@/components/ui/smart-
 import { ChangeSummary } from '@/components/ui/change-summary'
 import { DecisionInbox } from '@/components/ui/decision-inbox'
 import { ProgressTracker } from '@/components/ui/progress-tracker'
+import { Bold, Copy, Italic, Pencil, Trash2, Underline } from 'lucide-react'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Switch } from '@/components/ui/switch'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuTrigger,
+} from '@/components/ui/context-menu'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@/components/ui/input-otp'
+import { Toggle } from '@/components/ui/toggle'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { SegmentedControl, SegmentedControlItem } from '@/components/ui/segmented-control'
+import { FormField, FormControl, FormDescription, FormLabel, FormMessage } from '@/components/ui/form-field'
+import { CodeBlock } from '@/components/ui/code-block'
+import { Rating } from '@/components/ui/rating'
+import { UsageMeter } from '@/components/ui/usage-meter'
+import { IconButton } from '@/components/ui/icon-button'
+import { TagInput } from '@/components/ui/tag-input'
+import { TreeView, type TreeNode } from '@/components/ui/tree-view'
+
+const arvore: TreeNode[] = [
+  {
+    id: 'src', label: 'src', defaultOpen: true, children: [
+      { id: 'app', label: 'App.tsx' },
+      {
+        id: 'comp', label: 'components', children: [
+          { id: 'ui', label: 'ui' },
+        ],
+      },
+    ],
+  },
+  { id: 'pkg', label: 'package.json' },
+]
 
 const recomendacoes: Recommendation[] = [
   { id: 'inc', label: 'Sincronização incremental', reason: 'Transfere apenas o que mudou.', signal: 3 },
@@ -841,6 +888,135 @@ function ComponentsView() {
             </div>
           </div>
         </Demo>
+
+        <Demo title="Checkbox · Switch · Toggle · Toggle group" full>
+          <div className="flex flex-wrap items-center gap-6">
+            <label className="flex items-center gap-2 text-sm">
+              <Checkbox defaultChecked /> Aceito os termos
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <Switch defaultChecked /> Notificações
+            </label>
+            <Toggle aria-label="Negrito"><Bold /></Toggle>
+            <ToggleGroup type="multiple" defaultValue={['bold']}>
+              <ToggleGroupItem value="bold" aria-label="Negrito"><Bold /></ToggleGroupItem>
+              <ToggleGroupItem value="italic" aria-label="Itálico"><Italic /></ToggleGroupItem>
+              <ToggleGroupItem value="underline" aria-label="Sublinhado"><Underline /></ToggleGroupItem>
+            </ToggleGroup>
+          </div>
+        </Demo>
+
+        <Demo title="Select">
+          <Select defaultValue="sp">
+            <SelectTrigger className="w-56">
+              <SelectValue placeholder="Escolha a cidade" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Cidades</SelectLabel>
+                {cidades.map((c) => (
+                  <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </Demo>
+
+        <Demo title="Segmented control · Rating">
+          <SegmentedControl defaultValue="semana">
+            <SegmentedControlItem value="dia">Dia</SegmentedControlItem>
+            <SegmentedControlItem value="semana">Semana</SegmentedControlItem>
+            <SegmentedControlItem value="mes">Mês</SegmentedControlItem>
+          </SegmentedControl>
+          <Rating defaultValue={4} />
+        </Demo>
+
+        <Demo title="Icon button · Tag input" full>
+          <div className="flex items-center gap-2">
+            <IconButton label="Copiar" tooltip><Copy /></IconButton>
+            <IconButton label="Editar" tooltip variant="outline"><Pencil /></IconButton>
+            <IconButton label="Excluir" tooltip variant="destructive"><Trash2 /></IconButton>
+          </div>
+          <TagInput defaultValue={['react', 'tailwind', 'shadcn']} placeholder="Adicionar tag…" />
+        </Demo>
+
+        <Demo title="Input OTP" full>
+          <InputOTP maxLength={6}>
+            <InputOTPGroup>
+              <InputOTPSlot index={0} />
+              <InputOTPSlot index={1} />
+              <InputOTPSlot index={2} />
+            </InputOTPGroup>
+            <InputOTPSeparator />
+            <InputOTPGroup>
+              <InputOTPSlot index={3} />
+              <InputOTPSlot index={4} />
+              <InputOTPSlot index={5} />
+            </InputOTPGroup>
+          </InputOTP>
+        </Demo>
+
+        <Demo title="Form field" full>
+          <FormField error>
+            <FormLabel>E-mail</FormLabel>
+            <FormControl>
+              <Input type="email" placeholder="voce@exemplo.com" defaultValue="invalido" />
+            </FormControl>
+            <FormDescription>Usamos para enviar o resumo semanal.</FormDescription>
+            <FormMessage>Informe um e-mail válido.</FormMessage>
+          </FormField>
+        </Demo>
+
+        <Demo title="Usage meter" full>
+          <UsageMeter label="Tokens" value={7200} max={10000} unit=" tk" />
+          <UsageMeter label="Armazenamento" value={4.2} max={5} unit=" GB" />
+        </Demo>
+
+        <Demo title="Context menu · Hover card">
+          <ContextMenu>
+            <ContextMenuTrigger className="flex h-24 w-56 items-center justify-center rounded-lg border border-dashed border-border text-sm text-muted-foreground">
+              Clique com o botão direito
+            </ContextMenuTrigger>
+            <ContextMenuContent>
+              <ContextMenuItem>Abrir<ContextMenuShortcut>⌘O</ContextMenuShortcut></ContextMenuItem>
+              <ContextMenuItem>Renomear</ContextMenuItem>
+              <ContextMenuSeparator />
+              <ContextMenuItem variant="destructive">Excluir</ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu>
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <Button variant="link">@aura-ui</Button>
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <p className="text-sm">Kit de UI do ecossistema Aura, com tokens por tema.</p>
+            </HoverCardContent>
+          </HoverCard>
+        </Demo>
+
+        <Demo title="Resizable" full>
+          <ResizablePanelGroup direction="horizontal" className="h-32 rounded-lg border border-border">
+            <ResizablePanel defaultSize={40}>
+              <div className="flex h-full items-center justify-center p-4 text-sm">Painel A</div>
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+            <ResizablePanel defaultSize={60}>
+              <div className="flex h-full items-center justify-center p-4 text-sm">Painel B</div>
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </Demo>
+
+        <Demo title="Tree view · Code block" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <TreeView nodes={arvore} />
+            <CodeBlock
+              filename="button.tsx"
+              language="tsx"
+              showLineNumbers
+              code={`export function Button() {\n  return <button className="btn" />\n}`}
+            />
+          </div>
+        </Demo>
       </div>
     </>
   )
@@ -863,7 +1039,7 @@ export default function App() {
         <div className="brandline">
           <span className="mark" aria-hidden="true" />
           <strong>aura-ui</strong>
-          <span className="pill">Fase 2</span>
+          <span className="pill">Fase 3.5</span>
         </div>
         <nav className="nav">
           <button type="button" className="nav-btn" data-active={view === 'tokens'} onClick={() => setView('tokens')}>Tokens</button>
