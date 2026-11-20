@@ -243,8 +243,9 @@ assistant-cloud (glow), thinking-loader, shimmer-loader, ai-prompt, smart-recomm
 | **0. Base** (1 semana) | Monorepo pnpm, TypeScript, oxlint, CI, `apps/docs` vazio publicado no Pages | CI verde e site no ar |
 | **1. Tokens** (1 semana) | `packages/tokens` com tokens.json, build para CSS + ponte `--aui-*` + `tokens.ts` + `DESIGN.md`, temas aura-fit e aura-brand, checagem de contraste, página "Cores/Tipografia/Raio" e seletor de tema na doc | trocar o import troca a marca em toda a doc |
 | **1b. Skill** (2 dias) | `packages/skill` com SKILL.md, INSTRUCTIONS.md, checklist e catálogo gerado | `npx shadcn add @aura/skill` instala em `.claude/skills` |
-| **2. Primitivos** (2–3 semanas) | Os ~28 primitivos consolidados de `prototype-v2`/`aura-brand`, com exemplos e testes | `npx shadcn add @aura/<item>` funciona num app novo |
-| **3. IA + charts + motion** (2 semanas) | Itens das seções 5 IA/Charts/Motion; reescrever os do affectUI/magicui que usamos no padrão aura-ui (ou manter com a ponte `--aui-*` onde a licença permitir) | nenhum app precisa mais do registry `@affectui` para o que está na v1 |
+| **2. Primitivos** ✅ | Os primitivos shadcn consolidados de `prototype-v2`/`aura-brand`, com exemplos e testes | `npx shadcn add @aura/<item>` funciona num app novo |
+| **3. IA + charts + motion** ✅ | Itens de IA/Charts/Motion + affectUI reescrito no padrão aura-ui | nenhum app precisa mais do registry `@affectui` para o que está na v1 |
+| **3.5 Paridade affectUI** (fase atual) | Implementar no padrão aura-ui (shadcn/Tailwind) TODOS os ~90 componentes do catálogo affectUI (affectui.com/components, 134 itens) que ainda faltam no kit — inclusive os Pro (reescritos, não redistribuídos; ver §8.5). Em levas: primitivos padrão → IA/chat → orquestração de agentes. | o kit tem paridade com o catálogo affectUI (134 itens cobertos), todos instaláveis e testados |
 | **4. Blocos e telas** (2–3 semanas) | Blocos de app, landing e auth; 3 telas de exemplo | landing e um app montados só com blocos do kit |
 | **5. Migração** (contínua) | `aura-brand`, `prototype-v2` e `aura-landing` passam a instalar do registry; remover as cópias | cada app sem pastas `affect/`, `magicui/`, `lightswind/` próprias |
 | **6. Extras** (depois da v1) | Servidor MCP do kit, `@aura/tokens` no npm, variáveis no Figma espelhando os tokens (coleções Primitivos / Tema / Modo, como o kit do shadcndesign), editor visual de tema na doc, novos temas | — |
@@ -264,7 +265,7 @@ assistant-cloud (glow), thinking-loader, shimmer-loader, ai-prompt, smart-recomm
 4. **Fontes:** **por tema, não unificar.** Adotar os 3 slots do shadcndesign (`--font-sans`, `--font-heading`, `--font-mono`); aura-fit/aura-brand com Geist, landing com Inter. Mono padrão do kit = **JetBrains Mono** (Geist Mono permitido por tema onde Geist já está carregado).
 5. **Nível de dependência do affectUI:** **reescrever** os itens grátis que usamos no padrão aura-ui; a ponte `--aui-*` fica só como camada de compatibilidade temporária (removida na Fase 5). Itens Pro: fora do registry.
 6. **Figma:** **depois (Fase 6).** Os tokens já nascem com nomes compatíveis; sem custo em adiar.
-7. **Linguagem visual padrão:** **dupla.** Primitivos/apps no visual atual (claro, sóbrio, cor só em ações; tema neutro = visual atual); blocos de landing no estilo aura.build (escuro, display grande, efeitos de fundo atrás do conteúdo).
+7. **Linguagem visual padrão:** **dupla.** Primitivos/apps no visual sóbrio, cor só em ações; blocos de landing no estilo aura.build (display grande, efeitos de fundo). **Modo base = ESCURO** (decisão de 20/11/2026): a doc abre no dark (`index.html` com `data-mode="dark"`, default do app em `dark`); claro continua disponível pelo seletor e os tokens cobrem os dois.
 
 ## 9. Próximos passos
 

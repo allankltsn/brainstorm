@@ -848,7 +848,7 @@ function ComponentsView() {
 
 export default function App() {
   const [theme, setTheme] = useState('aura-fit')
-  const [mode, setMode] = useState<Mode>('light')
+  const [mode, setMode] = useState<Mode>('dark')
   const [view, setView] = useState<View>('tokens')
 
   useEffect(() => {
