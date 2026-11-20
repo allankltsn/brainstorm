@@ -58,12 +58,8 @@ function FiliaisLista() {
     if (!nome.trim()) return setErro('O nome da filial não pode ficar vazio.')
     if (!horarioValido(abertura, fechamento)) return setErro('A abertura precisa ser antes do fechamento.')
     const dados = { nome: nome.trim(), abertura, fechamento, gradeMin: Number(gradeMin) }
-    if (editId) {
-      const r = updateFilial(editId, dados)
-      if (!r.ok) return setErro(r.erro ?? 'Erro.')
-    } else {
-      criarFilial(dados)
-    }
+    const r = editId ? updateFilial(editId, dados) : criarFilial(dados)
+    if (!r.ok) return setErro(r.erro ?? 'Erro.')
     refresh()
     setAberto(false)
   }

@@ -18,6 +18,7 @@ import {
   agendamentosDaFilial,
   filialPadrao,
   criarProfissional,
+  criarFilial,
 } from './api'
 
 describe('validações', () => {
@@ -77,6 +78,13 @@ describe('filiais', () => {
   it('filialPadrao: barbeiro usa a própria filial; dono usa a primeira', () => {
     expect(filialPadrao('barbeiro', 'p-rafa')).toBe(db.profissionalById('p-rafa')!.filialId)
     expect(filialPadrao('dono', '')).toBe(listFiliais()[0].id)
+  })
+  it('criarFilial valida (rejeita horário invertido) e cria quando válido', () => {
+    expect(criarFilial({ nome: 'X', abertura: '19:00', fechamento: '09:00', gradeMin: 30 }).ok).toBe(false)
+    expect(criarFilial({ nome: '  ', abertura: '08:00', fechamento: '18:00', gradeMin: 30 }).ok).toBe(false)
+    const r = criarFilial({ nome: 'Unidade Teste', abertura: '08:00', fechamento: '18:00', gradeMin: 30 })
+    expect(r.ok).toBe(true)
+    expect(r.filial && listFiliais().some((f) => f.id === r.filial!.id)).toBe(true)
   })
   it('criarProfissional respeita a filial informada (nasce na filial ativa)', () => {
     const alvo = listFiliais()[1]?.id ?? listFiliais()[0].id

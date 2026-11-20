@@ -86,10 +86,18 @@ export function updateFilial(id: string, parcial: Partial<Filial>): { ok: boolea
   return { ok: true }
 }
 
-export function criarFilial(dados: { nome: string; abertura: string; fechamento: string; gradeMin: number }): Filial {
+export function criarFilial(dados: { nome: string; abertura: string; fechamento: string; gradeMin: number }): {
+  ok: boolean
+  erro?: string
+  filial?: Filial
+} {
+  if (dados.nome.trim() === '') return { ok: false, erro: 'O nome da filial não pode ficar vazio.' }
+  if (!horarioValido(dados.abertura, dados.fechamento))
+    return { ok: false, erro: 'A abertura precisa ser antes do fechamento (HH:MM).' }
+  if (!gradeValida(dados.gradeMin)) return { ok: false, erro: 'A grade deve ser 15, 30 ou 60 minutos.' }
   const f: Filial = { id: `f-${Date.now()}`, empresaId: db.empresa.id, status: 'ACTIVE', ...dados }
   db.pushFilial(f)
-  return f
+  return { ok: true, filial: f }
 }
 
 export function profissionaisDaFilial(filialId: string): Profissional[] {
