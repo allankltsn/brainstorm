@@ -111,6 +111,12 @@ import { StatCard } from '@/components/ui/stat-card'
 import { Sparkline } from '@/components/ui/sparkline'
 import { ChartCard } from '@/components/ui/chart-card'
 import { TrendChart } from '@/components/ui/trend-chart'
+import { NumberTicker } from '@/components/ui/number-ticker'
+import { AnimatedShinyText } from '@/components/ui/animated-shiny-text'
+import { MagicCard } from '@/components/ui/magic-card'
+import { BorderBeam } from '@/components/ui/border-beam'
+import { Marquee } from '@/components/ui/marquee'
+import { DotPattern } from '@/components/ui/dot-pattern'
 
 const cidades = [
   { value: 'sp', label: 'São Paulo' },
@@ -682,6 +688,41 @@ function ComponentsView() {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               Tendência semanal <Sparkline data={[3, 5, 4, 8, 6, 9, 7]} tone="good" />
             </div>
+          </div>
+        </Demo>
+
+        <Demo title="Motion" full>
+          <div className="grid gap-4">
+            <div className="flex flex-wrap items-center gap-6">
+              <div className="text-3xl font-semibold tabular-nums">
+                <NumberTicker value={1240} />
+              </div>
+              <AnimatedShinyText className="text-sm">✨ Novo recurso disponível</AnimatedShinyText>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <MagicCard className="rounded-xl p-5">
+                <h3 className="font-heading font-medium">Plano Pro</h3>
+                <p className="mt-1 text-sm text-muted-foreground">Passe o mouse para o brilho seguir.</p>
+              </MagicCard>
+              <div className="relative overflow-hidden rounded-xl border border-border p-5">
+                <h3 className="font-heading font-medium">Border beam</h3>
+                <p className="mt-1 text-sm text-muted-foreground">Feixe percorrendo a borda.</p>
+                <BorderBeam size={60} duration={8} colorFrom="var(--primary)" colorTo="var(--chart-2)" />
+              </div>
+            </div>
+            <div className="relative h-24 overflow-hidden rounded-xl border border-border">
+              <DotPattern className="text-muted-foreground/40" />
+              <div className="relative flex h-full items-center px-4 text-sm text-muted-foreground">
+                Fundo com dot-pattern
+              </div>
+            </div>
+            <Marquee className="[--duration:18s] text-sm text-muted-foreground" pauseOnHover>
+              <span className="mx-4">Aura Fit</span>
+              <span className="mx-4">Aura Brand</span>
+              <span className="mx-4">Aura UI</span>
+              <span className="mx-4">shadcn</span>
+              <span className="mx-4">Radix</span>
+            </Marquee>
           </div>
         </Demo>
       </div>

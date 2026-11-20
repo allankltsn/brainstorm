@@ -318,6 +318,58 @@
       "dependencies": ["recharts"],
       "registryDependencies": ["utils", "chart", "chart-tip", "reveal", "use-in-view"],
       "files": [{ "path": "src/components/ui/trend-chart.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "number-ticker",
+      "type": "registry:ui",
+      "dependencies": ["motion"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/number-ticker.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "blur-fade",
+      "type": "registry:ui",
+      "dependencies": ["motion"],
+      "files": [{ "path": "src/components/ui/blur-fade.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "marquee",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/marquee.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "border-beam",
+      "type": "registry:ui",
+      "dependencies": ["motion"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/border-beam.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "dot-pattern",
+      "type": "registry:ui",
+      "dependencies": ["motion"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/dot-pattern.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "magic-card",
+      "type": "registry:ui",
+      "dependencies": ["motion"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/magic-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "particles",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/particles.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "animated-shiny-text",
+      "type": "registry:ui",
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "src/components/ui/animated-shiny-text.tsx", "type": "registry:ui" }]
     }
   ]
 }
