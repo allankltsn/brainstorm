@@ -464,6 +464,34 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": ["utils"],
       "files": [{ "path": "src/components/ui/change-summary.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "smart-recommendation",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "button", "badge"],
+      "files": [{ "path": "src/components/ui/smart-recommendation.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "decision-inbox",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "button", "badge", "empty-state"],
+      "files": [{ "path": "src/components/ui/decision-inbox.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "progress-tracker",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "progress"],
+      "files": [{ "path": "src/components/ui/progress-tracker.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "message-actions",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button", "tooltip", "input"],
+      "files": [{ "path": "src/components/ui/message-actions.tsx", "type": "registry:ui" }]
     }
   ]
 }
