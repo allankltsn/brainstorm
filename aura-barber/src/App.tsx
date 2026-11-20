@@ -9,6 +9,7 @@ import { MeusHorarios } from '@/pages/meus-horarios'
 import { Config } from '@/pages/config'
 import { MeuUsuario } from '@/pages/meu-usuario'
 import { EmpresaConfig } from '@/pages/empresa'
+import { Filiais } from '@/pages/filiais'
 import { NaoEncontrada } from '@/pages/nao-encontrada'
 import { Profissionais } from '@/pages/profissionais'
 import { Servicos } from '@/pages/servicos'
@@ -30,6 +31,7 @@ export default function App() {
               <Route path="/config" element={<Config />} />
               <Route path="/meu-usuario" element={<MeuUsuario />} />
               <Route path="/empresa" element={<EmpresaConfig />} />
+              <Route path="/filiais" element={<Filiais />} />
               <Route path="/servicos" element={<Servicos />} />
               <Route path="/profissionais" element={<Profissionais />} />
               <Route path="/clientes" element={<Clientes />} />

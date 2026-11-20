@@ -4,6 +4,7 @@ import { Button } from '@/components/affect/button'
 import { useRole } from '@/lib/role'
 import { db } from '@/lib/data'
 import { resolverId, PROF_PADRAO } from '@/lib/identidade'
+import { profissionaisDaFilial, agendamentosDaFilial } from '@/lib/api'
 import {
   faturamentoDoDia,
   comissaoDoDia,
@@ -36,21 +37,24 @@ function Stat({ label, value }: { label: string; value: string }) {
 }
 
 export function Home() {
-  const { role, profId, clienteId } = useRole()
+  const { role, profId, clienteId, filialId } = useRole()
   const nav = useNavigate()
   const hoje = hojeISO()
   const ags = db.agendamentos
 
   if (role === 'dono') {
-    const doDia = ags.filter((a) => a.inicio.slice(0, 10) === hoje && a.status !== 'cancelado')
-    const ocupacao = ocupacaoPorProfissional(hoje, ags, db.profissionais)
+    const filial = db.filialById(filialId) ?? db.filiais[0]
+    const agsFilial = agendamentosDaFilial(filial.id)
+    const profsFilial = profissionaisDaFilial(filial.id)
+    const doDia = agsFilial.filter((a) => a.inicio.slice(0, 10) === hoje && a.status !== 'cancelado')
+    const ocupacao = ocupacaoPorProfissional(hoje, agsFilial, profsFilial)
     return (
       <div className="mx-auto max-w-4xl">
-        <PageHeader title="Início" subtitle="Visão da barbearia hoje." />
+        <PageHeader title="Início" subtitle={`Visão de hoje — ${filial.nome}.`} />
         <div className="grid gap-4 sm:grid-cols-3">
           <Stat label="Agendamentos hoje" value={String(doDia.length)} />
-          <Stat label="Faturamento previsto" value={brl(faturamentoDoDia(ags, hoje))} />
-          <Stat label="Profissionais" value={String(db.profissionais.length)} />
+          <Stat label="Faturamento previsto" value={brl(faturamentoDoDia(agsFilial, hoje))} />
+          <Stat label="Profissionais" value={String(profsFilial.length)} />
         </div>
         <Panel className="mt-4 p-4">
           <p className="mb-3 text-sm font-medium text-foreground">Ocupação de hoje</p>
