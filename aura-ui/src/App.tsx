@@ -64,6 +64,54 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart'
 import { Toaster } from '@/components/ui/sonner'
+import { Inbox, Search } from 'lucide-react'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Slider } from '@/components/ui/slider'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination'
+import { Spinner } from '@/components/ui/spinner'
+import { Kbd, KbdGroup } from '@/components/ui/kbd'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty-state'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import { Calendar } from '@/components/ui/calendar'
+import { Combobox } from '@/components/ui/combobox'
+import { DatePicker } from '@/components/ui/date-picker'
+import { NumberInput } from '@/components/ui/number-input'
+
+const cidades = [
+  { value: 'sp', label: 'São Paulo' },
+  { value: 'rj', label: 'Rio de Janeiro' },
+  { value: 'bh', label: 'Belo Horizonte' },
+]
 
 const chartConfig = {
   treinos: { label: 'Treinos', color: 'var(--chart-1)' },
@@ -482,6 +530,117 @@ function ComponentsView() {
             Componente de layout (SidebarProvider + Sidebar + SidebarMenu…). Instalável com{' '}
             <code>npx shadcn add @aura/sidebar</code>. Não renderizado aqui por ocupar a tela inteira.
           </p>
+        </Demo>
+
+        <Demo title="Accordion" full>
+          <Accordion type="single" collapsible className="w-full max-w-md">
+            <AccordionItem value="a">
+              <AccordionTrigger>É acessível?</AccordionTrigger>
+              <AccordionContent>Sim, segue o padrão WAI-ARIA.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="b">
+              <AccordionTrigger>Tem animação?</AccordionTrigger>
+              <AccordionContent>Sim, via accordion-up/down.</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </Demo>
+
+        <Demo title="Radio group · Slider · Textarea · Number" full>
+          <div className="grid max-w-md gap-5">
+            <RadioGroup defaultValue="mensal">
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="mensal" id="p-mensal" />
+                <Label htmlFor="p-mensal">Mensal</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="anual" id="p-anual" />
+                <Label htmlFor="p-anual">Anual</Label>
+              </div>
+            </RadioGroup>
+            <Slider defaultValue={[40]} max={100} />
+            <Textarea placeholder="Observações do treino…" />
+            <NumberInput defaultValue={1} min={0} max={10} />
+          </div>
+        </Demo>
+
+        <Demo title="Popover · Combobox · Date picker">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline">Popover</Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <p className="text-sm">Ajuste suas preferências aqui.</p>
+            </PopoverContent>
+          </Popover>
+          <Combobox options={cidades} placeholder="Escolha a cidade" />
+          <DatePicker />
+        </Demo>
+
+        <Demo title="Command" full>
+          <Command className="max-w-md rounded-lg border border-border">
+            <CommandInput placeholder="Buscar…" />
+            <CommandList>
+              <CommandEmpty>Nenhum resultado.</CommandEmpty>
+              <CommandGroup heading="Ações">
+                <CommandItem>
+                  <Search /> Buscar aluno
+                </CommandItem>
+                <CommandItem>
+                  <Inbox /> Abrir caixa de entrada
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </Demo>
+
+        <Demo title="Calendar" full>
+          <Calendar mode="single" className="rounded-lg border border-border" />
+        </Demo>
+
+        <Demo title="Pagination · Spinner · Kbd" full>
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious href="#" />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">1</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#" isActive>
+                  2
+                </PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext href="#" />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+          <div className="flex items-center gap-3">
+            <Spinner />
+            <KbdGroup>
+              <Kbd>Ctrl</Kbd>
+              <Kbd>K</Kbd>
+            </KbdGroup>
+          </div>
+        </Demo>
+
+        <Demo title="Empty state" full>
+          <Empty className="max-w-md">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Inbox />
+              </EmptyMedia>
+              <EmptyTitle>Nenhum aluno ainda</EmptyTitle>
+              <EmptyDescription>Convide seu primeiro aluno para começar.</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button>Convidar aluno</Button>
+            </EmptyContent>
+          </Empty>
         </Demo>
       </div>
     </>
