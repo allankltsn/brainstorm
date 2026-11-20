@@ -5,6 +5,8 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import { CriarConta, Entrar } from '@/pages/entrar'
 import { Inicio } from '@/pages/inicio'
 import { Landing } from '@/pages/landing'
+import { Loja } from '@/pages/loja'
+import { ServicoDetalhe } from '@/pages/servico-detalhe'
 import { NaoEncontrada } from '@/pages/nao-encontrada'
 import { EchoProvider } from '@/lib/store'
 import { ThemeProvider } from '@/lib/theme'
@@ -27,8 +29,8 @@ export default function App() {
               <Route path="/app" element={<AppShell />}>
                 <Route index element={<Navigate to="/app/inicio" replace />} />
                 <Route path="inicio" element={<Inicio />} />
-                <Route path="loja" element={<Placeholder nome="Loja" />} />
-                <Route path="loja/:slug" element={<Placeholder nome="Detalhe do serviço" />} />
+                <Route path="loja" element={<Loja />} />
+                <Route path="loja/:slug" element={<ServicoDetalhe />} />
                 <Route path="assinatura" element={<Placeholder nome="Minha assinatura" />} />
                 <Route path="conta" element={<Placeholder nome="Conta" />} />
               </Route>
