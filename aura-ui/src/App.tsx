@@ -286,6 +286,62 @@ const laneData: AgentLane[] = [
   { id: 'd', title: 'Pronto', items: [] },
 ]
 
+import { AgentHandoff, type Handoff } from '@/components/ui/agent-handoff'
+import { AgentSequence, type AgentSequenceStep } from '@/components/ui/agent-sequence'
+import { AgentRouter, type AgentCandidate } from '@/components/ui/agent-router'
+import { AgentSteering } from '@/components/ui/agent-steering'
+import { AgentMonitor, type AgentMonitorMetrics, type AgentMonitorAgent } from '@/components/ui/agent-monitor'
+import { AgentTiming, type AgentTimingPhase } from '@/components/ui/agent-timing'
+import { AgentCheckpoints, type AgentCheckpoint } from '@/components/ui/agent-checkpoints'
+import { AgentRecap, type AgentRecapStat, type AgentRecapAction } from '@/components/ui/agent-recap'
+import { AgentCursors, type AgentCursor } from '@/components/ui/agent-cursors'
+
+const handoffs: Handoff[] = [
+  { id: '1', from: 'Planejador', to: 'Codador', task: 'Implementar o registry', at: '14:02' },
+  { id: '2', from: 'Codador', to: 'Revisor', task: 'Revisar o diff', at: '14:19' },
+]
+const sequencia: AgentSequenceStep[] = [
+  { id: '1', agent: 'Planejador', action: 'Definiu o plano', status: 'done' },
+  { id: '2', agent: 'Codador', action: 'Gerando componentes', status: 'active' },
+  { id: '3', agent: 'Revisor', action: 'Aguardando', status: 'pending' },
+]
+const rotaCandidatos: AgentCandidate[] = [
+  { id: '1', name: 'Codador', score: 92, selected: true, reason: 'Melhor em edição de código' },
+  { id: '2', name: 'Pesquisador', score: 61, reason: 'Bom em busca' },
+  { id: '3', name: 'Revisor', score: 44 },
+]
+const monitorMetrics: AgentMonitorMetrics = { active: 3, queued: 2, done: 10, errors: 1 }
+const monitorAgents: AgentMonitorAgent[] = [
+  { id: '1', name: 'Scout', status: 'running' },
+  { id: '2', name: 'Builder', status: 'done' },
+  { id: '3', name: 'Tester', status: 'error' },
+]
+const fases: AgentTimingPhase[] = [
+  { id: '1', label: 'Planejar', ms: 1200 },
+  { id: '2', label: 'Codar', ms: 4800 },
+  { id: '3', label: 'Testar', ms: 2100 },
+  { id: '4', label: 'Publicar', ms: 900 },
+]
+const checkpoints: AgentCheckpoint[] = [
+  { id: '1', label: 'Após o plano', at: '14:02' },
+  { id: '2', label: 'Componentes gerados', at: '14:20' },
+  { id: '3', label: 'Agora', at: '14:31', current: true },
+]
+const recapStats: AgentRecapStat[] = [
+  { label: 'Componentes', value: 18 },
+  { label: 'Testes', value: 129 },
+  { label: 'Duração', value: '9 min' },
+]
+const recapActions: AgentRecapAction[] = [
+  { id: '1', label: 'Registry atualizado', status: 'done' },
+  { id: '2', label: 'Publicado no Pages', status: 'done' },
+]
+const cursores: AgentCursor[] = [
+  { id: '1', name: 'Scout', x: 20, y: 28 },
+  { id: '2', name: 'Codador', x: 60, y: 54, color: '#8b5cf6' },
+  { id: '3', name: 'Revisor', x: 38, y: 72, color: '#10b981' },
+]
+
 const arvore: TreeNode[] = [
   {
     id: 'src', label: 'src', defaultOpen: true, children: [
@@ -1194,6 +1250,35 @@ function ComponentsView() {
 
         <Demo title="Agent lanes" full>
           <AgentLanes lanes={laneData} />
+        </Demo>
+
+        <Demo title="Agent sequence · Agent handoff" full>
+          <AgentSequence steps={sequencia} />
+          <AgentHandoff handoffs={handoffs} />
+        </Demo>
+
+        <Demo title="Agent router" full>
+          <AgentRouter request="Refatorar o módulo de autenticação" candidates={rotaCandidatos} />
+        </Demo>
+
+        <Demo title="Agent monitor" full>
+          <AgentMonitor metrics={monitorMetrics} agents={monitorAgents} />
+        </Demo>
+
+        <Demo title="Agent timing" full>
+          <AgentTiming phases={fases} />
+        </Demo>
+
+        <Demo title="Agent checkpoints · Agent recap" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <AgentCheckpoints checkpoints={checkpoints} />
+            <AgentRecap summary="O agente gerou e publicou 18 componentes do kit em 9 minutos." stats={recapStats} actions={recapActions} />
+          </div>
+        </Demo>
+
+        <Demo title="Agent steering · Agent cursors" full>
+          <AgentSteering suggestions={['Seja mais conciso', 'Priorize testes', 'Explique o porquê']} />
+          <AgentCursors cursors={cursores} />
         </Demo>
       </div>
     </>
