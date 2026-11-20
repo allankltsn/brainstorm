@@ -7,19 +7,24 @@ import { db, type Servico } from '@/lib/data'
 
 type Rascunho = Omit<Servico, 'id'> & { id?: string }
 
-const vazio: Rascunho = { nome: '', duracaoMin: 30, precoBRL: 0, categoria: '', executores: [] }
+const vazio: Rascunho = { nome: '', duracaoMin: 30, precoBRL: 0, categoria: '' }
 
 export function Servicos() {
   const [lista, setLista] = useState<Servico[]>(() => db.servicos.map((s) => ({ ...s })))
   const [aberto, setAberto] = useState(false)
   const [draft, setDraft] = useState<Rascunho>(vazio)
+  // ids dos profissionais que executam o serviço em edição; a fonte única é
+  // Profissional.servicos, então aqui editamos a seleção e reconciliamos ao salvar.
+  const [execDraft, setExecDraft] = useState<string[]>([])
 
   const abrirNovo = () => {
     setDraft({ ...vazio })
+    setExecDraft([])
     setAberto(true)
   }
   const abrirEdicao = (s: Servico) => {
     setDraft({ ...s })
+    setExecDraft(db.executoresDe(s.id))
     setAberto(true)
   }
   // grava no store compartilhado para refletir em Agenda/Agendar/Início
@@ -27,22 +32,36 @@ export function Servicos() {
     setLista(nova)
     db.replaceServicos(nova)
   }
-  const excluir = (id: string) => aplicar(lista.filter((s) => s.id !== id))
+  // reconcilia a aresta serviço⇄profissional gravando só em Profissional.servicos
+  const reconciliarExecutores = (servicoId: string, selecionados: string[]) => {
+    const profs = db.profissionais.map((p) => {
+      const deve = selecionados.includes(p.id)
+      const tem = p.servicos.includes(servicoId)
+      if (deve && !tem) return { ...p, servicos: [...p.servicos, servicoId] }
+      if (!deve && tem) return { ...p, servicos: p.servicos.filter((x) => x !== servicoId) }
+      return p
+    })
+    db.replaceProfissionais(profs)
+  }
+  const excluir = (id: string) => {
+    aplicar(lista.filter((s) => s.id !== id))
+    // remove a aresta dos profissionais que ainda apontavam para o serviço excluído
+    reconciliarExecutores(id, [])
+  }
 
   const salvar = () => {
     if (!draft.nome.trim()) return
+    const id = draft.id ?? `s-${Date.now()}`
     const nova = draft.id
-      ? lista.map((s) => (s.id === draft.id ? ({ ...draft, id: draft.id } as Servico) : s))
-      : [...lista, { ...draft, id: `s-${Date.now()}` }]
+      ? lista.map((s) => (s.id === draft.id ? ({ ...draft, id } as Servico) : s))
+      : [...lista, { ...draft, id }]
     aplicar(nova)
+    reconciliarExecutores(id, execDraft)
     setAberto(false)
   }
 
   const toggleExecutor = (pid: string) =>
-    setDraft((d) => ({
-      ...d,
-      executores: d.executores.includes(pid) ? d.executores.filter((x) => x !== pid) : [...d.executores, pid],
-    }))
+    setExecDraft((cur) => (cur.includes(pid) ? cur.filter((x) => x !== pid) : [...cur, pid]))
 
   const nomeProf = (id: string) => db.profissionalById(id)?.nome ?? id
 
@@ -77,7 +96,7 @@ export function Servicos() {
                 <td className="px-4 py-3 text-muted-foreground">{s.categoria || '—'}</td>
                 <td className="px-4 py-3">{s.duracaoMin} min</td>
                 <td className="px-4 py-3">{brl(s.precoBRL)}</td>
-                <td className="px-4 py-3 text-muted-foreground">{s.executores.map(nomeProf).join(', ') || '—'}</td>
+                <td className="px-4 py-3 text-muted-foreground">{db.executoresDe(s.id).map(nomeProf).join(', ') || '—'}</td>
                 <td className="px-4 py-3">
                   <div className="flex justify-end gap-1">
                     <Button variant="ghost" size="sm" icon={<Pencil size={15} />} onClick={() => abrirEdicao(s)} />
@@ -134,7 +153,7 @@ export function Servicos() {
           <p className="mb-2 text-sm font-medium">Profissionais que executam</p>
           <div className="flex flex-wrap gap-2">
             {db.profissionais.map((p) => {
-              const on = draft.executores.includes(p.id)
+              const on = execDraft.includes(p.id)
               return (
                 <button
                   key={p.id}

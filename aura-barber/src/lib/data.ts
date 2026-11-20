@@ -12,7 +12,8 @@ export type Servico = {
   duracaoMin: number
   precoBRL: number
   categoria: string
-  executores: string[] // ids de Profissional que executam o serviço
+  // A relação serviço⇄profissional vive em Profissional.servicos (fonte única).
+  // Os executores de um serviço são derivados via db.executoresDe(servicoId).
 }
 
 export type Disponibilidade = {
@@ -100,13 +101,13 @@ const profissionais: Profissional[] = [
 ]
 
 const servicos: Servico[] = [
-  { id: 's-corte', nome: 'Corte', duracaoMin: 30, precoBRL: 45, categoria: 'Cabelo', executores: ['p-rafa', 'p-joao', 'p-bruna'] },
-  { id: 's-barba', nome: 'Barba', duracaoMin: 30, precoBRL: 35, categoria: 'Barba', executores: ['p-rafa', 'p-joao'] },
-  { id: 's-corte-barba', nome: 'Corte + Barba', duracaoMin: 60, precoBRL: 70, categoria: 'Combo', executores: ['p-rafa', 'p-joao'] },
-  { id: 's-combo', nome: 'Combo Completo', duracaoMin: 90, precoBRL: 110, categoria: 'Combo', executores: ['p-joao'] },
-  { id: 's-pezinho', nome: 'Pezinho', duracaoMin: 15, precoBRL: 20, categoria: 'Cabelo', executores: ['p-rafa'] },
-  { id: 's-luzes', nome: 'Luzes', duracaoMin: 120, precoBRL: 180, categoria: 'Coloração', executores: ['p-bruna'] },
-  { id: 's-pigmentacao', nome: 'Pigmentação', duracaoMin: 45, precoBRL: 60, categoria: 'Coloração', executores: ['p-bruna'] },
+  { id: 's-corte', nome: 'Corte', duracaoMin: 30, precoBRL: 45, categoria: 'Cabelo' },
+  { id: 's-barba', nome: 'Barba', duracaoMin: 30, precoBRL: 35, categoria: 'Barba' },
+  { id: 's-corte-barba', nome: 'Corte + Barba', duracaoMin: 60, precoBRL: 70, categoria: 'Combo' },
+  { id: 's-combo', nome: 'Combo Completo', duracaoMin: 90, precoBRL: 110, categoria: 'Combo' },
+  { id: 's-pezinho', nome: 'Pezinho', duracaoMin: 15, precoBRL: 20, categoria: 'Cabelo' },
+  { id: 's-luzes', nome: 'Luzes', duracaoMin: 120, precoBRL: 180, categoria: 'Coloração' },
+  { id: 's-pigmentacao', nome: 'Pigmentação', duracaoMin: 45, precoBRL: 60, categoria: 'Coloração' },
 ]
 
 const clientes: Cliente[] = [
@@ -139,6 +140,10 @@ export const db = {
   servicoById: (id: string) => servicos.find((s) => s.id === id),
   profissionalById: (id: string) => profissionais.find((p) => p.id === id),
   clienteById: (id: string) => clientes.find((c) => c.id === id),
+  // Executores de um serviço: derivado de Profissional.servicos (fonte única da
+  // relação), na ordem de db.profissionais. Sem denormalização = sem divergência.
+  executoresDe: (servicoId: string): string[] =>
+    profissionais.filter((p) => p.servicos.includes(servicoId)).map((p) => p.id),
   // Escrita no store compartilhado: as telas de CRUD gravam aqui para que
   // Agenda/Agendar/Início (que leem o db) reflitam as mudanças na mesma sessão.
   replaceServicos: (lista: Servico[]) => servicos.splice(0, servicos.length, ...lista),

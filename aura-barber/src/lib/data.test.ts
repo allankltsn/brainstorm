@@ -1,18 +1,19 @@
 import { test, expect } from 'vitest'
 import { db } from './data'
 
-test('mock tem 3 profissionais e serviços com executores válidos', () => {
+test('mock tem 3 profissionais e todo serviço tem ao menos um executor derivado', () => {
   expect(db.profissionais.length).toBe(3)
   const ids = new Set(db.profissionais.map((p) => p.id))
   expect(db.servicos.length).toBeGreaterThanOrEqual(6)
   for (const s of db.servicos) {
-    expect(s.executores.length).toBeGreaterThan(0)
-    for (const e of s.executores) expect(ids.has(e)).toBe(true)
+    const execs = db.executoresDe(s.id)
+    expect(execs.length).toBeGreaterThan(0)
+    for (const e of execs) expect(ids.has(e)).toBe(true)
   }
 })
 
 test('replaceServicos escreve no db e reflete em servicoById', () => {
-  const novo = { id: 's-teste', nome: 'Teste', duracaoMin: 10, precoBRL: 1, categoria: 'x', executores: ['p-rafa'] }
+  const novo = { id: 's-teste', nome: 'Teste', duracaoMin: 10, precoBRL: 1, categoria: 'x' }
   db.replaceServicos([...db.servicos, novo])
   expect(db.servicoById('s-teste')).toBeTruthy()
   expect(db.servicos.some((s) => s.id === 's-teste')).toBe(true)
@@ -22,4 +23,27 @@ test('replaceProfissionais escreve no db e reflete em profissionalById', () => {
   const novo = { id: 'p-teste', nome: 'Teste', servicos: [], disponibilidade: [], comissaoPct: 0 }
   db.replaceProfissionais([...db.profissionais, novo])
   expect(db.profissionalById('p-teste')).toBeTruthy()
+})
+
+test('executoresDe deriva de Profissional.servicos, na ordem de db.profissionais', () => {
+  // s-corte está em servicos de rafa, joao e bruna; s-combo só de joao
+  expect(db.executoresDe('s-corte')).toEqual(['p-rafa', 'p-joao', 'p-bruna'])
+  expect(db.executoresDe('s-combo')).toEqual(['p-joao'])
+  // serviço sem ninguém que o execute → lista vazia
+  expect(db.executoresDe('s-inexistente')).toEqual([])
+})
+
+test('a relação serviço⇄executor tem fonte única: editar Profissional.servicos muda executoresDe', () => {
+  const base = db.profissionais.map((p) => ({ ...p, servicos: [...p.servicos] }))
+  // remove s-corte de rafa
+  const semRafa = base.map((p) => (p.id === 'p-rafa' ? { ...p, servicos: p.servicos.filter((s) => s !== 's-corte') } : p))
+  db.replaceProfissionais(semRafa)
+  expect(db.executoresDe('s-corte')).not.toContain('p-rafa')
+  expect(db.executoresDe('s-corte')).toContain('p-joao')
+  // adiciona s-luzes a joao
+  const comLuzesJoao = db.profissionais.map((p) =>
+    p.id === 'p-joao' ? { ...p, servicos: [...p.servicos, 's-luzes'] } : { ...p, servicos: [...p.servicos] },
+  )
+  db.replaceProfissionais(comLuzesJoao)
+  expect(db.executoresDe('s-luzes')).toContain('p-joao')
 })

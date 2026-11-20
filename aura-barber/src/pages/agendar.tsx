@@ -28,9 +28,9 @@ export function Agendar() {
   const [slot, setSlot] = useState<string | null>(null)
 
   const servico = servicoId ? db.servicoById(servicoId) : undefined
-  // só profissionais que executam o serviço escolhido
+  // só profissionais que executam o serviço escolhido (derivado de Profissional.servicos)
   const profsDoServico = useMemo(
-    () => (servico ? db.profissionais.filter((p) => servico.executores.includes(p.id)) : []),
+    () => (servico ? db.executoresDe(servico.id).map((id) => db.profissionalById(id)!) : []),
     [servico],
   )
   const prof = profId ? db.profissionalById(profId) : undefined

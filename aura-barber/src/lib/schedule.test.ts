@@ -9,8 +9,8 @@ const iso = (hhmm: string) => `${DIA}T${hhmm}:00`
 function prof(disp: Profissional['disponibilidade'] = [{ dia: wd, inicio: '09:00', fim: '18:00' }]): Profissional {
   return { id: 'p1', nome: 'P', servicos: ['s-corte'], disponibilidade: disp, comissaoPct: 0 }
 }
-const corte: Servico = { id: 's-corte', nome: 'Corte', duracaoMin: 30, precoBRL: 45, categoria: 'Cabelo', executores: ['p1'] }
-const longo: Servico = { id: 's-longo', nome: 'Longo', duracaoMin: 60, precoBRL: 1, categoria: 'x', executores: ['p1'] }
+const corte: Servico = { id: 's-corte', nome: 'Corte', duracaoMin: 30, precoBRL: 45, categoria: 'Cabelo' }
+const longo: Servico = { id: 's-longo', nome: 'Longo', duracaoMin: 60, precoBRL: 1, categoria: 'x' }
 
 // agendamento existente usa serviço real do db (s-corte = 30min) p/ a resolução de duração
 const agCorte09 = (): Agendamento => ({ id: 'a', clienteId: 'c', servicoId: 's-corte', profissionalId: 'p1', inicio: iso('09:00'), status: 'marcado' })
