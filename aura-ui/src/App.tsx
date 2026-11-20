@@ -571,6 +571,58 @@ const diffLines: InlineDiffLine[] = [
   { type: 'context', text: '  return <Page />', oldNo: 12, newNo: 12 },
 ]
 
+import { CollaborationStream, type CollaborationEvent } from '@/components/ui/collaboration-stream'
+import { CommentsPanel, type PanelComment } from '@/components/ui/comments-panel'
+import { CommitTrail, type Commit } from '@/components/ui/commit-trail'
+import { ReviewCenter, type ReviewItem } from '@/components/ui/review-center'
+import { ReactionBar, type Reaction } from '@/components/ui/reaction-bar'
+import { AwaySummary, type AwaySummaryItem } from '@/components/ui/away-summary'
+import { ProjectCard, type ProjectMetric } from '@/components/ui/project-card'
+import { SetupGuide, type SetupStep } from '@/components/ui/setup-guide'
+import { StepperForm, type StepperFormStep } from '@/components/ui/stepper-form'
+
+const collabEvents: CollaborationEvent[] = [
+  { id: '1', actor: 'Ana', action: 'editou', target: 'App.tsx', at: '14:02', kind: 'edit' },
+  { id: '2', actor: 'Bruno', action: 'comentou em', target: 'registry.json', at: '14:10', kind: 'comment' },
+  { id: '3', actor: 'Carla', action: 'aprovou o PR #42', at: '14:18', kind: 'approve' },
+]
+const panelComments: PanelComment[] = [
+  { id: '1', author: 'Ana', text: 'Podemos extrair esse botão?', at: '14:02' },
+  { id: '2', author: 'Bruno', text: 'Resolvido na última versão.', at: '13:40', resolved: true },
+]
+const commits: Commit[] = [
+  { id: '1', hash: 'bf86ef6a1', message: 'Leva 3F — memória/contexto/diff', author: 'Codador', at: '14:02', added: 1180, removed: 60 },
+  { id: '2', hash: '9d83f06bc', message: 'sync para a main', author: 'Codador', at: '14:05', added: 1180, removed: 60 },
+]
+const reviewItems: ReviewItem[] = [
+  { id: '1', title: 'Adicionar componentes da Leva 3G', author: 'Codador', status: 'pending', at: 'agora' },
+  { id: '2', title: 'Corrigir resizable para v2', author: 'Codador', status: 'approved', reviewer: 'Ana' },
+]
+const reactions: Reaction[] = [
+  { emoji: '👍', count: 12, reacted: true },
+  { emoji: '🎉', count: 4 },
+  { emoji: '🚀', count: 7 },
+]
+const awayItems: AwaySummaryItem[] = [
+  { id: '1', label: 'Novos commits', count: 8, kind: 'commit' },
+  { id: '2', label: 'Menções a você', count: 2, kind: 'mention' },
+  { id: '3', label: 'Revisões pendentes', count: 1, kind: 'review' },
+]
+const projectMetrics: ProjectMetric[] = [
+  { label: 'Componentes', value: 130 },
+  { label: 'Cobertura', value: '91%' },
+]
+const setupSteps: SetupStep[] = [
+  { id: '1', label: 'Criar conta', done: true },
+  { id: '2', label: 'Conectar o GitHub', description: 'Para sincronizar os repositórios', actionLabel: 'Conectar' },
+  { id: '3', label: 'Convidar a equipe' },
+]
+const wizardSteps: StepperFormStep[] = [
+  { id: '1', label: 'Conta', content: <p className="text-sm text-muted-foreground">Dados da conta…</p> },
+  { id: '2', label: 'Perfil', content: <p className="text-sm text-muted-foreground">Preferências do perfil…</p> },
+  { id: '3', label: 'Revisão', content: <p className="text-sm text-muted-foreground">Confirme e conclua.</p> },
+]
+
 const arvore: TreeNode[] = [
   {
     id: 'src', label: 'src', defaultOpen: true, children: [
@@ -1632,6 +1684,36 @@ function ComponentsView() {
           <div className="grid gap-4 lg:grid-cols-2">
             <DiffTimeline entries={diffEntries} />
             <InlineDiff filename="App.tsx" lines={diffLines} />
+          </div>
+        </Demo>
+
+        <Demo title="Collaboration stream · Commit trail" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <CollaborationStream events={collabEvents} />
+            <CommitTrail commits={commits} />
+          </div>
+        </Demo>
+
+        <Demo title="Comments panel · Review center" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <CommentsPanel comments={panelComments} onResolve={() => {}} />
+            <ReviewCenter items={reviewItems} onReview={() => {}} />
+          </div>
+        </Demo>
+
+        <Demo title="Reaction bar · Away summary" full>
+          <ReactionBar reactions={reactions} showAdd onReact={() => {}} />
+          <AwaySummary since="desde ontem" items={awayItems} />
+        </Demo>
+
+        <Demo title="Project card" full>
+          <ProjectCard name="Aura UI" description="Design system do ecossistema Aura" status="active" progress={78} members={['Allan Costa', 'Maria Silva', 'João Pereira']} metrics={projectMetrics} />
+        </Demo>
+
+        <Demo title="Setup guide · Stepper form" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <SetupGuide steps={setupSteps} onAction={() => {}} />
+            <StepperForm steps={wizardSteps} onFinish={() => {}} />
           </div>
         </Demo>
       </div>
