@@ -6,6 +6,9 @@ import { Agenda } from '@/pages/agenda'
 import { Agendar } from '@/pages/agendar'
 import { Home } from '@/pages/home'
 import { MeusHorarios } from '@/pages/meus-horarios'
+import { Config } from '@/pages/config'
+import { MeuUsuario } from '@/pages/meu-usuario'
+import { EmpresaConfig } from '@/pages/empresa'
 import { NaoEncontrada } from '@/pages/nao-encontrada'
 import { Profissionais } from '@/pages/profissionais'
 import { Servicos } from '@/pages/servicos'
@@ -23,6 +26,9 @@ export default function App() {
               <Route path="/agenda" element={<Agenda />} />
               <Route path="/agendar" element={<Agendar />} />
               <Route path="/meus-horarios" element={<MeusHorarios />} />
+              <Route path="/config" element={<Config />} />
+              <Route path="/meu-usuario" element={<MeuUsuario />} />
+              <Route path="/empresa" element={<EmpresaConfig />} />
               <Route path="/servicos" element={<Servicos />} />
               <Route path="/profissionais" element={<Profissionais />} />
               <Route path="*" element={<NaoEncontrada />} />
