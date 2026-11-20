@@ -14,6 +14,7 @@ const apps = [
   { dir: 'prototype-v2', out: 'proto' },
   { dir: 'aura-brand', out: 'brand-app' },
   { dir: 'aura-ui', out: 'ui-app' },
+  { dir: 'aura-barber', out: 'barber' },
 ]
 
 // Versão única: init/package.json é a fonte; os apps têm que carregar o mesmo valor (ver README).

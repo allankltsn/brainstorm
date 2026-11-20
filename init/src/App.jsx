@@ -50,3 +50,8 @@ export function Brand() {
 export function Ui() {
   return <iframe title="aura-ui · documentação" src={`${BASE}ui-app/index.html`} style={frame} />
 }
+
+// "/barber" → aura-barber, compilado em barber/ (usa HashRouter). index.html#/ explícito pelo mesmo motivo do /brand.
+export function Barber() {
+  return <iframe title="aura-barber · protótipo" src={`${BASE}barber/index.html#/`} style={frame} />
+}
