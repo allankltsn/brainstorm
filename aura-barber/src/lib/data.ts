@@ -25,6 +25,7 @@ export type Disponibilidade = {
 export type Profissional = {
   id: string
   userId: string // User de identidade ligado (perfil barber pendurado no User)
+  filialId: string // unidade onde atende (multiunidade)
   nome: string
   servicos: string[] // ids de Servico que o profissional executa
   disponibilidade: Disponibilidade[]
@@ -45,6 +46,7 @@ export type Agendamento = {
   clienteId: string
   servicoId: string
   profissionalId: string
+  filialId: string // unidade onde o atendimento acontece
   inicio: string // ISO local "YYYY-MM-DDTHH:MM:00"
   status: AgendamentoStatus
 }
@@ -74,7 +76,7 @@ export type UserSettings = {
   notifyWhatsapp: boolean
 }
 
-// Empresa ≈ Tenant do AuraFit (+ campos operacionais da barbearia).
+// Empresa = a marca (agrega filiais). Horário/grade são por Filial (multiunidade).
 export type Empresa = {
   id: string
   ownerUserId: string
@@ -82,9 +84,17 @@ export type Empresa = {
   slug: string
   status: 'ACTIVE' | 'SUSPENDED'
   fuso: string
+}
+
+// Filial / unidade física (≈ Tenant do AuraFit). Dona do horário e da grade.
+export type Filial = {
+  id: string
+  empresaId: string
+  nome: string
   abertura: string // "HH:MM"
   fechamento: string // "HH:MM"
-  gradeMin: number // granularidade da grade (15 | 30 | 60)
+  gradeMin: number // 15 | 30 | 60
+  status: 'ACTIVE' | 'SUSPENDED'
 }
 
 // Vínculo user ↔ empresa ↔ papel (no AuraFit: roleId→tabela roles; aqui guardamos o nome do papel).
@@ -92,6 +102,7 @@ export type Membership = {
   id: string
   userId: string
   empresaId: string
+  filialId?: string // barbeiro é vinculado a uma filial; dono/cliente não
   role: Role
   status: MembershipStatus
   invitedByMembershipId?: string
@@ -129,6 +140,7 @@ const profissionais: Profissional[] = [
   {
     id: 'p-rafa',
     userId: 'u-rafa',
+    filialId: 'f-centro',
     nome: 'Rafa',
     servicos: ['s-corte', 's-barba', 's-corte-barba', 's-pezinho'],
     disponibilidade: semanaComercial,
@@ -137,6 +149,7 @@ const profissionais: Profissional[] = [
   {
     id: 'p-joao',
     userId: 'u-joao',
+    filialId: 'f-centro',
     nome: 'João',
     servicos: ['s-corte', 's-barba', 's-corte-barba', 's-combo'],
     disponibilidade: semanaComercial,
@@ -145,6 +158,7 @@ const profissionais: Profissional[] = [
   {
     id: 'p-bruna',
     userId: 'u-bruna',
+    filialId: 'f-zonasul',
     nome: 'Bruna',
     servicos: ['s-corte', 's-luzes', 's-pigmentacao'],
     disponibilidade: [
@@ -175,10 +189,10 @@ const clientes: Cliente[] = [
 ]
 
 const agendamentos: Agendamento[] = [
-  { id: 'a-1', clienteId: 'c-ana', servicoId: 's-corte', profissionalId: 'p-rafa', inicio: hojeAs('09:00'), status: 'marcado' },
-  { id: 'a-2', clienteId: 'c-bruno', servicoId: 's-corte-barba', profissionalId: 'p-joao', inicio: hojeAs('10:00'), status: 'marcado' },
-  { id: 'a-3', clienteId: 'c-carla', servicoId: 's-luzes', profissionalId: 'p-bruna', inicio: hojeAs('10:00'), status: 'marcado' },
-  { id: 'a-4', clienteId: 'c-diego', servicoId: 's-pezinho', profissionalId: 'p-rafa', inicio: hojeAs('11:30'), status: 'marcado' },
+  { id: 'a-1', clienteId: 'c-ana', servicoId: 's-corte', profissionalId: 'p-rafa', filialId: 'f-centro', inicio: hojeAs('09:00'), status: 'marcado' },
+  { id: 'a-2', clienteId: 'c-bruno', servicoId: 's-corte-barba', profissionalId: 'p-joao', filialId: 'f-centro', inicio: hojeAs('10:00'), status: 'marcado' },
+  { id: 'a-3', clienteId: 'c-carla', servicoId: 's-luzes', profissionalId: 'p-bruna', filialId: 'f-zonasul', inicio: hojeAs('10:00'), status: 'marcado' },
+  { id: 'a-4', clienteId: 'c-diego', servicoId: 's-pezinho', profissionalId: 'p-rafa', filialId: 'f-centro', inicio: hojeAs('11:30'), status: 'marcado' },
 ]
 
 const CRIADO = '2026-01-10T09:00:00'
@@ -214,10 +228,17 @@ const papelDoUser: Record<string, Role> = {
   'u-diego': 'cliente',
 }
 
+const filialDoUser: Record<string, string | undefined> = {
+  'u-rafa': 'f-centro',
+  'u-joao': 'f-centro',
+  'u-bruna': 'f-zonasul',
+}
+
 const memberships: Membership[] = users.map((u, i) => ({
   id: `m-${i + 1}`,
   userId: u.id,
   empresaId: 'e-aura',
+  filialId: filialDoUser[u.id],
   role: papelDoUser[u.id],
   status: 'ACTIVE',
   criadoEm: CRIADO,
@@ -232,13 +253,16 @@ const empresa: Empresa = {
   slug: 'aura-barber',
   status: 'ACTIVE',
   fuso: 'America/Sao_Paulo',
-  abertura: '08:00',
-  fechamento: '20:00',
-  gradeMin: 30,
 }
+
+const filiais: Filial[] = [
+  { id: 'f-centro', empresaId: 'e-aura', nome: 'Unidade Centro', abertura: '08:00', fechamento: '20:00', gradeMin: 30, status: 'ACTIVE' },
+  { id: 'f-zonasul', empresaId: 'e-aura', nome: 'Unidade Zona Sul', abertura: '09:00', fechamento: '19:00', gradeMin: 30, status: 'ACTIVE' },
+]
 
 export const db = {
   empresa,
+  filiais,
   servicos,
   profissionais,
   clientes,
@@ -251,8 +275,14 @@ export const db = {
   profissionalById: (id: string) => profissionais.find((p) => p.id === id),
   clienteById: (id: string) => clientes.find((c) => c.id === id),
   userById: (id: string) => users.find((u) => u.id === id),
-  // Escrita no store: empresa (config) e convites (identidade).
+  filialById: (id: string) => filiais.find((f) => f.id === id),
+  // Escrita no store: empresa (marca), filiais, convites.
   atualizarEmpresa: (parcial: Partial<Empresa>) => Object.assign(empresa, parcial),
+  atualizarFilial: (id: string, parcial: Partial<Filial>) => {
+    const f = filiais.find((x) => x.id === id)
+    if (f) Object.assign(f, parcial)
+  },
+  pushFilial: (f: Filial) => filiais.push(f),
   pushInvite: (inv: Invite) => invites.push(inv),
   // Executores de um serviço: derivado de Profissional.servicos (fonte única da
   // relação), na ordem de db.profissionais. Sem denormalização = sem divergência.

@@ -28,32 +28,38 @@ const hm = (iso: string) => iso.slice(11, 16)
 
 export function Agendar() {
   const nav = useNavigate()
-  const { role, clienteId: euClienteId } = useRole()
+  const { role, clienteId: euClienteId, filialId: filialAtiva } = useRole()
   const [clienteEstado, setClienteEstado] = useState<string | null>(null)
   // Cliente logado agenda para si (identidade viva vence o estado local); dono/barbeiro escolhem na tela.
   const clienteId = clienteSelecionado(role, euClienteId, clienteEstado)
+  const [filialId, setFilialId] = useState<string>(filialAtiva)
   const [servicoId, setServicoId] = useState<string | null>(null)
   const [profId, setProfId] = useState<string | null>(null)
   const [dia, setDia] = useState<string>(hojeISO)
   const [slot, setSlot] = useState<string | null>(null)
 
   const servico = servicoId ? db.servicoById(servicoId) : undefined
-  // só profissionais que executam o serviço escolhido (derivado de Profissional.servicos)
+  // profissionais que executam o serviço escolhido E atendem na filial selecionada
   const profsDoServico = useMemo(
-    () => (servico ? db.executoresDe(servico.id).map((id) => db.profissionalById(id)!) : []),
-    [servico],
+    () => (servico ? db.executoresDe(servico.id).map((id) => db.profissionalById(id)!).filter((p) => p.filialId === filialId) : []),
+    [servico, filialId],
   )
   const prof = profId ? db.profissionalById(profId) : undefined
 
   const slots = useMemo(
-    () => (prof && servico ? availableSlots(prof, servico, dia, db.agendamentos, db.empresa.gradeMin, agoraISO()) : []),
-    [prof, servico, dia],
+    () => (prof && servico ? availableSlots(prof, servico, dia, db.agendamentos, db.filialById(filialId)?.gradeMin ?? 30, agoraISO()) : []),
+    [prof, servico, dia, filialId],
   )
 
   const [y, m, d] = dia.split('-').map(Number)
   const weekday = new Date(y, m - 1, d).getDay()
   const dataLabel = `${DIAS[weekday]}, ${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}`
 
+  const escolheFilial = (id: string) => {
+    setFilialId(id)
+    setProfId(null)
+    setSlot(null)
+  }
   const escolheServico = (id: string) => {
     setServicoId(id)
     setProfId(null)
@@ -71,6 +77,7 @@ export function Agendar() {
       clienteId,
       servicoId,
       profissionalId: profId,
+      filialId,
       inicio: slot,
       status: 'marcado',
     }
@@ -85,6 +92,13 @@ export function Agendar() {
       <PageHeader title="Novo agendamento" subtitle="Cliente, serviço, profissional e um horário livre." />
 
       <Panel className="space-y-5 p-5">
+        <Select
+          label="Filial"
+          value={filialId}
+          options={db.filiais.map((f) => ({ value: f.id, label: f.nome }))}
+          onChange={escolheFilial}
+        />
+
         {role === 'cliente' ? (
           <p className="text-sm text-muted-foreground">
             Agendando para <span className="font-medium text-foreground">{db.clienteById(euClienteId)?.nome}</span>.
@@ -126,6 +140,9 @@ export function Agendar() {
           options={profsDoServico.map((p) => ({ value: p.id, label: p.nome }))}
           onChange={escolheProf}
         />
+        {servico && profsDoServico.length === 0 && (
+          <p className="text-sm text-muted-foreground">Nenhum profissional desta filial executa esse serviço.</p>
+        )}
 
         {prof && servico && (
           <div>

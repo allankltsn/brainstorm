@@ -27,22 +27,19 @@ function EmpresaForm() {
   const [nome, setNome] = useState(e.nome)
   const [slug, setSlug] = useState(e.slug)
   const [status, setStatus] = useState<Empresa['status']>(e.status)
-  const [abertura, setAbertura] = useState(e.abertura)
-  const [fechamento, setFechamento] = useState(e.fechamento)
-  const [gradeMin, setGradeMin] = useState(String(e.gradeMin))
   const [msg, setMsg] = useState<{ ok: boolean; texto: string } | null>(null)
 
   const salvar = () => {
-    const r = updateEmpresa({ nome, slug, status, abertura, fechamento, gradeMin: Number(gradeMin) })
-    setMsg(r.ok ? { ok: true, texto: 'Alterações salvas — já valem na Agenda.' } : { ok: false, texto: r.erro ?? 'Erro.' })
+    const r = updateEmpresa({ nome, slug, status })
+    setMsg(r.ok ? { ok: true, texto: 'Alterações salvas.' } : { ok: false, texto: r.erro ?? 'Erro.' })
   }
 
   return (
     <div className="mx-auto max-w-xl">
-      <PageHeader title="Empresa" subtitle="Dados do negócio e regras de horário." />
+      <PageHeader title="Empresa" subtitle="A marca que agrega as filiais." />
 
       <Panel className="space-y-4 p-5">
-        <TextField label="Nome da barbearia" value={nome} onChange={(ev) => { setNome(ev.target.value); setMsg(null) }} />
+        <TextField label="Nome da marca" value={nome} onChange={(ev) => { setNome(ev.target.value); setMsg(null) }} />
         <TextField label="Identificador (slug)" value={slug} onChange={(ev) => { setSlug(ev.target.value); setMsg(null) }} />
         <div>
           <p className="mb-1.5 text-sm text-muted-foreground">Status</p>
@@ -56,23 +53,7 @@ function EmpresaForm() {
             onChange={(v) => { setStatus(v as Empresa['status']); setMsg(null) }}
           />
         </div>
-        <div className="grid grid-cols-2 gap-3">
-          <TextField label="Abre às" type="time" value={abertura} onChange={(ev) => { setAbertura(ev.target.value); setMsg(null) }} />
-          <TextField label="Fecha às" type="time" value={fechamento} onChange={(ev) => { setFechamento(ev.target.value); setMsg(null) }} />
-        </div>
-        <div>
-          <p className="mb-1.5 text-sm text-muted-foreground">Grade da agenda</p>
-          <SegmentedControl
-            aria-label="Granularidade da grade"
-            value={gradeMin}
-            options={[
-              { value: '15', label: '15 min' },
-              { value: '30', label: '30 min' },
-              { value: '60', label: '60 min' },
-            ]}
-            onChange={(v) => { setGradeMin(v); setMsg(null) }}
-          />
-        </div>
+        <p className="text-sm text-muted-foreground">Horário e grade da agenda agora são definidos por filial, em <span className="text-foreground">Filiais</span>.</p>
       </Panel>
 
       <div className="mt-4 flex items-center gap-3">

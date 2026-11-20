@@ -4,7 +4,7 @@
  * menos os agendamentos existentes. Trabalha em minutos desde a meia-noite,
  * em horário local, sem fuso (os ISO são "YYYY-MM-DDTHH:MM:SS").
  */
-import { db, type Agendamento, type Empresa, type Profissional, type Servico } from './data'
+import { db, type Agendamento, type Profissional, type Servico } from './data'
 
 const hhmmToMin = (hhmm: string): number => {
   const [h, m] = hhmm.split(':').map(Number)
@@ -38,10 +38,10 @@ const weekdayOf = (dia: string): number => {
 export function janelaDoDia(
   weekday: number,
   profissionais: Profissional[],
-  empresa: Empresa,
+  janela: { abertura: string; fechamento: string },
 ): { inicioMin: number; fimMin: number } {
-  const aberturaMin = hhmmToMin(empresa.abertura)
-  const fechamentoMin = hhmmToMin(empresa.fechamento)
+  const aberturaMin = hhmmToMin(janela.abertura)
+  const fechamentoMin = hhmmToMin(janela.fechamento)
   const faixas = profissionais.flatMap((p) => p.disponibilidade.filter((d) => d.dia === weekday))
   if (faixas.length === 0) {
     return { inicioMin: aberturaMin, fimMin: fechamentoMin }

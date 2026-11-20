@@ -20,7 +20,7 @@ test('replaceServicos escreve no db e reflete em servicoById', () => {
 })
 
 test('replaceProfissionais escreve no db e reflete em profissionalById', () => {
-  const novo = { id: 'p-teste', userId: 'u-dono', nome: 'Teste', servicos: [], disponibilidade: [], comissaoPct: 0 }
+  const novo = { id: 'p-teste', userId: 'u-dono', filialId: 'f-centro', nome: 'Teste', servicos: [], disponibilidade: [], comissaoPct: 0 }
   db.replaceProfissionais([...db.profissionais, novo])
   expect(db.profissionalById('p-teste')).toBeTruthy()
 })
@@ -73,7 +73,6 @@ test('identidade: cada profissional e cliente tem userId de um user existente', 
 test('identidade: empresa tem shape de tenant e atualizarEmpresa grava', () => {
   expect(db.userById(db.empresa.ownerUserId)).toBeTruthy()
   expect(db.empresa.slug).toBeTruthy()
-  expect([15, 30, 60]).toContain(db.empresa.gradeMin)
   db.atualizarEmpresa({ nome: 'Barbearia Z' })
   expect(db.empresa.nome).toBe('Barbearia Z')
 })
@@ -82,4 +81,16 @@ test('identidade: memberships — um por user, com o papel correspondente', () =
   expect(db.memberships.length).toBe(8)
   expect(db.memberships.find((m) => m.userId === 'u-dono')?.role).toBe('dono')
   expect(db.memberships.filter((m) => m.role === 'cliente').length).toBe(4)
+})
+
+test('multiunidade: seed tem 2 filiais e cada profissional pertence a uma filial existente', () => {
+  expect(db.filiais.length).toBe(2)
+  for (const p of db.profissionais) expect(db.filialById(p.filialId)).toBeTruthy()
+  for (const a of db.agendamentos) expect(db.filialById(a.filialId)).toBeTruthy()
+})
+
+test('multiunidade: horário/grade saíram da empresa para a filial', () => {
+  expect('gradeMin' in db.empresa).toBe(false)
+  expect([15, 30, 60]).toContain(db.filiais[0].gradeMin)
+  expect(db.filiais[0].abertura).toMatch(/^\d{2}:\d{2}$/)
 })

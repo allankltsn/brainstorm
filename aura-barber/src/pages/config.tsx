@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Building2, ChevronRight, UserCog } from 'lucide-react'
+import { Building2, ChevronRight, Store, UserCog } from 'lucide-react'
 import { PageHeader, Panel } from '@/components/layout'
 import { useRole } from '@/lib/role'
 
@@ -28,7 +28,10 @@ export function Config() {
       <div className="space-y-3">
         <ConfigCard icon={<UserCog size={20} />} titulo="Meu usuário" desc="Perfil e preferências" to="/meu-usuario" />
         {role === 'dono' && (
-          <ConfigCard icon={<Building2 size={20} />} titulo="Empresa" desc="Dados do negócio, horário e grade" to="/empresa" />
+          <>
+            <ConfigCard icon={<Store size={20} />} titulo="Filiais" desc="Unidades, horário e grade por filial" to="/filiais" />
+            <ConfigCard icon={<Building2 size={20} />} titulo="Empresa" desc="Marca: nome, slug e status" to="/empresa" />
+          </>
         )}
       </div>
       {role !== 'dono' && (

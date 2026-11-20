@@ -6,9 +6,10 @@ import { TextField } from '@/components/affect/text-field'
 import { Select } from '@/components/affect/select'
 import { db, type Disponibilidade, type Profissional } from '@/lib/data'
 import { criarProfissional, createInvite, listMemberships } from '@/lib/api'
+import { useRole } from '@/lib/role'
 
 const DIAS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
-type Rascunho = Omit<Profissional, 'id' | 'userId'> & { id?: string; userId?: string }
+type Rascunho = Omit<Profissional, 'id' | 'userId' | 'filialId'> & { id?: string; userId?: string }
 const vazio: Rascunho = { nome: '', servicos: [], disponibilidade: [], comissaoPct: 50 }
 
 export function Profissionais() {
@@ -16,6 +17,7 @@ export function Profissionais() {
   const [aberto, setAberto] = useState(false)
   const [draft, setDraft] = useState<Rascunho>(vazio)
   const [codigo, setCodigo] = useState<string | null>(null)
+  const { filialId } = useRole()
   const statusPorUser = new Map(listMemberships('barbeiro').map((m) => [m.userId, m.status]))
 
   const abrirNovo = () => {
@@ -37,7 +39,7 @@ export function Profissionais() {
     if (!draft.nome.trim()) return
     if (draft.id) {
       // edição: preserva o userId do profissional existente
-      const nova = lista.map((p) => (p.id === draft.id ? ({ ...p, ...draft, id: draft.id, userId: p.userId } as Profissional) : p))
+      const nova = lista.map((p) => (p.id === draft.id ? ({ ...p, ...draft, id: draft.id, userId: p.userId, filialId: p.filialId } as Profissional) : p))
       aplicar(nova)
     } else {
       // novo: nasce como User + Membership(barbeiro) no store de identidade
@@ -46,6 +48,7 @@ export function Profissionais() {
         servicos: draft.servicos,
         disponibilidade: draft.disponibilidade,
         comissaoPct: draft.comissaoPct,
+        filialId, // nasce na filial ativa (multiunidade)
       })
       setLista(db.profissionais.map((p) => ({ ...p })))
     }
@@ -107,7 +110,9 @@ export function Profissionais() {
                     <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">suspenso</span>
                   )}
                 </div>
-                <p className="mt-0.5 text-sm text-muted-foreground">Comissão {p.comissaoPct}%</p>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  {db.filialById(p.filialId)?.nome ?? '—'} · Comissão {p.comissaoPct}%
+                </p>
               </div>
               <div className="flex gap-1">
                 <Button variant="ghost" size="sm" aria-label={`Editar ${p.nome}`} icon={<Pencil size={15} />} onClick={() => abrirEdicao(p)} />
