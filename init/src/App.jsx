@@ -45,3 +45,8 @@ export function Prototype() {
 export function Brand() {
   return <iframe title="aura-brand · protótipo" src={`${BASE}brand-app/index.html`} style={frame} />
 }
+
+// "/ui" → aura-ui, compilado em ui-app/ (documentação do UI kit). index.html explícito pelo mesmo motivo do /brand.
+export function Ui() {
+  return <iframe title="aura-ui · documentação" src={`${BASE}ui-app/index.html`} style={frame} />
+}

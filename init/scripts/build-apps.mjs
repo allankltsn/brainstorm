@@ -1,6 +1,6 @@
-// Compila aura-landing, prototype-v2 e aura-brand SEM alterá-los e copia o dist de cada um
-// para init/public/aura, init/public/proto e init/public/brand-app (servidos pelo host).
-// "brand-app" (e não "brand") porque o host gera dist/brand/index.html como entrada da rota /brand.
+// Compila aura-landing, prototype-v2, aura-brand e aura-ui SEM alterá-los e copia o dist de cada um
+// para init/public/aura, init/public/proto, init/public/brand-app e init/public/ui-app (servidos pelo host).
+// "brand-app"/"ui-app" (e não "brand"/"ui") porque o host gera dist/brand/index.html e dist/ui/index.html como entradas das rotas.
 import { execSync } from 'node:child_process'
 import { cpSync, existsSync, readFileSync, rmSync } from 'node:fs'
 import { resolve } from 'node:path'
@@ -13,6 +13,7 @@ const apps = [
   { dir: 'aura-landing', out: 'aura' },
   { dir: 'prototype-v2', out: 'proto' },
   { dir: 'aura-brand', out: 'brand-app' },
+  { dir: 'aura-ui', out: 'ui-app' },
 ]
 
 // Versão única: init/package.json é a fonte; os apps têm que carregar o mesmo valor (ver README).
