@@ -1,4 +1,4 @@
-import { CalendarDays, Home, Plus, Scissors, Users, type LucideIcon } from 'lucide-react'
+import { CalendarClock, CalendarDays, Home, Plus, Scissors, Users, type LucideIcon } from 'lucide-react'
 import type { Role } from './data'
 
 export type NavItem = { to: string; label: string; icon: LucideIcon }
@@ -17,6 +17,7 @@ export const NAV: Record<Role, NavItem[]> = {
   ],
   cliente: [
     { to: '/inicio', label: 'Início', icon: Home },
+    { to: '/meus-horarios', label: 'Meus horários', icon: CalendarClock },
     { to: '/agendar', label: 'Agendar', icon: Plus },
   ],
 }
