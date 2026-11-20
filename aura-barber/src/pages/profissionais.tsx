@@ -5,9 +5,10 @@ import { Button } from '@/components/affect/button'
 import { TextField } from '@/components/affect/text-field'
 import { Select } from '@/components/affect/select'
 import { db, type Disponibilidade, type Profissional } from '@/lib/data'
+import { criarProfissional } from '@/lib/api'
 
 const DIAS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
-type Rascunho = Omit<Profissional, 'id'> & { id?: string }
+type Rascunho = Omit<Profissional, 'id' | 'userId'> & { id?: string; userId?: string }
 const vazio: Rascunho = { nome: '', servicos: [], disponibilidade: [], comissaoPct: 50 }
 
 export function Profissionais() {
@@ -32,10 +33,20 @@ export function Profissionais() {
 
   const salvar = () => {
     if (!draft.nome.trim()) return
-    const nova = draft.id
-      ? lista.map((p) => (p.id === draft.id ? ({ ...draft, id: draft.id } as Profissional) : p))
-      : [...lista, { ...draft, id: `p-${Date.now()}` }]
-    aplicar(nova)
+    if (draft.id) {
+      // edição: preserva o userId do profissional existente
+      const nova = lista.map((p) => (p.id === draft.id ? ({ ...p, ...draft, id: draft.id, userId: p.userId } as Profissional) : p))
+      aplicar(nova)
+    } else {
+      // novo: nasce como User + Membership(barbeiro) no store de identidade
+      criarProfissional({
+        nome: draft.nome.trim(),
+        servicos: draft.servicos,
+        disponibilidade: draft.disponibilidade,
+        comissaoPct: draft.comissaoPct,
+      })
+      setLista(db.profissionais.map((p) => ({ ...p })))
+    }
     setAberto(false)
   }
 

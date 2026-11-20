@@ -7,7 +7,7 @@ const wd = new Date(2026, 10, 24).getDay() // dia da semana real dessa data
 const iso = (hhmm: string) => `${DIA}T${hhmm}:00`
 
 function prof(disp: Profissional['disponibilidade'] = [{ dia: wd, inicio: '09:00', fim: '18:00' }]): Profissional {
-  return { id: 'p1', nome: 'P', servicos: ['s-corte'], disponibilidade: disp, comissaoPct: 0 }
+  return { id: 'p1', userId: 'u-p1', nome: 'P', servicos: ['s-corte'], disponibilidade: disp, comissaoPct: 0 }
 }
 const corte: Servico = { id: 's-corte', nome: 'Corte', duracaoMin: 30, precoBRL: 45, categoria: 'Cabelo' }
 const longo: Servico = { id: 's-longo', nome: 'Longo', duracaoMin: 60, precoBRL: 1, categoria: 'x' }
@@ -54,9 +54,20 @@ test('hasConflict detecta interseção de intervalos e ignora adjacência', () =
   expect(hasConflict(prof(), iso('09:30'), 30, [agCorte09()])).toBe(false) // encosta, não sobrepõe
 })
 
-const empresa: Empresa = { nome: 'Aura', fuso: 'America/Sao_Paulo', abertura: '08:00', fechamento: '20:00' }
+const empresa: Empresa = {
+  id: 'e-x',
+  ownerUserId: 'u-x',
+  nome: 'Aura',
+  slug: 'aura',
+  status: 'ACTIVE',
+  fuso: 'America/Sao_Paulo',
+  abertura: '08:00',
+  fechamento: '20:00',
+  gradeMin: 30,
+}
 const comDisp = (id: string, disp: Profissional['disponibilidade']): Profissional => ({
   id,
+  userId: `u-${id}`,
   nome: id,
   servicos: [],
   disponibilidade: disp,
