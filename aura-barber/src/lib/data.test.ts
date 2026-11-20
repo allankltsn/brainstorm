@@ -47,3 +47,14 @@ test('a relação serviço⇄executor tem fonte única: editar Profissional.serv
   db.replaceProfissionais(comLuzesJoao)
   expect(db.executoresDe('s-luzes')).toContain('p-joao')
 })
+
+test('cancelarAgendamento marca o status como cancelado', () => {
+  db.cancelarAgendamento('a-1')
+  expect(db.agendamentos.find((a) => a.id === 'a-1')?.status).toBe('cancelado')
+})
+
+test('cancelarAgendamento com id inexistente não lança nem altera a lista', () => {
+  const antes = db.agendamentos.length
+  expect(() => db.cancelarAgendamento('nao-existe')).not.toThrow()
+  expect(db.agendamentos.length).toBe(antes)
+})

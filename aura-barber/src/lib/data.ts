@@ -148,6 +148,11 @@ export const db = {
   // Agenda/Agendar/Início (que leem o db) reflitam as mudanças na mesma sessão.
   replaceServicos: (lista: Servico[]) => servicos.splice(0, servicos.length, ...lista),
   replaceProfissionais: (lista: Profissional[]) => profissionais.splice(0, profissionais.length, ...lista),
+  // Cancelar é só mudança de status (sem desfazer); id inexistente é no-op.
+  cancelarAgendamento: (id: string) => {
+    const a = agendamentos.find((x) => x.id === id)
+    if (a) a.status = 'cancelado'
+  },
 }
 
 export { hojeAs }

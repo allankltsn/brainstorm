@@ -6,6 +6,7 @@ import { Button } from '@/components/affect/button'
 import { Select } from '@/components/affect/select'
 import { db, type Agendamento } from '@/lib/data'
 import { availableSlots } from '@/lib/schedule'
+import { useRole } from '@/lib/role'
 
 const DIAS = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
 function hojeISO() {
@@ -21,7 +22,9 @@ const hm = (iso: string) => iso.slice(11, 16)
 
 export function Agendar() {
   const nav = useNavigate()
-  const [clienteId, setClienteId] = useState<string | null>(null)
+  const { role, clienteId: euClienteId } = useRole()
+  // Cliente logado agenda para si: já vem pré-selecionado e sem a etapa de escolher o cliente.
+  const [clienteId, setClienteId] = useState<string | null>(role === 'cliente' ? euClienteId : null)
   const [servicoId, setServicoId] = useState<string | null>(null)
   const [profId, setProfId] = useState<string | null>(null)
   const [dia, setDia] = useState<string>(hojeISO)
@@ -75,13 +78,19 @@ export function Agendar() {
       <PageHeader title="Novo agendamento" subtitle="Cliente, serviço, profissional e um horário livre." />
 
       <Panel className="space-y-5 p-5">
-        <Select
-          label="Cliente"
-          placeholder="Escolha o cliente"
-          value={clienteId}
-          options={db.clientes.map((c) => ({ value: c.id, label: c.nome, description: c.telefone }))}
-          onChange={setClienteId}
-        />
+        {role === 'cliente' ? (
+          <p className="text-sm text-muted-foreground">
+            Agendando para <span className="font-medium text-foreground">{db.clienteById(euClienteId)?.nome}</span>.
+          </p>
+        ) : (
+          <Select
+            label="Cliente"
+            placeholder="Escolha o cliente"
+            value={clienteId}
+            options={db.clientes.map((c) => ({ value: c.id, label: c.nome, description: c.telefone }))}
+            onChange={setClienteId}
+          />
+        )}
 
         <div>
           <Select
