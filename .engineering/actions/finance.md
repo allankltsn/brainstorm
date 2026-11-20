@@ -1,0 +1,5 @@
+# Action: finance
+Intent/scope: Build or revise the product financial model: assumptions, pricing, unit economics (ARPU, margin, churn, LTV, CAC, payback), monthly costs, three-scenario projection, break-even, runway and sensitivity, in the form of templates/financial-model.md. Without arguments review the existing model against the current assumptions and flag what changed.
+Responsible specialist: product-finance; principal routes, asks the human for the missing figures and consolidates. The specialist is not an accountant and marks [ACCOUNTING-REVIEW] where qualified review is needed.
+Input: discovery artifacts, real figures provided by the human, pricing intent, current costs, project profiles and permitted paths.
+Output: the model with every derived figure recomputable from numbered assumptions, each typed as data, reference (source and date) or estimate; a recommendation (proceed, adjust, stop) and what to validate first. The decision belongs to the human. Common policies and workflow apply to standalone invocations too.

@@ -1,0 +1,116 @@
+{
+ "nota": "Quadro fictício para demonstrar e testar o auditor. Não são dados reais.",
+ "cards": [
+  {
+   "repo": "exemplo/hub",
+   "number": 14,
+   "title": "[S-014] Cadastro com e-mail",
+   "status": "completed",
+   "etapa": "Aguardando você",
+   "precisa": "sim",
+   "agent": "frontend-senior · fe-1",
+   "gates": "R✔ S✔ P✔ Q✔",
+   "updated_at": "2026-11-15T09:00:00Z",
+   "body": "## Resumo\n- **O quê:** Cadastro com e-mail e senha.\n- **Por quê:** Permitir que novos alunos entrem sozinhos.\n- **Agora:** Verificado pelo principal, com evidência.\n- **Falta:** Seu aceite.\n- **Precisa de você:** sim: aceitar a entrega\n\n<details>\n<summary>Agent sheet</summary>\n\n### Context\nStory of epic [E-01]; FR-03, BR-02.\n\n### Business rules\n- BR-02: e-mail must be unique per account\n\n### Acceptance criteria\n- [ ] Given a new e-mail, when the user signs up, then the account is created\n\n### Scope\nWrite: apps/web/src/auth | Do not touch: packages/ | Snapshot/base: a1b2c3d | Personal data: yes\n\n### Definition of Ready\n- [x] Narrative and criteria are clear and testable\n- [x] Business rules cited by ID\n- [x] Design and contract referenced\n- [x] Dependencies resolved or declared\n- [x] Personal data and risks marked\n\n### Staffing\n| Function | Source | Instance | Model tier and reason |\n|---|---|---|---|\n| author | canonical frontend-senior | fe-1 | standard - padrão conhecido |\n\n### Evidence\nPR exemplo/web#31, docs/evidence/s-014.md\n\n### Gates\n| Gate | Instance | Verdict | SHA | Report |\n|---|---|---|---|---|\n| review | rv-1 | approved | a1b2c3d | docs/evidence/review.md |\n| security | sec-1 | approved | a1b2c3d | docs/evidence/security.md |\n| privacy | pv-1 | approved | a1b2c3d | docs/evidence/privacy.md |\n| qa | qa-1 | approved | a1b2c3d | docs/evidence/qa.md |\n\n### Findings\n\n\n### Blocked\nReason: <...> | Unblocks: <who or what> | Prior status: <status>\n\n### Definition of Done\n- [x] Every criterion proven with evidence\n- [x] Automated tests pass on the final snapshot\n- [x] Review, security and QA approved on the same snapshot\n- [x] Privacy approved when personal data is involved\n- [x] Documentation and changelog updated\n\n### Human acceptance\npending\n\n</details>\n",
+   "log": [
+    "LOG STATUS | 2026-11-10T10:00:00Z | principal | S | open -> pending | docs/x.md",
+    "LOG STATUS | 2026-11-11T10:00:00Z | fe-1 | S | pending -> in-progress | docs/x.md",
+    "LOG STATUS | 2026-11-12T10:00:00Z | fe-1 | S | in-progress -> in-review | docs/x.md",
+    "LOG STATUS | 2026-11-13T10:00:00Z | principal | S | in-review -> completed | docs/x.md"
+   ]
+  },
+  {
+   "repo": "exemplo/hub",
+   "number": 15,
+   "title": "[S-015] Recuperar senha",
+   "status": "in-progress",
+   "etapa": "Em andamento",
+   "precisa": "não",
+   "agent": "backend · be-1",
+   "gates": "R… S… P… Q…",
+   "updated_at": "2026-11-15T20:00:00Z",
+   "body": "## Resumo\n- **O quê:** Recuperação de senha por e-mail.\n- **Por quê:** Permitir que novos alunos entrem sozinhos.\n- **Agora:** Com o backend, implementando o envio do link.\n- **Falta:** Testes e entrega para validação.\n- **Precisa de você:** não\n\n<details>\n<summary>Agent sheet</summary>\n\n### Context\nStory of epic [E-01]; FR-03, BR-02.\n\n### Business rules\n- BR-02: e-mail must be unique per account\n\n### Acceptance criteria\n- [ ] Given a new e-mail, when the user signs up, then the account is created\n\n### Scope\nWrite: apps/web/src/auth | Do not touch: packages/ | Snapshot/base: a1b2c3d | Personal data: yes\n\n### Definition of Ready\n- [x] Narrative and criteria are clear and testable\n- [x] Business rules cited by ID\n- [x] Design and contract referenced\n- [x] Dependencies resolved or declared\n- [x] Personal data and risks marked\n\n### Staffing\n| Function | Source | Instance | Model tier and reason |\n|---|---|---|---|\n| author | canonical frontend-senior | fe-1 | standard - padrão conhecido |\n\n### Evidence\n\n\n### Gates\n| Gate | Instance | Verdict | SHA | Report |\n|---|---|---|---|---|\n| review | rv-1 | pending |  | docs/evidence/review.md |\n| security | sec-1 | pending |  | docs/evidence/security.md |\n| privacy | pv-1 | pending |  | docs/evidence/privacy.md |\n| qa | qa-1 | pending |  | docs/evidence/qa.md |\n\n### Findings\n\n\n### Blocked\nReason: <...> | Unblocks: <who or what> | Prior status: <status>\n\n### Definition of Done\n- [ ] Every criterion proven with evidence\n- [ ] Automated tests pass on the final snapshot\n- [ ] Review, security and QA approved on the same snapshot\n- [ ] Privacy approved when personal data is involved\n- [ ] Documentation and changelog updated\n\n### Human acceptance\npending\n\n</details>\n",
+   "log": [
+    "LOG STATUS | 2026-11-10T10:00:00Z | principal | S | open -> pending | docs/x.md",
+    "LOG STATUS | 2026-11-11T10:00:00Z | be-1 | S | pending -> in-progress | docs/x.md"
+   ]
+  },
+  {
+   "repo": "exemplo/hub",
+   "number": 16,
+   "title": "[S-016] Perfil do aluno",
+   "status": "in-review",
+   "etapa": "Em andamento",
+   "precisa": "não",
+   "agent": "frontend-senior · fe-2",
+   "gates": "",
+   "updated_at": "2026-11-15T21:00:00Z",
+   "body": "## Resumo\n- **O quê:** Tela de perfil do aluno.\n- **Por quê:** Permitir que novos alunos entrem sozinhos.\n- **Agora:** Entregue para validação.\n- **Falta:** Revisão, segurança e QA.\n- **Precisa de você:** não\n\n<details>\n<summary>Agent sheet</summary>\n\n### Context\nStory of epic [E-01]; FR-03, BR-02.\n\n### Business rules\n- BR-02: e-mail must be unique per account\n\n### Acceptance criteria\n- [ ] Given a new e-mail, when the user signs up, then the account is created\n\n### Scope\nWrite: apps/web/src/auth | Do not touch: packages/ | Snapshot/base: a1b2c3d | Personal data: yes\n\n### Definition of Ready\n- [x] Narrative and criteria are clear and testable\n- [x] Business rules cited by ID\n- [x] Design and contract referenced\n- [x] Dependencies resolved or declared\n- [x] Personal data and risks marked\n\n### Staffing\n| Function | Source | Instance | Model tier and reason |\n|---|---|---|---|\n| author | canonical frontend-senior | fe-1 | standard - padrão conhecido |\n\n### Evidence\n\n\n### Gates\n| Gate | Instance | Verdict | SHA | Report |\n|---|---|---|---|---|\n| review | rv-1 | pending |  | docs/evidence/review.md |\n| security | sec-1 | pending |  | docs/evidence/security.md |\n| privacy | pv-1 | pending |  | docs/evidence/privacy.md |\n| qa | qa-1 | pending |  | docs/evidence/qa.md |\n\n### Findings\n\n\n### Blocked\nReason: <...> | Unblocks: <who or what> | Prior status: <status>\n\n### Definition of Done\n- [ ] Every criterion proven with evidence\n- [ ] Automated tests pass on the final snapshot\n- [ ] Review, security and QA approved on the same snapshot\n- [ ] Privacy approved when personal data is involved\n- [ ] Documentation and changelog updated\n\n### Human acceptance\npending\n\n</details>\n",
+   "log": [
+    "LOG STATUS | 2026-11-10T10:00:00Z | principal | S | open -> pending | docs/x.md",
+    "LOG STATUS | 2026-11-11T10:00:00Z | fe-2 | S | pending -> in-progress | docs/x.md",
+    "LOG STATUS | 2026-11-12T10:00:00Z | fe-2 | S | in-progress -> in-review | docs/x.md"
+   ]
+  },
+  {
+   "repo": "exemplo/hub",
+   "number": 17,
+   "title": "[S-017] Agendar treino",
+   "status": "in-progress",
+   "etapa": "Em andamento",
+   "precisa": "não",
+   "agent": "",
+   "gates": "R… S… P… Q…",
+   "updated_at": "2026-11-15T22:00:00Z",
+   "body": "## Resumo\n- **O quê:** Agendamento de treino.\n- **Por quê:** Permitir que novos alunos entrem sozinhos.\n- **Agora:** Em implementação.\n- **Falta:** Concluir a tela.\n- **Precisa de você:** não\n\n<details>\n<summary>Agent sheet</summary>\n\n### Context\nStory of epic [E-01]; FR-03, BR-02.\n\n### Business rules\n- BR-02: e-mail must be unique per account\n\n### Acceptance criteria\n- [ ] Given a new e-mail, when the user signs up, then the account is created\n\n### Scope\nWrite: apps/web/src/auth | Do not touch: packages/ | Snapshot/base: a1b2c3d | Personal data: yes\n\n### Definition of Ready\n- [x] Narrative and criteria are clear and testable\n- [x] Business rules cited by ID\n- [ ] Design and contract referenced\n- [ ] Dependencies resolved or declared\n- [ ] Personal data and risks marked\n\n### Staffing\n| Function | Source | Instance | Model tier and reason |\n|---|---|---|---|\n| author | <...> | <...> | <...> |\n\n### Evidence\n\n\n### Gates\n| Gate | Instance | Verdict | SHA | Report |\n|---|---|---|---|---|\n| review | rv-1 | pending |  | docs/evidence/review.md |\n| security | sec-1 | pending |  | docs/evidence/security.md |\n| privacy | pv-1 | pending |  | docs/evidence/privacy.md |\n| qa | qa-1 | pending |  | docs/evidence/qa.md |\n\n### Findings\n\n\n### Blocked\nReason: <...> | Unblocks: <who or what> | Prior status: <status>\n\n### Definition of Done\n- [ ] Every criterion proven with evidence\n- [ ] Automated tests pass on the final snapshot\n- [ ] Review, security and QA approved on the same snapshot\n- [ ] Privacy approved when personal data is involved\n- [ ] Documentation and changelog updated\n\n### Human acceptance\npending\n\n</details>\n",
+   "log": []
+  },
+  {
+   "repo": "exemplo/hub",
+   "number": 18,
+   "title": "[S-018] Pagamento da mensalidade",
+   "status": "completed",
+   "etapa": "Aguardando você",
+   "precisa": "sim",
+   "agent": "backend · be-2",
+   "gates": "R✔ S… P… Q✔",
+   "updated_at": "2026-11-15T12:00:00Z",
+   "body": "## Resumo\n- **O quê:** Pagamento por cartão.\n- **Por quê:** Permitir que novos alunos entrem sozinhos.\n- **Agora:** Marcado como concluído.\n- **Falta:** Seu aceite.\n- **Precisa de você:** sim: aceitar\n\n<details>\n<summary>Agent sheet</summary>\n\n### Context\nStory of epic [E-01]; FR-03, BR-02.\n\n### Business rules\n- BR-02: e-mail must be unique per account\n\n### Acceptance criteria\n- [ ] Given a new e-mail, when the user signs up, then the account is created\n\n### Scope\nWrite: apps/web/src/auth | Do not touch: packages/ | Snapshot/base: a1b2c3d | Personal data: yes\n\n### Definition of Ready\n- [x] Narrative and criteria are clear and testable\n- [x] Business rules cited by ID\n- [x] Design and contract referenced\n- [x] Dependencies resolved or declared\n- [x] Personal data and risks marked\n\n### Staffing\n| Function | Source | Instance | Model tier and reason |\n|---|---|---|---|\n| author | canonical frontend-senior | fe-1 | standard - padrão conhecido |\n\n### Evidence\nPR exemplo/billing#9\n\n### Gates\n| Gate | Instance | Verdict | SHA | Report |\n|---|---|---|---|---|\n| review | rv-1 | approved | aaa1111 | docs/evidence/review.md |\n| security | sec-1 | pending |  | docs/evidence/security.md |\n| privacy | pv-1 | pending |  | docs/evidence/privacy.md |\n| qa | qa-1 | approved | bbb2222 | docs/evidence/qa.md |\n\n### Findings\n\n\n### Blocked\nReason: <...> | Unblocks: <who or what> | Prior status: <status>\n\n### Definition of Done\n- [x] Every criterion proven with evidence\n- [x] Automated tests pass on the final snapshot\n- [x] Review, security and QA approved on the same snapshot\n- [ ] Privacy approved when personal data is involved\n- [ ] Documentation and changelog updated\n\n### Human acceptance\npending\n\n</details>\n",
+   "log": [
+    "LOG STATUS | 2026-11-10T10:00:00Z | principal | S | open -> pending | docs/x.md",
+    "LOG STATUS | 2026-11-11T10:00:00Z | be-2 | S | pending -> in-progress | docs/x.md",
+    "LOG STATUS | 2026-11-12T10:00:00Z | be-2 | S | in-progress -> completed | docs/x.md"
+   ]
+  },
+  {
+   "repo": "exemplo/hub",
+   "number": 19,
+   "title": "[S-019] Notificações push",
+   "status": "blocked",
+   "etapa": "Aguardando você",
+   "precisa": "sim",
+   "agent": "backend · be-1",
+   "gates": "R… S… P… Q…",
+   "updated_at": "2026-11-01T10:00:00Z",
+   "body": "## Resumo\n- **O quê:** Notificações push.\n- **Por quê:** Permitir que novos alunos entrem sozinhos.\n- **Agora:** Bloqueado.\n- **Falta:** Decisão sobre o provedor.\n- **Precisa de você:** sim: escolher o provedor\n\n<details>\n<summary>Agent sheet</summary>\n\n### Context\nStory of epic [E-01]; FR-03, BR-02.\n\n### Business rules\n- BR-02: e-mail must be unique per account\n\n### Acceptance criteria\n- [ ] Given a new e-mail, when the user signs up, then the account is created\n\n### Scope\nWrite: apps/web/src/auth | Do not touch: packages/ | Snapshot/base: a1b2c3d | Personal data: yes\n\n### Definition of Ready\n- [x] Narrative and criteria are clear and testable\n- [x] Business rules cited by ID\n- [x] Design and contract referenced\n- [x] Dependencies resolved or declared\n- [x] Personal data and risks marked\n\n### Staffing\n| Function | Source | Instance | Model tier and reason |\n|---|---|---|---|\n| author | canonical frontend-senior | fe-1 | standard - padrão conhecido |\n\n### Evidence\n\n\n### Gates\n| Gate | Instance | Verdict | SHA | Report |\n|---|---|---|---|---|\n| review | rv-1 | pending |  | docs/evidence/review.md |\n| security | sec-1 | pending |  | docs/evidence/security.md |\n| privacy | pv-1 | pending |  | docs/evidence/privacy.md |\n| qa | qa-1 | pending |  | docs/evidence/qa.md |\n\n### Findings\n\n\n### Blocked\nReason: <...> | Unblocks: <who or what> | Prior status: <status>\n\n### Definition of Done\n- [ ] Every criterion proven with evidence\n- [ ] Automated tests pass on the final snapshot\n- [ ] Review, security and QA approved on the same snapshot\n- [ ] Privacy approved when personal data is involved\n- [ ] Documentation and changelog updated\n\n### Human acceptance\npending\n\n</details>\n",
+   "log": [
+    "LOG STATUS | 2026-11-10T10:00:00Z | principal | S | open -> pending | docs/x.md",
+    "LOG STATUS | 2026-11-11T10:00:00Z | be-1 | S | pending -> in-progress | docs/x.md",
+    "LOG STATUS | 2026-11-12T10:00:00Z | be-1 | S | in-progress -> blocked | docs/x.md"
+   ]
+  },
+  {
+   "repo": "exemplo/hub",
+   "number": 20,
+   "title": "melhorar o login",
+   "status": "open",
+   "etapa": "A fazer",
+   "precisa": "não",
+   "agent": "",
+   "gates": "",
+   "updated_at": "2026-11-15T10:00:00Z",
+   "body": "## Resumo\n- **O quê:** Melhorar o login\n- **Por quê:** <o valor>\n- **Agora:** <onde está>\n- **Falta:** <próximo passo>\n- **Precisa de você:** não\n\n<details>\n<summary>Agent sheet</summary>\n\n### Context\nStory of epic [E-01]; FR-03, BR-02.\n\n### Business rules\n- BR-02: e-mail must be unique per account\n\n### Acceptance criteria\n<criteria>\n\n### Scope\nWrite: apps/web/src/auth | Do not touch: packages/ | Snapshot/base: a1b2c3d | Personal data: yes\n\n### Definition of Ready\n- [ ] Narrative and criteria are clear and testable\n- [ ] Business rules cited by ID\n- [ ] Design and contract referenced\n- [ ] Dependencies resolved or declared\n- [ ] Personal data and risks marked\n\n### Staffing\n| Function | Source | Instance | Model tier and reason |\n|---|---|---|---|\n| author | canonical frontend-senior | fe-1 | standard - padrão conhecido |\n\n### Evidence\n\n\n### Gates\n| Gate | Instance | Verdict | SHA | Report |\n|---|---|---|---|---|\n| review | rv-1 | pending |  | docs/evidence/review.md |\n| security | sec-1 | pending |  | docs/evidence/security.md |\n| privacy | pv-1 | pending |  | docs/evidence/privacy.md |\n| qa | qa-1 | pending |  | docs/evidence/qa.md |\n\n### Findings\n\n\n### Blocked\nReason: <...> | Unblocks: <who or what> | Prior status: <status>\n\n### Definition of Done\n- [ ] Every criterion proven with evidence\n- [ ] Automated tests pass on the final snapshot\n- [ ] Review, security and QA approved on the same snapshot\n- [ ] Privacy approved when personal data is involved\n- [ ] Documentation and changelog updated\n\n### Human acceptance\npending\n\n</details>\n",
+   "log": []
+  }
+ ]
+}

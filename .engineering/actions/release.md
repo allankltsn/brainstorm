@@ -1,0 +1,5 @@
+# Action: release
+Intent/scope: Prepare a release: scope, version, changelog and user notes, cross-repository deploy order, go-live checklist (templates/release-checklist.md), rollback per component and runbook. Without arguments assess release readiness of the work completed since the last tag.
+Responsible specialist: release; principal routes, questions and consolidates. Consult deployment for strategy, cicd for the pipeline and sre for health signals.
+Input: completed stories with evidence, gate reports and their snapshot, Git history since the last release, deployment decisions, board state, project profiles, permitted paths and existing authorizations.
+Output: release package with every checklist item evidenced or left unchecked with the reason, gates confirmed on the released SHA, rollback stated per component, open risks and a go/no-go recommendation. Tagging, publishing, merging, migrating and deploying need explicit human authorization. Common policies and workflow apply to standalone invocations too.

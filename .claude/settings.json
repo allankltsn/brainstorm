@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "guilda-mods": {
+      "source": {
+        "source": "directory",
+        "path": "C:\\dev\\brainstorm-aura-eco\\.claude\\mods"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "guardrails@guilda-mods": true
+  }
+}

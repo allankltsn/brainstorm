@@ -1,0 +1,14 @@
+{
+  "name": "guilda-mods",
+  "owner": {
+    "name": "guilda"
+  },
+  "plugins": [
+    {
+      "name": "guardrails",
+      "source": "./guardrails",
+      "description": "bloqueia comandos destrutivos e leitura de segredos, pede confirmação para produção, aplica teto de custo por sessão e alerta sobre prompt injection",
+      "version": "0.1.0"
+    }
+  ]
+}

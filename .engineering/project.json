@@ -1,0 +1,18 @@
+{
+  "profiles": [
+    "base",
+    "product-team",
+    "github-projects",
+    "polyrepo",
+    "vps-k3s",
+    "external-first",
+    "product-discovery",
+    "kanban-board",
+    "nestjs-prisma",
+    "edge-cloudflare-vercel",
+    "guardrails"
+  ],
+  "providers": [
+    "claude"
+  ]
+}
