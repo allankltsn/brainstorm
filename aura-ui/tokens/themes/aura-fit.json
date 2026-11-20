@@ -1,0 +1,47 @@
+{
+  "name": "aura-fit",
+  "label": "Aura Fit",
+  "description": "Tema do Aura Fit — vermelho da marca só em ações principais e destaques.",
+  "font": { "sans": "'Geist Variable', ui-sans-serif, system-ui, sans-serif" },
+  "brand": {
+    "light": {
+      "primary": "#b1111b",
+      "primary-foreground": "#ffffff",
+      "ring": "#b1111b",
+      "brand-soft": "#fdf0f0",
+      "brand-text": "#a40f19",
+      "chart-1": "#b1111b",
+      "chart-2": "#e58a90",
+      "sidebar-primary": "#b1111b",
+      "sidebar-primary-foreground": "#ffffff",
+      "sidebar-ring": "#b1111b"
+    },
+    "dark": {
+      "primary": "#d0202b",
+      "primary-foreground": "#ffffff",
+      "ring": "#ff6f78",
+      "brand-soft": "#3a171a",
+      "brand-text": "#ff8e95",
+      "chart-1": "#e5484f",
+      "chart-2": "#8f2a30",
+      "sidebar-primary": "#d0202b",
+      "sidebar-primary-foreground": "#ffffff",
+      "sidebar-ring": "#ff6f78"
+    }
+  },
+  "aui": {
+    "button": {
+      "ui-btn-on-ink": "#ffffff",
+      "ui-btn-dark-top": "#c21a25",
+      "ui-btn-dark-bottom": "#a40f19",
+      "ui-btn-dark-hover-top": "#cf2731",
+      "ui-btn-dark-hover-bottom": "#b1111b",
+      "ui-btn-edge-top": "#dc5a62",
+      "ui-btn-edge-mid": "#b1111b",
+      "ui-btn-edge-bottom": "#7b0c13",
+      "ui-btn-ring": "#8f0d16",
+      "ui-btn-dark-shadow": "rgba(177, 17, 27, 0.22)",
+      "ui-btn-shine-on-ink": "rgba(255, 255, 255, 0.95)"
+    }
+  }
+}
