@@ -4,7 +4,7 @@
  * menos os agendamentos existentes. Trabalha em minutos desde a meia-noite,
  * em horário local, sem fuso (os ISO são "YYYY-MM-DDTHH:MM:SS").
  */
-import { db, type Agendamento, type Profissional, type Servico } from './data'
+import { db, type Agendamento, type Empresa, type Profissional, type Servico } from './data'
 
 const hhmmToMin = (hhmm: string): number => {
   const [h, m] = hhmm.split(':').map(Number)
@@ -27,6 +27,31 @@ const minOf = (iso: string): number => hhmmToMin(iso.slice(11, 16))
 const weekdayOf = (dia: string): number => {
   const [y, m, d] = dia.slice(0, 10).split('-').map(Number)
   return new Date(y, m - 1, d).getDay()
+}
+
+/**
+ * Janela da grade da agenda para um dia da semana: do menor `inicio` ao maior
+ * `fim` entre as disponibilidades dos profissionais que trabalham nesse weekday.
+ * Se ninguém trabalha, cai para o horário da empresa. A janela é sempre clampada
+ * aos limites da empresa (nunca abre antes de `abertura` nem fecha após `fechamento`).
+ */
+export function janelaDoDia(
+  weekday: number,
+  profissionais: Profissional[],
+  empresa: Empresa,
+): { inicioMin: number; fimMin: number } {
+  const aberturaMin = hhmmToMin(empresa.abertura)
+  const fechamentoMin = hhmmToMin(empresa.fechamento)
+  const faixas = profissionais.flatMap((p) => p.disponibilidade.filter((d) => d.dia === weekday))
+  if (faixas.length === 0) {
+    return { inicioMin: aberturaMin, fimMin: fechamentoMin }
+  }
+  const inicio = Math.min(...faixas.map((f) => hhmmToMin(f.inicio)))
+  const fim = Math.max(...faixas.map((f) => hhmmToMin(f.fim)))
+  return {
+    inicioMin: Math.max(inicio, aberturaMin),
+    fimMin: Math.min(fim, fechamentoMin),
+  }
 }
 
 /** Fim de um agendamento = início + duração, como ISO local no mesmo dia. */
