@@ -59,8 +59,8 @@ describe('agendaDoProfissional', () => {
 describe('ocupacaoPorProfissional', () => {
   const todoDia = (ini: string, fim: string): Profissional['disponibilidade'] =>
     [0, 1, 2, 3, 4, 5, 6].map((dia) => ({ dia, inicio: ini, fim }))
-  const trabalha: Profissional = { id: 'p-x', nome: 'X', servicos: [], disponibilidade: todoDia('09:00', '12:00'), comissaoPct: 50 }
-  const folga: Profissional = { id: 'p-y', nome: 'Y', servicos: [], disponibilidade: [], comissaoPct: 50 }
+  const trabalha: Profissional = { id: 'p-x', userId: 'u-x', nome: 'X', servicos: [], disponibilidade: todoDia('09:00', '12:00'), comissaoPct: 50 }
+  const folga: Profissional = { id: 'p-y', userId: 'u-y', nome: 'Y', servicos: [], disponibilidade: [], comissaoPct: 50 }
 
   it('calcula pct = ocupado/janela', () => {
     const ags = [ag({ servicoId: 's-corte', inicio: `${D}T09:00:00`, profissionalId: 'p-x' })] // 30 min

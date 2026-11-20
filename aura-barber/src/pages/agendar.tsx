@@ -46,7 +46,7 @@ export function Agendar() {
   const prof = profId ? db.profissionalById(profId) : undefined
 
   const slots = useMemo(
-    () => (prof && servico ? availableSlots(prof, servico, dia, db.agendamentos, 30, agoraISO()) : []),
+    () => (prof && servico ? availableSlots(prof, servico, dia, db.agendamentos, db.empresa.gradeMin, agoraISO()) : []),
     [prof, servico, dia],
   )
 

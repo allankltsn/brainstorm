@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { Moon, Scissors, Sun } from 'lucide-react'
+import { Moon, Scissors, Settings, Sun } from 'lucide-react'
 import { useRole } from '@/lib/role'
 import { useTheme } from '@/lib/theme'
 import { NAV, ROLE_LABEL } from '@/lib/nav'
@@ -126,6 +126,13 @@ export function AppShell() {
           <div className="w-28 md:hidden">
             <RoleSwitch />
           </div>
+          <NavLink
+            to="/config"
+            aria-label="Configurações"
+            className="grid size-9 place-items-center rounded-lg border bg-background text-foreground"
+          >
+            <Settings size={16} />
+          </NavLink>
           <ThemeToggle />
         </div>
       </header>

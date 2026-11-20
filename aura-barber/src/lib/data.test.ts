@@ -20,7 +20,7 @@ test('replaceServicos escreve no db e reflete em servicoById', () => {
 })
 
 test('replaceProfissionais escreve no db e reflete em profissionalById', () => {
-  const novo = { id: 'p-teste', nome: 'Teste', servicos: [], disponibilidade: [], comissaoPct: 0 }
+  const novo = { id: 'p-teste', userId: 'u-dono', nome: 'Teste', servicos: [], disponibilidade: [], comissaoPct: 0 }
   db.replaceProfissionais([...db.profissionais, novo])
   expect(db.profissionalById('p-teste')).toBeTruthy()
 })
@@ -57,4 +57,29 @@ test('cancelarAgendamento com id inexistente não lança nem altera a lista', ()
   const antes = db.agendamentos.length
   expect(() => db.cancelarAgendamento('nao-existe')).not.toThrow()
   expect(db.agendamentos.length).toBe(antes)
+})
+
+test('identidade: seed tem users para dono + 3 barbeiros + 4 clientes', () => {
+  expect(db.users.length).toBe(8)
+  expect(db.userById('u-dono')?.name).toBeTruthy()
+  expect(db.userById('inexistente')).toBeUndefined()
+})
+
+test('identidade: cada profissional e cliente tem userId de um user existente', () => {
+  for (const p of db.profissionais) expect(db.userById(p.userId)).toBeTruthy()
+  for (const c of db.clientes) expect(db.userById(c.userId)).toBeTruthy()
+})
+
+test('identidade: empresa tem shape de tenant e atualizarEmpresa grava', () => {
+  expect(db.userById(db.empresa.ownerUserId)).toBeTruthy()
+  expect(db.empresa.slug).toBeTruthy()
+  expect([15, 30, 60]).toContain(db.empresa.gradeMin)
+  db.atualizarEmpresa({ nome: 'Barbearia Z' })
+  expect(db.empresa.nome).toBe('Barbearia Z')
+})
+
+test('identidade: memberships — um por user, com o papel correspondente', () => {
+  expect(db.memberships.length).toBe(8)
+  expect(db.memberships.find((m) => m.userId === 'u-dono')?.role).toBe('dono')
+  expect(db.memberships.filter((m) => m.role === 'cliente').length).toBe(4)
 })

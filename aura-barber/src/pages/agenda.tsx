@@ -6,7 +6,6 @@ import { Button } from '@/components/affect/button'
 import { db } from '@/lib/data'
 import { fimDoAgendamento, janelaDoDia } from '@/lib/schedule'
 
-const GRADE = 30
 const ALTURA = 48 // px por faixa de GRADE minutos
 const DIAS = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
 const toMin = (hhmm: string) => {
@@ -28,6 +27,7 @@ function addDias(diaISO: string, n: number) {
 export function Agenda() {
   const nav = useNavigate()
   const [dia, setDia] = useState<string>(hojeISO)
+  const GRADE = db.empresa.gradeMin // granularidade configurável (Empresa/Config)
 
   const [y, m, d] = dia.split('-').map(Number)
   const weekday = new Date(y, m - 1, d).getDay()
