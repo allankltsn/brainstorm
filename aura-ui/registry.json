@@ -492,6 +492,23 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": ["utils", "button", "tooltip", "input"],
       "files": [{ "path": "src/components/ui/message-actions.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "comment-thread",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "avatar", "button", "textarea"],
+      "files": [{ "path": "src/components/ui/comment-thread.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "glow-cloud",
+      "type": "registry:ui",
+      "files": [{ "path": "src/components/ui/glow-cloud.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "notification-stack",
+      "type": "registry:ui",
+      "files": [{ "path": "src/components/ui/notification-stack.tsx", "type": "registry:ui" }]
     }
   ]
 }

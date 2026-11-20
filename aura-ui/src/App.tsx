@@ -127,6 +127,17 @@ import { AgentTrail } from '@/components/ui/agent-trail'
 import { ChatComposer } from '@/components/ui/chat-composer'
 import { AiAnswer } from '@/components/ui/ai-answer'
 import { AiPrompt } from '@/components/ui/ai-prompt'
+import { GlowCloud } from '@/components/ui/glow-cloud'
+import { ThinkingLoader } from '@/components/ui/thinking-loader'
+import { SmartRecommendation, type Recommendation } from '@/components/ui/smart-recommendation'
+import { ChangeSummary } from '@/components/ui/change-summary'
+import { DecisionInbox } from '@/components/ui/decision-inbox'
+import { ProgressTracker } from '@/components/ui/progress-tracker'
+
+const recomendacoes: Recommendation[] = [
+  { id: 'inc', label: 'Sincronização incremental', reason: 'Transfere apenas o que mudou.', signal: 3 },
+  { id: 'full', label: 'Sincronização completa', reason: 'Reenvia tudo a cada execução.', signal: 1 },
+]
 
 const modelos = [
   { id: 'opus', label: 'Opus 4.8', provider: 'Anthropic', badge: 'Novo' },
@@ -793,6 +804,41 @@ function ComponentsView() {
               <p>Seu plano prioriza progressão de carga e dois dias de descanso.</p>
               <p>Ajustei o volume de segunda com base no histórico.</p>
             </AiAnswer>
+          </div>
+        </Demo>
+
+        <Demo title="Assistente Aura (affectUI reescrito)" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-border bg-card p-6">
+              <GlowCloud background={false} mood="thinking" className="size-28" />
+              <ThinkingLoader />
+            </div>
+            <SmartRecommendation title="Sugestão de sincronização" options={recomendacoes} />
+            <ChangeSummary
+              title="O que mudou"
+              period="Esta semana"
+              changes={[
+                { label: 'Treinos concluídos', change: 'Subiu 6,1% para 18,2K', tone: 'good' },
+                { label: 'Faltas', change: 'Caiu 2,3% para 41', tone: 'bad', direction: 'down' },
+                { label: 'Novos alunos', change: 'Sem mudança', tone: 'neutral' },
+              ]}
+            />
+            <ProgressTracker
+              title="Primeiros passos"
+              steps={[
+                { id: '1', label: 'Criar conta', done: true },
+                { id: '2', label: 'Convidar aluno' },
+                { id: '3', label: 'Montar treino' },
+              ]}
+            />
+            <div className="lg:col-span-2">
+              <DecisionInbox
+                decisions={[
+                  { id: '1', title: 'Aprovar pagamento ao fornecedor', detail: 'R$ 1.284 à academia parceira', primary: 'Aprovar', secondary: 'Recusar' },
+                  { id: '2', title: 'Liberar acesso do novo aluno', primary: 'Liberar', secondary: 'Negar', collapsed: true },
+                ]}
+              />
+            </div>
           </div>
         </Demo>
       </div>

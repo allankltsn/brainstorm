@@ -46,8 +46,7 @@ function DecisionInbox({ decisions, onDecide, className }: DecisionInboxProps) {
   const open = decisions.filter((d) => !state[d.id]?.answered).length
   // 1284 → "1,284"
   const count = new Intl.NumberFormat("en").format(open)
-  const cleared =
-    decisions.length === 0 || decisions.every((d) => state[d.id]?.gone)
+  const cleared = decisions.every((d) => state[d.id]?.gone)
 
   const decide = (d: Decision, answer: "primary" | "secondary") => {
     patch(d.id, { answered: answer === "primary" ? d.primary : d.secondary })
