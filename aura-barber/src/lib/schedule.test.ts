@@ -21,6 +21,17 @@ test('availableSlots exclui horário que sobrepõe agendamento existente', () =>
   expect(slots).toContain(iso('09:30'))
 })
 
+test('availableSlots não oferece horários já passados quando o dia é hoje', () => {
+  const slots = availableSlots(prof(), corte, DIA, [], 30, iso('12:00'))
+  expect(slots).not.toContain(iso('11:30'))
+  expect(slots[0]).toBe(iso('12:00'))
+})
+
+test('availableSlots não filtra quando o agora é de outro dia (dia futuro)', () => {
+  const slots = availableSlots(prof(), corte, DIA, [], 30, '2026-11-23T12:00:00')
+  expect(slots).toContain(iso('09:00'))
+})
+
 test('availableSlots exclui início cujo serviço ultrapassa o fim do expediente', () => {
   const slots = availableSlots(prof(), longo, DIA, [])
   expect(slots).toContain(iso('17:00')) // 17:00 + 60 = 18:00 (ok)

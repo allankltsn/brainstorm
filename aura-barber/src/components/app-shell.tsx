@@ -4,6 +4,7 @@ import { useRole } from '@/lib/role'
 import { useTheme } from '@/lib/theme'
 import { NAV, ROLE_LABEL } from '@/lib/nav'
 import { db, type Role } from '@/lib/data'
+import { resolverId, PROF_PADRAO } from '@/lib/identidade'
 import { Select } from '@/components/affect/select'
 
 const ROLES: Role[] = ['dono', 'barbeiro', 'cliente']
@@ -36,11 +37,16 @@ function RoleSwitch() {
 function IdentidadeSwitch() {
   const { role, profId, setProfId, clienteId, setClienteId } = useRole()
   if (role === 'barbeiro') {
+    const idEu = resolverId(
+      profId,
+      db.profissionais.map((p) => p.id),
+      PROF_PADRAO,
+    )
     return (
       <Select
         size="sm"
         aria-label="Sou (profissional)"
-        value={profId}
+        value={idEu}
         options={db.profissionais.map((p) => ({ value: p.id, label: `Sou: ${p.nome}` }))}
         onChange={setProfId}
       />
@@ -112,9 +118,11 @@ export function AppShell() {
           <BrandMark />
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <div className="w-32 md:hidden">
-            <IdentidadeSwitch />
-          </div>
+          {role !== 'dono' && (
+            <div className="w-32 md:hidden">
+              <IdentidadeSwitch />
+            </div>
+          )}
           <div className="w-28 md:hidden">
             <RoleSwitch />
           </div>

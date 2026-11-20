@@ -86,15 +86,19 @@ export function availableSlots(
   diaISO: string,
   agendamentos: Agendamento[],
   gradeMin = 30,
+  agoraISO?: string,
 ): string[] {
   const dia = diaISO.slice(0, 10)
   const weekday = weekdayOf(dia)
+  // Quando o dia é hoje, não oferecer horários já passados (agoraISO vem no mesmo formato ISO local).
+  const pisoHoje = agoraISO && dateOf(agoraISO) === dia ? agoraISO : null
   const janelas = prof.disponibilidade.filter((d) => d.dia === weekday)
   const slots: string[] = []
   for (const j of janelas) {
     const fim = hhmmToMin(j.fim)
     for (let t = hhmmToMin(j.inicio); t + servico.duracaoMin <= fim; t += gradeMin) {
       const inicioISO = `${dia}T${minToHHMM(t)}:00`
+      if (pisoHoje && inicioISO < pisoHoje) continue
       if (!hasConflict(prof, inicioISO, servico.duracaoMin, agendamentos)) slots.push(inicioISO)
     }
   }

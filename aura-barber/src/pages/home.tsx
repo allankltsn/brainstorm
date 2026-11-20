@@ -3,6 +3,7 @@ import { PageHeader, Panel, brl } from '@/components/layout'
 import { Button } from '@/components/affect/button'
 import { useRole } from '@/lib/role'
 import { db } from '@/lib/data'
+import { resolverId, PROF_PADRAO } from '@/lib/identidade'
 import {
   faturamentoDoDia,
   comissaoDoDia,
@@ -23,6 +24,7 @@ function agoraISO() {
 }
 const hm = (iso: string) => iso.slice(11, 16)
 const diaBR = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}`
+const STATUS_LABEL: Record<string, string> = { marcado: 'marcado', concluido: 'concluído', cancelado: 'cancelado' }
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
@@ -77,15 +79,20 @@ export function Home() {
   }
 
   if (role === 'barbeiro') {
-    const eu = db.profissionalById(profId)
-    const minhaAgenda = agendaDoProfissional(profId, ags, hoje)
+    const idEu = resolverId(
+      profId,
+      db.profissionais.map((p) => p.id),
+      PROF_PADRAO,
+    )
+    const eu = db.profissionalById(idEu)
+    const minhaAgenda = agendaDoProfissional(idEu, ags, hoje)
     const meusServicos = (eu?.servicos ?? []).map((id) => db.servicoById(id)?.nome).filter(Boolean)
     return (
       <div className="mx-auto max-w-2xl">
         <PageHeader title={`Olá, ${eu?.nome ?? ''}`} subtitle="Sua agenda de hoje." />
         <div className="mb-4 grid gap-4 sm:grid-cols-2">
           <Stat label="Atendimentos hoje" value={String(minhaAgenda.length)} />
-          <Stat label="Comissão estimada hoje" value={brl(comissaoDoDia(profId, ags, hoje))} />
+          <Stat label="Comissão estimada hoje" value={brl(comissaoDoDia(idEu, ags, hoje))} />
         </div>
         <Panel className="divide-y">
           {minhaAgenda.length === 0 && (
@@ -113,11 +120,22 @@ export function Home() {
   const agora = agoraISO()
   const proximos = proximosDoCliente(clienteId, ags, agora)
   const historico = historicoDoCliente(clienteId, ags, agora)
-  const Item = ({ servicoId, inicio, profissionalId }: { servicoId: string; inicio: string; profissionalId: string }) => (
-    <div className="flex items-center justify-between px-4 py-3 text-sm">
+  const Item = ({
+    servicoId,
+    inicio,
+    profissionalId,
+    status,
+  }: {
+    servicoId: string
+    inicio: string
+    profissionalId: string
+    status?: string
+  }) => (
+    <div className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
       <span className="font-medium">{db.servicoById(servicoId)?.nome}</span>
-      <span className="text-muted-foreground">
+      <span className="text-right text-muted-foreground">
         {diaBR(inicio)} às {hm(inicio)} · {db.profissionalById(profissionalId)?.nome}
+        {status && <span className="ml-1 capitalize">· {STATUS_LABEL[status] ?? status}</span>}
       </span>
     </div>
   )
@@ -141,7 +159,7 @@ export function Home() {
           <p className="mb-2 mt-6 text-sm font-medium text-foreground">Histórico</p>
           <Panel className="divide-y opacity-80">
             {historico.map((a) => (
-              <Item key={a.id} servicoId={a.servicoId} inicio={a.inicio} profissionalId={a.profissionalId} />
+              <Item key={a.id} servicoId={a.servicoId} inicio={a.inicio} profissionalId={a.profissionalId} status={a.status} />
             ))}
           </Panel>
         </>

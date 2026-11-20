@@ -14,6 +14,11 @@ function hojeISO() {
   const d = new Date()
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
+function agoraISO() {
+  const d = new Date()
+  const p = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}:00`
+}
 function addDias(diaISO: string, n: number) {
   const [y, m, d] = diaISO.split('-').map(Number)
   const dt = new Date(y, m - 1, d + n)
@@ -41,7 +46,7 @@ export function Agendar() {
   const prof = profId ? db.profissionalById(profId) : undefined
 
   const slots = useMemo(
-    () => (prof && servico ? availableSlots(prof, servico, dia, db.agendamentos) : []),
+    () => (prof && servico ? availableSlots(prof, servico, dia, db.agendamentos, 30, agoraISO()) : []),
     [prof, servico, dia],
   )
 

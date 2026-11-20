@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { idValido, lerProfId, lerClienteId, clienteSelecionado, PROF_PADRAO, CLIENTE_PADRAO } from './identidade'
+import { idValido, resolverId, lerProfId, lerClienteId, clienteSelecionado, PROF_PADRAO, CLIENTE_PADRAO } from './identidade'
 
 function fakeStore(init: Record<string, string> = {}) {
   const m = new Map(Object.entries(init))
@@ -22,6 +22,13 @@ describe('lerProfId', () => {
   it('lê um profissional válido do storage', () => expect(lerProfId(fakeStore({ 'aura-barber-prof': 'p-joao' }))).toBe('p-joao'))
   it('rejeita um profissional inexistente e cai no padrão', () =>
     expect(lerProfId(fakeStore({ 'aura-barber-prof': 'zzz' }))).toBe(PROF_PADRAO))
+})
+
+describe('resolverId (resiliência a id removido na sessão)', () => {
+  it('mantém o id quando ainda existe', () => expect(resolverId('b', ['a', 'b'], 'a')).toBe('b'))
+  it('cai no padrão quando o id sumiu', () => expect(resolverId('x', ['a', 'b'], 'a')).toBe('a'))
+  it('usa o primeiro disponível quando id e padrão sumiram', () => expect(resolverId('x', ['b', 'c'], 'a')).toBe('b'))
+  it('devolve o próprio id quando não há nenhum disponível', () => expect(resolverId('x', [], 'a')).toBe('x'))
 })
 
 describe('clienteSelecionado', () => {
