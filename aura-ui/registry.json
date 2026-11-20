@@ -416,6 +416,27 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": ["utils", "spinner"],
       "files": [{ "path": "src/components/ui/agent-trail.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "chat-composer",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "textarea", "button"],
+      "files": [{ "path": "src/components/ui/chat-composer.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "ai-answer",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "separator"],
+      "files": [{ "path": "src/components/ui/ai-answer.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "ai-prompt",
+      "type": "registry:ui",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "input", "button"],
+      "files": [{ "path": "src/components/ui/ai-prompt.tsx", "type": "registry:ui" }]
     }
   ]
 }

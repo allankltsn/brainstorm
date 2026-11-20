@@ -124,6 +124,9 @@ import { ModelPicker } from '@/components/ui/model-picker'
 import { ContextWindow } from '@/components/ui/context-window'
 import { PermissionRequest } from '@/components/ui/permission-request'
 import { AgentTrail } from '@/components/ui/agent-trail'
+import { ChatComposer } from '@/components/ui/chat-composer'
+import { AiAnswer } from '@/components/ui/ai-answer'
+import { AiPrompt } from '@/components/ui/ai-prompt'
 
 const modelos = [
   { id: 'opus', label: 'Opus 4.8', provider: 'Anthropic', badge: 'Novo' },
@@ -771,6 +774,25 @@ function ComponentsView() {
               <ContextWindow used={120000} total={200000} />
               <AgentTrail steps={trilha} />
             </div>
+          </div>
+        </Demo>
+
+        <Demo title="Conversa com IA" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="grid content-start gap-3">
+              <AiPrompt suggestions={['Resumir o plano', 'Gerar treino da semana']} />
+              <ChatComposer />
+            </div>
+            <AiAnswer
+              title="Aura"
+              citations={[
+                { id: 1, label: 'PLANO.md', href: '#' },
+                { id: 2, label: 'treinos.csv' },
+              ]}
+            >
+              <p>Seu plano prioriza progressão de carga e dois dias de descanso.</p>
+              <p>Ajustei o volume de segunda com base no histórico.</p>
+            </AiAnswer>
           </div>
         </Demo>
       </div>
