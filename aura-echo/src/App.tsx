@@ -3,6 +3,7 @@ import { AppShell } from '@/components/app-shell'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { CriarConta, Entrar } from '@/pages/entrar'
+import { Inicio } from '@/pages/inicio'
 import { Landing } from '@/pages/landing'
 import { NaoEncontrada } from '@/pages/nao-encontrada'
 import { EchoProvider } from '@/lib/store'
@@ -25,7 +26,7 @@ export default function App() {
               <Route path="/criar-conta" element={<CriarConta />} />
               <Route path="/app" element={<AppShell />}>
                 <Route index element={<Navigate to="/app/inicio" replace />} />
-                <Route path="inicio" element={<Placeholder nome="Início" />} />
+                <Route path="inicio" element={<Inicio />} />
                 <Route path="loja" element={<Placeholder nome="Loja" />} />
                 <Route path="loja/:slug" element={<Placeholder nome="Detalhe do serviço" />} />
                 <Route path="assinatura" element={<Placeholder nome="Minha assinatura" />} />
