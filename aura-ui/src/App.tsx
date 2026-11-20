@@ -623,6 +623,52 @@ const wizardSteps: StepperFormStep[] = [
   { id: '3', label: 'Revisão', content: <p className="text-sm text-muted-foreground">Confirme e conclua.</p> },
 ]
 
+import { CitedAnswer, type CitedAnswerCitation } from '@/components/ui/cited-answer'
+import { ReasoningSummary, type ReasoningStep } from '@/components/ui/reasoning-summary'
+import { WritingAssistant, type WritingSuggestion } from '@/components/ui/writing-assistant'
+import { PromptLibrary, type Prompt } from '@/components/ui/prompt-library'
+import { EmailDraft } from '@/components/ui/email-draft'
+import { FilterMenu, type FilterGroup } from '@/components/ui/filter-menu'
+import { ProfileMenu, type ProfileMenuItem } from '@/components/ui/profile-menu'
+import { IntegrationPicker, type Integration } from '@/components/ui/integration-picker'
+import { IntegrationSettings, type IntegrationField } from '@/components/ui/integration-settings'
+
+const citations: CitedAnswerCitation[] = [
+  { id: '1', n: 1, title: 'Espalhamento de Rayleigh — Wikipédia', url: 'https://pt.wikipedia.org' },
+  { id: '2', n: 2, title: 'Óptica atmosférica, cap. 3' },
+]
+const reasoningSteps: ReasoningStep[] = [
+  { id: '1', text: 'Identifiquei os componentes que faltavam no catálogo.' },
+  { id: '2', text: 'Agrupei-os em 8 ondas por afinidade.' },
+  { id: '3', text: 'Gerei cada onda com agentes paralelos.' },
+]
+const writingSuggestions: WritingSuggestion[] = [
+  { id: '1', type: 'concisão', before: 'Nós fizemos a implementação de', after: 'Implementamos', note: 'Voz ativa, mais direto.' },
+  { id: '2', type: 'clareza', before: 'a coisa', after: 'o componente', note: 'Termo específico.' },
+]
+const promptItems: Prompt[] = [
+  { id: '1', title: 'Resumir reunião', category: 'Produtividade', text: 'Resuma a transcrição a seguir em 5 bullets acionáveis…' },
+  { id: '2', title: 'Revisar código', category: 'Dev', text: 'Revise o diff buscando bugs de correção e simplificações…' },
+  { id: '3', title: 'E-mail de follow-up', category: 'Vendas', text: 'Escreva um follow-up cordial após a demo…' },
+]
+const filterGroups: FilterGroup[] = [
+  { id: 'status', label: 'Status', options: [{ id: 'ativo', label: 'Ativo' }, { id: 'pausado', label: 'Pausado' }] },
+  { id: 'plano', label: 'Plano', options: [{ id: 'free', label: 'Grátis' }, { id: 'pro', label: 'Pro' }] },
+]
+const profileItems: ProfileMenuItem[] = [
+  { id: '1', label: 'Perfil', icon: <User /> },
+  { id: '2', label: 'Configurações', icon: <Settings /> },
+]
+const integrations: Integration[] = [
+  { id: 'github', name: 'GitHub', description: 'Sincroniza repositórios e PRs', connected: true },
+  { id: 'slack', name: 'Slack', description: 'Notificações no canal' },
+  { id: 'linear', name: 'Linear', description: 'Issues e sprints' },
+]
+const integrationFields: IntegrationField[] = [
+  { id: 'notif', label: 'Notificações', description: 'Avisar no canal a cada deploy', type: 'toggle', value: true },
+  { id: 'channel', label: 'Canal', type: 'text', value: '#deploys', placeholder: '#canal' },
+]
+
 const arvore: TreeNode[] = [
   {
     id: 'src', label: 'src', defaultOpen: true, children: [
@@ -1715,6 +1761,48 @@ function ComponentsView() {
             <SetupGuide steps={setupSteps} onAction={() => {}} />
             <StepperForm steps={wizardSteps} onFinish={() => {}} />
           </div>
+        </Demo>
+
+        <Demo title="Filtros · Menu de perfil">
+          <FilterMenu groups={filterGroups} defaultValue={['ativo']} />
+          <ProfileMenu
+            user={{ name: 'Allan Costa', email: 'allan@aura.app', plan: 'Pro' }}
+            items={profileItems}
+            onSignOut={() => {}}
+          />
+        </Demo>
+
+        <Demo title="Cited answer · Reasoning summary" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <CitedAnswer
+              answer="O céu é azul [1] por causa do espalhamento de Rayleigh [2], que dispersa mais a luz de menor comprimento de onda."
+              citations={citations}
+            />
+            <ReasoningSummary summary="Dividi o catálogo em ondas e gerei cada uma com agentes." steps={reasoningSteps} duration="pensou por 6s" defaultOpen />
+          </div>
+        </Demo>
+
+        <Demo title="Writing assistant · Prompt library" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <WritingAssistant suggestions={writingSuggestions} onApply={() => {}} onDismiss={() => {}} />
+            <PromptLibrary prompts={promptItems} onUse={() => {}} />
+          </div>
+        </Demo>
+
+        <Demo title="Email draft" full>
+          <EmailDraft
+            aiGenerated
+            to="aluno@exemplo.com"
+            subject="Seu treino desta semana"
+            body={'Olá!\n\nSegue o seu plano de treino para esta semana.\n\nAbraço,\nEquipe Aura'}
+            onSend={() => {}}
+            onRegenerate={() => {}}
+          />
+        </Demo>
+
+        <Demo title="Integration picker · Integration settings" full>
+          <IntegrationPicker integrations={integrations} onConnect={() => {}} onDisconnect={() => {}} />
+          <IntegrationSettings name="Slack" fields={integrationFields} onChange={() => {}} onSave={() => {}} />
         </Demo>
       </div>
     </>
