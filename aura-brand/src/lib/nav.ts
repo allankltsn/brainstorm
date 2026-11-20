@@ -1,4 +1,4 @@
-import { Home, Inbox, PenLine, SwatchBook, Users, type LucideIcon } from 'lucide-react'
+import { Headset, Home, PenLine, SwatchBook, Users, type LucideIcon } from 'lucide-react'
 
 export type NavItem = { to: string; label: string; icon: LucideIcon; badge?: number }
 
@@ -13,7 +13,7 @@ export const NAV: NavItem[] = [
   { to: '/marca', label: 'Marca', icon: SwatchBook },
   { to: '/conteudo', label: 'Conteúdo', icon: PenLine },
   { to: '/clientes', label: 'Clientes', icon: Users },
-  { to: '/conversas', label: 'Conversas', icon: Inbox },
+  { to: '/atendimento', label: 'Atendimento', icon: Headset },
 ]
 
 const TITLES: Record<string, string> = {

@@ -10,7 +10,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } f
 import { Progress } from '@/components/ui/progress'
 import { SECTIONS, useBrand } from '@/lib/brand'
 import { channelOf, formatOf, useContent, whenLabel } from '@/lib/content'
-import { MSG_CHANNELS, SOURCES, timeLabel, TODAY, useCrm, type Source } from '@/lib/crm'
+import { isLate, lastMessage, MSG_CHANNELS, replyChannel, SOURCES, timeLabel, TODAY, useCrm, type Source } from '@/lib/crm'
 import { AI_CREDITS, firstName, session, TODAY_LABEL } from '@/lib/data'
 import { useTab } from '@/lib/use-tab'
 import { Relatorios } from '@/pages/relatorios'
@@ -39,7 +39,8 @@ function Today() {
   const { kit, approved } = useBrand()
   const { queue, scheduled, published, failed, remove, restore } = useContent()
   const { threads, contacts, contact } = useCrm()
-  const waiting = threads.filter((t) => t.unread)
+  // conversas que esperam resposta: não lidas ou atrasadas, sem as resolvidas; atrasadas primeiro
+  const waiting = threads.filter((t) => t.status !== 'resolvida' && (t.unread || isLate(t))).sort((a, b) => Number(isLate(b)) - Number(isLate(a)))
   const pendingCount = queue.length + waiting.length + failed.length
 
   // últimos 7 dias, terminando em "hoje"
@@ -55,7 +56,7 @@ function Today() {
     .filter((s) => s.leads > 0)
     .sort((a, b) => b.leads - a.leads)
   const topSource = Math.max(1, ...sources.map((s) => s.leads))
-  const oldest = waiting.map((t) => t.messages[t.messages.length - 1]?.at ?? '').sort()[0]
+  const oldest = waiting.map((t) => lastMessage(t)?.at ?? '').sort()[0]
 
   return (
     <>
@@ -94,11 +95,12 @@ function Today() {
                     <div className="min-w-0 flex-1 basis-64">
                       <p className="flex flex-wrap items-center gap-2 text-sm font-medium">
                         Mensagem de {who?.name ?? 'um contato'}
-                        <Pill tone="info">{MSG_CHANNELS[t.channel]}</Pill>
+                        <Pill tone="info">{MSG_CHANNELS[replyChannel(t)]}</Pill>
+                        {isLate(t) && <Pill tone="danger">Atrasada</Pill>}
                       </p>
-                      <p className="mt-0.5 truncate text-xs text-muted-foreground">{t.suggestion ? 'A Aura deixou uma resposta sugerida para você revisar.' : t.messages[t.messages.length - 1]?.text}</p>
+                      <p className="mt-0.5 truncate text-xs text-muted-foreground">{t.suggestion ? 'A Aura deixou uma resposta sugerida para você revisar.' : lastMessage(t)?.text}</p>
                     </div>
-                    <Button size="sm" variant="secondary" onClick={() => navigate(`/conversas?id=${t.id}`)}>
+                    <Button size="sm" variant="secondary" onClick={() => navigate(`/atendimento?id=${t.id}`)}>
                       Responder
                     </Button>
                   </li>

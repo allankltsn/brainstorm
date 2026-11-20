@@ -25,26 +25,29 @@ function Stat({ label, value, foot }: { label: string; value: string; foot?: str
 
 /* Painel da marca: resultados do período, calculados a partir dos contatos, posts e campanhas do app. */
 export function Relatorios() {
-  const { contacts, campaigns } = useCrm()
+  const { contacts, deals, campaigns } = useCrm()
   const { published, scheduled, failed } = useContent()
   const [period, setPeriod] = useState<Period>('30')
   const from = new Date(`${TODAY}T00:00`)
   from.setDate(from.getDate() - Number(period) + 1)
   const since = `${from.getFullYear()}-${String(from.getMonth() + 1).padStart(2, '0')}-${String(from.getDate()).padStart(2, '0')}`
+  // contatos que chegaram no período e os negócios deles
   const inPeriod = contacts.filter((x) => x.createdAt >= since)
-  const won = inPeriod.filter((x) => x.stage === 'ganho')
-  const lost = inPeriod.filter((x) => x.stage === 'perdido')
-  const open = inPeriod.filter((x) => x.stage === 'conversa' || x.stage === 'proposta')
-  const sum = (list: typeof contacts) => list.reduce((n, x) => n + x.value, 0)
+  const ids = new Set(inPeriod.map((x) => x.id))
+  const periodDeals = deals.filter((d) => ids.has(d.contactId))
+  const won = periodDeals.filter((d) => d.stage === 'ganho')
+  const lost = periodDeals.filter((d) => d.stage === 'perdido')
+  const open = periodDeals.filter((d) => d.stage === 'conversa' || d.stage === 'proposta')
+  const sum = (list: typeof deals) => list.reduce((n, d) => n + d.value, 0)
   const bySource = (Object.keys(SOURCES) as Source[])
     .map((s) => {
-      const list = inPeriod.filter((x) => x.source === s)
-      const closed = list.filter((x) => x.stage === 'ganho')
-      return { source: SOURCES[s], contacts: list.length, closed: closed.length, value: sum(closed) }
+      const people = new Set(inPeriod.filter((x) => x.source === s).map((x) => x.id))
+      const closed = won.filter((d) => people.has(d.contactId))
+      return { source: SOURCES[s], contacts: people.size, closed: closed.length, value: sum(closed) }
     })
     .filter((r) => r.contacts > 0)
     .sort((a, b) => b.contacts - a.contacts)
-  const stageMax = Math.max(1, ...STAGES.map((s) => inPeriod.filter((x) => x.stage === s.id).length))
+  const stageMax = Math.max(1, ...STAGES.map((s) => periodDeals.filter((d) => d.stage === s.id).length))
   const sent = campaigns.filter((g) => g.status === 'enviada' && g.when.slice(0, 10) >= since)
   const pubs = published.filter((p) => (p.publishedAt ?? p.when).slice(0, 10) >= since)
   const creditMax = Math.max(...AI_CREDITS.byFeature.map((f) => f.used))
@@ -83,21 +86,21 @@ export function Relatorios() {
         <Stat label="Contatos novos" value={String(inPeriod.length)} foot={`Desde ${since.slice(8, 10)}/${since.slice(5, 7)}`} />
         <Stat label="Taxa de fechamento" value={pct(won.length, won.length + lost.length)} foot={`${won.length} ${won.length === 1 ? 'fechado' : 'fechados'}, ${lost.length} ${lost.length === 1 ? 'perdido' : 'perdidos'}`} />
         <Stat label="Valor fechado" value={brl(sum(won))} />
-        <Stat label="Em negociação" value={brl(sum(open))} foot={`${open.length} ${open.length === 1 ? 'contato' : 'contatos'} em conversa ou proposta`} />
+        <Stat label="Em negociação" value={brl(sum(open))} foot={`${open.length} ${open.length === 1 ? 'negócio' : 'negócios'} em conversa ou proposta`} />
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <Section title="Funil" description="Onde estão os contatos que chegaram no período." className="min-w-0">
+        <Section title="Funil" description="Onde estão os negócios dos contatos que chegaram no período." className="min-w-0">
           <ul className="grid gap-3.5">
             {STAGES.map((s) => {
-              const n = inPeriod.filter((x) => x.stage === s.id).length
+              const n = periodDeals.filter((d) => d.stage === s.id).length
               return (
                 <li key={s.id}>
                   <div className="mb-1.5 flex justify-between text-sm">
                     <span>{s.label}</span>
                     <span className="text-muted-foreground tabular-nums">{n}</span>
                   </div>
-                  <Progress value={(n / stageMax) * 100} className="h-1.5" aria-label={`${s.label}: ${n} contatos`} />
+                  <Progress value={(n / stageMax) * 100} className="h-1.5" aria-label={`${s.label}: ${n} negócios`} />
                 </li>
               )
             })}

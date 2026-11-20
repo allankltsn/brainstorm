@@ -6,10 +6,10 @@ import { BrandProvider } from '@/lib/brand'
 import { ContentProvider } from '@/lib/content'
 import { CrmProvider } from '@/lib/crm'
 import { ThemeProvider } from '@/lib/theme'
+import { Atendimento } from '@/pages/atendimento'
 import { Clientes } from '@/pages/clientes'
 import { Configuracoes } from '@/pages/configuracoes'
 import { Conteudo } from '@/pages/conteudo'
-import { Conversas } from '@/pages/conversas'
 import { DesignSystem } from '@/pages/design-system'
 import { Inicio } from '@/pages/inicio'
 import { Login, VerifyEmail } from '@/pages/login'
@@ -34,7 +34,8 @@ export default function App() {
                   <Route path="/marca" element={<Marca />} />
                   <Route path="/conteudo" element={<Conteudo />} />
                   <Route path="/clientes" element={<Clientes />} />
-                  <Route path="/conversas" element={<Conversas />} />
+                  <Route path="/atendimento" element={<Atendimento />} />
+                  <Route path="/conversas" element={<Navigate to="/atendimento" replace />} />
                   <Route path="/configuracoes" element={<Configuracoes />} />
                   <Route path="/design-system" element={<DesignSystem />} />
                   <Route path="*" element={<Placeholder />} />
