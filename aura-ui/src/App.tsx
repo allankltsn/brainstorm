@@ -342,6 +342,49 @@ const cursores: AgentCursor[] = [
   { id: '3', name: 'Revisor', x: 38, y: 72, color: '#10b981' },
 ]
 
+import { AgentFindings, type AgentFinding } from '@/components/ui/agent-findings'
+import { AgentLedger, type AgentLedgerEntry } from '@/components/ui/agent-ledger'
+import { ApprovalGates, type ApprovalGate } from '@/components/ui/approval-gates'
+import { AutonomyDial } from '@/components/ui/autonomy-dial'
+import { RunControls } from '@/components/ui/run-controls'
+import { RunningNow } from '@/components/ui/running-now'
+import { ScheduledRuns, type ScheduledRun } from '@/components/ui/scheduled-runs'
+import { DelegateBoard, type DelegateTask } from '@/components/ui/delegate-board'
+import { FanOutGrid, type FanOutCell } from '@/components/ui/fan-out-grid'
+
+const findings: AgentFinding[] = [
+  { id: '1', title: 'Chave de API exposta no cliente', severity: 'critical', location: 'src/api.ts:12' },
+  { id: '2', title: 'Dependência desatualizada', severity: 'medium', location: 'package.json', detail: 'vite 7 → 8' },
+  { id: '3', title: 'TODO sem dono', severity: 'low', location: 'App.tsx:40' },
+]
+const ledger: AgentLedgerEntry[] = [
+  { id: '1', at: '14:32:10', label: 'read_file(App.tsx)', kind: 'tool' },
+  { id: '2', at: '14:32:14', label: 'Opus 4.8 · 3,2k tokens', kind: 'model', amount: 'R$ 0,04' },
+  { id: '3', at: '14:33:01', label: 'edit_file(registry.json)', kind: 'tool' },
+]
+const gates: ApprovalGate[] = [
+  { id: '1', label: 'Revisão de código', status: 'approved', approver: 'Ana' },
+  { id: '2', label: 'Aprovar deploy', status: 'pending' },
+  { id: '3', label: 'Liberar em produção', status: 'blocked' },
+]
+const scheduled: ScheduledRun[] = [
+  { id: '1', label: 'Resumo diário', schedule: '0 9 * * *', nextRun: 'amanhã 09:00', enabled: true },
+  { id: '2', label: 'Limpeza semanal', schedule: '0 3 * * 1', nextRun: 'seg 03:00', enabled: false },
+]
+const delegateTasks: DelegateTask[] = [
+  { id: '1', title: 'Escrever testes', assignee: 'Ana', status: 'doing' },
+  { id: '2', title: 'Revisar PR #42', assignee: 'Bruno', status: 'todo' },
+  { id: '3', title: 'Atualizar docs', status: 'blocked' },
+]
+const fanCells: FanOutCell[] = [
+  { id: '1', label: 'Tentativa 1', status: 'done' },
+  { id: '2', label: 'Tentativa 2', status: 'done' },
+  { id: '3', label: 'Tentativa 3', status: 'running' },
+  { id: '4', label: 'Tentativa 4', status: 'running' },
+  { id: '5', label: 'Tentativa 5', status: 'error' },
+  { id: '6', label: 'Tentativa 6', status: 'pending' },
+]
+
 const arvore: TreeNode[] = [
   {
     id: 'src', label: 'src', defaultOpen: true, children: [
@@ -1279,6 +1322,34 @@ function ComponentsView() {
         <Demo title="Agent steering · Agent cursors" full>
           <AgentSteering suggestions={['Seja mais conciso', 'Priorize testes', 'Explique o porquê']} />
           <AgentCursors cursors={cursores} />
+        </Demo>
+
+        <Demo title="Run controls · Running now · Autonomy dial" full>
+          <RunControls status="running" />
+          <RunningNow agent="Codador" step="Editando registry.json" elapsed="00:42" />
+          <AutonomyDial defaultValue="supervised" />
+        </Demo>
+
+        <Demo title="Approval gates · Fan-out grid" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <ApprovalGates gates={gates} />
+            <FanOutGrid title="8 tentativas paralelas" cells={fanCells} />
+          </div>
+        </Demo>
+
+        <Demo title="Agent findings" full>
+          <AgentFindings findings={findings} />
+        </Demo>
+
+        <Demo title="Agent ledger" full>
+          <AgentLedger entries={ledger} />
+        </Demo>
+
+        <Demo title="Delegate board · Scheduled runs" full>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <DelegateBoard tasks={delegateTasks} />
+            <ScheduledRuns runs={scheduled} />
+          </div>
         </Demo>
       </div>
     </>
