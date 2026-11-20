@@ -2,7 +2,7 @@
 
 - `aura-landing/` — landing page (sem alterações)
 - `prototype-v2/` — protótipo navegável (sem alterações)
-- `aura-brand/` — protótipo do aura-brand (sem alterações; vem da branch `prototipo_crm`)
+- `aura-brand/` — protótipo do aura-brand (sem alterações; vem da branch `ccr-09e7eda4-al9ieq`)
 - `init/` — host React (micro-frontend): `/` abre a landing; "Começar grátis" e a seção Entrar da landing levam a `/login` (protótipo, único login); `/brand` abre o aura-brand
 - `scripts/sync.sh` + `scripts/sync.conf` — copiam pastas de outras branches para a `main` (`<pasta> <branch>` por linha; `PUSH=0` só faz o commit local; `init/` é protegido)
 
