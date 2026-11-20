@@ -7,23 +7,12 @@ import { SegmentedControl } from '@/components/affect/segmented-control'
 import { useRole } from '@/lib/role'
 import { useTheme } from '@/lib/theme'
 import { getMe, getMySettings, updateUser, updateMySettings, userIdDaIdentidade } from '@/lib/api'
-import type { UserSettings } from '@/lib/data'
+import type { User, UserSettings } from '@/lib/data'
 
 export function MeuUsuario() {
   const { role, profId, clienteId } = useRole()
-  const { setTheme } = useTheme()
   const userId = userIdDaIdentidade(role, profId, clienteId)
   const user = userId ? getMe(userId) : undefined
-  const s0: UserSettings | null = userId ? getMySettings(userId) : null
-
-  const [nome, setNome] = useState(user?.name ?? '')
-  const [phone, setPhone] = useState(user?.phone ?? '')
-  const [theme, setThemePref] = useState<UserSettings['theme']>(s0?.theme ?? 'system')
-  const [locale, setLocale] = useState(s0?.locale ?? 'pt-BR')
-  const [nEmail, setNEmail] = useState(s0?.notifyEmail ?? true)
-  const [nPush, setNPush] = useState(s0?.notifyPush ?? true)
-  const [nWhats, setNWhats] = useState(s0?.notifyWhatsapp ?? false)
-  const [salvo, setSalvo] = useState(false)
 
   if (!userId || !user) {
     return (
@@ -35,6 +24,21 @@ export function MeuUsuario() {
       </div>
     )
   }
+  // key={userId}: ao trocar de identidade, o form remonta já com os dados do novo usuário
+  // (evita gravar o perfil de um usuário com os valores de outro).
+  return <MeuUsuarioForm key={userId} userId={userId} user={user} settings={getMySettings(userId)} />
+}
+
+function MeuUsuarioForm({ userId, user, settings }: { userId: string; user: User; settings: UserSettings }) {
+  const { setTheme } = useTheme()
+  const [nome, setNome] = useState(user.name)
+  const [phone, setPhone] = useState(user.phone ?? '')
+  const [theme, setThemePref] = useState<UserSettings['theme']>(settings.theme)
+  const [locale, setLocale] = useState(settings.locale)
+  const [nEmail, setNEmail] = useState(settings.notifyEmail)
+  const [nPush, setNPush] = useState(settings.notifyPush)
+  const [nWhats, setNWhats] = useState(settings.notifyWhatsapp)
+  const [salvo, setSalvo] = useState(false)
 
   const mexeu = () => setSalvo(false)
   const salvar = () => {

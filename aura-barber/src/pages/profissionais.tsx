@@ -92,7 +92,7 @@ export function Profissionais() {
               Código: <span className="font-mono text-foreground">{codigo}</span> — envie ao profissional (protótipo: sem e-mail).
             </p>
           </div>
-          <Button variant="ghost" size="sm" icon={<X size={15} />} onClick={() => setCodigo(null)} />
+          <Button variant="ghost" size="sm" aria-label="Fechar" icon={<X size={15} />} onClick={() => setCodigo(null)} />
         </Panel>
       )}
 
@@ -110,8 +110,8 @@ export function Profissionais() {
                 <p className="mt-0.5 text-sm text-muted-foreground">Comissão {p.comissaoPct}%</p>
               </div>
               <div className="flex gap-1">
-                <Button variant="ghost" size="sm" icon={<Pencil size={15} />} onClick={() => abrirEdicao(p)} />
-                <Button variant="ghost" size="sm" icon={<Trash2 size={15} />} onClick={() => excluir(p.id)} />
+                <Button variant="ghost" size="sm" aria-label={`Editar ${p.nome}`} icon={<Pencil size={15} />} onClick={() => abrirEdicao(p)} />
+                <Button variant="ghost" size="sm" aria-label={`Excluir ${p.nome}`} icon={<Trash2 size={15} />} onClick={() => excluir(p.id)} />
               </div>
             </div>
             <p className="mt-3 text-sm">

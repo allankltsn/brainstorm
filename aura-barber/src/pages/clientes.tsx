@@ -2,9 +2,25 @@ import { useState } from 'react'
 import { UserPlus, X } from 'lucide-react'
 import { PageHeader, Panel } from '@/components/layout'
 import { Button } from '@/components/affect/button'
+import { useRole } from '@/lib/role'
 import { listMemberships, createInvite, setMembershipStatus } from '@/lib/api'
 
 export function Clientes() {
+  const { role } = useRole()
+  if (role !== 'dono') {
+    return (
+      <div className="mx-auto max-w-2xl">
+        <PageHeader title="Clientes" subtitle="Quem está vinculado à barbearia." />
+        <Panel className="p-5">
+          <p className="text-sm text-muted-foreground">Apenas o dono gerencia os clientes.</p>
+        </Panel>
+      </div>
+    )
+  }
+  return <ClientesLista />
+}
+
+function ClientesLista() {
   const [, setTick] = useState(0)
   const [codigo, setCodigo] = useState<string | null>(null)
   const lista = listMemberships('cliente')
@@ -36,7 +52,7 @@ export function Clientes() {
               Código: <span className="font-mono text-foreground">{codigo}</span> — envie ao cliente (protótipo: sem e-mail).
             </p>
           </div>
-          <Button variant="ghost" size="sm" icon={<X size={15} />} onClick={() => setCodigo(null)} />
+          <Button variant="ghost" size="sm" aria-label="Fechar" icon={<X size={15} />} onClick={() => setCodigo(null)} />
         </Panel>
       )}
 

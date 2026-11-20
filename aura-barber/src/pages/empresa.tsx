@@ -3,10 +3,26 @@ import { PageHeader, Panel } from '@/components/layout'
 import { Button } from '@/components/affect/button'
 import { TextField } from '@/components/affect/text-field'
 import { SegmentedControl } from '@/components/affect/segmented-control'
+import { useRole } from '@/lib/role'
 import { getEmpresa, updateEmpresa } from '@/lib/api'
 import type { Empresa } from '@/lib/data'
 
 export function EmpresaConfig() {
+  const { role } = useRole()
+  if (role !== 'dono') {
+    return (
+      <div className="mx-auto max-w-xl">
+        <PageHeader title="Empresa" subtitle="Configuração do negócio." />
+        <Panel className="p-5">
+          <p className="text-sm text-muted-foreground">Apenas o dono pode configurar a empresa.</p>
+        </Panel>
+      </div>
+    )
+  }
+  return <EmpresaForm />
+}
+
+function EmpresaForm() {
   const e = getEmpresa()
   const [nome, setNome] = useState(e.nome)
   const [slug, setSlug] = useState(e.slug)
@@ -26,8 +42,8 @@ export function EmpresaConfig() {
       <PageHeader title="Empresa" subtitle="Dados do negócio e regras de horário." />
 
       <Panel className="space-y-4 p-5">
-        <TextField label="Nome da barbearia" value={nome} onChange={(e) => { setNome(e.target.value); setMsg(null) }} />
-        <TextField label="Identificador (slug)" value={slug} onChange={(e) => { setSlug(e.target.value); setMsg(null) }} />
+        <TextField label="Nome da barbearia" value={nome} onChange={(ev) => { setNome(ev.target.value); setMsg(null) }} />
+        <TextField label="Identificador (slug)" value={slug} onChange={(ev) => { setSlug(ev.target.value); setMsg(null) }} />
         <div>
           <p className="mb-1.5 text-sm text-muted-foreground">Status</p>
           <SegmentedControl
@@ -41,8 +57,8 @@ export function EmpresaConfig() {
           />
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <TextField label="Abre às" type="time" value={abertura} onChange={(e) => { setAbertura(e.target.value); setMsg(null) }} />
-          <TextField label="Fecha às" type="time" value={fechamento} onChange={(e) => { setFechamento(e.target.value); setMsg(null) }} />
+          <TextField label="Abre às" type="time" value={abertura} onChange={(ev) => { setAbertura(ev.target.value); setMsg(null) }} />
+          <TextField label="Fecha às" type="time" value={fechamento} onChange={(ev) => { setFechamento(ev.target.value); setMsg(null) }} />
         </div>
         <div>
           <p className="mb-1.5 text-sm text-muted-foreground">Grade da agenda</p>
