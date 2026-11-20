@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Pencil, Plus, Trash2, X } from 'lucide-react'
+import { Pencil, Plus, Trash2, UserPlus, X } from 'lucide-react'
 import { PageHeader, Panel, Modal } from '@/components/layout'
 import { Button } from '@/components/affect/button'
 import { TextField } from '@/components/affect/text-field'
 import { Select } from '@/components/affect/select'
 import { db, type Disponibilidade, type Profissional } from '@/lib/data'
-import { criarProfissional } from '@/lib/api'
+import { criarProfissional, createInvite, listMemberships } from '@/lib/api'
 
 const DIAS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
 type Rascunho = Omit<Profissional, 'id' | 'userId'> & { id?: string; userId?: string }
@@ -15,6 +15,8 @@ export function Profissionais() {
   const [lista, setLista] = useState<Profissional[]>(() => db.profissionais.map((p) => ({ ...p })))
   const [aberto, setAberto] = useState(false)
   const [draft, setDraft] = useState<Rascunho>(vazio)
+  const [codigo, setCodigo] = useState<string | null>(null)
+  const statusPorUser = new Map(listMemberships('barbeiro').map((m) => [m.userId, m.status]))
 
   const abrirNovo = () => {
     setDraft({ ...vazio, disponibilidade: [] })
@@ -71,18 +73,40 @@ export function Profissionais() {
         title="Profissionais"
         subtitle="Quem executa cada serviço, disponibilidade e comissão."
         action={
-          <Button icon={<Plus size={16} />} onClick={abrirNovo}>
-            Novo profissional
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="secondary" icon={<UserPlus size={16} />} onClick={() => setCodigo(createInvite('barbeiro').codigo)}>
+              Convidar
+            </Button>
+            <Button icon={<Plus size={16} />} onClick={abrirNovo}>
+              Novo profissional
+            </Button>
+          </div>
         }
       />
+
+      {codigo && (
+        <Panel className="mb-4 flex items-center gap-3 p-4">
+          <div className="flex-1 text-sm">
+            <p className="font-medium text-foreground">Convite criado</p>
+            <p className="text-muted-foreground">
+              Código: <span className="font-mono text-foreground">{codigo}</span> — envie ao profissional (protótipo: sem e-mail).
+            </p>
+          </div>
+          <Button variant="ghost" size="sm" icon={<X size={15} />} onClick={() => setCodigo(null)} />
+        </Panel>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2">
         {lista.map((p) => (
           <Panel key={p.id} className="p-4">
             <div className="flex items-start justify-between">
               <div>
-                <p className="font-semibold text-foreground">{p.nome}</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-semibold text-foreground">{p.nome}</p>
+                  {statusPorUser.get(p.userId) === 'SUSPENDED' && (
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">suspenso</span>
+                  )}
+                </div>
                 <p className="mt-0.5 text-sm text-muted-foreground">Comissão {p.comissaoPct}%</p>
               </div>
               <div className="flex gap-1">

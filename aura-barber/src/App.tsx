@@ -12,6 +12,7 @@ import { EmpresaConfig } from '@/pages/empresa'
 import { NaoEncontrada } from '@/pages/nao-encontrada'
 import { Profissionais } from '@/pages/profissionais'
 import { Servicos } from '@/pages/servicos'
+import { Clientes } from '@/pages/clientes'
 
 /* HashRouter: build estático abre em qualquer hospedagem (GitHub Pages, arquivo local). */
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
               <Route path="/empresa" element={<EmpresaConfig />} />
               <Route path="/servicos" element={<Servicos />} />
               <Route path="/profissionais" element={<Profissionais />} />
+              <Route path="/clientes" element={<Clientes />} />
               <Route path="*" element={<NaoEncontrada />} />
             </Route>
           </Routes>
