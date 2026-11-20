@@ -27,6 +27,17 @@ export function idValido(valor: string | null, validos: string[], padrao: string
   return valor && validos.includes(valor) ? valor : padrao
 }
 
+/**
+ * Resolve um id que pode ter sumido durante a sessão (ex.: profissional removido na tela
+ * Profissionais enquanto é a identidade logada): mantém o id se ainda existe, senão o padrão,
+ * senão o primeiro disponível — e só devolve o próprio id se não há nenhum.
+ */
+export function resolverId(id: string, validos: string[], padrao: string): string {
+  if (validos.includes(id)) return id
+  if (validos.includes(padrao)) return padrao
+  return validos[0] ?? id
+}
+
 export function lerProfId(ls: Store | undefined = storagePadrao()): string {
   let bruto: string | null = null
   try {
