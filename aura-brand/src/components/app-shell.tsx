@@ -108,7 +108,7 @@ function NewButton() {
         <DropdownMenuItem onSelect={go('/clientes?aba=contatos&novo=1')}>
           <UserPlus /> Adicionar contato
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={go('/conversas?aba=campanhas&campanha=nova')}>
+        <DropdownMenuItem onSelect={go('/atendimento?aba=campanhas&campanha=nova')}>
           <Megaphone /> Criar campanha
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -245,7 +245,7 @@ function BottomNav() {
 function useNav(): NavItem[] {
   const { queue } = useContent()
   const { unread } = useCrm()
-  const badge: Record<string, number> = { '/conteudo': queue.length, '/conversas': unread }
+  const badge: Record<string, number> = { '/conteudo': queue.length, '/atendimento': unread }
   return NAV.map((i) => ({ ...i, badge: badge[i.to] || undefined }))
 }
 
@@ -253,6 +253,7 @@ export function AppShell() {
   const { pathname } = useLocation()
   const [search, setSearch] = useState(false)
   const nav = useNav()
+  const fullBleed = pathname.startsWith('/atendimento')
   return (
     <AssistantProvider>
       <SidebarProvider>
@@ -313,9 +314,16 @@ export function AppShell() {
               <Notifications />
             </div>
           </header>
-          <main id="conteudo" className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-44 md:px-8 md:pt-8 md:pb-24">
-            <Outlet />
-          </main>
+          {/* O atendimento ocupa a altura toda, sem margem: as colunas rolam cada uma por si */}
+          {fullBleed ? (
+            <main id="conteudo" className="h-[calc(100svh-7rem-env(safe-area-inset-bottom))] min-h-0 w-full overflow-hidden md:h-[calc(100svh-4.5rem)]">
+              <Outlet />
+            </main>
+          ) : (
+            <main id="conteudo" className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-44 md:px-8 md:pt-8 md:pb-24">
+              <Outlet />
+            </main>
+          )}
         </SidebarInset>
         <BottomNav />
         <CommandPalette open={search} onOpenChange={setSearch} />

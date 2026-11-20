@@ -15,45 +15,44 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { fontPair, onColor, useBrand } from '@/lib/brand'
 import { approvedKit } from '@/lib/content'
-import { brl, CONTACT_LIMIT, dateLabel, FIELDS, isEmail, MSG_CHANNELS, SOURCES, stageLabel, STAGES, useCrm, type CaptureForm, type Contact, type FieldId, type Proposal, type Source, type Stage } from '@/lib/crm'
+import { DealCard } from '@/components/deal-card'
+import { brl, CONTACT_LIMIT, dateLabel, FIELDS, isEmail, MSG_CHANNELS, SOURCES, stageLabel, stageOf, STAGES, useCrm, type CaptureForm, type Deal, type FieldId, type Source, type Stage } from '@/lib/crm'
 import { cn } from '@/lib/utils'
 
 const TABS = ['funil', 'contatos', 'captacao', 'automacoes'] as const
 type Tab = (typeof TABS)[number]
 
 const STAGE_TONE = { novo: 'info', conversa: 'brand', proposta: 'warning', ganho: 'success', perdido: 'neutral' } as const
-const PROPOSAL_LABEL: Record<Proposal['status'], string> = { rascunho: 'Rascunho', enviada: 'Enviada', aceita: 'Aceita', recusada: 'Recusada' }
-const PROPOSAL_TONE = { rascunho: 'neutral', enviada: 'warning', aceita: 'success', recusada: 'danger' } as const
-
 const ranNote = (ran: string[]) => (ran.length ? `Automação enviada: ${ran.join(', ')}.` : undefined)
 
-function StageSelect({ contact, size = 'sm' }: { contact: Contact; size?: 'sm' | 'md' }) {
-  const { moveContact, restore, snapshot } = useCrm()
+function StageSelect({ deal }: { deal: Deal }) {
+  const { moveDeal, restore, snapshot } = useCrm()
   return (
     <Select
-      size={size}
-      aria-label={`Etapa de ${contact.name}`}
+      size="sm"
+      aria-label={`Etapa do negócio ${deal.title}`}
       options={STAGES.map((s) => ({ value: s.id, label: s.label, description: s.hint }))}
-      value={contact.stage}
+      value={deal.stage}
       onChange={(v) => {
         const before = snapshot()
-        const ran = moveContact(contact.id, v as Stage)
-        toast.success(`${contact.name} foi para ${stageLabel(v as Stage)}`, { description: ranNote(ran), action: { label: 'Desfazer', onClick: () => restore(before) } })
+        const ran = moveDeal(deal.id, v as Stage)
+        toast.success(`"${deal.title}" foi para ${stageLabel(v as Stage)}`, { description: ranNote(ran), action: { label: 'Desfazer', onClick: () => restore(before) } })
       }}
     />
   )
 }
 
+/* O funil é de negócios: uma empresa pode ter mais de um aberto. O cartão leva à ficha do contato. */
 function Funnel({ onOpen }: { onOpen: (id: string) => void }) {
-  const { contacts } = useCrm()
-  const lost = contacts.filter((x) => x.stage === 'perdido')
+  const { deals, contact, company } = useCrm()
+  const lost = deals.filter((d) => d.stage === 'perdido')
   const open = STAGES.filter((s) => s.id !== 'perdido')
   return (
     <>
       <div className="grid gap-4 lg:grid-cols-4">
         {open.map((s) => {
-          const list = contacts.filter((x) => x.stage === s.id)
-          const total = list.reduce((n, x) => n + x.value, 0)
+          const list = deals.filter((d) => d.stage === s.id)
+          const total = list.reduce((n, d) => n + d.value, 0)
           return (
             <section key={s.id} aria-labelledby={`etapa-${s.id}`} className="min-w-0 rounded-xl border bg-muted/40 p-3">
               <header className="mb-3 flex items-baseline justify-between gap-2 px-1">
@@ -63,29 +62,34 @@ function Funnel({ onOpen }: { onOpen: (id: string) => void }) {
                 <span className="text-xs text-muted-foreground tabular-nums">{brl(total)}</span>
               </header>
               {list.length === 0 ? (
-                <p className="rounded-lg border border-dashed px-3 py-6 text-center text-xs text-muted-foreground">Ninguém nesta etapa.</p>
+                <p className="rounded-lg border border-dashed px-3 py-6 text-center text-xs text-muted-foreground">Nenhum negócio nesta etapa.</p>
               ) : (
                 <ul className="grid min-w-0 grid-cols-1 gap-2">
-                  {list.map((x) => (
-                    <li key={x.id} className="min-w-0 rounded-lg border bg-card p-3">
-                      <button type="button" onClick={() => onOpen(x.id)} className="block w-full rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                        <span className="block truncate text-sm font-medium">{x.name}</span>
-                        <span className="mt-0.5 block truncate text-xs text-muted-foreground">{x.sourceDetail}</span>
-                        <span className="mt-2 flex flex-wrap items-center gap-1.5">
-                          <Pill>{SOURCES[x.source]}</Pill>
-                          {x.value > 0 && <span className="text-xs font-medium tabular-nums">{brl(x.value)}</span>}
-                          {!x.consent && (
-                            <Pill tone="warning" icon={<ShieldAlert />}>
-                              Sem consentimento
-                            </Pill>
-                          )}
-                        </span>
-                      </button>
-                      <div className="mt-2.5">
-                        <StageSelect contact={x} />
-                      </div>
-                    </li>
-                  ))}
+                  {list.map((d) => {
+                    const x = contact(d.contactId)
+                    const org = company(x?.companyId ?? null)
+                    if (!x) return null
+                    return (
+                      <li key={d.id} className="min-w-0 rounded-lg border bg-card p-3">
+                        <button type="button" onClick={() => onOpen(x.id)} className="block w-full rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                          <span className="block truncate text-sm font-medium">{d.title}</span>
+                          <span className="mt-0.5 block truncate text-xs text-muted-foreground">{org ? `${org.name} · ${x.name}` : x.name}</span>
+                          <span className="mt-2 flex flex-wrap items-center gap-1.5">
+                            <Pill>{SOURCES[x.source]}</Pill>
+                            {d.value > 0 && <span className="text-xs font-medium tabular-nums">{brl(d.value)}</span>}
+                            {!x.consent && (
+                              <Pill tone="warning" icon={<ShieldAlert />}>
+                                Sem consentimento
+                              </Pill>
+                            )}
+                          </span>
+                        </button>
+                        <div className="mt-2.5">
+                          <StageSelect deal={d} />
+                        </div>
+                      </li>
+                    )
+                  })}
                 </ul>
               )}
             </section>
@@ -93,18 +97,22 @@ function Funnel({ onOpen }: { onOpen: (id: string) => void }) {
         })}
       </div>
       {lost.length > 0 && (
-        <Section title={`Perdidos (${lost.length})`} description="Contatos que não avançaram. Dá para trazer de volta ao funil." className="mt-6">
+        <Section title={`Perdidos (${lost.length})`} description="Negócios que não avançaram. Dá para trazer de volta ao funil." className="mt-6">
           <ul className="-mx-2 divide-y">
-            {lost.map((x) => (
-              <li key={x.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-2 py-3">
-                <button type="button" onClick={() => onOpen(x.id)} className="min-w-0 flex-1 basis-56 rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  <Person name={x.name} sub={x.note || x.sourceDetail} />
-                </button>
-                <div className="w-44">
-                  <StageSelect contact={x} />
-                </div>
-              </li>
-            ))}
+            {lost.map((d) => {
+              const x = contact(d.contactId)
+              if (!x) return null
+              return (
+                <li key={d.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-2 py-3">
+                  <button type="button" onClick={() => onOpen(x.id)} className="min-w-0 flex-1 basis-56 rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                    <Person name={x.name} sub={`${d.title}${x.note ? `. ${x.note}` : ''}`} />
+                  </button>
+                  <div className="w-44">
+                    <StageSelect deal={d} />
+                  </div>
+                </li>
+              )
+            })}
           </ul>
         </Section>
       )}
@@ -125,7 +133,7 @@ function parseCsv(text: string) {
 
 function NewContactDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const { addContact } = useCrm()
-  const [f, setF] = useState({ name: '', email: '', phone: '', detail: '', consent: false })
+  const [f, setF] = useState({ name: '', company: '', role: '', email: '', phone: '', detail: '', consent: false })
   const [tried, setTried] = useState(false)
   const noName = !f.name.trim()
   const noReach = !isEmail(f.email) && f.phone.replace(/\D/g, '').length < 8
@@ -133,9 +141,9 @@ function NewContactDialog({ open, onOpenChange }: { open: boolean; onOpenChange:
     e.preventDefault()
     setTried(true)
     if (noName || noReach) return
-    const { ran } = addContact({ name: f.name.trim(), email: isEmail(f.email) ? f.email.trim() : '', phone: f.phone.trim(), source: 'manual', sourceDetail: f.detail.trim() || 'Adicionado à mão', consent: f.consent })
+    const { ran } = addContact({ name: f.name.trim(), companyName: f.company.trim() || undefined, role: f.role.trim(), email: isEmail(f.email) ? f.email.trim() : '', phone: f.phone.trim(), source: 'manual', sourceDetail: f.detail.trim() || 'Adicionado à mão', consent: f.consent })
     toast.success(`${f.name.trim()} foi adicionado`, { description: ranNote(ran) ?? 'Está na etapa Novo do funil.' })
-    setF({ name: '', email: '', phone: '', detail: '', consent: false })
+    setF({ name: '', company: '', role: '', email: '', phone: '', detail: '', consent: false })
     setTried(false)
     onOpenChange(false)
   }
@@ -144,10 +152,14 @@ function NewContactDialog({ open, onOpenChange }: { open: boolean; onOpenChange:
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Adicionar contato</DialogTitle>
-          <DialogDescription>Ele entra na etapa Novo do funil.</DialogDescription>
+          <DialogDescription>Entra no funil com um negócio na etapa Novo. Para cliente de empresa, informe a empresa.</DialogDescription>
         </DialogHeader>
         <form className="grid gap-4" noValidate onSubmit={submit}>
           <TextField label="Nome" value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} error={tried && noName ? 'Informe o nome.' : undefined} autoComplete="off" />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <TextField label="Empresa" optional hint="Só para venda a empresas." value={f.company} onChange={(e) => setF({ ...f, company: e.target.value })} autoComplete="off" />
+            <TextField label="Cargo" optional value={f.role} onChange={(e) => setF({ ...f, role: e.target.value })} disabled={!f.company.trim()} autoComplete="off" />
+          </div>
           <TextField label="E-mail" type="email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} error={tried && noReach ? 'Informe um e-mail ou um WhatsApp válido.' : undefined} autoComplete="off" />
           <TextField label="WhatsApp" type="tel" value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} placeholder="(11) 90000-0000" autoComplete="off" />
           <TextField label="De onde veio" optional hint="Ex.: feira de sábado, indicação da Ana." value={f.detail} onChange={(e) => setF({ ...f, detail: e.target.value })} />
@@ -165,12 +177,12 @@ function NewContactDialog({ open, onOpenChange }: { open: boolean; onOpenChange:
 }
 
 function Contacts({ onOpen }: { onOpen: (id: string) => void }) {
-  const { contacts, addContacts } = useCrm()
+  const { contacts, deals, company, addContacts } = useCrm()
   const [q, setQ] = useState('')
   const [source, setSource] = useState<'todas' | Source>('todas')
   const file = useRef<HTMLInputElement>(null)
   const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
-  const shown = contacts.filter((x) => (source === 'todas' || x.source === source) && norm(`${x.name} ${x.email} ${x.phone} ${x.sourceDetail}`).includes(norm(q.trim())))
+  const shown = contacts.filter((x) => (source === 'todas' || x.source === source) && norm(`${x.name} ${x.email} ${x.phone} ${x.sourceDetail} ${company(x.companyId)?.name ?? ''}`).includes(norm(q.trim())))
   const used = contacts.length
   return (
     <Section
@@ -209,7 +221,7 @@ function Contacts({ onOpen }: { onOpen: (id: string) => void }) {
       }
     >
       <div className="mb-4 flex flex-wrap gap-3">
-        <TextField aria-label="Buscar contato" placeholder="Buscar por nome, e-mail ou origem" prefix={<Search className="size-4" />} clearable value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ('')} className="min-w-56 flex-1" />
+        <TextField aria-label="Buscar contato" placeholder="Buscar por nome, empresa, e-mail ou origem" prefix={<Search className="size-4" />} clearable value={q} onChange={(e) => setQ(e.target.value)} onClear={() => setQ('')} className="min-w-56 flex-1" />
         <div className="w-56">
           <Select aria-label="Filtrar por origem" value={source} onChange={(v) => setSource(v as 'todas' | Source)} options={[{ value: 'todas', label: 'Todas as origens' }, ...Object.entries(SOURCES).map(([value, label]) => ({ value, label }))]} />
         </div>
@@ -222,7 +234,7 @@ function Contacts({ onOpen }: { onOpen: (id: string) => void }) {
             <li key={x.id}>
               <button type="button" onClick={() => onOpen(x.id)} className="flex w-full flex-wrap items-center gap-x-4 gap-y-2 rounded-md px-2 py-3 text-left outline-none hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring">
                 <span className="min-w-0 flex-1 basis-56">
-                  <Person name={x.name} sub={x.email || x.phone} />
+                  <Person name={x.name} sub={company(x.companyId)?.name ?? (x.email || x.phone)} />
                 </span>
                 <span className="min-w-0 flex-1 basis-56 truncate text-xs text-muted-foreground">{x.sourceDetail}</span>
                 <span className="flex flex-wrap items-center gap-1.5 sm:w-64 sm:justify-end">
@@ -231,7 +243,10 @@ function Contacts({ onOpen }: { onOpen: (id: string) => void }) {
                       Sem consentimento
                     </Pill>
                   )}
-                  <Pill tone={STAGE_TONE[x.stage]}>{stageLabel(x.stage)}</Pill>
+                  {(() => {
+                    const st = stageOf(deals, x.id)
+                    return st ? <Pill tone={STAGE_TONE[st]}>{stageLabel(st)}</Pill> : <Pill>Sem negócio</Pill>
+                  })()}
                 </span>
               </button>
             </li>
@@ -242,15 +257,14 @@ function Contacts({ onOpen }: { onOpen: (id: string) => void }) {
   )
 }
 
-/* Ficha do contato: origem, etapa, consentimento, propostas e atalho para a conversa. */
+/* Ficha do contato: empresa, negócios, consentimento, anotações e atalho para o atendimento. */
 function ContactSheet({ id, onClose }: { id: string | null; onClose: () => void }) {
-  const { contact, proposals, patchContact, addProposal, setProposal, removeContact, openThread, restore, snapshot } = useCrm()
+  const { contact, company, dealsOf, addDeal, patchContact, removeContact, openThread, restore, snapshot } = useCrm()
   const navigate = useNavigate()
   const x = id ? contact(id) : undefined
-  const [title, setTitle] = useState('')
-  const [amount, setAmount] = useState('')
-  const mine = x ? proposals.filter((p) => p.contactId === x.id) : []
-  const validProposal = title.trim().length > 2 && Number(amount) > 0
+  const org = company(x?.companyId ?? null)
+  const deals = x ? dealsOf(x.id) : []
+  const [dealTitle, setDealTitle] = useState('')
   return (
     <Sheet open={!!x} onOpenChange={(o) => !o && onClose()}>
       <SheetContent className="w-full overflow-y-auto sm:max-w-md">
@@ -259,31 +273,59 @@ function ContactSheet({ id, onClose }: { id: string | null; onClose: () => void 
             <SheetHeader>
               <SheetTitle>{x.name}</SheetTitle>
               <SheetDescription>
-                Chegou em {dateLabel(x.createdAt)} por {SOURCES[x.source]}. {x.sourceDetail}.
+                {org ? `${x.role ? `${x.role}, ` : ''}${org.name}. ` : ''}Chegou em {dateLabel(x.createdAt)} por {SOURCES[x.source]}. {x.sourceDetail}.
               </SheetDescription>
             </SheetHeader>
             <div className="grid gap-6 px-4 pb-6">
               <div className="grid gap-3">
-                <StageSelect contact={x} size="md" />
                 <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
                   <dt className="text-muted-foreground">E-mail</dt>
                   <dd className="truncate">{x.email || 'Não informado'}</dd>
                   <dt className="text-muted-foreground">WhatsApp</dt>
                   <dd>{x.phone || 'Não informado'}</dd>
-                  <dt className="text-muted-foreground">Valor</dt>
-                  <dd className="tabular-nums">{x.value > 0 ? brl(x.value) : 'Sem valor ainda'}</dd>
+                  {org && (
+                    <>
+                      <dt className="text-muted-foreground">Empresa</dt>
+                      <dd>{[org.name, org.segment, org.city].filter(Boolean).join(' · ')}</dd>
+                    </>
+                  )}
                 </dl>
                 <Button
                   variant="secondary"
                   icon={<MessageSquare />}
                   onClick={() => {
                     const t = openThread(x.id)
-                    navigate(`/conversas?id=${t}`)
+                    navigate(`/atendimento?id=${t}`)
                   }}
                 >
-                  Abrir conversa
+                  Abrir no atendimento
                 </Button>
               </div>
+
+              <section aria-labelledby="negocios-titulo" className="grid gap-2">
+                <h3 id="negocios-titulo" className="text-sm font-semibold">
+                  Negócios
+                </h3>
+                {deals.length === 0 && <p className="text-sm text-muted-foreground">Nenhum negócio com este contato.</p>}
+                {[...deals].reverse().map((d) => (
+                  <DealCard key={d.id} deal={d} />
+                ))}
+                <form
+                  className="flex items-end gap-2"
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    if (dealTitle.trim().length < 3) return
+                    addDeal(x.id, dealTitle.trim(), 0)
+                    setDealTitle('')
+                    toast.success('Negócio criado em Novo')
+                  }}
+                >
+                  <TextField size="sm" label="Novo negócio" placeholder="Ex.: café para o evento de dezembro" value={dealTitle} onChange={(e) => setDealTitle(e.target.value)} maxLength={80} className="flex-1" />
+                  <Button type="submit" size="sm" variant="secondary" disabled={dealTitle.trim().length < 3}>
+                    Criar
+                  </Button>
+                </form>
+              </section>
 
               <Switch
                 placement="end"
@@ -295,71 +337,13 @@ function ContactSheet({ id, onClose }: { id: string | null; onClose: () => void 
 
               <TextArea label="Anotações" optional minRows={2} maxLength={300} value={x.note} onChange={(e) => patchContact(x.id, { note: e.target.value })} />
 
-              <section aria-labelledby="propostas-titulo">
-                <h3 id="propostas-titulo" className="mb-2 text-sm font-semibold">
-                  Propostas
-                </h3>
-                {mine.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">Nenhuma proposta para este contato.</p>
-                ) : (
-                  <ul className="grid gap-2">
-                    {mine.map((p) => (
-                      <li key={p.id} className="rounded-lg border p-3">
-                        <p className="flex flex-wrap items-center justify-between gap-2 text-sm font-medium">
-                          {p.title}
-                          <Pill tone={PROPOSAL_TONE[p.status]}>{PROPOSAL_LABEL[p.status]}</Pill>
-                        </p>
-                        <p className="mt-0.5 text-xs text-muted-foreground tabular-nums">
-                          {brl(p.value)}, {dateLabel(p.date)}
-                        </p>
-                        {(p.status === 'rascunho' || p.status === 'enviada') && (
-                          <div className="mt-2.5 flex flex-wrap gap-1.5">
-                            {p.status === 'rascunho' ? (
-                              <Button size="sm" onClick={() => toast.success('Proposta enviada', { description: ranNote(setProposal(p.id, 'enviada')) ?? `${x.name} foi para a etapa Proposta.` })}>
-                                Enviar proposta
-                              </Button>
-                            ) : (
-                              <>
-                                <Button size="sm" onClick={() => toast.success('Proposta aceita', { description: ranNote(setProposal(p.id, 'aceita')) ?? `${x.name} foi para Fechado.` })}>
-                                  Marcar como aceita
-                                </Button>
-                                <Button size="sm" variant="ghost" onClick={() => (setProposal(p.id, 'recusada'), toast('Proposta marcada como recusada'))}>
-                                  Marcar como recusada
-                                </Button>
-                              </>
-                            )}
-                          </div>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <form
-                  className="mt-3 grid gap-3 rounded-lg border border-dashed p-3"
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    if (!validProposal) return
-                    addProposal(x.id, title.trim(), Number(amount))
-                    setTitle('')
-                    setAmount('')
-                    toast.success('Proposta criada como rascunho', { description: 'Revise e envie quando estiver pronta.' })
-                  }}
-                >
-                  <TextField size="sm" label="Nova proposta" placeholder="Ex.: assinatura mensal, 20 pessoas" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={80} />
-                  <TextField size="sm" label="Valor" type="number" min={1} prefix="R$" value={amount} onChange={(e) => setAmount(e.target.value)} />
-                  <Button type="submit" size="sm" variant="secondary" disabled={!validProposal}>
-                    Criar proposta
-                  </Button>
-                </form>
-              </section>
-
               <Button
                 variant="destructive"
                 onClick={() => {
                   const before = snapshot()
                   removeContact(x.id)
                   onClose()
-                  toast(`${x.name} foi excluído`, { description: 'A conversa e as propostas foram junto.', action: { label: 'Desfazer', onClick: () => restore(before) } })
+                  toast(`${x.name} foi excluído`, { description: 'A conversa, os negócios e as propostas foram junto.', action: { label: 'Desfazer', onClick: () => restore(before) } })
                 }}
               >
                 Excluir contato
@@ -590,7 +574,7 @@ function Automations() {
                 toast(e.target.checked ? `"${a.name}" ligada` : `"${a.name}" desligada`)
               }}
               label={a.name}
-              description={`Quando o contato entra em ${stageLabel(a.stage)}, por ${MSG_CHANNELS[a.channel]}.`}
+              description={`Quando um negócio entra em ${stageLabel(a.stage)}, por ${MSG_CHANNELS[a.channel]}. A mensagem aparece na conversa do cliente.`}
             />
             <TextArea aria-label={`Mensagem da automação ${a.name}`} className="mt-3" minRows={2} maxLength={320} counter value={a.text} onChange={(e) => patchAutomation(a.id, { text: e.target.value })} disabled={!a.active} />
           </li>
@@ -601,7 +585,7 @@ function Automations() {
 }
 
 export function Clientes() {
-  const { contacts, forms } = useCrm()
+  const { contacts, deals, forms } = useCrm()
   const [params, setParams] = useSearchParams()
   const raw = params.get('aba') as Tab | null
   const tab: Tab = raw && TABS.includes(raw) ? raw : 'funil'
@@ -611,14 +595,14 @@ export function Clientes() {
   const go = (t: Tab, extra: Record<string, string> = {}) => setParams({ ...(t === 'funil' ? {} : { aba: t }), ...extra }, { replace: Object.keys(extra).length === 0 })
   const openContact = (id: string) => go(tab, { contato: id })
   const editing = formId ? (forms.find((f) => f.id === formId) ?? EMPTY_FORM) : null
-  const fresh = contacts.filter((x) => x.stage === 'novo').length
-  const openValue = contacts.filter((x) => x.stage === 'conversa' || x.stage === 'proposta').reduce((n, x) => n + x.value, 0)
+  const fresh = deals.filter((d) => d.stage === 'novo').length
+  const openValue = deals.filter((d) => d.stage === 'conversa' || d.stage === 'proposta').reduce((n, d) => n + d.value, 0)
 
   return (
     <>
       <PageHeader
         title="Clientes"
-        description={`${fresh === 1 ? '1 contato novo' : `${fresh} contatos novos`} no funil. ${brl(openValue)} em negociação.`}
+        description={`${fresh === 1 ? '1 negócio novo' : `${fresh} negócios novos`} no funil. ${brl(openValue)} em negociação.`}
         actions={
           !editing && (
             <Button icon={<Plus />} onClick={() => setAdding(true)}>

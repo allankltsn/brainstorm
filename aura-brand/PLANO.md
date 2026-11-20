@@ -196,7 +196,7 @@ No desktop, o menu principal do app recolhe para ícones nesta tela, para caber 
 
 ## Ordem sugerida para desenhar
 
-1. **Atendimento** em quatro colunas. Tela de uso diário da equipe; junta duas telas que já existem.
+1. **Atendimento** em quatro colunas. **Feito no protótipo** (`#/atendimento`), junto com o modelo de dados. Tela de uso diário da equipe; junta duas telas que já existem.
 2. **Conteúdo: Ideias e multi-rede** com versões e prévias por rede.
 3. **Oportunidades**, começando pelo tipo 1 (a própria base).
 4. **Marca: Materiais e Regras**: PDF e slides primeiro, depois o construtor de páginas, que é o maior.
