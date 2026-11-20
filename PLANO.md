@@ -256,18 +256,20 @@ assistant-cloud (glow), thinking-loader, shimmer-loader, ai-prompt, smart-recomm
 - **Versão:** semver no registry (changelog por item); `shadcn diff` para os apps verem o que mudou.
 - **Licenças:** shadcn/ui, Radix, magicui e Lightswind são MIT; affectUI tem itens grátis (MIT) e Pro (pagos). **Itens Pro do affectUI não podem ser redistribuídos no nosso registry** — ou reescrevemos, ou ficam fora do aura-ui. Pro Blocks do shadcndesign e modelos do aura.build também são de terceiros: servem de referência de categorias e estilo, sem copiar código ou HTML.
 
-## 8. Decisões em aberto
+## 8. Decisões (fechadas em 20/11/2026)
 
-1. **Nome do escopo do registry:** `@aura` (sugerido) ou outro.
-2. **Repositório:** manter na branch `aura-ui` do `brainstorm` (sugerido para começar) ou mover para um repositório próprio quando estabilizar.
-3. **Hospedagem do registry e da doc:** GitHub Pages (sugerido) ou Vercel.
-4. **Fontes:** Geist (apps) e Inter (landing) — unificar ou deixar por tema? E qual mono (Geist Mono ou JetBrains Mono, como nos modelos do aura.build)?
-5. **Nível de dependência do affectUI:** reescrever tudo (independência e licença limpa) ou manter os itens grátis através da ponte `--aui-*`.
-6. **Figma:** entra no escopo (como o shadcndesign) ou fica para depois?
-7. **Linguagem visual padrão:** o tema neutro do kit segue o visual atual dos apps (claro, sóbrio, roxo/vermelho só em ações) ou puxa para o estilo dos modelos do aura.build (escuro, display grande, efeitos de fundo)? Sugestão: apps no visual atual, blocos de landing no estilo aura.build.
+1. **Nome do escopo do registry:** **`@aura`**. Mesmo modelo do `@affectui` já usado no `components.json` do aura-brand.
+2. **Repositório:** **manter na branch `aura-ui` do `brainstorm`** por ora; reavaliar mover para repo próprio só na Fase 5, quando os apps passarem a consumir o registry. (A Fase 0 já publica assim, sem interferir nos outros apps — ver §4.2 revisada e `docs/superpowers/specs/2026-11-20-aura-ui-phase0-integration-design.md`.)
+3. **Hospedagem do registry e da doc:** **GitHub Pages**, no mesmo site do micro-frontend, na rota `/ui` (registry em `/r/*.json`). Vercel descartado.
+4. **Fontes:** **por tema, não unificar.** Adotar os 3 slots do shadcndesign (`--font-sans`, `--font-heading`, `--font-mono`); aura-fit/aura-brand com Geist, landing com Inter. Mono padrão do kit = **JetBrains Mono** (Geist Mono permitido por tema onde Geist já está carregado).
+5. **Nível de dependência do affectUI:** **reescrever** os itens grátis que usamos no padrão aura-ui; a ponte `--aui-*` fica só como camada de compatibilidade temporária (removida na Fase 5). Itens Pro: fora do registry.
+6. **Figma:** **depois (Fase 6).** Os tokens já nascem com nomes compatíveis; sem custo em adiar.
+7. **Linguagem visual padrão:** **dupla.** Primitivos/apps no visual atual (claro, sóbrio, cor só em ações; tema neutro = visual atual); blocos de landing no estilo aura.build (escuro, display grande, efeitos de fundo atrás do conteúdo).
 
 ## 9. Próximos passos
 
-1. Responder as decisões da seção 8.
-2. Fase 0: criar o monorepo nesta branch e publicar a doc vazia.
-3. Fase 1: extrair os tokens de `aura-brand/src/index.css` e `prototype-v2/src/index.css` para `packages/tokens`.
+1. ✅ Decisões da seção 8 fechadas (20/11/2026).
+2. ✅ Fase 0: estrutura integrada ao micro-frontend e doc publicada em `/ui` (substitui o monorepo autônomo — ver §4.2 e design doc).
+3. ▶ Fase 1 (em andamento): extrair os tokens de `aura-brand/src/index.css` e `prototype-v2/src/index.css` para a pasta de tokens do `aura-ui/`, gerar `theme.css` + ponte `--aui-*` + `tokens.ts` + `DESIGN.md` por tema (aura-fit, aura-brand), com checagem de contraste, e a página "Cores/Tipografia/Raio" com seletor de tema na doc.
+
+> Nota de estrutura (Fase 1): como a §4.2 foi revisada para **não** usar monorepo autônomo, os tokens vivem numa subpasta do app (`aura-ui/tokens/`, fonte única) com um script de build Node que gera o CSS consumido pela doc. Sem workspaces pnpm; o app segue em npm (o host `init` roda `npm ci`).

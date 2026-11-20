@@ -1,0 +1,62 @@
+{
+  "name": "aura-brand",
+  "label": "Aura Brand",
+  "description": "Tema do Aura Brand — roxo da marca só em ações principais e destaques.",
+  "font": { "sans": "'Geist Variable', ui-sans-serif, system-ui, sans-serif" },
+  "brand": {
+    "light": {
+      "primary": "#6a0dad",
+      "primary-foreground": "#ffffff",
+      "ring": "#6a0dad",
+      "brand-soft": "#f5edfb",
+      "brand-text": "#5b0b95",
+      "chart-1": "#6a0dad",
+      "chart-2": "#c39be3",
+      "sidebar-primary": "#6a0dad",
+      "sidebar-primary-foreground": "#ffffff",
+      "sidebar-ring": "#6a0dad"
+    },
+    "dark": {
+      "primary": "#8436cc",
+      "primary-foreground": "#ffffff",
+      "ring": "#b98af0",
+      "brand-soft": "#2a1640",
+      "brand-text": "#d3a8f5",
+      "chart-1": "#a565e6",
+      "chart-2": "#5c2a8a",
+      "sidebar-primary": "#8436cc",
+      "sidebar-primary-foreground": "#ffffff",
+      "sidebar-ring": "#b98af0"
+    }
+  },
+  "aui": {
+    "button": {
+      "ui-btn-on-ink": "#ffffff",
+      "ui-btn-dark-top": "#7a1fc0",
+      "ui-btn-dark-bottom": "#5b0b95",
+      "ui-btn-dark-hover-top": "#8530c8",
+      "ui-btn-dark-hover-bottom": "#6a0dad",
+      "ui-btn-edge-top": "#9b5ad3",
+      "ui-btn-edge-mid": "#6a0dad",
+      "ui-btn-edge-bottom": "#45086f",
+      "ui-btn-ring": "#52098a",
+      "ui-btn-dark-shadow": "rgba(106, 13, 173, 0.22)",
+      "ui-btn-shine-on-ink": "rgba(255, 255, 255, 0.95)"
+    },
+    "glow": {
+      "ui-glw-sky-top": "#5b0b95",
+      "ui-glw-sky-bottom": "#a565e6",
+      "ui-glw-sky-light": "rgba(211, 168, 245, 0.5)",
+      "ui-glw-rim": "#fbf7ff",
+      "ui-glw-body-1": "#7a1fc0",
+      "ui-glw-body-2": "#9446d6",
+      "ui-glw-body-3": "#c39be3",
+      "ui-glw-eye": "#f1e4fc",
+      "ui-glw-eye-shade": "rgba(106, 13, 173, 0.3)",
+      "ui-glw-halo": "rgba(132, 54, 204, 0.2)",
+      "ui-glw-edge": "rgba(106, 13, 173, 0.4)",
+      "ui-glw-shadow": "rgba(69, 8, 111, 0.5)",
+      "ui-glw-ground": "rgba(69, 8, 111, 0.36)"
+    }
+  }
+}

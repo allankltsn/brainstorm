@@ -1,0 +1,48 @@
+/* Ponte affectUI do tema Aura Fit: componentes --aui-* leem os tokens do kit. GERADO. */
+:root, .dark {
+    --aui-font: var(--font-sans);
+    --aui-font-mono: var(--font-mono);
+    --aui-ink: var(--foreground);
+    --aui-muted: var(--muted-foreground);
+    --aui-surface: var(--card);
+    --aui-subtle: var(--muted);
+    --aui-border: var(--border);
+    --aui-border-strong: var(--input);
+    --aui-primary: var(--primary);
+    --aui-on-primary: var(--primary-foreground);
+    --aui-blue: var(--primary);
+    --aui-focus: color-mix(in srgb, var(--ring) 70%, transparent);
+    --aui-danger: var(--destructive);
+    --aui-success: var(--success);
+    --aui-radius: 10px;
+}
+
+/* Botão principal do affectUI na cor da marca */
+:root .ui-button {
+    --ui-btn-on-ink: #ffffff;
+    --ui-btn-dark-top: #c21a25;
+    --ui-btn-dark-bottom: #a40f19;
+    --ui-btn-dark-hover-top: #cf2731;
+    --ui-btn-dark-hover-bottom: #b1111b;
+    --ui-btn-edge-top: #dc5a62;
+    --ui-btn-edge-mid: #b1111b;
+    --ui-btn-edge-bottom: #7b0c13;
+    --ui-btn-ring: #8f0d16;
+    --ui-btn-dark-shadow: rgba(177, 17, 27, 0.22);
+    --ui-btn-shine-on-ink: rgba(255, 255, 255, 0.95);
+}
+
+/* Ação principal nos cartões do affectUI */
+:root .ui-sr__btn--primary,
+:root .ui-di__btn--primary,
+:root .ui-tp__btn[data-primary],
+:root .ui-tp__btn--primary {
+    background: var(--primary);
+    border-color: transparent;
+    color: var(--primary-foreground);
+}
+:root .ui-sr__btn--primary:hover,
+:root .ui-di__btn--primary:hover,
+:root .ui-tp__btn--primary:hover {
+    background: color-mix(in srgb, var(--primary) 88%, black);
+}

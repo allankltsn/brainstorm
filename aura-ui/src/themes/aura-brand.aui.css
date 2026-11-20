@@ -1,0 +1,65 @@
+/* Ponte affectUI do tema Aura Brand: componentes --aui-* leem os tokens do kit. GERADO. */
+:root, .dark {
+    --aui-font: var(--font-sans);
+    --aui-font-mono: var(--font-mono);
+    --aui-ink: var(--foreground);
+    --aui-muted: var(--muted-foreground);
+    --aui-surface: var(--card);
+    --aui-subtle: var(--muted);
+    --aui-border: var(--border);
+    --aui-border-strong: var(--input);
+    --aui-primary: var(--primary);
+    --aui-on-primary: var(--primary-foreground);
+    --aui-blue: var(--primary);
+    --aui-focus: color-mix(in srgb, var(--ring) 70%, transparent);
+    --aui-danger: var(--destructive);
+    --aui-success: var(--success);
+    --aui-radius: 10px;
+}
+
+/* Botão principal do affectUI na cor da marca */
+:root .ui-button {
+    --ui-btn-on-ink: #ffffff;
+    --ui-btn-dark-top: #7a1fc0;
+    --ui-btn-dark-bottom: #5b0b95;
+    --ui-btn-dark-hover-top: #8530c8;
+    --ui-btn-dark-hover-bottom: #6a0dad;
+    --ui-btn-edge-top: #9b5ad3;
+    --ui-btn-edge-mid: #6a0dad;
+    --ui-btn-edge-bottom: #45086f;
+    --ui-btn-ring: #52098a;
+    --ui-btn-dark-shadow: rgba(106, 13, 173, 0.22);
+    --ui-btn-shine-on-ink: rgba(255, 255, 255, 0.95);
+}
+
+/* Ação principal nos cartões do affectUI */
+:root .ui-sr__btn--primary,
+:root .ui-di__btn--primary,
+:root .ui-tp__btn[data-primary],
+:root .ui-tp__btn--primary {
+    background: var(--primary);
+    border-color: transparent;
+    color: var(--primary-foreground);
+}
+:root .ui-sr__btn--primary:hover,
+:root .ui-di__btn--primary:hover,
+:root .ui-tp__btn--primary:hover {
+    background: color-mix(in srgb, var(--primary) 88%, black);
+}
+
+/* Nuvem da Aura (affectUI) na cor da marca */
+:root .ui-glw[data-color] {
+    --ui-glw-sky-top: #5b0b95;
+    --ui-glw-sky-bottom: #a565e6;
+    --ui-glw-sky-light: rgba(211, 168, 245, 0.5);
+    --ui-glw-rim: #fbf7ff;
+    --ui-glw-body-1: #7a1fc0;
+    --ui-glw-body-2: #9446d6;
+    --ui-glw-body-3: #c39be3;
+    --ui-glw-eye: #f1e4fc;
+    --ui-glw-eye-shade: rgba(106, 13, 173, 0.3);
+    --ui-glw-halo: rgba(132, 54, 204, 0.2);
+    --ui-glw-edge: rgba(106, 13, 173, 0.4);
+    --ui-glw-shadow: rgba(69, 8, 111, 0.5);
+    --ui-glw-ground: rgba(69, 8, 111, 0.36);
+}
