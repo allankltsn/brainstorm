@@ -1144,6 +1144,46 @@
       "type": "registry:ui",
       "registryDependencies": ["utils", "card", "switch", "input", "label", "button"],
       "files": [{ "path": "src/components/ui/integration-settings.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "landing-screen",
+      "type": "registry:block",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button", "card", "badge", "avatar", "separator", "stat-card"],
+      "files": [{ "path": "src/components/blocks/landing-screen.tsx", "type": "registry:component" }]
+    },
+    {
+      "name": "login-screen",
+      "type": "registry:block",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "form-field", "input", "button", "checkbox", "separator", "label"],
+      "files": [{ "path": "src/components/blocks/login-screen.tsx", "type": "registry:component" }]
+    },
+    {
+      "name": "signup-screen",
+      "type": "registry:block",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "card", "form-field", "input", "button", "checkbox", "separator", "label"],
+      "files": [{ "path": "src/components/blocks/signup-screen.tsx", "type": "registry:component" }]
+    },
+    {
+      "name": "dashboard-shell",
+      "type": "registry:block",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["utils", "button", "icon-button", "input", "profile-menu", "badge", "separator"],
+      "files": [{ "path": "src/components/blocks/dashboard-shell.tsx", "type": "registry:component" }]
+    },
+    {
+      "name": "stats-overview",
+      "type": "registry:block",
+      "registryDependencies": ["utils", "kpi-chart", "chart-card", "bars-chart", "collaboration-stream"],
+      "files": [{ "path": "src/components/blocks/stats-overview.tsx", "type": "registry:component" }]
+    },
+    {
+      "name": "agent-console",
+      "type": "registry:block",
+      "registryDependencies": ["utils", "card", "agent-monitor", "agent-fleet", "agent-inbox", "running-now", "trace-waterfall", "model-usage"],
+      "files": [{ "path": "src/components/blocks/agent-console.tsx", "type": "registry:component" }]
     }
   ]
 }
