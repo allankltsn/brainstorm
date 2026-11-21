@@ -742,7 +742,15 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 
 type Mode = 'light' | 'dark'
-type View = 'tokens' | 'componentes'
+import { LandingScreen } from '@/components/blocks/landing-screen'
+import { LoginScreen } from '@/components/blocks/login-screen'
+import { SignupScreen } from '@/components/blocks/signup-screen'
+import { DashboardShell } from '@/components/blocks/dashboard-shell'
+import { StatsOverview } from '@/components/blocks/stats-overview'
+import { AgentConsole } from '@/components/blocks/agent-console'
+
+type View = 'tokens' | 'componentes' | 'telas'
+type Screen = 'landing' | 'app' | 'auth'
 
 const THEMES = [
   { name: 'aura-fit', label: 'Aura Fit' },
@@ -1809,6 +1817,57 @@ function ComponentsView() {
   )
 }
 
+function TelasView() {
+  const [screen, setScreen] = useState<Screen>('landing')
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
+  return (
+    <>
+      <section className="intro">
+        <h1>Telas</h1>
+        <p>
+          Telas de exemplo montadas <strong>só com blocos do kit</strong> (<code>registry:block</code>,
+          instaláveis por <code>npx shadcn add @aura/landing-screen</code>). Mesmos tokens — trocar o tema recolore tudo.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {([['landing', 'Landing'], ['app', 'App'], ['auth', 'Auth']] as const).map(([v, label]) => (
+            <button
+              key={v}
+              type="button"
+              className="rounded-full border border-border px-3 py-1 text-sm data-[active=true]:border-primary data-[active=true]:bg-primary/10 data-[active=true]:text-primary"
+              data-active={screen === v}
+              onClick={() => setScreen(v)}
+            >
+              {label}
+            </button>
+          ))}
+          {screen === 'auth' && (
+            <button
+              type="button"
+              className="rounded-full border border-border px-3 py-1 text-sm text-muted-foreground"
+              onClick={() => setAuthMode((m) => (m === 'login' ? 'signup' : 'login'))}
+            >
+              {authMode === 'login' ? 'Ver cadastro →' : '← Ver login'}
+            </button>
+          )}
+        </div>
+      </section>
+
+      <div className="overflow-hidden rounded-xl border border-border bg-background">
+        {screen === 'landing' && <LandingScreen />}
+        {screen === 'app' && (
+          <DashboardShell title="Visão geral">
+            <div className="flex flex-col gap-6">
+              <StatsOverview />
+              <AgentConsole />
+            </div>
+          </DashboardShell>
+        )}
+        {screen === 'auth' && (authMode === 'login' ? <LoginScreen /> : <SignupScreen />)}
+      </div>
+    </>
+  )
+}
+
 export default function App() {
   const [theme, setTheme] = useState('aura-fit')
   const [mode, setMode] = useState<Mode>('dark')
@@ -1831,6 +1890,7 @@ export default function App() {
         <nav className="nav">
           <button type="button" className="nav-btn" data-active={view === 'tokens'} onClick={() => setView('tokens')}>Tokens</button>
           <button type="button" className="nav-btn" data-active={view === 'componentes'} onClick={() => setView('componentes')}>Componentes</button>
+          <button type="button" className="nav-btn" data-active={view === 'telas'} onClick={() => setView('telas')}>Telas</button>
         </nav>
         <div className="controls">
           <Segmented value={theme} onChange={setTheme} options={THEMES.map((t) => ({ value: t.name, label: t.label }))} />
@@ -1839,7 +1899,9 @@ export default function App() {
       </header>
 
       <main className="wrap">
-        {view === 'tokens' ? <TokensView theme={theme} mode={mode} /> : <ComponentsView />}
+        {view === 'tokens' && <TokensView theme={theme} mode={mode} />}
+        {view === 'componentes' && <ComponentsView />}
+        {view === 'telas' && <TelasView />}
       </main>
 
       <footer className="foot">
